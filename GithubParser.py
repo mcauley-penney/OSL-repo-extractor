@@ -13,7 +13,7 @@ repo = repoList[0]
 #apis
 api = git.get_repo(repo)
 
-
+# Limits the data pulled from rest api to a specific integer
 limit = 5
 
 
@@ -40,29 +40,42 @@ isssueComments = []
 
 
 def main():
-   #
+
+   #Opens the csv file
     with open("github.csv", "w", newline="", encoding="utf-8") as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_NONE, delimiter='|', quotechar='', escapechar='\\',lineterminator='\n')
+
+        #Gets written to the top of each column.
         descriptors = "PR_Number,Issue_Closed_Date, Issue_Author, Issue_Title, Issue_Body, Issue_comments, PR_Closed_Date,PR_Author, PR_Title, PR_Body, PR_Comments, Commit_Author, Commit_Date, Commit_Message, isPR"
-        cont_pulls = 0
-        cont_issues = 0
+
 
         # sets up the table
         writer.writerow([descriptors])
 
+        # Calls in
         prData = getPRNumber(limit)
         closedDates = getIssueClosedDate(limit)
         issueAuthors = getIssueAuthor(limit)
         issueTitles = getIssueTitle(limit)
         issueBodies = getIssueBody(limit)
 
+        #list of lists of all the data that has been collected
         data = [prNumL, issueClosedDates, issueAuthors, issueTitles, issueBodies]
 
+
+        #iterates over prData and writes the first row
         for prIndex in prData:
             writer.writerow([prIndex])
 
 
    #
+
+# Description:
+# Takes in a limit
+# iterates through pulls
+# up to the limit
+# and returns the data in a list
+# Returns: list of pull req numbers
 def getPRNumber(inLimit):
     #
     outList = []
@@ -84,7 +97,14 @@ def getPRNumber(inLimit):
            break
     return outList
    #
-
+# Description:
+# Takes in a limit
+# iterates through issues
+# up to the limit
+# and returns the data in a
+# list.
+# Returns: List with closed dates
+#
 def getIssueClosedDate(inLimit):
     #
     outList = []
@@ -102,10 +122,16 @@ def getIssueClosedDate(inLimit):
             print("loop exit-closedDates")
             print("---------------------")
             break
-
     return outList
     #
-
+# Description:
+# Takes in a limit
+# iterates through issues
+# up to the limit
+# and returns the data in a
+# list.
+# Returns: List with issue authors
+#
 def getIssueAuthor(inLimit):
     #
     outList = []
@@ -124,7 +150,13 @@ def getIssueAuthor(inLimit):
             break
     return outList
     #
-
+# Description:
+# Takes in a limit
+# iterates through issues
+# up to the limit
+# and returns the data in a
+# list.
+# Returns: List with issue titles
 def getIssueTitle(inLimit):
     #
     outList = []
@@ -144,7 +176,13 @@ def getIssueTitle(inLimit):
     return outList
     #
 
-
+# Description:
+# Takes in a limit
+# iterates through issues
+# up to the limit
+# and returns the data in a
+# list.
+# Returns: List with the body text of an issue
 def getIssueBody(inLimit):
     #
     outList = []
@@ -164,6 +202,13 @@ def getIssueBody(inLimit):
     return outList
     #
 
+# Description:
+# Takes in a limit
+# iterates through issues
+# up to the limit
+# and returns the data in a
+# list.
+# Returns: List with issue comments
 def getIssueComments(inLimit):
     #
     outList = []
