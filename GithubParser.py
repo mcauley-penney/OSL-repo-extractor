@@ -1,5 +1,13 @@
-from github import Github
+# ---------------------------------------------------------------------------
+# Author: Jacob Stuck
+# Purpose:
+# Process: 
+# Notes:
+# --------------------------------------------------------------------------- 
+
+
 import csv
+from github import Github
 
 #establish connection
 git = Github("token")
@@ -7,8 +15,6 @@ git = Github("token")
 # repos to mined
 repoList = ["Facebook/react","StuckInsideJake/386_Team_7","JabRef/jabref","StuckInsideJake/EricAndreDiscordBot"]
 repo = repoList[0]
-
-#rApi = git.get_repo(repoList[0])
 
 #apis
 api = git.get_repo(repo)
@@ -68,16 +74,17 @@ def main():
             writer.writerow([prIndex])
 
 
-   #
 
-# Description:
-# Takes in a limit
-# iterates through pulls
-# up to the limit
-# and returns the data in a list
-# Returns: list of pull req numbers
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
 def getPRNumber(inLimit):
-    #
     outList = []
     index = 0
 
@@ -96,17 +103,19 @@ def getPRNumber(inLimit):
            print("---------------------")
            break
     return outList
-   #
-# Description:
-# Takes in a limit
-# iterates through issues
-# up to the limit
-# and returns the data in a
-# list.
-# Returns: List with closed dates
-#
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# --------------------------------------------------------------------------- 
 def getIssueClosedDate(inLimit):
-    #
     outList = []
     index = 0
 
@@ -123,17 +132,19 @@ def getIssueClosedDate(inLimit):
             print("---------------------")
             break
     return outList
-    #
-# Description:
-# Takes in a limit
-# iterates through issues
-# up to the limit
-# and returns the data in a
-# list.
-# Returns: List with issue authors
-#
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------  
 def getIssueAuthor(inLimit):
-    #
     outList = []
     index = 0
 
@@ -149,16 +160,19 @@ def getIssueAuthor(inLimit):
             print("---------------------")
             break
     return outList
-    #
-# Description:
-# Takes in a limit
-# iterates through issues
-# up to the limit
-# and returns the data in a
-# list.
-# Returns: List with issue titles
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------   
 def getIssueTitle(inLimit):
-    #
     outList = []
     index = 0
 
@@ -174,17 +188,19 @@ def getIssueTitle(inLimit):
             print("-----------------")
             break
     return outList
-    #
 
-# Description:
-# Takes in a limit
-# iterates through issues
-# up to the limit
-# and returns the data in a
-# list.
-# Returns: List with the body text of an issue
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
 def getIssueBody(inLimit):
-    #
     outList = []
     index = 0
 
@@ -200,17 +216,19 @@ def getIssueBody(inLimit):
             print("---------------")
             break
     return outList
-    #
 
-# Description:
-# Takes in a limit
-# iterates through issues
-# up to the limit
-# and returns the data in a
-# list.
-# Returns: List with issue comments
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
 def getIssueComments(inLimit):
-    #
     outList = []
     index = 0
 
@@ -226,8 +244,9 @@ def getIssueComments(inLimit):
             print("--------------")
             break
     return outList
-    #
+
+
 
 
 if __name__ == '__main__':
-    main()
+    main() 
