@@ -16,7 +16,6 @@
 # imports
 import argparse
 import csv
-from os import WEXITED
 from github import Github
 
 
@@ -37,11 +36,8 @@ WRITE       = 'w'
 
 
 def main():
-    # metalist of output data
-    data_metalist= []
-
-    #Pull request related lists
-    pr_num_list = []
+    # index for aggregation loop
+    aggregation_index = 0
 
     #Issue related lists
     issue_authors_list = []
@@ -50,7 +46,9 @@ def main():
     isssue_comments_list = []
     issue_titles_list = []
  
-
+    #Pull request related lists
+    pr_num_list = [] 
+ 
 
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
@@ -106,7 +104,7 @@ def main():
     # Open the output csv file in preparation for writing
     with open( output_file_name, WRITE, newline="", encoding="utf-8") as csvfile:
         writer = csv.writer( 
-                csvfile, quoting=csv.QUOTE_NONE, delimiter=' ', 
+                csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
                 quotechar='', escapechar='\\', lineterminator='\n' 
                 )
 
@@ -116,191 +114,27 @@ def main():
 
 
         # Calls in
-        pr_num_list = getPRNumber( pr_paginated_list )
-        # closedDates = getIssueClosedDate( pr_paginated_list )
-        issue_authors_list = getIssueAuthor( issues_paginated_list )
-        issue_titles_list = getIssueTitle( issues_paginated_list )
-        issue_bodies_list = getIssueBody( issues_paginated_list )
-
-
-        writer.writerow( ' '.join( pr_num_list ) )
-
-
-        #list of lists of all the data that has been collected
-        # data_metalist = [
-        #         pr_num_list, 
-        #         issue_closed_dates, 
-        #         issue_authors, 
-        #         issue_titles, 
-        #         issue_bodies
-        #         ]
+        pr_num_list = get_PR_number( pr_paginated_list )
+        issue_closed_dates_list = get_issue_closedDate( issues_paginated_list )
+        issue_authors_list = get_issue_author( issues_paginated_list )
+        issue_titles_list = get_issue_title( issues_paginated_list )
+        issue_bodies_list = get_issue_body( issues_paginated_list )
 
         
+        # aggregate lists into rows
+        while aggregation_index < RATE_LIMIT:
+            issue_author = issue_authors_list[aggregation_index]
+            issue_body = issue_bodies_list[aggregation_index] 
+            issue_closed_date = issue_closed_dates_list[aggregation_index] 
+            issue_title = issue_titles_list[aggregation_index] 
+            pr_num = pr_num_list[aggregation_index] 
 
+            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
+            output_row = pr_num + issue_closed_date
+        
+            writer.writerow( [output_row] )
 
-
-# ---------------------------------------------------------------------------
-# Function: getPRNumber
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def getPRNumber( pulls ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        print( pulls[index].number )
-
-        prStr = str( pulls[index].number ) + ","
-        print(prStr)
-
-        outList.append(prStr)
-        index+=1
-
-
-    print(OUTPUT_DASH + "\nloop exit-PRNumber\n" + OUTPUT_DASH)
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# --------------------------------------------------------------------------- 
-def getIssueClosedDate( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = issue_list[index]
-        issueDateStr = str( cur_issue.closed_at )
-        print(issueDateStr)
-
-        outList.append(issueDateStr)
-        index+=1
-
-    
-    print( OUTPUT_DASH + "loop exit-closedDates" + OUTPUT_DASH)
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------  
-def getIssueAuthor( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = issue_list[index]
-        issueAuthorStr = str( cur_issue.user.name )
-        print(issueAuthorStr)
-
-        outList.append(issueAuthorStr)
-        index+=1
-
-
-    print( OUTPUT_DASH + "loop exit-IssueAuthor" + OUTPUT_DASH )
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------   
-def getIssueTitle( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        issueTitleStr = str( issue_list[index].title )
-        print( "Getting issue title at index: " + str( index ) )
-
-        outList.append( issueTitleStr )
-        index+=1
-
-
-    print( OUTPUT_DASH + "loop exit-IssueTitle" + OUTPUT_DASH )
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def getIssueBody( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        issueBodyStr = str( issue_list[index].body )
-        print( "getting body at index:" + str( index ) )
-
-        outList.append( issueBodyStr )
-        index+=1
-
-
-    print(OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def getIssueComments( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        issueCommentStr = str(issue_list[index].comments)
-        print( "getting comments at index:" + str( index ) )
-
-        outList.append( issueCommentStr )
-        index+=1
-
-
-    print( OUTPUT_DASH + "loop exit-IssueComments" + OUTPUT_DASH )
-
-    return outList
+            aggregation_index += 1
 
 
 
@@ -344,6 +178,170 @@ def create_input_list( fileToOpen ):
 
 
     return repo_list
+
+
+
+ 
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------  
+def get_issue_author( issue_list ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        cur_issue = issue_list[index]
+        issueAuthorStr = str( cur_issue.user.name )
+        print(issueAuthorStr)
+
+        outList.append(issueAuthorStr)
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueAuthor" + OUTPUT_DASH )
+
+    return outList
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
+def get_issue_body( issue_list ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        issueBodyStr = str( issue_list[index].body )
+        print( "getting body at index:" + str( index ) )
+
+        outList.append( issueBodyStr )
+        index+=1
+
+
+    print(OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
+
+    return outList
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# --------------------------------------------------------------------------- 
+def get_issue_closedDate( issue_list ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        cur_issue = issue_list[index]
+        issueDateStr = str( cur_issue.closed_at )
+        print(issueDateStr)
+
+        outList.append(issueDateStr)
+        index+=1
+
+    
+    print( OUTPUT_DASH + "loop exit-closedDates" + OUTPUT_DASH)
+
+    return outList
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
+def get_issue_comments( issue_list ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        issueCommentStr = str(issue_list[index].comments)
+        print( "getting comments at index:" + str( index ) )
+
+        outList.append( issueCommentStr )
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueComments" + OUTPUT_DASH )
+
+    return outList
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------   
+def get_issue_title( issue_list ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        issueTitleStr = str( issue_list[index].title )
+        print( "Getting issue title at index: " + str( index ) )
+
+        outList.append( issueTitleStr )
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueTitle" + OUTPUT_DASH )
+
+    return outList
+
+
+
+
+# ---------------------------------------------------------------------------
+# Function: get_PR_number
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
+def get_PR_number( pulls ):
+    outList = []
+    index = 0
+
+    while index < RATE_LIMIT:
+        prStr = str( pulls[index].number ) + ","
+        print(prStr)
+
+        outList.append(prStr)
+        index+=1
+
+
+    print(OUTPUT_DASH + "\nloop exit-PRNumber\n" + OUTPUT_DASH)
+
+    return outList
 
 
 
