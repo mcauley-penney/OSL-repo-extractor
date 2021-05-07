@@ -355,14 +355,12 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
     # index for aggregation loop
     aggregation_index = 0
 
-    #Issue related lists
+    # data lists
     issue_authors_list = []
     issue_bodies_list = []
     issue_closed_dates_list = []
     isssue_comments_list = []
     issue_titles_list = []
- 
-    #Pull request related lists
     pr_num_list = []  
  
 
@@ -374,11 +372,11 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
                 )
 
 
-        # sets up the table
+        # write labels at top of output
         writer.writerow( [DESCRIPTORS] )
 
 
-        # Calls in
+        # retrieve lists of PR and issue data
         pr_num_list = get_PR_number( pr_list )
         issue_closed_dates_list = get_issue_closedDate( issues_list )
         issue_authors_list = get_issue_author( issues_list )
@@ -386,7 +384,7 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
         issue_bodies_list = get_issue_body( issues_list )
 
         
-        # aggregate lists into rows
+        # aggregate data lists into rows
         while aggregation_index < RATE_LIMIT:
             issue_author = issue_authors_list[aggregation_index]
             issue_body = issue_bodies_list[aggregation_index] 
@@ -394,15 +392,15 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
             issue_title = issue_titles_list[aggregation_index] 
             pr_num = pr_num_list[aggregation_index] 
 
-            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
+
+            # print rows to output file 
             output_row = pr_num + issue_closed_date
+            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
         
             writer.writerow( [output_row] )
 
             aggregation_index += 1
      
-
-
 
 
 
