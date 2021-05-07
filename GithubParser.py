@@ -36,20 +36,6 @@ WRITE       = 'w'
 
 
 def main():
-    # index for aggregation loop
-    aggregation_index = 0
-
-    #Issue related lists
-    issue_authors_list = []
-    issue_bodies_list = []
-    issue_closed_dates_list = []
-    isssue_comments_list = []
-    issue_titles_list = []
- 
-    #Pull request related lists
-    pr_num_list = [] 
- 
-
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
       
@@ -98,45 +84,16 @@ def main():
     pr_paginated_list = repo_input_paginated_list.get_pulls( 
                                 state='open', sort='created', base='master' )
 
+
+    # retrieve paginated list of issues
     issues_paginated_list = repo_input_paginated_list.get_issues(state="closed")
+     
 
+    # write output to csv file
+    write_csv_output( issues_paginated_list, output_file_name,
+                      pr_paginated_list )
 
-    # Open the output csv file in preparation for writing
-    with open( output_file_name, WRITE, newline="", encoding="utf-8") as csvfile:
-        writer = csv.writer( 
-                csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
-                quotechar='', escapechar='\\', lineterminator='\n' 
-                )
-
-
-        # sets up the table
-        writer.writerow( [DESCRIPTORS] )
-
-
-        # Calls in
-        pr_num_list = get_PR_number( pr_paginated_list )
-        issue_closed_dates_list = get_issue_closedDate( issues_paginated_list )
-        issue_authors_list = get_issue_author( issues_paginated_list )
-        issue_titles_list = get_issue_title( issues_paginated_list )
-        issue_bodies_list = get_issue_body( issues_paginated_list )
-
-        
-        # aggregate lists into rows
-        while aggregation_index < RATE_LIMIT:
-            issue_author = issue_authors_list[aggregation_index]
-            issue_body = issue_bodies_list[aggregation_index] 
-            issue_closed_date = issue_closed_dates_list[aggregation_index] 
-            issue_title = issue_titles_list[aggregation_index] 
-            pr_num = pr_num_list[aggregation_index] 
-
-            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
-            output_row = pr_num + issue_closed_date
-        
-            writer.writerow( [output_row] )
-
-            aggregation_index += 1
-
-
+    
 
 
 # ---------------------------------------------------------------------------
@@ -383,6 +340,69 @@ def read_user_info( userinfo_file ):
 
     return parsed_userinfo_list
  
+
+
+
+# ---------------------------------------------------------------------------
+# Function: 
+# Process: 
+# Parameters: 
+# Postcondition: 
+# Exceptions: none
+# Note: none
+# ---------------------------------------------------------------------------
+def write_csv_output( issues_list, output_file_name, pr_list ):
+    # index for aggregation loop
+    aggregation_index = 0
+
+    #Issue related lists
+    issue_authors_list = []
+    issue_bodies_list = []
+    issue_closed_dates_list = []
+    isssue_comments_list = []
+    issue_titles_list = []
+ 
+    #Pull request related lists
+    pr_num_list = []  
+ 
+
+    # Open the output csv file in preparation for writing
+    with open( output_file_name, WRITE, newline="", encoding="utf-8") as csvfile:
+        writer = csv.writer( 
+                csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
+                quotechar='', escapechar='\\', lineterminator='\n' 
+                )
+
+
+        # sets up the table
+        writer.writerow( [DESCRIPTORS] )
+
+
+        # Calls in
+        pr_num_list = get_PR_number( pr_list )
+        issue_closed_dates_list = get_issue_closedDate( issues_list )
+        issue_authors_list = get_issue_author( issues_list )
+        issue_titles_list = get_issue_title( issues_list )
+        issue_bodies_list = get_issue_body( issues_list )
+
+        
+        # aggregate lists into rows
+        while aggregation_index < RATE_LIMIT:
+            issue_author = issue_authors_list[aggregation_index]
+            issue_body = issue_bodies_list[aggregation_index] 
+            issue_closed_date = issue_closed_dates_list[aggregation_index] 
+            issue_title = issue_titles_list[aggregation_index] 
+            pr_num = pr_num_list[aggregation_index] 
+
+            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
+            output_row = pr_num + issue_closed_date
+        
+            writer.writerow( [output_row] )
+
+            aggregation_index += 1
+     
+
+
 
 
 
