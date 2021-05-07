@@ -296,7 +296,7 @@ def get_PR_number( pr_list ):
         index+=1
 
 
-    print(OUTPUT_DASH + "loop exit-PRNumber" + OUTPUT_DASH)
+    print( OUTPUT_DASH + "loop exit-PRNumber" + OUTPUT_DASH )
 
     return outList
 
