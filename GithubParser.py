@@ -16,6 +16,7 @@
 # imports
 import argparse
 import csv
+from os import WEXITED
 from github import Github
 
 
@@ -27,6 +28,7 @@ DESCRIPTORS = (
         " PR_Comments, Commit_Author, Commit_Date, Commit_Message, isPR"
          )
 NEW_LINE    = '\n'
+OUTPUT_DASH = "---------------------"
 RATE_LIMIT  = 5
 READ        = 'r' 
 WRITE       = 'w'
@@ -149,20 +151,18 @@ def getPRNumber( pulls ):
     outList = []
     index = 0
 
-    for pr in pulls:
+    while index < RATE_LIMIT:
+        print( pulls[index].number )
 
-       if index < RATE_LIMIT:
-          ftitle = ''
-          print(pr.number)
-          prStr = str(pr.number) + "," + ftitle
-          print(prStr)
-          outList.append(prStr)
-          index+=1
-       else:
-           print("---------------------")
-           print("loop exit-PRNumber")
-           print("---------------------")
-           break
+        prStr = str( pulls[index].number ) + ","
+        print(prStr)
+
+        outList.append(prStr)
+        index+=1
+
+
+    print(OUTPUT_DASH + "\nloop exit-PRNumber\n" + OUTPUT_DASH)
+
     return outList
 
 
@@ -180,17 +180,17 @@ def getIssueClosedDate( issue_list ):
     outList = []
     index = 0
 
-    for issue in issue_list:
-        if index < RATE_LIMIT:
-           issueDateStr = str(issue.closed_at)
-           print(issueDateStr)
-           outList.append(issueDateStr)
-           index+=1
-        else:
-            print("---------------------")
-            print("loop exit-closedDates")
-            print("---------------------")
-            break
+    while index < RATE_LIMIT:
+        cur_issue = issue_list[index]
+        issueDateStr = str( cur_issue.closed_at )
+        print(issueDateStr)
+
+        outList.append(issueDateStr)
+        index+=1
+
+    
+    print( OUTPUT_DASH + "loop exit-closedDates" + OUTPUT_DASH)
+
     return outList
 
 
@@ -208,17 +208,17 @@ def getIssueAuthor( issue_list ):
     outList = []
     index = 0
 
-    for issue in issue_list:
-        if index < RATE_LIMIT:
-           issueAuthorStr = str(issue.user.name)
-           print(issueAuthorStr)
-           outList.append(issueAuthorStr)
-           index+=1
-        else:
-            print("---------------------")
-            print("loop exit-IssueAuthor")
-            print("---------------------")
-            break
+    while index < RATE_LIMIT:
+        cur_issue = issue_list[index]
+        issueAuthorStr = str( cur_issue.user.name )
+        print(issueAuthorStr)
+
+        outList.append(issueAuthorStr)
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueAuthor" + OUTPUT_DASH )
+
     return outList
 
 
@@ -236,17 +236,16 @@ def getIssueTitle( issue_list ):
     outList = []
     index = 0
 
-    for issue in issue_list:
-        if index < RATE_LIMIT:
-           issueTitleStr = str(issue.title)
-           print("Getting issue title at index: "+str(index))
-           index+=1
-           outList.append(issueTitleStr)
-        else:
-            print("-----------------")
-            print("loop exit-IssueTitle")
-            print("-----------------")
-            break
+    while index < RATE_LIMIT:
+        issueTitleStr = str( issue_list[index].title )
+        print( "Getting issue title at index: " + str( index ) )
+
+        outList.append( issueTitleStr )
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueTitle" + OUTPUT_DASH )
+
     return outList
 
 
@@ -264,17 +263,16 @@ def getIssueBody( issue_list ):
     outList = []
     index = 0
 
-    for issue in issue_list:
-        if index < RATE_LIMIT:
-           issueBodyStr = str(issue.body)
-           print("getting body at index:" + str(index))
-           index+=1
-           outList.append(issueBodyStr)
-        else:
-            print("---------------")
-            print("loop exit-IssueBody")
-            print("---------------")
-            break
+    while index < RATE_LIMIT:
+        issueBodyStr = str( issue_list[index].body )
+        print( "getting body at index:" + str( index ) )
+
+        outList.append( issueBodyStr )
+        index+=1
+
+
+    print(OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
+
     return outList
 
 
@@ -292,17 +290,16 @@ def getIssueComments( issue_list ):
     outList = []
     index = 0
 
-    for issue in issue_list:
-        if index < RATE_LIMIT:
-           issueCommentStr = str(issue.comments)
-           print("getting comments at index:"+str(index))
-           index+=1
-           outList.append(issueCommentStr)
-        else:
-            print("--------------")
-            print("loop exit-IssueComments")
-            print("--------------")
-            break
+    while index < RATE_LIMIT:
+        issueCommentStr = str(issue_list[index].comments)
+        print( "getting comments at index:" + str( index ) )
+
+        outList.append( issueCommentStr )
+        index+=1
+
+
+    print( OUTPUT_DASH + "loop exit-IssueComments" + OUTPUT_DASH )
+
     return outList
 
 
