@@ -284,19 +284,19 @@ def get_issue_title( issue_list ):
 # Exceptions: none
 # Note: none
 # ---------------------------------------------------------------------------
-def get_PR_number( pulls ):
+def get_PR_number( pr_list ):
     outList = []
     index = 0
 
     while index < RATE_LIMIT:
-        prStr = str( pulls[index].number ) + ","
+        prStr = str( pr_list[index].number ) + ","
         print(prStr)
 
         outList.append(prStr)
         index+=1
 
 
-    print(OUTPUT_DASH + "\nloop exit-PRNumber\n" + OUTPUT_DASH)
+    print(OUTPUT_DASH + "loop exit-PRNumber" + OUTPUT_DASH)
 
     return outList
 
@@ -365,7 +365,8 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
  
 
     # Open the output csv file in preparation for writing
-    with open( output_file_name, WRITE, newline="", encoding="utf-8") as csvfile:
+    with open( output_file_name, WRITE, newline="", 
+                                                encoding="utf-8" ) as csvfile:
         writer = csv.writer( 
                 csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
                 quotechar='', escapechar='\\', lineterminator='\n' 
