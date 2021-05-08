@@ -85,7 +85,7 @@ def main():
 
 
     # retrieve paginated list of issues
-    issues_paginated_list = repo_input_paginated_list.get_issues(state="closed")
+    issues_paginated_list = repo_input_paginated_list.get_issues( state="closed" )
      
 
     # write output to csv file
@@ -146,15 +146,15 @@ def create_input_list( fileToOpen ):
 # ---------------------------------------------------------------------------  
 def get_issue_author( issue_list ):
     outList = []
-    index = 0
+    index   = 0
 
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueAuthorStr = str( cur_issue.user.name )
-        print(issueAuthorStr)
+        print( issueAuthorStr )
 
-        outList.append(issueAuthorStr)
-        index+=1
+        outList.append( issueAuthorStr )
+        index += 1
 
 
     print( OUTPUT_DASH + "loop exit-IssueAuthor" + OUTPUT_DASH )
@@ -182,7 +182,7 @@ def get_issue_body( issue_list ):
         print( "getting body at index:" + str( index ) )
 
         outList.append( issueBodyStr )
-        index+=1
+        index += 1
 
 
     print( OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
@@ -210,7 +210,7 @@ def get_issue_closedDate( issue_list ):
         print( issueDateStr )
 
         outList.append( issueDateStr )
-        index+=1
+        index += 1
 
     
     print( OUTPUT_DASH + "loop exit-closedDates" + OUTPUT_DASH)
@@ -238,7 +238,7 @@ def get_issue_comments( issue_list ):
         print( "getting comments at index:" + str( index ) )
 
         outList.append( issueCommentStr )
-        index+=1
+        index += 1
 
 
     print( OUTPUT_DASH + "loop exit-IssueComments" + OUTPUT_DASH )
@@ -289,10 +289,11 @@ def get_PR_number( pr_list ):
     index = 0
 
     while index < RATE_LIMIT:
-        prStr = str( pr_list[index].number ) + ","
-        print(prStr)
+        cur_pr = pr_list[index]
+        prStr = str( cur_pr.number ) + ","
+        print( prStr )
 
-        outList.append(prStr)
+        outList.append( prStr )
         index+=1
 
 
@@ -353,15 +354,15 @@ def read_user_info( userinfo_file ):
 # ---------------------------------------------------------------------------
 def write_csv_output( issues_list, output_file_name, pr_list ):
     # index for aggregation loop
-    aggregation_index = 0
+    aggregation_index       = 0
 
     # data lists
-    issue_authors_list = []
-    issue_bodies_list = []
+    issue_authors_list      = []
+    issue_bodies_list       = []
     issue_closed_dates_list = []
-    isssue_comments_list = []
-    issue_titles_list = []
-    pr_num_list = []  
+    isssue_comments_list    = []
+    issue_titles_list       = []
+    pr_num_list             = []  
  
 
     # Open the output csv file in preparation for writing
