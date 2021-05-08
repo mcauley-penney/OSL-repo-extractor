@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Author: Jacob Stuck
+# Author: Jacob Stuck and Jacob Penney
 # Purpose:
 # Process: 
 # Notes: documentation can be found @:
@@ -8,7 +8,6 @@
 
 
 # TODO:
-#   - clean constants
 #   - clean annotations
 #   - add arg_parser description
 
@@ -117,9 +116,7 @@ def create_input_list( fileToOpen ):
     # read contents out
     api_input_contents = repo_input_file_obj.readlines()
 
-    # read contents out of file
     for line in api_input_contents:
-
         # strip rows of new line characters
         newLine_stripped_line = line.strip( NEW_LINE )
 
@@ -177,7 +174,7 @@ def get_issue_author( issue_list ):
 # ---------------------------------------------------------------------------
 def get_issue_body( issue_list ):
     outList = []
-    index = 0
+    index   = 0
 
     while index < RATE_LIMIT:
         issueBodyStr = str( issue_list[index].body )
@@ -187,7 +184,7 @@ def get_issue_body( issue_list ):
         index+=1
 
 
-    print(OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
+    print( OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
 
     return outList
 
@@ -204,14 +201,14 @@ def get_issue_body( issue_list ):
 # --------------------------------------------------------------------------- 
 def get_issue_closedDate( issue_list ):
     outList = []
-    index = 0
+    index   = 0
 
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueDateStr = str( cur_issue.closed_at )
-        print(issueDateStr)
+        print( issueDateStr )
 
-        outList.append(issueDateStr)
+        outList.append( issueDateStr )
         index+=1
 
     
@@ -232,10 +229,11 @@ def get_issue_closedDate( issue_list ):
 # ---------------------------------------------------------------------------
 def get_issue_comments( issue_list ):
     outList = []
-    index = 0
+    index   = 0
 
     while index < RATE_LIMIT:
-        issueCommentStr = str(issue_list[index].comments)
+        cur_issue = issue_list[index]
+        issueCommentStr = str( cur_issue.comments )
         print( "getting comments at index:" + str( index ) )
 
         outList.append( issueCommentStr )
@@ -262,7 +260,8 @@ def get_issue_title( issue_list ):
     index = 0
 
     while index < RATE_LIMIT:
-        issueTitleStr = str( issue_list[index].title )
+        cur_issue = issue_list[index]
+        issueTitleStr = str( cur_issue.title )
         print( "Getting issue title at index: " + str( index ) )
 
         outList.append( issueTitleStr )
