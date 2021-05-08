@@ -177,7 +177,8 @@ def get_issue_body( issue_list ):
     index   = 0
 
     while index < RATE_LIMIT:
-        issueBodyStr = str( issue_list[index].body )
+        cur_issue = cur_issue = issue_list[index]
+        issueBodyStr = str( cur_issue.body )
         print( "getting body at index:" + str( index ) )
 
         outList.append( issueBodyStr )
