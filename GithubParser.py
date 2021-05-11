@@ -10,6 +10,10 @@
 # TODO:
 #   - clean annotations
 #   - add arg_parser description
+#   - create checks to protect from lack of pull requests
+#   - get issue info in one loop?
+
+
 
 
 # imports
@@ -20,43 +24,20 @@ from github import Github
 
 # constants
 COMMA       = ','
-DESCRIPTORS = (
-        "PR_Number,Issue_Closed_Date, Issue_Author, Issue_Title, Issue_Body,"
-        " Issue_comments, PR_Closed_Date,PR_Author, PR_Title, PR_Body,"
-        " PR_Comments, Commit_Author, Commit_Date, Commit_Message, isPR"
-         )
 NEW_LINE    = '\n'
-OUTPUT_DASH = "---------------------"
 RATE_LIMIT  = 5
 READ        = 'r' 
-WRITE       = 'w'
 
 
 
 
 def main():
-    # establish positional argument capability
-    arg_parser = argparse.ArgumentParser( description="TODO" ) 
-      
 
-    # add repo input CLI arg
-    arg_parser.add_argument( 'input_file', type=str,  
-                              help="""text file containing properly 
-                              formatted arguments""" ) 
-
-
-    # add auth token CLI arg
-    arg_parser.add_argument( 'auth_file', type=str, 
-                              help="""text file containing user 
-                              authentification info""" ) 
-
-
-    arg_parser.add_argument( 'output_file_name', type=str, 
-                              help="CSV file to write output to" )      
-     
+    print( "Gathering GitHub data...\n" )
 
     # retrieve positional arguments as variables
-    CLI_args = arg_parser.parse_args() 
+    CLI_args = get_args() 
+
     repo_input_file_to_open = CLI_args.input_file
     userauth_file_to_open = CLI_args.auth_file
     output_file_name =  CLI_args.output_file_name
@@ -80,19 +61,21 @@ def main():
 
 
     # retrieve paginated list of pull requests
-    pr_paginated_list = repo_input_paginated_list.get_pulls( 
-                                state='open', sort='created', base='master' )
-
-
-    # retrieve paginated list of issues
-    issues_paginated_list = repo_input_paginated_list.get_issues( state="closed" )
-     
-
-    # write output to csv file
-    write_csv_output( issues_paginated_list, output_file_name,
-                      pr_paginated_list )
+    pr_paginated_list = repo_input_paginated_list.get_pulls( base='master',  
+                                               direction='asc', sort='created',
+                                               state='all' )
 
     
+    # retrieve paginated list of issues
+    issues_paginated_list = repo_input_paginated_list.get_issues(direction='asc',
+                                                sort='created', state='closed' )
+     
+    print( "Writing data...\n" )
+     
+    # write output to csv file
+    write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
+    
+
 
 
 # ---------------------------------------------------------------------------
@@ -136,6 +119,49 @@ def create_input_list( fileToOpen ):
 
 
  
+#--------------------------------------------------------------------------- 
+# Function name : get_args 
+# Process       : 
+# Parameters    : 
+# Postconditions: 
+# Notes         : 
+#--------------------------------------------------------------------------- 
+def get_args():
+
+    # TODO
+    #   add mutex arg for diff filetype
+
+    # establish positional argument capability
+    arg_parser = argparse.ArgumentParser( description="TODO" ) 
+      
+
+    # add repo input CLI arg
+    arg_parser.add_argument( 'input_file', type=str,  
+                              help="""text file containing properly formatted 
+                              arguments""" ) 
+
+
+    # add auth token CLI arg
+    arg_parser.add_argument( 'auth_file', type=str, 
+                              help="""text file containing user 
+                              authentification info""" ) 
+
+
+    arg_parser.add_argument( 'output_file_name', type=str, 
+                              help="CSV file to write output to" )      
+     
+
+    # retrieve positional arguments as variables
+    CLI_args = arg_parser.parse_args()  
+
+
+    return CLI_args
+
+
+
+ 
+
+ 
 # ---------------------------------------------------------------------------
 # Function: 
 # Process: 
@@ -151,13 +177,10 @@ def get_issue_author( issue_list ):
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueAuthorStr = str( cur_issue.user.name )
-        print( issueAuthorStr )
 
         outList.append( issueAuthorStr )
         index += 1
 
-
-    print( OUTPUT_DASH + "loop exit-IssueAuthor" + OUTPUT_DASH )
 
     return outList
 
@@ -178,14 +201,15 @@ def get_issue_body( issue_list ):
 
     while index < RATE_LIMIT:
         cur_issue = cur_issue = issue_list[index]
-        issueBodyStr = str( cur_issue.body )
-        print( "getting body at index:" + str( index ) )
+        issue_body_str = str( cur_issue.body )
 
-        outList.append( issueBodyStr )
+        stripped_issue_body_str = issue_body_str.replace( '\\', '' )
+
+        out_issue_body_str = "\"" + stripped_issue_body_str + "\""
+
+        outList.append( out_issue_body_str  )
         index += 1
 
-
-    print( OUTPUT_DASH + "loop exit-IssueBody" + OUTPUT_DASH )
 
     return outList
 
@@ -207,14 +231,11 @@ def get_issue_closedDate( issue_list ):
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueDateStr = str( cur_issue.closed_at )
-        print( issueDateStr )
 
         outList.append( issueDateStr )
         index += 1
 
     
-    print( OUTPUT_DASH + "loop exit-closedDates" + OUTPUT_DASH)
-
     return outList
 
 
@@ -235,13 +256,10 @@ def get_issue_comments( issue_list ):
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueCommentStr = str( cur_issue.comments )
-        print( "getting comments at index:" + str( index ) )
 
         outList.append( issueCommentStr )
         index += 1
 
-
-    print( OUTPUT_DASH + "loop exit-IssueComments" + OUTPUT_DASH )
 
     return outList
 
@@ -263,13 +281,10 @@ def get_issue_title( issue_list ):
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
         issueTitleStr = str( cur_issue.title )
-        print( "Getting issue title at index: " + str( index ) )
 
         outList.append( issueTitleStr )
         index+=1
 
-
-    print( OUTPUT_DASH + "loop exit-IssueTitle" + OUTPUT_DASH )
 
     return outList
 
@@ -277,27 +292,24 @@ def get_issue_title( issue_list ):
 
 
 # ---------------------------------------------------------------------------
-# Function: get_PR_number
+# Function: get_PR_init_info
 # Process: 
 # Parameters: 
 # Postcondition: 
 # Exceptions: none
 # Note: none
 # ---------------------------------------------------------------------------
-def get_PR_number( pr_list ):
+def get_PR_init_info( pr_list ):
     outList = []
-    index = 0
+    index   = 0
 
     while index < RATE_LIMIT:
         cur_pr = pr_list[index]
-        prStr = str( cur_pr.number ) + ","
-        print( prStr )
+        pr_num = str( cur_pr.number ) 
 
-        outList.append( prStr )
+        outList.append( pr_num )
         index+=1
 
-
-    print( OUTPUT_DASH + "loop exit-PRNumber" + OUTPUT_DASH )
 
     return outList
 
@@ -366,20 +378,24 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
  
 
     # Open the output csv file in preparation for writing
-    with open( output_file_name, WRITE, newline="", 
+    with open( output_file_name, 'w', newline="", 
                                                 encoding="utf-8" ) as csvfile:
         writer = csv.writer( 
-                csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
-                quotechar='', escapechar='\\', lineterminator='\n' 
-                )
+                csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+                quotechar='', escapechar='\\', lineterminator=NEW_LINE )
 
 
         # write labels at top of output
-        writer.writerow( [DESCRIPTORS] )
+        writer.writerow( ["PR_Number", "Issue_Closed_Date", "Issue_Author",
+                          "Issue_Title", "Issue_Body", "Issue_comments", 
+                          "PR_Closed_Date,PR_Author, PR_Title, PR_Body",
+                          "PR_Comments", "Commit_Author", "Commit_Date", 
+                          "Commit_Message", "isPR"] )
 
 
         # retrieve lists of PR and issue data
-        pr_num_list = get_PR_number( pr_list )
+        pr_num_list = get_PR_init_info( pr_list )
+
         issue_closed_dates_list = get_issue_closedDate( issues_list )
         issue_authors_list = get_issue_author( issues_list )
         issue_titles_list = get_issue_title( issues_list )
@@ -396,10 +412,10 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
 
 
             # print rows to output file 
-            output_row = pr_num + issue_closed_date
-            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
+            # output_row = [ pr_info, issue_title, issue_author ]
         
-            writer.writerow( [output_row] )
+            writer.writerow( [ pr_num, issue_closed_date, issue_title,
+                               issue_body, issue_author ] )
 
             aggregation_index += 1
      
