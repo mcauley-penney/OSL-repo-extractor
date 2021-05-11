@@ -41,15 +41,15 @@ def main():
     repo_input_file_to_open = CLI_args.input_file
     userauth_file_to_open = CLI_args.auth_file
     output_file_name =  CLI_args.output_file_name
+     
+
+    # get user info
+    userauth_list = read_user_info( userauth_file_to_open )  
 
 
     # get repo inputs
     repo_list = create_input_list( repo_input_file_to_open )  
     test_repo = repo_list[0]
-
-
-    # get user info
-    userauth_list = read_user_info( userauth_file_to_open ) 
 
 
     # authenticate with GitHub
@@ -157,8 +157,6 @@ def get_args():
 
     return CLI_args
 
-
-
  
 
  
@@ -170,123 +168,36 @@ def get_args():
 # Exceptions: none
 # Note: none
 # ---------------------------------------------------------------------------  
-def get_issue_author( issue_list ):
-    outList = []
+def get_issue_info( issue_list ):
+
     index   = 0
+    issue_context_list = []
+    issue_metalist = []
+
 
     while index < RATE_LIMIT:
         cur_issue = issue_list[index]
-        issueAuthorStr = str( cur_issue.user.name )
+ 
+        issue_author_str      = str( cur_issue.user.name )
+        issue_body_str        = str( cur_issue.body )
+        issue_comment_str     = str( cur_issue.comments ) 
+        issue_closed_date_str = str( cur_issue.closed_at )
+        issue_title_str       = str( cur_issue.title )
+        
+        issue_context_list = [
+                issue_closed_date_str, 
+                issue_author_str, 
+                issue_title_str, 
+                issue_body_str,
+                issue_comment_str 
+                ]
 
-        outList.append( issueAuthorStr )
+        issue_metalist.append( issue_context_list )
         index += 1
 
 
-    return outList
+    return issue_metalist
 
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def get_issue_body( issue_list ):
-    outList = []
-    index   = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = cur_issue = issue_list[index]
-        issue_body_str = str( cur_issue.body )
-
-        stripped_issue_body_str = issue_body_str.replace( '\\', '' )
-
-        out_issue_body_str = "\"" + stripped_issue_body_str + "\""
-
-        outList.append( out_issue_body_str  )
-        index += 1
-
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# --------------------------------------------------------------------------- 
-def get_issue_closedDate( issue_list ):
-    outList = []
-    index   = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = issue_list[index]
-        issueDateStr = str( cur_issue.closed_at )
-
-        outList.append( issueDateStr )
-        index += 1
-
-    
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def get_issue_comments( issue_list ):
-    outList = []
-    index   = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = issue_list[index]
-        issueCommentStr = str( cur_issue.comments )
-
-        outList.append( issueCommentStr )
-        index += 1
-
-
-    return outList
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------   
-def get_issue_title( issue_list ):
-    outList = []
-    index = 0
-
-    while index < RATE_LIMIT:
-        cur_issue = issue_list[index]
-        issueTitleStr = str( cur_issue.title )
-
-        outList.append( issueTitleStr )
-        index+=1
-
-
-    return outList
 
 
 
@@ -299,19 +210,40 @@ def get_issue_title( issue_list ):
 # Exceptions: none
 # Note: none
 # ---------------------------------------------------------------------------
-def get_PR_init_info( pr_list ):
-    outList = []
+def get_PR_info( pr_list ):
+
+    # TODO:
+    #   need author?
+
+
     index   = 0
+    pr_info_list = []
+    pr_metalist = []
+
 
     while index < RATE_LIMIT:
         cur_pr = pr_list[index]
-        pr_num = str( cur_pr.number ) 
 
-        outList.append( pr_num )
+        # author_str      = str( cur_pr.author ) 
+        pr_body_str        = str( cur_pr.body )
+        pr_closed_date_str = str( cur_pr.closed_at )
+        pr_comment_str     = str( cur_pr.comments )
+        pr_num_str         = str( cur_pr.number ) 
+        pr_title_str       = str( cur_pr.title ) 
+
+        pr_info_list = [
+                pr_body_str,
+                pr_closed_date_str,
+                pr_comment_str,
+                pr_num_str,
+                pr_title_str
+                ]
+
+        pr_metalist.append( pr_info_list )
         index+=1
 
 
-    return outList
+    return pr_metalist
 
 
 
@@ -369,11 +301,6 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
     aggregation_index       = 0
 
     # data lists
-    issue_authors_list      = []
-    issue_bodies_list       = []
-    issue_closed_dates_list = []
-    isssue_comments_list    = []
-    issue_titles_list       = []
     pr_num_list             = []  
  
 
@@ -394,30 +321,25 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
 
 
         # retrieve lists of PR and issue data
-        pr_num_list = get_PR_init_info( pr_list )
+       #  pr_num_list = get_PR_init_info( pr_list )
 
-        issue_closed_dates_list = get_issue_closedDate( issues_list )
-        issue_authors_list = get_issue_author( issues_list )
-        issue_titles_list = get_issue_title( issues_list )
-        issue_bodies_list = get_issue_body( issues_list )
+       #  
+       #  # aggregate data lists into rows
+       #  while aggregation_index < RATE_LIMIT:
+       #      issue_author = issue_authors_list[aggregation_index]
+       #      issue_body = issue_bodies_list[aggregation_index] 
+       #      issue_closed_date = issue_closed_dates_list[aggregation_index] 
+       #      issue_title = issue_titles_list[aggregation_index] 
+       #      pr_num = pr_num_list[aggregation_index] 
 
+
+       #      # print rows to output file 
+       #      # output_row = [ pr_info, issue_title, issue_author ]
         
-        # aggregate data lists into rows
-        while aggregation_index < RATE_LIMIT:
-            issue_author = issue_authors_list[aggregation_index]
-            issue_body = issue_bodies_list[aggregation_index] 
-            issue_closed_date = issue_closed_dates_list[aggregation_index] 
-            issue_title = issue_titles_list[aggregation_index] 
-            pr_num = pr_num_list[aggregation_index] 
+       #      writer.writerow( [ pr_num, issue_closed_date, issue_title,
+       #                         issue_body, issue_author ] )
 
-
-            # print rows to output file 
-            # output_row = [ pr_info, issue_title, issue_author ]
-        
-            writer.writerow( [ pr_num, issue_closed_date, issue_title,
-                               issue_body, issue_author ] )
-
-            aggregation_index += 1
+       #      aggregation_index += 1
      
 
 
