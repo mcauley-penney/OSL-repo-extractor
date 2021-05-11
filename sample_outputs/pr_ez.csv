@@ -1,0 +1,4 @@
+PR_Number Issue_Closed_Date Issue_Author Issue_Title Issue_Body PR_Closed_Date PR_Title PR_Body PR_Comments Issue_Comments PR_Author Commit_Author Commit_Date Commit_Message
+1 3/12/2014 11:38:01 AM New Sorting/Export preferences "This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
+" 3/12/2014 11:38:01 AM New Sorting/Export preferences "This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
+" =||= " " =||= " olenz Olaf Lenz 3/12/2014 9:16:45 AM Merge branch 'sorting'
