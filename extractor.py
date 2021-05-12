@@ -11,15 +11,13 @@
 #   - clean annotations
 #   - add arg_parser description
 #   - create checks to protect from lack of pull requests
-#   - need:
-#       - PR: NEED AUTHOR
-#           - Author, Number, Closed_Date, Title, Body, Comments
-# 
-#       - issue: DONE
-#           - Closed_Date, Author, Title, Body, Comments 
-# 
+#   - transcend rate limit
+#   - for output, need:
 #       - commits:
-#           - Author Date Message
+#           - Author, Date, Message
+# 
+#       - isPR
+#           - what is this?
 
 
 
@@ -32,8 +30,7 @@ from github import Github
 # constants
 COMMA       = ','
 NEW_LINE    = '\n'
-RATE_LIMIT  = 5
-READ        = 'r' 
+RATE_LIMIT  = 2
 
 
 
@@ -68,9 +65,7 @@ def main():
      
 
     # retrieve paginated list of commits
-    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
-                                                            sort='created', 
-                                                            state='closed' )
+    commits_paginated_list = repo_paginated_list.get_commits()
      
 
     # retrieve paginated list of issues
@@ -87,7 +82,8 @@ def main():
 
 
     # write output to csv file
-    write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
+    write_csv_output( commits_paginated_list, issues_paginated_list, 
+                      output_file_name, pr_paginated_list )
     
 
 
@@ -108,7 +104,7 @@ def create_input_list( fileToOpen ):
 
 
     # open file
-    repo_input_file_obj = open( fileToOpen, READ )
+    repo_input_file_obj = open( fileToOpen, 'r' )
 
     # read contents out
     api_input_contents = repo_input_file_obj.readlines()
@@ -148,23 +144,19 @@ def get_args():
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
       
-
     # add repo input CLI arg
     arg_parser.add_argument( 'input_file', type=str,  
                               help="""text file containing properly formatted 
                               arguments""" ) 
-
 
     # add auth token CLI arg
     arg_parser.add_argument( 'auth_file', type=str, 
                               help="""text file containing user 
                               authentification info""" ) 
 
-
     arg_parser.add_argument( 'output_file_name', type=str, 
                               help="CSV file to write output to" )      
      
-
     # retrieve positional arguments as variables
     CLI_args = arg_parser.parse_args()  
 
@@ -181,13 +173,31 @@ def get_args():
 # Postconditions: 
 # Notes         : 
 #--------------------------------------------------------------------------- 
-def get_commit_info(  ):
-    pass
+def get_commit_info( commit_list ):
+
+    index   = 0
+    commit_context_list = []
+    commit_metalist     = [] 
+
+    while index < RATE_LIMIT:
+        cur_commit = commit_list[index] 
+
+        commit_author_str   = str( cur_commit.commit.author )
+        commit_message_str  = str( cur_commit.commit.message )
+
+        commit_context_list = [
+                commit_author_str,
+                commit_message_str
+                ]
+
+        commit_metalist.append( commit_context_list )
+        index += 1
+
+    return commit_context_list
 
 
 
  
-
 #--------------------------------------------------------------------------- 
 # Function name : get_issue_info
 # Process       : 
@@ -197,9 +207,9 @@ def get_commit_info(  ):
 #--------------------------------------------------------------------------- 
 def get_issue_info( issue_list ):
 
-    index   = 0
+    index              = 0
     issue_context_list = []
-    issue_metalist = []
+    issue_metalist     = []
 
 
     while index < RATE_LIMIT:
@@ -212,9 +222,12 @@ def get_issue_info( issue_list ):
         issue_title_str       = str( cur_issue.title )
         
         issue_body_stripped = issue_body_str.strip( NEW_LINE )
-        issue_body_str = "\"" + issue_body_stripped + "\""
+        issue_body_str      = "\"" + issue_body_stripped + "\""
+        
+        if issue_comment_str == '0':
+            issue_comment_str = " =||= " 
 
-        issue_context_list = [
+        issue_context_list  = [
                 issue_closed_date_str, 
                 issue_author_str, 
                 issue_title_str, 
@@ -244,27 +257,35 @@ def get_PR_info( pr_list ):
     #   need author?
 
 
-    index   = 0
+    index        = 0
     pr_info_list = []
-    pr_metalist = []
+    pr_metalist  = []
 
 
     while index < RATE_LIMIT:
         cur_pr = pr_list[index]
 
-        # author_str      = str( cur_pr.author ) 
+        # author_str       = str( cur_pr.author ) 
         pr_body_str        = str( cur_pr.body )
         pr_closed_date_str = str( cur_pr.closed_at )
         pr_comment_str     = str( cur_pr.comments )
         pr_num_str         = str( cur_pr.number ) 
         pr_title_str       = str( cur_pr.title ) 
+        pr_user_str        = str( cur_pr.user.login ) 
+
+        pr_body_stripped = pr_body_str.strip( NEW_LINE )
+        pr_body_str = "\"" + pr_body_stripped + "\"" 
+
+        if pr_comment_str == '0':
+            pr_comment_str = " =||= "
 
         pr_info_list = [
                 pr_body_str,
                 pr_closed_date_str,
                 pr_comment_str,
                 pr_num_str,
-                pr_title_str
+                pr_title_str,
+                pr_user_str
                 ]
 
         pr_metalist.append( pr_info_list )
@@ -292,7 +313,7 @@ def read_user_info( userinfo_file ):
 
 
     # open text file
-    userinfo_file_obj = open( userinfo_file, READ )
+    userinfo_file_obj = open( userinfo_file, 'r' )
 
     # read contents out of file object
     userinfo_list = userinfo_file_obj.readlines()
@@ -316,15 +337,16 @@ def read_user_info( userinfo_file ):
 
 
 
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
-def write_csv_output( issues_list, output_file_name, pr_list ):
+#--------------------------------------------------------------------------- 
+# Function name : write_csv_output
+# Process       : 
+# Parameters    : 
+# Postconditions: 
+# Notes         : 
+#--------------------------------------------------------------------------- 
+def write_csv_output( commits_paginated_list, issues_list, 
+                      output_file_name, pr_list ):
+
     # index for aggregation loop
     aggregation_index   = 0
 
@@ -337,16 +359,8 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
     pr_info_metalist = get_PR_info( pr_list )             
                                                           
     
-    # print( "issues:")
-    # for issue in issue_info_metalist:                     
-    #     print( issue )                                    
-
-    # print( "\nPR's:")
-    # for pr in pr_info_metalist:                           
-    #     print( pr )                                       
-
     # Open the output csv file in preparation for writing
-    with open( output_file_name, 'w', newline="\n", encoding="utf-8" ) as csvfile:
+    with open( output_file_name, 'w', newline="", encoding="utf-8" ) as csvfile:
 
         writer = csv.writer( 
                 csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
@@ -362,38 +376,51 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
 
 
         # retrieve lists of PR and issue data
+        commit_info_metalist = get_commit_info( commits_paginated_list )
         issue_info_metalist = get_issue_info( issues_list )  
         pr_info_metalist = get_PR_info( pr_list )
-
 
         print( "Writing data...\n" )
 
         # aggregate data lists into rows
         while aggregation_index < RATE_LIMIT:
-            cur_issue = issue_info_metalist[aggregation_index]
+            print( aggregation_index )
+
+            cur_commit     = commit_info_metalist[aggregation_index]
+            commit_author  = cur_commit[0]
+            commit_message = cur_commit[1] 
+
+            cur_issue         = issue_info_metalist[aggregation_index]
             issue_closed_date = cur_issue[0] 
             issue_author      = cur_issue[1]
             issue_title       = cur_issue[2]
             issue_body        = cur_issue[3] 
             issue_comments    = cur_issue[4]  
 
-
-            cur_pr = pr_info_metalist[aggregation_index]
+            cur_pr          = pr_info_metalist[aggregation_index]
             pr_body         = cur_pr[0] 
             pr_closed_date  = cur_pr[1] 
             pr_comments     = cur_pr[2] 
             pr_num          = cur_pr[3] 
             pr_title        = cur_pr[4] 
+            pr_author       = cur_pr[5]
 
        
-            writer.writerow( [ pr_num, issue_closed_date, issue_author, 
-                               issue_title, issue_body, pr_closed_date,
-                               pr_title, pr_body, pr_comments, issue_comments,
-                               ] )
+            # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
+            #        Issue_Title, Issue_Body, PR_Closed_Date,     DONE
+            #        RR_Title, PR_Body, PR_Comments               DONE
+            #        Issue_comments, PR_Author, Commit_Author, 
+            #        Commit_Date, Commit_Message, isPR
+            writer.writerow( [pr_num, issue_closed_date, issue_author, 
+                             issue_title, issue_body, pr_closed_date, 
+                             pr_title, pr_body, pr_comments, 
+                             issue_comments, pr_author, commit_author,
+                             commit_message]
+                             )
 
             aggregation_index += 1
      
-
+                                                       
 
 
 if __name__ == '__main__':

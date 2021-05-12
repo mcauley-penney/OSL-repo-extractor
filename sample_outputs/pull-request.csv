@@ -1,11 +1,41 @@
-PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyPR_Closed_DatePR_TitlePR_BodyPR_CommentsIssue_CommentsPR_AuthorCommit_AuthorCommit_DateCommit_Message
-13/12/2014 11:38:01 AMNew Sorting/Export preferences"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
-"3/12/2014 11:38:01 AMNew Sorting/Export preferences"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
-"" =||= "" =||= "olenzOlaf Lenz3/12/2014 9:16:45 AMMerge branch 'sorting'
+
+- 1                               PR_Number
+- 3/12/2014 11:38:01 AM         Issue_Closed_Date 
+- X                                 Issue_Author
+- New Sorting/Export preferences Issue_Title
+- "This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date." Issue_Body
+- 3/12/2014 11:38:01 AM           PR_Closed_Date
+New Sorting/Export preferences    PR_Title
+"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date." PR_Body
+" =||= "                          PR_Comments
+" =||= "                          Issue_Comments
+olenz                             PR_Author
+Olaf Lenz                         Commit_Author
+3/12/2014 9:16:45 AM              Commit_Date
+Merge branch 'sorting'            Commit_Message
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 23/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
 "3/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
 "" =||= "" =||= "simonharrerSimon Harrer3/12/2014 5:20:08 PMGradle build works basically. Reuses existing folder structure.
+
 33/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page.3/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page." =||= "" =||= "egonwEgon Willighagen3/15/2014 9:33:10 AMSome example new Dutch translations via the GitHub web page.
+
 43/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
 "3/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
 "" =||= "" =||= Even though the other translation files have been updated, I accept this pull request.
