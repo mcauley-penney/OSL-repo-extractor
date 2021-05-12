@@ -2,7 +2,7 @@
 # Author: Jacob Stuck and Jacob Penney
 # Purpose:
 # Process: 
-# Notes: documentation can be found @:
+# Notes: documentation for pygithub can be found @:
 #   - Github: https://pygithub.readthedocs.io/en/latest/github.html
 # --------------------------------------------------------------------------- 
 
@@ -11,8 +11,15 @@
 #   - clean annotations
 #   - add arg_parser description
 #   - create checks to protect from lack of pull requests
-#   - get issue info in one loop?
-
+#   - need:
+#       - PR: NEED AUTHOR
+#           - Author, Number, Closed_Date, Title, Body, Comments
+# 
+#       - issue: DONE
+#           - Closed_Date, Author, Title, Body, Comments 
+# 
+#       - commits:
+#           - Author Date Message
 
 
 
@@ -57,21 +64,28 @@ def main():
     
 
     # retrieve paginated list of repos
-    repo_input_paginated_list = git_session.get_repo( test_repo )
+    repo_paginated_list = git_session.get_repo( test_repo )
+     
 
+    # retrieve paginated list of commits
+    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
+                                                            sort='created', 
+                                                            state='closed' )
+     
+
+    # retrieve paginated list of issues
+    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
+                                                            sort='created', 
+                                                            state='closed' )
+     
 
     # retrieve paginated list of pull requests
-    pr_paginated_list = repo_input_paginated_list.get_pulls( base='master',  
-                                               direction='asc', sort='created',
-                                               state='all' )
+    pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
+                                                       direction='asc', 
+                                                       sort='created',
+                                                       state='all' )
 
-    
-    # retrieve paginated list of issues
-    issues_paginated_list = repo_input_paginated_list.get_issues(direction='asc',
-                                                sort='created', state='closed' )
-     
-    print( "Writing data...\n" )
-     
+
     # write output to csv file
     write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
     
@@ -157,17 +171,30 @@ def get_args():
 
     return CLI_args
 
- 
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name : 
+# Process       : 
+# Parameters    : 
+# Postconditions: 
+# Notes         : 
+#--------------------------------------------------------------------------- 
+def get_commit_info(  ):
+    pass
+
+
 
  
-# ---------------------------------------------------------------------------
-# Function: 
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------  
+
+#--------------------------------------------------------------------------- 
+# Function name : get_issue_info
+# Process       : 
+# Parameters    : 
+# Postconditions: 
+# Notes         : 
+#--------------------------------------------------------------------------- 
 def get_issue_info( issue_list ):
 
     index   = 0
@@ -184,6 +211,9 @@ def get_issue_info( issue_list ):
         issue_closed_date_str = str( cur_issue.closed_at )
         issue_title_str       = str( cur_issue.title )
         
+        issue_body_stripped = issue_body_str.strip( NEW_LINE )
+        issue_body_str = "\"" + issue_body_stripped + "\""
+
         issue_context_list = [
                 issue_closed_date_str, 
                 issue_author_str, 
@@ -201,15 +231,13 @@ def get_issue_info( issue_list ):
 
 
 
-
-# ---------------------------------------------------------------------------
-# Function: get_PR_init_info
-# Process: 
-# Parameters: 
-# Postcondition: 
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
+#--------------------------------------------------------------------------- 
+# Function name : get_PR_info
+# Process       : 
+# Parameters    : 
+# Postconditions: 
+# Notes         : 
+#--------------------------------------------------------------------------- 
 def get_PR_info( pr_list ):
 
     # TODO:
@@ -298,15 +326,28 @@ def read_user_info( userinfo_file ):
 # ---------------------------------------------------------------------------
 def write_csv_output( issues_list, output_file_name, pr_list ):
     # index for aggregation loop
-    aggregation_index       = 0
+    aggregation_index   = 0
 
     # data lists
-    pr_num_list             = []  
+    issue_info_metalist = []  
+    pr_info_metalist    = []  
  
+    # retrieve lists of PR and issue data                 
+    issue_info_metalist = get_issue_info( issues_list )   
+    pr_info_metalist = get_PR_info( pr_list )             
+                                                          
+    
+    # print( "issues:")
+    # for issue in issue_info_metalist:                     
+    #     print( issue )                                    
+
+    # print( "\nPR's:")
+    # for pr in pr_info_metalist:                           
+    #     print( pr )                                       
 
     # Open the output csv file in preparation for writing
-    with open( output_file_name, 'w', newline="", 
-                                                encoding="utf-8" ) as csvfile:
+    with open( output_file_name, 'w', newline="\n", encoding="utf-8" ) as csvfile:
+
         writer = csv.writer( 
                 csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
                 quotechar='', escapechar='\\', lineterminator=NEW_LINE )
@@ -321,25 +362,36 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
 
 
         # retrieve lists of PR and issue data
-       #  pr_num_list = get_PR_init_info( pr_list )
-
-       #  
-       #  # aggregate data lists into rows
-       #  while aggregation_index < RATE_LIMIT:
-       #      issue_author = issue_authors_list[aggregation_index]
-       #      issue_body = issue_bodies_list[aggregation_index] 
-       #      issue_closed_date = issue_closed_dates_list[aggregation_index] 
-       #      issue_title = issue_titles_list[aggregation_index] 
-       #      pr_num = pr_num_list[aggregation_index] 
+        issue_info_metalist = get_issue_info( issues_list )  
+        pr_info_metalist = get_PR_info( pr_list )
 
 
-       #      # print rows to output file 
-       #      # output_row = [ pr_info, issue_title, issue_author ]
-        
-       #      writer.writerow( [ pr_num, issue_closed_date, issue_title,
-       #                         issue_body, issue_author ] )
+        print( "Writing data...\n" )
 
-       #      aggregation_index += 1
+        # aggregate data lists into rows
+        while aggregation_index < RATE_LIMIT:
+            cur_issue = issue_info_metalist[aggregation_index]
+            issue_closed_date = cur_issue[0] 
+            issue_author      = cur_issue[1]
+            issue_title       = cur_issue[2]
+            issue_body        = cur_issue[3] 
+            issue_comments    = cur_issue[4]  
+
+
+            cur_pr = pr_info_metalist[aggregation_index]
+            pr_body         = cur_pr[0] 
+            pr_closed_date  = cur_pr[1] 
+            pr_comments     = cur_pr[2] 
+            pr_num          = cur_pr[3] 
+            pr_title        = cur_pr[4] 
+
+       
+            writer.writerow( [ pr_num, issue_closed_date, issue_author, 
+                               issue_title, issue_body, pr_closed_date,
+                               pr_title, pr_body, pr_comments, issue_comments,
+                               ] )
+
+            aggregation_index += 1
      
 
 
