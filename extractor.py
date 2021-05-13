@@ -8,15 +8,21 @@
 
 
 # TODO:
-#   - clean annotations
-#   - add arg_parser description
-#   - create checks to protect from lack of pull requests
-#   - transcend rate limit
-#   - for output, need:
-#       - commits:
-#           - Author, Date, Message
+#   - features:
+#       - create checks to protect from lack of pull requests
+#       - transcend rate limit
+#           - further testing needed
+#       - circumvent socket timeout
+#       - for output, need:
+#           - commits:
+#               - Author, Date, Message
 # 
-#       - isPR
+#           - isPR
+# 
+#   - post-completion:
+#       - clean spacing
+#       - clean annotations
+#       - add arg_parser description 
 
 
 
@@ -96,7 +102,6 @@ def main():
     except github.RateLimitExceededException:
             sleep_time = get_limit_info( github_sesh, "reset" )
             timer( sleep_time )
-
 
 
     # write output to csv file
@@ -272,7 +277,6 @@ def get_issue_info( issue_list, auth_session ):
 
         except github.RateLimitExceededException:
             sleep_time = get_limit_info( auth_session, "reset" )
-            print( "Sleeping for " + str( sleep_time ) + " seconds" )
             timer( sleep_time )
 
 
@@ -297,18 +301,24 @@ def get_limit_info( session, type_flag ):
     if type_flag == "remaining":
         out_rate_info = rate_info.remaining
 
-
+    
     elif type_flag == "reset":
 
-        # get the amount of time to wait until reset as a datetime object
-        reset_time_obj = rate_info.reset.timestamp()
-
+        # The pygithub library returns the amount of time until 
+        # reset as a datetime object 
+        reset_time_obj = rate_info.reset
+         
+        # get seconds from epoch from datetime object
+            # subtracting 7 hours in seconds fixes 
+            # time discprepancy issue. Find a solution
+            # that isn't a hack?
+        reset_time_secs = reset_time_obj.timestamp() - 25200
 
         # get the current time in the same format
-        cur_time = time.time()
+        cur_time_secs = time.time()
 
         # calculate the amount of time to sleep
-        out_rate_info = reset_time_obj - cur_time 
+        out_rate_info = reset_time_secs - cur_time_secs 
 
 
     return out_rate_info
@@ -434,7 +444,7 @@ def timer( countdown_time ):
         countdown = '{:d}:{:d}'.format( minutes, seconds )
 
         # print time string on the same line as before
-        print( countdown, end="\r" )
+        print( "Time until calls can be made: " + countdown, end="\r" )
 
         time.sleep( 1 )
         countdown_time -= 1
