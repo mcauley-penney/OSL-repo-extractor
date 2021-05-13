@@ -9,9 +9,11 @@
 
 # TODO:
 #   - features:
+#       - add mutex arg for diff filetype
 #       - create checks to protect from lack of pull requests
 #       - transcend rate limit
-#           - further testing needed
+#           - must allow to continue looping to get paginated lists
+#               - may use booleans to pick up where we left off
 #       - circumvent socket timeout
 #       - for output, need:
 #           - commits:
@@ -48,66 +50,65 @@ RATE_LIMIT  = 2500
 
 def main():
 
+    # init variables
+    all_lists_retrieved = False
     commits_paginated_list = []
     issues_paginated_list = []
     pr_paginated_list = []
 
 
     # retrieve positional arguments as variables
-    CLI_args = get_args() 
+    ( repo_input_file, auth_file, output_file_name ) = get_args() 
 
-    repo_input_file_to_open = CLI_args.input_file
-    userauth_file_to_open = CLI_args.auth_file
-    output_file_name =  CLI_args.output_file_name
-     
 
     # get user info
-    userauth_list = read_user_info( userauth_file_to_open )  
+    userauth_list = read_user_info( auth_file )  
 
 
     # get repo inputs
-    repo_list = create_input_list( repo_input_file_to_open )  
+    repo_list = create_input_list( repo_input_file )  
     test_repo = repo_list[0]
 
 
     # authenticate with GitHub
-    github_sesh = github.Github( userauth_list[0] )
+    # github_sesh = github.Github( userauth_list[0] )
+    github_sesh = github.Github(  )
      
+    while all_lists_retrieved == False:
+        try:
+            # retrieve paginated list of repos
+            repo_paginated_list = github_sesh.get_repo( test_repo )
 
-    try:
-        # retrieve paginated list of repos
-        repo_paginated_list = github_sesh.get_repo( test_repo )
+            print( "Gathering GitHub data paginated lists...\n" )
+
+            # retrieve paginated list of commits
+            commits_paginated_list = repo_paginated_list.get_commits(
+                                                                sha="master" )
+               
+            # retrieve paginated list of issues
+            issues_paginated_list = repo_paginated_list.get_issues( 
+                                                             direction='asc',
+                                                             sort='created', 
+                                                             state='closed' )
+             
+            # retrieve paginated list of pull requests
+            pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
+                                                               direction='asc', 
+                                                               sort='created',
+                                                               state='all' )
+
+            all_lists_retrieved = True
 
 
-        print( "Gathering GitHub data paginated lists...\n" )
-
-
-        # retrieve paginated list of commits
-        commits_paginated_list = repo_paginated_list.get_commit( sha="master" )
-         
-
-        # retrieve paginated list of issues
-        issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
-                                                                sort='created', 
-                                                                state='closed' )
-         
-
-        # retrieve paginated list of pull requests
-        pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
-                                                           direction='asc', 
-                                                           sort='created',
-                                                           state='all' )
-
-
-    except github.RateLimitExceededException:
+        except github.RateLimitExceededException:
             sleep_time = get_limit_info( github_sesh, "reset" )
             timer( sleep_time )
 
 
     # write output to csv file
     init_csv_output( commits_paginated_list, github_sesh, 
-                      issues_paginated_list, output_file_name, 
-                      pr_paginated_list )
+                     issues_paginated_list, output_file_name, 
+                     pr_paginated_list )
     
 
 
@@ -162,9 +163,6 @@ def create_input_list( fileToOpen ):
 #--------------------------------------------------------------------------- 
 def get_args():
 
-    # TODO
-    #   add mutex arg for diff filetype
-
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
       
@@ -185,7 +183,7 @@ def get_args():
     CLI_args = arg_parser.parse_args()  
 
 
-    return CLI_args
+    return ( CLI_args.input_file, CLI_args.auth_file, CLI_args.output_file_name )
 
 
 
@@ -207,10 +205,10 @@ def get_commit_info( commit_list ):
     cur_commit = commit_list 
 
     commit_author_str   = str( cur_commit.commit.author )
-
     print( commit_author_str )
 
     commit_message_str  = str( cur_commit.commit.message )
+    print( commit_message_str )
 
     commit_context_list = [
             commit_author_str,
@@ -296,26 +294,17 @@ def get_limit_info( session, type_flag ):
 
     out_rate_info = None
 
-    rate_info = session.get_rate_limit().core
 
     if type_flag == "remaining":
-        out_rate_info = rate_info.remaining
-
+        out_rate_info = session.rate_limiting[0]
     
     elif type_flag == "reset":
 
-        # The pygithub library returns the amount of time until 
-        # reset as a datetime object 
-        reset_time_obj = rate_info.reset
-         
-        # get seconds from epoch from datetime object
-            # subtracting 7 hours in seconds fixes 
-            # time discprepancy issue. Find a solution
-            # that isn't a hack?
-        reset_time_secs = reset_time_obj.timestamp() - 25200
+        # get time until reset as an integer
+        reset_time_secs = session.rate_limiting_resettime
 
-        # get the current time in the same format
-        cur_time_secs = time.time()
+        # get the current time as an integer
+        cur_time_secs = int( time.time() )
 
         # calculate the amount of time to sleep
         out_rate_info = reset_time_secs - cur_time_secs 
@@ -441,7 +430,7 @@ def timer( countdown_time ):
         minutes, seconds = divmod( int_time, 60 )
 
         # format the time string before printing
-        countdown = '{:d}:{:d}'.format( minutes, seconds )
+        countdown = '{:02d}:{:02d}'.format( minutes, seconds )
 
         # print time string on the same line as before
         print( "Time until calls can be made: " + countdown, end="\r" )
