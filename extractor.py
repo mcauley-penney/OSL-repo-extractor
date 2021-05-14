@@ -198,7 +198,7 @@ def get_commit_info( commit_paged_list, session ):
             commit_of_interest = cur_commit_list[last_position]
             
             # get relevant author
-            commit_author = commit_message = commit_of_interest.commit.author.name
+            commit_author = commit_of_interest.commit.author.name
             
             # get relevant commit date
             commit_date = commit_of_interest.commit.author.date.strftime(
@@ -256,7 +256,8 @@ def get_issue_info( issue_list, session ):
             issue_author_str      = str( cur_issue.user.name ) # here
             issue_body_str        = str( cur_issue.body )
             issue_comment_str     = str( cur_issue.comments ) 
-            issue_closed_date_str = str( cur_issue.closed_at )
+            issue_closed_date_str = str( cur_issue.closed_at.strftime(
+                                                    "%m/%d/%y %I:%M:%S %p" ) )
             issue_title_str       = str( cur_issue.title )
             
 
