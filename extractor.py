@@ -15,7 +15,7 @@
 #       - circumvent socket timeout
 #       - for output, need:
 #           - commits:
-#               - Author, Date, Message
+#               - Date
 # 
 #           - isPR
 # 
@@ -182,7 +182,6 @@ def create_input_list( fileToOpen ):
 def get_commit_info( commit_metalist, session ):
 
     # still need:
-    #   - author
     #   - date
 
     commit                = None
@@ -192,28 +191,36 @@ def get_commit_info( commit_metalist, session ):
     commit_status_paginated_list = None
 
     while commit_metalist_index < RATE_LIMIT:
+        try:
         
-        # retrieve list of commits for one pr
-        cur_commit_list = commit_metalist[commit_metalist_index]
+            # retrieve list of commits for one pr
+            cur_commit_list = commit_metalist[commit_metalist_index]
 
-        # get the last actionable index for that list
-        last_position = cur_commit_list.totalCount - 1
+            # get the last actionable index for that list
+            last_position = cur_commit_list.totalCount - 1
 
-        # retrieve commit of interest from that position
-        commit_of_interest = cur_commit_list[last_position]
-        
-        # get relevant author
-        commit_author = commit_message = commit_of_interest.commit.author
-        print( commit_author ) 
+            # retrieve commit of interest from that position
+            commit_of_interest = cur_commit_list[last_position]
+            
+            # get relevant author
+            commit_author = commit_message = commit_of_interest.commit.author
+            print( commit_author ) 
 
-        # get relevant commit message
-        commit_message = commit_of_interest.commit.message
-        print( commit_message )
-         
+            # get relevant commit message
+            commit_message = commit_of_interest.commit.message
+            print( commit_message )
 
-        commit_metalist_index += 1
+            commit_date = commit_of_interest.commit.author.date
+            print( commit_date )
+            
 
-        # print_rem_calls( session )
+            commit_metalist_index += 1
+
+            # print_rem_calls( session )
+ 
+
+        except github.RateLimitExceededException:
+            run_timer( session ) 
 
 
     return commit_info_list
@@ -366,10 +373,7 @@ def get_paginated_lists( input_repo, session ):
 #--------------------------------------------------------------------------- 
 def get_PR_info( pr_list, session ):
 
-    # TODO:
-    #   need author?
-
-
+    # init variables
     index           = 0
     pr_commits_list = []
     pr_info_list    = []
@@ -382,15 +386,13 @@ def get_PR_info( pr_list, session ):
         try:
             cur_pr = pr_list[index]
 
-            # author_str       = str( cur_pr.author ) 
+            pr_author_str      = str( cur_pr.user.login ) 
             pr_body_str        = str( cur_pr.body )
             pr_closed_date_str = str( cur_pr.closed_at )
             pr_comment_str     = str( cur_pr.comments )
             pr_num_str         = str( cur_pr.number ) 
             pr_title_str       = str( cur_pr.title ) 
-            pr_user_str        = str( cur_pr.user.login ) 
             pr_commits         = cur_pr.get_commits()
-
 
 
             pr_body_stripped = pr_body_str.strip( NEW_LINE )
@@ -402,12 +404,12 @@ def get_PR_info( pr_list, session ):
 
             
             pr_info_list = [
+                    pr_author_str,
                     pr_body_str,
                     pr_closed_date_str,
                     pr_comment_str,
                     pr_num_str,
                     pr_title_str,
-                    pr_user_str
                     ]
 
 
@@ -586,12 +588,12 @@ def init_csv_output( repo_list, github_sesh, issues_list, output_file_name,
         #     issue_comments    = cur_issue[4]  
 
         #     cur_pr          = pr_info_metalist[aggregation_index]
-        #     pr_body         = cur_pr[0] 
-        #     pr_closed_date  = cur_pr[1] 
-        #     pr_comments     = cur_pr[2] 
-        #     pr_num          = cur_pr[3] 
-        #     pr_title        = cur_pr[4] 
-        #     pr_author       = cur_pr[5]
+        #     pr_author       = cur_pr[0] 
+        #     pr_body         = cur_pr[1] 
+        #     pr_closed_date  = cur_pr[2] 
+        #     pr_comments     = cur_pr[3] 
+        #     pr_num          = cur_pr[4] 
+        #     pr_title        = cur_pr[5] 
 
        
         #     # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
@@ -607,15 +609,7 @@ def init_csv_output( repo_list, github_sesh, issues_list, output_file_name,
         #     #                  commit_message]
         #     #                  )
 
-        #     writer.writerow( [pr_num, issue_closed_date, issue_author, 
-        #                      issue_title, issue_body, pr_closed_date, 
-        #                      pr_title, pr_body, pr_comments, 
-        #                      issue_comments, pr_author]
-        #                      ) 
-
-
-
-
+        
         #     aggregation_index += 1
      
 
