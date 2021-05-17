@@ -6,22 +6,26 @@
 #   - Github: https://pygithub.readthedocs.io/en/latest/github.html
 # --------------------------------------------------------------------------- 
 
-
 # TODO:
-#   - features:
-#       - add mutex arg for diff filetype
+#   - features ( by priority ):
+#       - for PR output, need:
+#           - isPR
+#       - for Commit output, need: 
+#           - All 🙃 
 #       - create checks to protect from lack of pull requests
 #       - transcend rate limit
 #       - circumvent socket timeout
-#       - for output, need:
-#           - isPR
+#   
+#   -TODAY:
+#       - rewrite output function
+#       - begin adding functionality for commit file
+#   
 # 
 #   - post-completion:
 #       - clean spacing
 #       - clean annotations
 #       - clean comments
 #       - add arg_parser description 
-
 
 
 # imports
@@ -32,13 +36,19 @@ import time
 
 
 # constants
-COLUMN_NAMES = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
-                "Issue_Title", "Issue_Body", "Issue_comments", 
-                "PR_Closed_Date,PR_Author, PR_Title, PR_Body",
-                "PR_Comments", "Commit_Author", "Commit_Date", 
-                "Commit_Message", "isPR"]
-NEW_LINE    = '\n'
-RATE_LIMIT  = 5
+COMMIT_COL_NAMES = ["Author_Login", "Committer_login", "PR_Number",
+                    "SHA", "Commit_Message", "File_name",
+                    "Patch_text", "Additions", "Deletions",
+                    "Status", "Changes"]
+
+PR_COL_NAMES     = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
+                    "Issue_Title", "Issue_Body", "Issue_comments", 
+                    "PR_Closed_Date,PR_Author, PR_Title, PR_Body",
+                    "PR_Comments", "Commit_Author", "Commit_Date", 
+                    "Commit_Message", "isPR"]
+
+NEW_LINE         = '\n'
+RATE_LIMIT       = 5        
 
 
 
@@ -53,16 +63,11 @@ RATE_LIMIT  = 5
 def main():
 
     # retrieve positional arguments as variables
-    ( repo_input_file, auth_file, output_file_name ) = get_args() 
+    ( repo_str, auth_file, output_file_name, output_type ) = get_args() 
 
 
     # get user info
     userauth_list = read_user_info( auth_file )  
-
-
-    # get repo inputs
-    repo_input_list = create_input_list( repo_input_file )  
-    test_repo = repo_input_list[0]
 
 
     # authenticate with GitHub
@@ -71,18 +76,15 @@ def main():
      
 
     # retrieve paginated list of repos
-    repo_paginated_list = github_sesh.get_repo( test_repo ) 
+    repo_paginated_list = github_sesh.get_repo( repo_str ) 
 
 
     # retrieve paginated list of issues and pull requests
-    ( issues_paginated_list, pr_paginated_list ) = get_paginated_lists(
-                                                        repo_paginated_list,
-                                                        github_sesh)
+    paged_list_tuple = get_paginated_lists( repo_paginated_list, github_sesh)
 
 
     # write output to csv file
-    init_csv_output( github_sesh, issues_paginated_list, 
-                     output_file_name, pr_paginated_list )
+    create_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
 
 
 
@@ -96,13 +98,24 @@ def main():
 #--------------------------------------------------------------------------- 
 def get_args():
 
+    output_type = ""
+
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
-      
+    
+    # establish mutually exclusive argument capability
+    mutually_excl_args = arg_parser.add_mutually_exclusive_group()  
+
+    # add mutually exclusive args to choose output type
+    mutually_excl_args.add_argument( '-p', '--pr', action="store_true",
+                                     help="Create \"pull request\" type file" )
+
+    mutually_excl_args.add_argument( '-c', '--commit', action="store_true",
+                                     help="Create \"commit\" type file" )  
+
     # add repo input CLI arg
-    arg_parser.add_argument( 'input_file', type=str,  
-                              help="""text file containing properly formatted 
-                              arguments""" ) 
+    arg_parser.add_argument( 'repo_name', type=str,  
+                              help="repo name in the format \"user/repo\"" ) 
 
     # add auth token CLI arg
     arg_parser.add_argument( 'auth_file', type=str, 
@@ -117,56 +130,21 @@ def get_args():
     CLI_args = arg_parser.parse_args()  
 
     # separate into individual variables
-    input_file = CLI_args.input_file
+    repo_name = CLI_args.repo_name
     auth_file = CLI_args.auth_file
     output_file_name = CLI_args.output_file_name
 
+    if CLI_args.pr:
+        output_type = "pull request"
 
-    return ( input_file, auth_file, output_file_name )
-
-
-
-
-# ---------------------------------------------------------------------------
-# Function: create_input_list 
-# Process: accepts the name of a file to open, opens the file, reads its
-#          contents out, and processes that content into a list
-# Parameters: name of the file to open
-# Postcondition: returns a list of input from the input text
-# Exceptions: none 
-# Note: none
-# ---------------------------------------------------------------------------
-def create_input_list( fileToOpen ):
- 
-    # variables
-    repo_list = []
+    elif CLI_args.commit:
+        output_type = "commit"
 
 
-    # open file
-    repo_input_file_obj = open( fileToOpen, 'r' )
-
-    # read contents out
-    api_input_contents = repo_input_file_obj.readlines()
-
-    for line in api_input_contents:
-        # strip rows of new line characters
-        newLine_stripped_line = line.strip( NEW_LINE )
-
-        # strip rows of quote characters
-        quote_stripped_line = newLine_stripped_line.replace( '"', '' )
-
-        # strip lines on commas to create list of items
-        repo_list = quote_stripped_line.split( ',' )
+    return ( repo_name, auth_file, output_file_name, output_type )
 
 
-    # close file 
-    repo_input_file_obj.close()
 
-
-    return repo_list
-
-
- 
 
 #--------------------------------------------------------------------------- 
 # Function name : get_commit_info
@@ -553,7 +531,10 @@ def timer( countdown_time ):
 # Postconditions: 
 # Notes         : 
 #--------------------------------------------------------------------------- 
-def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
+def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
+
+    # unpack lists
+    issues_list, pr_list = list_tuple
 
     # index for aggregation loop
     aggregation_index   = 0
@@ -567,12 +548,14 @@ def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
     # Open the output csv file in preparation for writing
     with open( output_file_name, 'w', newline="", encoding="utf-8" ) as csvfile:
 
-        writer = csv.writer( 
-                csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
-                quotechar='', escapechar='\\', lineterminator=NEW_LINE )
+        # create writer object
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+                             quotechar='', escapechar='\\', 
+                             lineterminator=NEW_LINE )
           
 
-        writer.writerow( COLUMN_NAMES )
+        # write column labels
+        writer.writerow( PR_COL_NAMES )
 
 
         # retrieve lists of PR and issue data
@@ -629,6 +612,8 @@ def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
      
 
 
-             
+
 if __name__ == '__main__':
     main() 
+
+
