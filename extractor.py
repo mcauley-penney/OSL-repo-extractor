@@ -10,6 +10,20 @@
 #   - features ( by priority ):
 #       - for PR output, need:
 #           - isPR
+
+#       - for Commit output, need: 
+#           - Author_Login       DONE:
+#           - Committer_login
+#           - PR_Number          DONE:
+#           - SHA,
+#           - Commit_Message
+#           - File_name
+#           - Patch_text
+#           - Additions
+#           - Deletions
+#           - Status
+#           - Changes
+
 #       - for Commit output, need: 
 #           - All 🙃 
 #       - create checks to protect from lack of pull requests
@@ -17,8 +31,8 @@
 #       - circumvent socket timeout
 #   
 #   -TODAY:
-#       - rewrite output function
-#       - begin adding functionality for commit file
+#       - rewrite output function                        DONE:
+#       - begin adding functionality for commit file     DONE: 
 #   
 # 
 #   - post-completion:
@@ -135,7 +149,7 @@ def get_args():
     output_file_name = CLI_args.output_file_name
 
     if CLI_args.pr:
-        output_type = "pull request"
+        output_type = "pr"
 
     elif CLI_args.commit:
         output_type = "commit"
@@ -154,7 +168,7 @@ def get_args():
 # Postconditions: 
 # Notes         : 
 #--------------------------------------------------------------------------- 
-def get_commit_info( commit_paged_list, session ):
+def get_commit_info( commit_paged_list, session, output_type ):
 
     commit_info_list      = []
     commit_info_metalist  = []
@@ -244,7 +258,6 @@ def get_issue_info( issue_list, session ):
             
             if issue_comment_str == '0':
                 issue_comment_str = " =||= " 
-
 
             issue_context_list  = [
                     issue_closed_date_str, 
@@ -358,7 +371,7 @@ def get_paginated_lists( input_repo, session ):
 # Postconditions: 
 # Notes         : 
 #--------------------------------------------------------------------------- 
-def get_PR_info( pr_list, session ):
+def get_PR_info( pr_list, session, output_type ):
 
     # init variables
     index           = 0
@@ -389,19 +402,24 @@ def get_PR_info( pr_list, session ):
             if pr_comment_str == '0':
                 pr_comment_str = " =||= "
 
-            
+
             pr_info_list = [
-                    pr_author_str,
-                    pr_body_str,
-                    pr_closed_date_str,
-                    pr_comment_str,
-                    pr_num_str,
-                    pr_title_str,
-                    ]
+                    pr_num_str
+                    ]  
 
 
-            commits_paginated_list.append( pr_commits )
+            if output_type == "pr":
+                pr_info_list += [
+                        pr_author_str,
+                        pr_body_str,
+                        pr_closed_date_str,
+                        pr_comment_str,
+                        pr_title_str,
+                        ]
+
+
             pr_metalist.append( pr_info_list )
+            commits_paginated_list.append( pr_commits )
 
             print_rem_calls( session )
 
@@ -542,7 +560,11 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
     # data lists
     commit_info_metalist = []
     issue_info_metalist  = []  
+    output_row           = []
     pr_info_metalist     = []  
+
+    # output columns
+    label_cols = COMMIT_COL_NAMES
  
 
     # Open the output csv file in preparation for writing
@@ -554,60 +576,80 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                              lineterminator=NEW_LINE )
           
 
-        # write column labels
-        writer.writerow( PR_COL_NAMES )
-
-
         # retrieve lists of PR and issue data
-        issue_info_metalist = get_issue_info( issues_list, github_sesh )  
+        if output_type == "pr":
+            label_cols = PR_COL_NAMES
 
+            issue_info_metalist = get_issue_info( issues_list, github_sesh )  
+
+        
         pr_info_metalist, commits_paginated_list = get_PR_info( pr_list, 
-                                                                github_sesh )
+                                                                github_sesh,
+                                                                output_type )
 
         commit_info_metalist = get_commit_info( commits_paginated_list, 
-                                                github_sesh )
-
+                                                github_sesh, output_type )
 
         print( "Writing data...\n" )
+
+        # write column labels
+        writer.writerow( label_cols ) 
 
 
         # aggregate data lists into rows
         while aggregation_index < RATE_LIMIT:
+
+            # get ecumenical values
             cur_commit     = commit_info_metalist[aggregation_index]
             commit_author  = cur_commit[0]
-            commit_date    = cur_commit[1] 
-            commit_message = cur_commit[2] 
-
-            cur_issue         = issue_info_metalist[aggregation_index]
-            issue_closed_date = cur_issue[0] 
-            issue_author      = cur_issue[1]
-            issue_title       = cur_issue[2]
-            issue_body        = cur_issue[3] 
-            issue_comments    = cur_issue[4]  
 
             cur_pr          = pr_info_metalist[aggregation_index]
-            pr_author       = cur_pr[0] 
-            pr_body         = cur_pr[1] 
-            pr_closed_date  = cur_pr[2] 
-            pr_comments     = cur_pr[3] 
-            pr_num          = cur_pr[4] 
-            pr_title        = cur_pr[5] 
+            pr_num          = cur_pr[0] 
 
-       
-            # order: PR_Number, Issue_Closed_Date, Issue_Author,  
-            #        Issue_Title, Issue_Body, PR_Closed_Date,     
-            #        RR_Title, PR_Body, PR_Comments               
-            #        Issue_comments, PR_Author, Commit_Author, 
-            #        Commit_Date, Commit_Message, isPR
-            # --------------------------------------------------------------
-            writer.writerow( [pr_num, issue_closed_date, issue_author, 
-                             issue_title, issue_body, pr_closed_date, 
-                             pr_title, pr_body, pr_comments, 
-                             issue_comments, pr_author, commit_author,
-                             commit_date, commit_message]
-                             )
 
-        
+            # get output type-dependent values
+            if output_type == "pr":
+                cur_issue         = issue_info_metalist[aggregation_index]
+
+                commit_date    = cur_commit[1] 
+                commit_message = cur_commit[2] 
+
+                issue_closed_date = cur_issue[0] 
+                issue_author      = cur_issue[1]
+                issue_title       = cur_issue[2]
+                issue_body        = cur_issue[3] 
+                issue_comments    = cur_issue[4]  
+
+                pr_author       = cur_pr[1] 
+                pr_body         = cur_pr[2] 
+                pr_closed_date  = cur_pr[3] 
+                pr_comments     = cur_pr[4] 
+                pr_title        = cur_pr[5] 
+
+
+                # order: PR_Number, Issue_Closed_Date, Issue_Author,  
+                #        Issue_Title, Issue_Body, PR_Closed_Date,     
+                #        RR_Title, PR_Body, PR_Comments               
+                #        Issue_comments, PR_Author, Commit_Author, 
+                #        Commit_Date, Commit_Message, isPR
+                # ------------------------------------------------------------
+                output_row = [pr_num, issue_closed_date, issue_author,  
+                              issue_title, issue_body, pr_closed_date,   
+                              pr_title, pr_body, pr_comments,            
+                              issue_comments, pr_author, commit_author,  
+                              commit_date, commit_message]               
+
+            else:
+                # order:  Author_Login, Committer_login, PR_Number,
+                #         SHA, Commit_Message, File_name,
+                #         Patch_text, Additions, Deletions,
+                #         Status, Changes
+                # ------------------------------------------------------------
+                output_row = [commit_author]                
+
+
+            writer.writerow( output_row ) 
+                             
             aggregation_index += 1
      
 
@@ -615,5 +657,4 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
 
 if __name__ == '__main__':
     main() 
-
-
+ 
