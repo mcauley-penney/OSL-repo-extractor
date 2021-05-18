@@ -14,17 +14,17 @@
 #               - commit.get_pulls() 
 
 #       - for commit output, need: 
-#           - Author_Login
+#           - Author_Login       DONE:
 #           - Committer_login    DONE:
 #           - PR_Number          DONE:
 #           - SHA                DONE: 
 #           - Commit_Message     DONE: 
 #           - File_name          DONE: 
-#           - Patch_text
+#           - Patch_text         DONE:
 #           - Additions          DONE: 
 #           - Deletions          DONE: 
 #           - Status             DONE:
-#           - Changes
+#           - Changes            DONE:
 
 #       - create checks to protect from lack of pull requests
 #       - transcend rate limit
@@ -178,7 +178,6 @@ def get_commit_info( commit_paged_list, session, output_type ):
 
     while commit_metalist_index < RATE_LIMIT:
         try:
-            
             # retrieve list of commits for one pr
             cur_commit_list = commit_paged_list[commit_metalist_index]
 
@@ -191,6 +190,8 @@ def get_commit_info( commit_paged_list, session, output_type ):
 
             # get relevant author
             commit_author = commit_of_interest.commit.author.name
+
+            
             
             # get relevant commit message
             commit_message = commit_of_interest.commit.message
@@ -218,6 +219,7 @@ def get_commit_info( commit_paged_list, session, output_type ):
                 # reset variables
                 commit_adds          = 0
                 commit_changes       = 0
+                commit_patch_text    = ""
                 commit_rms           = 0
                 commit_status_str    = ""
                 file_list            = []
@@ -225,6 +227,9 @@ def get_commit_info( commit_paged_list, session, output_type ):
                 
                 # get relevant commit file list
                 commit_files = commit_of_interest.files 
+
+                # get relevant committer
+                commit_committer = commit_of_interest.commit.committer.name 
 
                 # get relevant commit SHA
                 commit_SHA = commit_of_interest.sha
@@ -238,6 +243,7 @@ def get_commit_info( commit_paged_list, session, output_type ):
                     file_list.append( file.filename )
                     commit_adds       += int( file.additions )
                     commit_changes    += int( file.changes )
+                    commit_patch_text += str( file.patch ) + ", "
                     commit_rms        += int( file.deletions )
                     commit_status_str += file.status + ", "
 
@@ -245,8 +251,10 @@ def get_commit_info( commit_paged_list, session, output_type ):
                 quoted_commit_status_str = "\"" + commit_status_str + "\""
 
                 commit_info_list += [
+                        commit_committer,
                         commit_SHA, 
                         file_list, 
+                        commit_patch_text,
                         commit_adds,
                         commit_rms,
                         quoted_commit_status_str,
@@ -692,23 +700,26 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                               issue_comments, pr_author, commit_author,  
                               commit_date, commit_message]               
 
+
             else:
-                commit_SHA        = cur_commit[2]
-                commit_file_list  = cur_commit[3]
-                commit_adds       = cur_commit[4]
-                commit_rms        = cur_commit[5]
-                commit_status     = cur_commit[6] 
-                commit_changes    = cur_commit[7] 
+                commit_committer  = cur_commit[2]
+                commit_SHA        = cur_commit[3]
+                commit_file_list  = cur_commit[4]
+                commit_patch_text = cur_commit[5] 
+                commit_adds       = cur_commit[6]
+                commit_rms        = cur_commit[7]
+                commit_status     = cur_commit[8] 
+                commit_changes    = cur_commit[9] 
 
 
-                # order:  Author_Login, Committer_login, PR_Number,
+                # order:  Author_Login, Committer_login, PR_Number,      DONE:
                 #         SHA, Commit_Message, File_name,                DONE:
-                #         Patch_text, Additions, Deletions,
-                #         Status, Changes
+                #         Patch_text, Additions, Deletions,              DONE: 
+                #         Status, Changes                                DONE:
                 # ------------------------------------------------------------
-                output_row = [commit_author, pr_num,
+                output_row = [commit_author, commit_committer, pr_num,
                               commit_SHA, commit_message, commit_file_list,
-                              commit_adds, commit_rms,
+                              commit_patch_text, commit_adds, commit_rms,
                               commit_status, commit_changes
                               ]
 
