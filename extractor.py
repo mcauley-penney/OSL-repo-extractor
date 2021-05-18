@@ -10,8 +10,10 @@
 #   - features ( by priority ):
 #       - for PR output, need:
 #           - isPR
+#               - can check if a commit has at least one pull request using
+#               - commit.get_pulls() 
 
-#       - for Commit output, need: 
+#       - for commit output, need: 
 #           - Author_Login
 #           - Committer_login    DONE:
 #           - PR_Number          DONE:
@@ -19,22 +21,15 @@
 #           - Commit_Message     DONE: 
 #           - File_name          DONE: 
 #           - Patch_text
-#           - Additions
-#           - Deletions
-#           - Status
+#           - Additions          DONE: 
+#           - Deletions          DONE: 
+#           - Status             DONE:
 #           - Changes
 
-#       - for Commit output, need: 
-#           - All 🙃 
 #       - create checks to protect from lack of pull requests
 #       - transcend rate limit
 #       - circumvent socket timeout
 #   
-#   -TODAY:
-#       - rewrite output function                        DONE:
-#       - begin adding functionality for commit file     DONE: 
-#   
-# 
 #   - post-completion:
 #       - clean spacing
 #       - clean annotations
@@ -188,10 +183,10 @@ def get_commit_info( commit_paged_list, session, output_type ):
             cur_commit_list = commit_paged_list[commit_metalist_index]
 
             # get the last actionable index for that list
-            last_position = cur_commit_list.totalCount - 1
+            last_commit_position = cur_commit_list.totalCount - 1
 
             # retrieve commit of interest from that position
-            commit_of_interest = cur_commit_list[last_position]
+            commit_of_interest = cur_commit_list[last_commit_position]
             
 
             # get relevant author
@@ -208,37 +203,61 @@ def get_commit_info( commit_paged_list, session, output_type ):
                     ]
 
 
-            # get output type-dependent info, starts at index 2
+            # get output type-dependent info. Appends start at index 2
             if output_type == "pr":
 
                 # get relevant commit date
                 commit_date = commit_of_interest.commit.author.date.strftime(
                                                        "%m/%d/%y %I:%M:%S %p" )
 
-                commit_info_list += [commit_date]
+                commit_info_list += commit_date
+
 
             else:
                 
-                # reset file list
-                file_list = []
+                # reset variables
+                commit_adds          = 0
+                commit_changes       = 0
+                commit_rms           = 0
+                commit_status_str    = ""
+                file_list            = []
+                
+                
+                # get relevant commit file list
+                commit_files = commit_of_interest.files 
 
                 # get relevant commit SHA
                 commit_SHA = commit_of_interest.sha
 
-                # get relevant commit file list
-                commit_files = commit_of_interest.files
+                # get relevant commit status str
+                # commit_status_str = commit_of_interest.status
+
 
                 # retrieve each modified file and place in list
                 for file in commit_files:
                     file_list.append( file.filename )
-                    print_rem_calls( session )
+                    commit_adds       += int( file.additions )
+                    commit_changes    += int( file.changes )
+                    commit_rms        += int( file.deletions )
+                    commit_status_str += file.status + ", "
+
+                
+                quoted_commit_status_str = "\"" + commit_status_str + "\""
+
+                commit_info_list += [
+                        commit_SHA, 
+                        file_list, 
+                        commit_adds,
+                        commit_rms,
+                        quoted_commit_status_str,
+                        commit_changes
+                        ]
 
 
-                commit_info_list += [commit_SHA, file_list]
-
-
+            # append list of collected commit info to metalist
             commit_info_metalist.append( commit_info_list )
 
+            # print remaining calls per hour
             print_rem_calls( session )
  
             commit_metalist_index += 1
@@ -674,17 +693,24 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                               commit_date, commit_message]               
 
             else:
-                commit_SHA       = cur_commit[2]
-                commit_file_list = cur_commit[3]
+                commit_SHA        = cur_commit[2]
+                commit_file_list  = cur_commit[3]
+                commit_adds       = cur_commit[4]
+                commit_rms        = cur_commit[5]
+                commit_status     = cur_commit[6] 
+                commit_changes    = cur_commit[7] 
 
 
                 # order:  Author_Login, Committer_login, PR_Number,
-                #         SHA, Commit_Message, File_name,
+                #         SHA, Commit_Message, File_name,                DONE:
                 #         Patch_text, Additions, Deletions,
                 #         Status, Changes
                 # ------------------------------------------------------------
                 output_row = [commit_author, pr_num,
-                              commit_SHA, commit_message, commit_file_list]
+                              commit_SHA, commit_message, commit_file_list,
+                              commit_adds, commit_rms,
+                              commit_status, commit_changes
+                              ]
 
 
             writer.writerow( output_row ) 
