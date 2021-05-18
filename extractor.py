@@ -12,12 +12,12 @@
 #           - isPR
 
 #       - for Commit output, need: 
-#           - Author_Login       DONE:
-#           - Committer_login
+#           - Author_Login
+#           - Committer_login    DONE:
 #           - PR_Number          DONE:
-#           - SHA,
-#           - Commit_Message
-#           - File_name
+#           - SHA                DONE: 
+#           - Commit_Message     DONE: 
+#           - File_name          DONE: 
 #           - Patch_text
 #           - Additions
 #           - Deletions
@@ -98,7 +98,7 @@ def main():
 
 
     # write output to csv file
-    create_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
+    write_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
 
 
 
@@ -148,6 +148,7 @@ def get_args():
     auth_file = CLI_args.auth_file
     output_file_name = CLI_args.output_file_name
 
+    # create output string
     if CLI_args.pr:
         output_type = "pr"
 
@@ -170,16 +171,19 @@ def get_args():
 #--------------------------------------------------------------------------- 
 def get_commit_info( commit_paged_list, session, output_type ):
 
+    # init variables
     commit_info_list      = []
     commit_info_metalist  = []
     commit_metalist_index = 0
     commit_of_interest    = None
+    file_list             = []
+
 
     print( "Getting commit info..." )
 
     while commit_metalist_index < RATE_LIMIT:
         try:
-        
+            
             # retrieve list of commits for one pr
             cur_commit_list = commit_paged_list[commit_metalist_index]
 
@@ -189,22 +193,48 @@ def get_commit_info( commit_paged_list, session, output_type ):
             # retrieve commit of interest from that position
             commit_of_interest = cur_commit_list[last_position]
             
+
             # get relevant author
             commit_author = commit_of_interest.commit.author.name
             
-            # get relevant commit date
-            commit_date = commit_of_interest.commit.author.date.strftime(
-                                                    "%m/%d/%y %I:%M:%S %p" )
-
             # get relevant commit message
             commit_message = commit_of_interest.commit.message
 
 
+            # prepare base list for both output types
             commit_info_list = [
                     commit_author,
-                    commit_date,
                     commit_message
                     ]
+
+
+            # get output type-dependent info, starts at index 2
+            if output_type == "pr":
+
+                # get relevant commit date
+                commit_date = commit_of_interest.commit.author.date.strftime(
+                                                       "%m/%d/%y %I:%M:%S %p" )
+
+                commit_info_list += [commit_date]
+
+            else:
+                
+                # reset file list
+                file_list = []
+
+                # get relevant commit SHA
+                commit_SHA = commit_of_interest.sha
+
+                # get relevant commit file list
+                commit_files = commit_of_interest.files
+
+                # retrieve each modified file and place in list
+                for file in commit_files:
+                    file_list.append( file.filename )
+                    print_rem_calls( session )
+
+
+                commit_info_list += [commit_SHA, file_list]
 
 
             commit_info_metalist.append( commit_info_list )
@@ -336,21 +366,20 @@ def get_paginated_lists( input_repo, session ):
      pr_list             = [] 
 
 
+     # loop until both lists are fully retrieved to reset in case of 
+     # socket timout
      while all_lists_retrieved == False:
         try:
-
             print( "Gathering GitHub data paginated lists...\n" )
 
             # retrieve paginated list of issues
             issues_list = input_repo.get_issues( direction='asc',
                                                  sort='created', 
                                                  state='closed' )
-             
 
             # retrieve paginated list of pull requests
             pr_list = input_repo.get_pulls( base='master', direction='asc', 
                                             sort='created', state='all' )
-
 
             all_lists_retrieved = True
 
@@ -375,7 +404,7 @@ def get_PR_info( pr_list, session, output_type ):
 
     # init variables
     index           = 0
-    commits_paginated_list = []
+    commits_paginated_metalist = []
     pr_info_list    = []
     pr_metalist     = []
 
@@ -392,22 +421,24 @@ def get_PR_info( pr_list, session, output_type ):
             pr_comment_str     = str( cur_pr.comments )
             pr_num_str         = str( cur_pr.number ) 
             pr_title_str       = str( cur_pr.title ) 
+
+            # get paginated list of commits for each pr
             pr_commits         = cur_pr.get_commits()
 
-
+            #  clean each pr body of new line chars and place in quotes
             pr_body_stripped = pr_body_str.strip( NEW_LINE )
             pr_body_str = "\"" + pr_body_stripped + "\"" 
 
-
+            # add special string in place of empty comments
             if pr_comment_str == '0':
                 pr_comment_str = " =||= "
 
-
+            # each output type will require the pr num, so treat as default
             pr_info_list = [
                     pr_num_str
                     ]  
 
-
+            # add content based on output type
             if output_type == "pr":
                 pr_info_list += [
                         pr_author_str,
@@ -417,10 +448,13 @@ def get_PR_info( pr_list, session, output_type ):
                         pr_title_str,
                         ]
 
-
+            # append each list of pr info to a metalist
             pr_metalist.append( pr_info_list )
-            commits_paginated_list.append( pr_commits )
 
+            # append each paginated list of commits to a metalist
+            commits_paginated_metalist.append( pr_commits )
+
+            # display remaining calls
             print_rem_calls( session )
 
             index+=1
@@ -433,7 +467,7 @@ def get_PR_info( pr_list, session, output_type ):
     print('\n')
 
 
-    return pr_metalist, commits_paginated_list
+    return pr_metalist, commits_paginated_metalist
 
 
 
@@ -549,7 +583,7 @@ def timer( countdown_time ):
 # Postconditions: 
 # Notes         : 
 #--------------------------------------------------------------------------- 
-def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
+def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
 
     # unpack lists
     issues_list, pr_list = list_tuple
@@ -602,6 +636,7 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
             # get ecumenical values
             cur_commit     = commit_info_metalist[aggregation_index]
             commit_author  = cur_commit[0]
+            commit_message = cur_commit[1] 
 
             cur_pr          = pr_info_metalist[aggregation_index]
             pr_num          = cur_pr[0] 
@@ -611,8 +646,7 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
             if output_type == "pr":
                 cur_issue         = issue_info_metalist[aggregation_index]
 
-                commit_date    = cur_commit[1] 
-                commit_message = cur_commit[2] 
+                commit_date    = cur_commit[2] 
 
                 issue_closed_date = cur_issue[0] 
                 issue_author      = cur_issue[1]
@@ -640,12 +674,17 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                               commit_date, commit_message]               
 
             else:
+                commit_SHA       = cur_commit[2]
+                commit_file_list = cur_commit[3]
+
+
                 # order:  Author_Login, Committer_login, PR_Number,
                 #         SHA, Commit_Message, File_name,
                 #         Patch_text, Additions, Deletions,
                 #         Status, Changes
                 # ------------------------------------------------------------
-                output_row = [commit_author]                
+                output_row = [commit_author, pr_num,
+                              commit_SHA, commit_message, commit_file_list]
 
 
             writer.writerow( output_row ) 
