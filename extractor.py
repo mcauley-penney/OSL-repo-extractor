@@ -4,16 +4,21 @@
 #          https://pygithub.readthedocs.io/en/latest/index.html
 # --------------------------------------------------------------------------- 
 
-# TODO:
-#   - features ( by priority ):
-#       - for PR output, need:
-#           - isPR
-#               - can check if a commit has at least one pull request using
-#                 commit.get_pulls() 
 
-#       - create checks to protect from lack of pull requests
-#       - transcend rate limit
-#       - circumvent socket timeout
+# BUG: create checks to protect from lack of commits
+#   - info: program fails with index out of range error when traversing commit
+#     metalist. This appears to be because some PR's have no commits, e.g.
+#     get_commit_info fails at #40 because PR #40 has no commits, so
+#     get_PR_info stopped writing the commit list there
+#       - proposed solution: check for no commits, e.g. "if is none", and
+#         enter a NoneType for that index, or some sort of flag, e.g. 0
+#       - links: https://github.com/JabRef/jabref/pull/40
+
+
+# TODO:
+#   - create checks to protect from lack of pull requests
+#   - transcend rate limit
+#   - circumvent socket timeout
 
 #   - post-completion:
 #       - clean spacing
@@ -41,7 +46,7 @@ PR_COL_NAMES     = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                     "PR_Comments", "Commit_Author", "Commit_Date", 
                     "Commit_Message", "isPR"]
 
-RATE_LIMIT       = 100        
+RATE_LIMIT       = 102
 
 
 
@@ -93,7 +98,7 @@ def main():
 # Postconditions: commandline args are available to the program
 # Notes         : none
 # Docs          : 
-#                 - library: argparse:
+#                 - topic: argparse (library)
 #                   - link: https://docs.python.org/3/library/argparse.html
 #--------------------------------------------------------------------------- 
 def get_CLI_args():
@@ -179,18 +184,16 @@ def get_commit_info( commit_paged_metalist, session, output_type ):
         try:
             # retrieve list of commits for one pr
             cur_commit_list = commit_paged_metalist[commit_metalist_index]
+            print( str(commit_metalist_index) + str( cur_commit_list ))
 
             # get the last actionable index for that list
             last_commit_position = cur_commit_list.totalCount - 1
 
             # retrieve commit of interest from that position
             commit_of_interest = cur_commit_list[last_commit_position]
-            
 
             # get relevant author
             commit_author = commit_of_interest.commit.author.name
-
-            
             
             # get relevant commit message
             commit_message = commit_of_interest.commit.message
@@ -285,10 +288,14 @@ def get_commit_info( commit_paged_metalist, session, output_type ):
 # Parameters    : 
 # Postconditions: 
 # Notes         : 
+# Other Docs    :
+#                 - topic : checking for NoneType 
+#                   - link: https://stackoverflow.com/questions/23086383/how-to-test-nonetype-in-python 
 #--------------------------------------------------------------------------- 
 def get_issue_info( issue_list, session ):
 
     index              = 0
+    isPR               = 0
     issue_context_list = []
     issue_metalist     = []
 
@@ -307,20 +314,30 @@ def get_issue_info( issue_list, session ):
             issue_closed_date_str = str( cur_issue.closed_at.strftime(
                                                     "%m/%d/%y %I:%M:%S %p" ) )
             issue_title_str       = str( cur_issue.title )
+
+
+            # check if the current issue has an associated PR
+            if cur_issue.pull_request is not None:
+                isPR = 1 
             
 
+            # clean and quote issue body str
             issue_body_stripped = issue_body_str.strip( '\n' )
             issue_body_str      = "\"" + issue_body_stripped + "\""
-            
+
+
+            # replace empty issue comment str w/ special symbol
             if issue_comment_str == '0':
                 issue_comment_str = " =||= " 
+
 
             issue_context_list  = [
                     issue_closed_date_str, 
                     issue_author_str, 
                     issue_title_str, 
                     issue_body_str,
-                    issue_comment_str 
+                    issue_comment_str,
+                    isPR
                     ]
 
 
@@ -490,6 +507,8 @@ def get_PR_info( pr_list, session, output_type ):
 
             # get paginated list of commits for each pr
             pr_commits         = cur_pr.get_commits()
+            print( pr_num_str + ": " + str( pr_commits ))
+
 
             #  clean each pr body of new line chars and place in quotes
             pr_body_stripped = pr_body_str.strip( '\n' )
@@ -498,6 +517,9 @@ def get_PR_info( pr_list, session, output_type ):
             # add special string in place of empty comments
             if pr_comment_str == '0':
                 pr_comment_str = " =||= "
+
+            #if pr_commits
+
 
             # each output type will require the pr num, so treat as default
             pr_info_list = [
@@ -720,6 +742,7 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                 issue_title       = cur_issue[2]
                 issue_body        = cur_issue[3] 
                 issue_comments    = cur_issue[4]  
+                isPR              = cur_issue[5]
 
                 pr_author         = cur_pr[1] 
                 pr_body           = cur_pr[2] 
@@ -738,7 +761,7 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                               issue_title, issue_body, pr_closed_date,   
                               pr_title, pr_body, pr_comments,            
                               issue_comments, pr_author, commit_author,  
-                              commit_date, commit_message]               
+                              commit_date, commit_message, isPR]
 
 
             else:
