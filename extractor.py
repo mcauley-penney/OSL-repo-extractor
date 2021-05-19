@@ -1,9 +1,7 @@
 # ---------------------------------------------------------------------------
-# Author: Jacob Stuck and Jacob Penney
-# Purpose:
-# Process: 
-# Notes: documentation for pygithub can be found @:
-#   - Github: https://pygithub.readthedocs.io/en/latest/github.html
+# Authors: Jacob Stuck and Jacob Penney
+# Notes  : documentation for pygithub can be found @
+#          https://pygithub.readthedocs.io/en/latest/index.html
 # --------------------------------------------------------------------------- 
 
 # TODO:
@@ -11,25 +9,12 @@
 #       - for PR output, need:
 #           - isPR
 #               - can check if a commit has at least one pull request using
-#               - commit.get_pulls() 
-
-#       - for commit output, need: 
-#           - Author_Login       DONE:
-#           - Committer_login    DONE:
-#           - PR_Number          DONE:
-#           - SHA                DONE: 
-#           - Commit_Message     DONE: 
-#           - File_name          DONE: 
-#           - Patch_text         DONE:
-#           - Additions          DONE: 
-#           - Deletions          DONE: 
-#           - Status             DONE:
-#           - Changes            DONE:
+#                 commit.get_pulls() 
 
 #       - create checks to protect from lack of pull requests
 #       - transcend rate limit
 #       - circumvent socket timeout
-#   
+
 #   - post-completion:
 #       - clean spacing
 #       - clean annotations
@@ -56,41 +41,42 @@ PR_COL_NAMES     = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                     "PR_Comments", "Commit_Author", "Commit_Date", 
                     "Commit_Message", "isPR"]
 
-NEW_LINE         = '\n'
-RATE_LIMIT       = 5        
+RATE_LIMIT       = 100        
 
 
 
 
 #--------------------------------------------------------------------------- 
 # Function name : driver
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Process       : gathers args from commandline, reads user info out of file,
+#                 authenticates the user with GitHub, retrieves paginated
+#                 lists of relevant info for mining, and sends those lists to
+#                 be mined and the mined info written
+# Parameters    : none
+# Postconditions: CSV files with relevant info are produced in the current
+#                 directory
+# Notes         : none
+# Other Docs    :
+#                 - github class: 
+#                   -link: https://pygithub.readthedocs.io/en/latest/github.html
 #--------------------------------------------------------------------------- 
 def main():
 
     # retrieve positional arguments as variables
-    ( repo_str, auth_file, output_file_name, output_type ) = get_args() 
+    ( repo_str, auth_file, output_file_name, output_type ) = get_CLI_args() 
 
-
-    # get user info
+    # get user auth info
     userauth_list = read_user_info( auth_file )  
 
-
-    # authenticate with GitHub
+    # authenticate the user with GitHub
     github_sesh = github.Github( userauth_list[0] )
-    # github_sesh = github.Github(  )
+
+    # display remaining calls to GitHub
+    print( "\nProgram starting..." )
+    print_rem_calls( github_sesh ) 
      
-
-    # retrieve paginated list of repos
-    repo_paginated_list = github_sesh.get_repo( repo_str ) 
-
-
     # retrieve paginated list of issues and pull requests
-    paged_list_tuple = get_paginated_lists( repo_paginated_list, github_sesh)
-
+    paged_list_tuple = get_paginated_lists( repo_str, output_type, github_sesh)
 
     # write output to csv file
     write_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
@@ -99,15 +85,21 @@ def main():
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_args 
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Function name : get_CLI_args 
+# Process       : adds the ability to process commandline args and a grouping
+#                 of mutually exclusive args, collects and processes the args,
+#                 and returns them to the user
+# Parameters    : none
+# Postconditions: commandline args are available to the program
+# Notes         : none
+# Docs          : 
+#                 - library: argparse:
+#                   - link: https://docs.python.org/3/library/argparse.html
 #--------------------------------------------------------------------------- 
-def get_args():
+def get_CLI_args():
 
-    output_type = ""
+    output_type = "commit"
+
 
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser( description="TODO" ) 
@@ -133,7 +125,7 @@ def get_args():
 
     # add output file name CLI arg
     arg_parser.add_argument( 'output_file_name', type=str, 
-                              help="CSV file to write output to" )      
+                              help="CSV file name to write output to" )      
      
     # retrieve positional arguments
     CLI_args = arg_parser.parse_args()  
@@ -147,9 +139,6 @@ def get_args():
     if CLI_args.pr:
         output_type = "pr"
 
-    elif CLI_args.commit:
-        output_type = "commit"
-
 
     return ( repo_name, auth_file, output_file_name, output_type )
 
@@ -158,13 +147,23 @@ def get_args():
 
 #--------------------------------------------------------------------------- 
 # Function name : get_commit_info
-# Process       : retrieves the most recent commit from the current pull
-#                 request
+# Process       : retrieves paginated list of commits from list containing 
+#                 paginated lists of commits (i.e. each index in
+#                 commit_paged_metalist is a list of commits, as "commit" 
+#                 objects, associated with one pull request), retrieves last 
+#                 commit object (meaning chronologically most recent commit) 
+#                 from individual paginated list of commits, and extracts 
+#                 relevant info from that commit object
 # Parameters    : 
+#                 - name  : commit_paged_metalist
+#                   - type: Python list
+#                   - desc:
+#                   - docs:
 # Postconditions: 
 # Notes         : 
+# Other Docs    :
 #--------------------------------------------------------------------------- 
-def get_commit_info( commit_paged_list, session, output_type ):
+def get_commit_info( commit_paged_metalist, session, output_type ):
 
     # init variables
     commit_info_list      = []
@@ -174,12 +173,12 @@ def get_commit_info( commit_paged_list, session, output_type ):
     file_list             = []
 
 
-    print( "Getting commit info..." )
+    print( "\n\nGetting commit info..." )
 
     while commit_metalist_index < RATE_LIMIT:
         try:
             # retrieve list of commits for one pr
-            cur_commit_list = commit_paged_list[commit_metalist_index]
+            cur_commit_list = commit_paged_metalist[commit_metalist_index]
 
             # get the last actionable index for that list
             last_commit_position = cur_commit_list.totalCount - 1
@@ -275,9 +274,6 @@ def get_commit_info( commit_paged_list, session, output_type ):
             run_timer( session ) 
 
 
-    print('\n')
-
-
     return commit_info_metalist
 
 
@@ -297,12 +293,15 @@ def get_issue_info( issue_list, session ):
     issue_metalist     = []
 
 
-    print( "Getting issue info..." )
+    print( "\n\nGetting issue info..." )
 
     while index < RATE_LIMIT:
         try:
-            cur_issue             = issue_list[index]          # here
-            issue_author_str      = str( cur_issue.user.name ) # here
+            # work on one issue from paginated list at a time
+            cur_issue             = issue_list[index]          
+
+            # get info from curret issue
+            issue_author_str      = str( cur_issue.user.name ) 
             issue_body_str        = str( cur_issue.body )
             issue_comment_str     = str( cur_issue.comments ) 
             issue_closed_date_str = str( cur_issue.closed_at.strftime(
@@ -310,7 +309,7 @@ def get_issue_info( issue_list, session ):
             issue_title_str       = str( cur_issue.title )
             
 
-            issue_body_stripped = issue_body_str.strip( NEW_LINE )
+            issue_body_stripped = issue_body_str.strip( '\n' )
             issue_body_str      = "\"" + issue_body_stripped + "\""
             
             if issue_comment_str == '0':
@@ -336,9 +335,6 @@ def get_issue_info( issue_list, session ):
             run_timer( session )
 
 
-    print('\n')
-
-
     return issue_metalist
 
 
@@ -346,10 +342,26 @@ def get_issue_info( issue_list, session ):
 
 #--------------------------------------------------------------------------- 
 # Function name : get_limit_info
-# Process       : 
+# Process       : uses type_flag param to determine type of output to user;
+#                   - "remaining": returns remaining calls to GitHub API
+#                                  before session is rate limited. Method
+#                                  belongs to "Github" class
+#                   - "reset": returns the amount of time before amount of
+#                              calls to GitHub API is renewed. Always starts 
+#                              at one hour. Method belongs to "Github" class
 # Parameters    : 
-# Postconditions: 
-# Notes         : 
+#                 - name  : session
+#                   - type: pygithub "Github" object
+#                   - desc: instance of "Github" class used to authenticate
+#                           actions/calls to GitHub in pygithub library
+#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html
+#                 - name  : type_flag
+#                   - type: str
+#                   - desc: contains the type of output asked for by user
+#                           @ commandline. Can be either "pr" or "commit".
+# Postconditions: rate info is available to be printed to user
+# Notes         : none
+# Other Docs    : none
 #--------------------------------------------------------------------------- 
 def get_limit_info( session, type_flag ):
 
@@ -359,6 +371,7 @@ def get_limit_info( session, type_flag ):
     if type_flag == "remaining":
 
         # get remaining calls before reset from GitHub API
+        #   see rate_limiting docs for indexing details, e.g. "[0]"
         out_rate_info = session.rate_limiting[0]
 
     
@@ -381,32 +394,57 @@ def get_limit_info( session, type_flag ):
 
 #--------------------------------------------------------------------------- 
 # Function name : get_paginated_lists
-# Process       : 
+# Process       : uses CLI str arg of repo name during call to GitHub to 
+#                 retrieve pygithub repo object, uses repo object in call to 
+#                 retrieve paginated list of all pull requsts associated with 
+#                 that repo, and all associated issues depending on the output
+#                 file desired
 # Parameters    : 
-# Postconditions: 
-# Notes         : 
+#                 - name  : input_repo_str
+#                   - type: str 
+#                   - desc: commandline arg containing repo name
+#                 - name  : output_type
+#                   - type: str
+#                   - desc: one of two formats for CSV output
+#                 - name  : session
+#                   - type: pygithub "Github" object
+#                   - desc: instance of "Github" class used to authenticate
+#                           actions/calls to GitHub in pygithub library
+#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html
+# Postconditions: paginated lists of relevant info are available to program
+# Notes         : utilizes try-except block to preempt code breaking due to
+#                 exception thrown for rate limiting
+#                   - docs: https://pygithub.readthedocs.io/en/latest/utilities.html
+# Other Docs    :
 #--------------------------------------------------------------------------- 
-def get_paginated_lists( input_repo, session ):
+def get_paginated_lists( input_repo_str, output_type, session ):
 
      all_lists_retrieved = False
      issues_list         = []
      pr_list             = [] 
 
+           
+     # retrieve GitHub repo object
+     repo_obj = session.get_repo( input_repo_str )  
 
-     # loop until both lists are fully retrieved to reset in case of 
-     # socket timout
+     # loop until both lists are fully retrieved to in case of socket timout
      while all_lists_retrieved == False:
         try:
-            print( "Gathering GitHub data paginated lists...\n" )
-
-            # retrieve paginated list of issues
-            issues_list = input_repo.get_issues( direction='asc',
-                                                 sort='created', 
-                                                 state='closed' )
-
+            print( "\n\nGathering GitHub data paginated lists..." )
+            
             # retrieve paginated list of pull requests
-            pr_list = input_repo.get_pulls( base='master', direction='asc', 
-                                            sort='created', state='all' )
+            pr_list = repo_obj.get_pulls( base='master', direction='asc', 
+                                          sort='created', state='all' ) 
+
+            if output_type == "pr": 
+                
+                # retrieve paginated list of issues
+                issues_list = repo_obj.get_issues( direction='asc',
+                                                   sort='created', 
+                                                   state='closed' )
+
+
+            print_rem_calls( session )
 
             all_lists_retrieved = True
 
@@ -426,6 +464,7 @@ def get_paginated_lists( input_repo, session ):
 # Parameters    : 
 # Postconditions: 
 # Notes         : 
+# Other Docs    :
 #--------------------------------------------------------------------------- 
 def get_PR_info( pr_list, session, output_type ):
 
@@ -436,7 +475,7 @@ def get_PR_info( pr_list, session, output_type ):
     pr_metalist     = []
 
 
-    print( "Getting pull request info..." )
+    print( "\n\nGetting pull request info..." )
 
     while index < RATE_LIMIT:
         try:
@@ -453,7 +492,7 @@ def get_PR_info( pr_list, session, output_type ):
             pr_commits         = cur_pr.get_commits()
 
             #  clean each pr body of new line chars and place in quotes
-            pr_body_stripped = pr_body_str.strip( NEW_LINE )
+            pr_body_stripped = pr_body_str.strip( '\n' )
             pr_body_str = "\"" + pr_body_stripped + "\"" 
 
             # add special string in place of empty comments
@@ -489,9 +528,6 @@ def get_PR_info( pr_list, session, output_type ):
 
         except github.RateLimitExceededException:
             run_timer( session ) 
-
-    
-    print('\n')
 
 
     return pr_metalist, commits_paginated_metalist
@@ -545,7 +581,7 @@ def read_user_info( userinfo_file ):
     for value in userinfo_list:
         
         # remove newline chars from each item in list
-        newLine_stripped_value = value.strip( NEW_LINE )
+        newLine_stripped_value = value.strip( '\n' )
         
         # remove leading and trailing whitespaces from user info
         space_stripped_value = newLine_stripped_value.strip()
@@ -568,7 +604,11 @@ def read_user_info( userinfo_file ):
 # Notes         : 
 #--------------------------------------------------------------------------- 
 def run_timer( session ):
+    
+    # get the amount of time until our call amount is reset
     sleep_time = get_limit_info( session, "reset" )
+
+    # sleep for that amount of time
     timer( sleep_time ) 
 
 
@@ -634,7 +674,7 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
         # create writer object
         writer = csv.writer( csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
                              quotechar='', escapechar='\\', 
-                             lineterminator=NEW_LINE )
+                             lineterminator='\n' )
           
 
         # retrieve lists of PR and issue data
@@ -651,7 +691,7 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
         commit_info_metalist = get_commit_info( commits_paginated_list, 
                                                 github_sesh, output_type )
 
-        print( "Writing data...\n" )
+        print( "\n\nWriting data..." )
 
         # write column labels
         writer.writerow( label_cols ) 
@@ -665,15 +705,15 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
             commit_author  = cur_commit[0]
             commit_message = cur_commit[1] 
 
-            cur_pr          = pr_info_metalist[aggregation_index]
-            pr_num          = cur_pr[0] 
+            cur_pr         = pr_info_metalist[aggregation_index]
+            pr_num         = cur_pr[0] 
 
 
             # get output type-dependent values
             if output_type == "pr":
                 cur_issue         = issue_info_metalist[aggregation_index]
 
-                commit_date    = cur_commit[2] 
+                commit_date       = cur_commit[2] 
 
                 issue_closed_date = cur_issue[0] 
                 issue_author      = cur_issue[1]
@@ -681,18 +721,18 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                 issue_body        = cur_issue[3] 
                 issue_comments    = cur_issue[4]  
 
-                pr_author       = cur_pr[1] 
-                pr_body         = cur_pr[2] 
-                pr_closed_date  = cur_pr[3] 
-                pr_comments     = cur_pr[4] 
-                pr_title        = cur_pr[5] 
+                pr_author         = cur_pr[1] 
+                pr_body           = cur_pr[2] 
+                pr_closed_date    = cur_pr[3] 
+                pr_comments       = cur_pr[4] 
+                pr_title          = cur_pr[5] 
 
 
                 # order: PR_Number, Issue_Closed_Date, Issue_Author,  
                 #        Issue_Title, Issue_Body, PR_Closed_Date,     
                 #        RR_Title, PR_Body, PR_Comments               
                 #        Issue_comments, PR_Author, Commit_Author, 
-                #        Commit_Date, Commit_Message, isPR
+                #        Commit_Date, Commit_Message, isPR            
                 # ------------------------------------------------------------
                 output_row = [pr_num, issue_closed_date, issue_author,  
                               issue_title, issue_body, pr_closed_date,   
@@ -712,22 +752,24 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                 commit_changes    = cur_commit[9] 
 
 
-                # order:  Author_Login, Committer_login, PR_Number,      DONE:
-                #         SHA, Commit_Message, File_name,                DONE:
-                #         Patch_text, Additions, Deletions,              DONE: 
-                #         Status, Changes                                DONE:
+                # order:  Author_Login, Committer_login, PR_Number,     
+                #         SHA, Commit_Message, File_name,               
+                #         Patch_text, Additions, Deletions,             
+                #         Status, Changes                               
                 # ------------------------------------------------------------
                 output_row = [commit_author, commit_committer, pr_num,
                               commit_SHA, commit_message, commit_file_list,
                               commit_patch_text, commit_adds, commit_rms,
-                              commit_status, commit_changes
-                              ]
+                              commit_status, commit_changes]
 
 
             writer.writerow( output_row ) 
                              
             aggregation_index += 1
      
+
+    print( "\nOutput complete!" )
+
 
 
 
