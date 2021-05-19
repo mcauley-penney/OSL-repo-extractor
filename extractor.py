@@ -5,21 +5,16 @@
 # --------------------------------------------------------------------------- 
 
 
-# BUG: create checks to protect from lack of commits
-#   - info: program fails with index out of range error when traversing commit
-#     metalist. This appears to be because some PR's have no commits, e.g.
-#     get_commit_info fails at #40 because PR #40 has no commits, so
-#     get_PR_info stopped writing the commit list there
-#       - proposed solution: check for no commits, e.g. "if is none", and
-#         enter a NoneType for that index, or some sort of flag, e.g. 0
-#       - links: https://github.com/JabRef/jabref/pull/40
-
-
 # TODO:
+#   HIGH:   
+#   - check to make sure that we are handling a lack of commits on a PR
+#     correctly
 #   - create checks to protect from lack of pull requests
-#   - transcend rate limit
+
+#   MED:
 #   - circumvent socket timeout
 
+#   LOW:
 #   - post-completion:
 #       - clean spacing
 #       - clean annotations
@@ -152,116 +147,133 @@ def get_CLI_args():
 
 #--------------------------------------------------------------------------- 
 # Function name : get_commit_info
-# Process       : retrieves paginated list of commits from list containing 
-#                 paginated lists of commits (i.e. each index in
-#                 commit_paged_metalist is a list of commits, as "commit" 
-#                 objects, associated with one pull request), retrieves last 
-#                 commit object (meaning chronologically most recent commit) 
-#                 from individual paginated list of commits, and extracts 
-#                 relevant info from that commit object
+# Process       : retrieves list of most recent commits, as commit objects,
+#                 and extracts relevant info from that commit object
 # Parameters    : 
-#                 - name  : commit_paged_metalist
-#                   - type: Python list
-#                   - desc:
-#                   - docs:
-# Postconditions: 
-# Notes         : 
-# Other Docs    :
+#                 - name  : commit_list
+#                   - type: Python list of pygithub commit objects
+#                   - desc: list of commit objects containing relevant commit
+#                           info
+#                   - docs: https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html#github.Commit.Commit
+#                 - name  : session 
+#                   - type: pygithub "Github" object                       
+#                   - desc: instance of "Github" class used to authenticate
+#                           actions/calls to GitHub in pygithub library 
+#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html 
+#                 - name  : output_type                       
+#                   - type: str                               
+#                   - desc: one of two formats for CSV output 
+# Postconditions: relevant commit info is available to the program
+# Notes         : empty fields should be caught and populated with " =||= "
+# Other Docs    : none
 #--------------------------------------------------------------------------- 
-def get_commit_info( commit_paged_metalist, session, output_type ):
+def get_commit_info( commit_list, session, output_type ):
 
     # init variables
-    commit_info_list      = []
-    commit_info_metalist  = []
-    commit_metalist_index = 0
-    commit_of_interest    = None
-    file_list             = []
+    commit_info_list     = []
+    commit_info_metalist = []
+    commit_list_index    = 0
+    cur_commit   = None
+    file_list            = []
+
+    # commit list entry init
+    #   This is necessary to prevent empty entries/indice misallignment 
+    #   during data aggregation in write_csv_output if a commit does not
+    #   exist 
+    commit_author            = " =||= "
+    commit_message           = " =||= "
+    commit_date              = " =||= "
+    commit_committer         = " =||= "
+    commit_SHA               = " =||= "             
+    file_list                = " =||= "             
+    commit_patch_text        = " =||= "     
+    commit_adds              = " =||= "
+    commit_rms               = " =||= "            
+    quoted_commit_status_str = " =||= "
+    commit_changes           = " =||= "        
 
 
     print( "\n\nGetting commit info..." )
 
-    while commit_metalist_index < RATE_LIMIT:
+    while commit_list_index < RATE_LIMIT:
         try:
+
             # retrieve list of commits for one pr
-            cur_commit_list = commit_paged_metalist[commit_metalist_index]
-            print( str(commit_metalist_index) + str( cur_commit_list ))
-
-            # get the last actionable index for that list
-            last_commit_position = cur_commit_list.totalCount - 1
-
-            # retrieve commit of interest from that position
-            commit_of_interest = cur_commit_list[last_commit_position]
-
-            # get relevant author
-            commit_author = commit_of_interest.commit.author.name
-            
-            # get relevant commit message
-            commit_message = commit_of_interest.commit.message
+            cur_commit = commit_list[commit_list_index] 
 
 
-            # prepare base list for both output types
-            commit_info_list = [
-                    commit_author,
-                    commit_message
-                    ]
+            if cur_commit != " =||= ":
 
-
-            # get output type-dependent info. Appends start at index 2
-            if output_type == "pr":
-
-                # get relevant commit date
-                commit_date = commit_of_interest.commit.author.date.strftime(
-                                                       "%m/%d/%y %I:%M:%S %p" )
-
-                commit_info_list += commit_date
-
-
-            else:
+                # get relevant author
+                commit_author = cur_commit.commit.author.name
                 
-                # reset variables
-                commit_adds          = 0
-                commit_changes       = 0
-                commit_patch_text    = ""
-                commit_rms           = 0
-                commit_status_str    = ""
-                file_list            = []
-                
-                
-                # get relevant commit file list
-                commit_files = commit_of_interest.files 
-
-                # get relevant committer
-                commit_committer = commit_of_interest.commit.committer.name 
-
-                # get relevant commit SHA
-                commit_SHA = commit_of_interest.sha
-
-                # get relevant commit status str
-                # commit_status_str = commit_of_interest.status
+                # get relevant commit message
+                commit_message = cur_commit.commit.message
 
 
-                # retrieve each modified file and place in list
-                for file in commit_files:
-                    file_list.append( file.filename )
-                    commit_adds       += int( file.additions )
-                    commit_changes    += int( file.changes )
-                    commit_patch_text += str( file.patch ) + ", "
-                    commit_rms        += int( file.deletions )
-                    commit_status_str += file.status + ", "
-
-                
-                quoted_commit_status_str = "\"" + commit_status_str + "\""
-
-                commit_info_list += [
-                        commit_committer,
-                        commit_SHA, 
-                        file_list, 
-                        commit_patch_text,
-                        commit_adds,
-                        commit_rms,
-                        quoted_commit_status_str,
-                        commit_changes
+                # prepare base list for both output types
+                commit_info_list = [
+                        commit_author,
+                        commit_message
                         ]
+
+
+                # get output type-dependent info. Appends start at index 2
+                if output_type == "pr":
+
+                    # get relevant commit date
+                    commit_date = cur_commit.commit.author.date.strftime(
+                                                           "%m/%d/%y %I:%M:%S %p" )
+
+                    commit_info_list += commit_date
+
+
+                else:
+                    
+                    # reset variables
+                    commit_adds          = 0
+                    commit_changes       = 0
+                    commit_patch_text    = ""
+                    commit_rms           = 0
+                    commit_status_str    = ""
+                    file_list            = []
+                    
+                    
+                    # get relevant commit file list
+                    commit_files = cur_commit.files 
+
+                    # get relevant committer
+                    commit_committer = cur_commit.commit.committer.name 
+
+                    # get relevant commit SHA
+                    commit_SHA = cur_commit.sha
+
+                    # get relevant commit status str
+                    # commit_status_str = cur_commit.status
+
+
+                    # retrieve each modified file and place in list
+                    for file in commit_files:
+                        file_list.append( file.filename )
+                        commit_adds       += int( file.additions )
+                        commit_changes    += int( file.changes )
+                        commit_patch_text += str( file.patch ) + ", "
+                        commit_rms        += int( file.deletions )
+                        commit_status_str += file.status + ", "
+
+                    
+                    quoted_commit_status_str = "\"" + commit_status_str + "\""
+
+                    commit_info_list += [
+                            commit_committer,
+                            commit_SHA, 
+                            file_list, 
+                            commit_patch_text,
+                            commit_adds,
+                            commit_rms,
+                            quoted_commit_status_str,
+                            commit_changes
+                            ]
 
 
             # append list of collected commit info to metalist
@@ -270,7 +282,7 @@ def get_commit_info( commit_paged_metalist, session, output_type ):
             # print remaining calls per hour
             print_rem_calls( session )
  
-            commit_metalist_index += 1
+            commit_list_index += 1
 
 
         except github.RateLimitExceededException:
@@ -486,10 +498,11 @@ def get_paginated_lists( input_repo_str, output_type, session ):
 def get_PR_info( pr_list, session, output_type ):
 
     # init variables
-    index           = 0
-    commits_paginated_metalist = []
-    pr_info_list    = []
-    pr_metalist     = []
+    commits_list       = []
+    index              = 0
+    most_recent_commit = " =||= "
+    pr_info_list       = []
+    pr_metalist        = []
 
 
     print( "\n\nGetting pull request info..." )
@@ -507,7 +520,6 @@ def get_PR_info( pr_list, session, output_type ):
 
             # get paginated list of commits for each pr
             pr_commits         = cur_pr.get_commits()
-            print( pr_num_str + ": " + str( pr_commits ))
 
 
             #  clean each pr body of new line chars and place in quotes
@@ -517,8 +529,6 @@ def get_PR_info( pr_list, session, output_type ):
             # add special string in place of empty comments
             if pr_comment_str == '0':
                 pr_comment_str = " =||= "
-
-            #if pr_commits
 
 
             # each output type will require the pr num, so treat as default
@@ -539,8 +549,22 @@ def get_PR_info( pr_list, session, output_type ):
             # append each list of pr info to a metalist
             pr_metalist.append( pr_info_list )
 
-            # append each paginated list of commits to a metalist
-            commits_paginated_metalist.append( pr_commits )
+
+            # check for the existence of useful indices to test if 
+            # a PR has commits
+            last_commit_position = pr_commits.totalCount - 1
+
+            
+            # test if index value is valid
+            if last_commit_position >= 0:
+
+                #  get most recent commit
+                most_recent_commit = pr_commits[last_commit_position]
+
+
+            # append most recent commit to list of commits
+            commits_list.append( most_recent_commit )
+
 
             # display remaining calls
             print_rem_calls( session )
@@ -552,7 +576,7 @@ def get_PR_info( pr_list, session, output_type ):
             run_timer( session ) 
 
 
-    return pr_metalist, commits_paginated_metalist
+    return pr_metalist, commits_list
 
 
 
