@@ -19,7 +19,6 @@
 #       - clean spacing
 #       - clean annotations
 #       - clean comments
-#       - add arg_parser description 
 
 
 # imports
@@ -57,7 +56,7 @@ RATE_LIMIT       = 102
 #                 directory
 # Notes         : none
 # Other Docs    :
-#                 - github class: 
+#                 - topic: github class: 
 #                   -link: https://pygithub.readthedocs.io/en/latest/github.html
 #--------------------------------------------------------------------------- 
 def main():
@@ -85,16 +84,41 @@ def main():
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_CLI_args 
-# Process       : adds the ability to process commandline args and a grouping
-#                 of mutually exclusive args, collects and processes the args,
-#                 and returns them to the user
-# Parameters    : none
-# Postconditions: commandline args are available to the program
-# Notes         : none
-# Docs          : 
-#                 - topic: argparse (library)
-#                   - link: https://docs.python.org/3/library/argparse.html
+# Function name: get_CLI_args 
+# Process      : adds the ability to process commandline args and a grouping
+#                of mutually exclusive args, collects and processes the args,
+#                and returns them to the user
+# Parameters   : none
+# Output       : 
+#                - name  : repo_name
+#                  - type: str
+#                  - desc: str containing name of repo to mine
+#                  - docs: none
+#                - name  : auth_file
+#                  - type: str
+#                  - desc: str containing name of file containing GitHub
+#                          authorization info; format is: 
+#           
+#                                      <username>
+#                                      <personal access token> 
+#                  - docs: 
+#                    - topic : personal access token
+#                      - link: https://github.com/settings/tokens
+#                - name  : output_file_name
+#                  - type: str
+#                  - desc: str containing name of file to write output of
+#                          program run to. Will contain custom CSV content
+#                  - docs: none
+#                - name  : output_type
+#                  - type: str
+#                  - desc: str containing type of output to create. Can be
+#                          one of two types of CSV formats that the project 
+#                          that this script serves uses as input
+#                  - docs: none
+# Notes        : none
+# Docs         : 
+#                - topic: argparse (library)
+#                  - link: https://docs.python.org/3/library/argparse.html
 #--------------------------------------------------------------------------- 
 def get_CLI_args():
 
@@ -102,7 +126,8 @@ def get_CLI_args():
 
 
     # establish positional argument capability
-    arg_parser = argparse.ArgumentParser( description="TODO" ) 
+    arg_parser = argparse.ArgumentParser( description="""OSL Repo mining
+            script""" )
     
     # establish mutually exclusive argument capability
     mutually_excl_args = arg_parser.add_mutually_exclusive_group()  
@@ -146,26 +171,35 @@ def get_CLI_args():
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_commit_info
-# Process       : retrieves list of most recent commits, as commit objects,
-#                 and extracts relevant info from that commit object
-# Parameters    : 
-#                 - name  : commit_list
-#                   - type: Python list of pygithub commit objects
-#                   - desc: list of commit objects containing relevant commit
-#                           info
-#                   - docs: https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html#github.Commit.Commit
-#                 - name  : session 
-#                   - type: pygithub "Github" object                       
-#                   - desc: instance of "Github" class used to authenticate
-#                           actions/calls to GitHub in pygithub library 
-#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html 
-#                 - name  : output_type                       
-#                   - type: str                               
-#                   - desc: one of two formats for CSV output 
-# Postconditions: relevant commit info is available to the program
-# Notes         : empty fields should be caught and populated with " =||= "
-# Other Docs    : none
+# Function name: get_commit_info
+# Process      : receives list of chronologically most recent commits as
+#                commit objects and extracts relevant info from them
+# Parameters   : 
+#                - name  : commit_list
+#                  - type: Python list of pygithub commit objects
+#                  - desc: list of commit objects containing relevant commit
+#                          info
+#                  - docs: https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html#github.Commit.Commit
+#                - name  : session 
+#                  - type: pygithub "Github" object                       
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library 
+#                  - docs: https://pygithub.readthedocs.io/en/latest/github.html 
+#                - name  : output_type                       
+#                  - type: str                               
+#                  - desc: one of two formats for CSV output 
+# Output       : 
+#                 - name  : commit_info_metalist
+#                   - type: Python list of python lists
+#                   - desc: each index contains a list of varying types of
+#                           data associated with a commit, itself associated
+#                           with a PR at the same index in the output of
+#                           get_PR_info()
+#                   - docs:  
+#                     - topic : pygithub commit object
+#                       - link: https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html
+# Notes        : empty fields should be caught and populated with " =||= "
+# Other Docs   : none
 #--------------------------------------------------------------------------- 
 def get_commit_info( commit_list, session, output_type ):
 
@@ -173,7 +207,7 @@ def get_commit_info( commit_list, session, output_type ):
     commit_info_list     = []
     commit_info_metalist = []
     commit_list_index    = 0
-    cur_commit   = None
+    cur_commit           = None
     file_list            = []
 
     # commit list entry init
@@ -295,14 +329,34 @@ def get_commit_info( commit_list, session, output_type ):
 
  
 #--------------------------------------------------------------------------- 
-# Function name : get_issue_info
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
-# Other Docs    :
-#                 - topic : checking for NoneType 
-#                   - link: https://stackoverflow.com/questions/23086383/how-to-test-nonetype-in-python 
+# Function name: get_issue_info
+# Process      : receives paginated list of issues associated with the given
+#                repo and extracts relevant info
+# Parameters   : 
+#                - name  : issue_list
+#                  - type: paginated list of pygithub issue objects
+#                  - desc: none
+#                  - docs: 
+#                     - topic : pygithub issue objects
+#                       - link: https://pygithub.readthedocs.io/en/latest/github_objects/Issue.html
+#                - name  : session 
+#                  - type: pygithub "Github" object                       
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library 
+#                  - docs: https://pygithub.readthedocs.io/en/latest/github.html
+# Output       : 
+#                 - name  : issue_metalist
+#                   - type: Python list of python lists
+#                   - desc: each index contains a list of relevant issue info
+#                   - docs: none
+# Notes        : This function is only used by the "-p"/"--pr" output_type
+#                option
+# Other Docs   :
+#                - topic : checking for NoneType 
+#                  - link: https://stackoverflow.com/questions/23086383/how-to-test-nonetype-in-python 
+#                 - topic : paginated lists
+#                   - link: https://docs.github.com/en/rest/guides/traversing-with-pagination
+#                   - link: https://pygithub.readthedocs.io/en/latest/utilities.html#github.PaginatedList.PaginatedList
 #--------------------------------------------------------------------------- 
 def get_issue_info( issue_list, session ):
 
@@ -370,27 +424,41 @@ def get_issue_info( issue_list, session ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_limit_info
-# Process       : uses type_flag param to determine type of output to user;
-#                   - "remaining": returns remaining calls to GitHub API
-#                                  before session is rate limited. Method
-#                                  belongs to "Github" class
-#                   - "reset": returns the amount of time before amount of
-#                              calls to GitHub API is renewed. Always starts 
-#                              at one hour. Method belongs to "Github" class
-# Parameters    : 
-#                 - name  : session
-#                   - type: pygithub "Github" object
-#                   - desc: instance of "Github" class used to authenticate
-#                           actions/calls to GitHub in pygithub library
-#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html
-#                 - name  : type_flag
-#                   - type: str
-#                   - desc: contains the type of output asked for by user
-#                           @ commandline. Can be either "pr" or "commit".
-# Postconditions: rate info is available to be printed to user
-# Notes         : none
-# Other Docs    : none
+# Function name: get_limit_info
+# Process      : uses type_flag param to determine type of output to user;
+#                returns info relevant to authenticated session resources
+# Parameters   : 
+#                - name  : session
+#                  - type: pygithub "Github" object
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library
+#                  - docs: https://pygithub.readthedocs.io/en/latest/github.html
+#                - name  : type_flag
+#                  - type: str
+#                  - desc: contains the type of output asked for by the user;
+#                          can be:
+#                          - "remaining": returns remaining calls to GitHub API
+#                                         before session is rate limited.
+#                                         Resulting attribute (rate_limiting) 
+#                                         belongs to "Github" class
+#                          - "reset": returns the amount of time before amount 
+#                                     of calls to GitHub API is renewed. Always 
+#                                     starts at one hour. Resulting attribute 
+#                                     (rate_limiting_resettime) belongs to 
+#                                     "Github" class 
+#                  - docs: 
+#                     - topic : Pygithub authenticated session class
+#                       - link: https://pygithub.readthedocs.io/en/latest/github.html
+# Output       : 
+#                 - name  : out_rate_info
+#                   - type: int
+#                   - desc: if "remaining", contains remaining requests for
+#                           the current hour for the current authenticated 
+#                           session. if "reset", the amount of time before
+#                           remaining calls are reset to full value
+#                   - docs: none
+# Notes        : none
+# Other Docs   : none
 #--------------------------------------------------------------------------- 
 def get_limit_info( session, type_flag ):
 
@@ -422,29 +490,43 @@ def get_limit_info( session, type_flag ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_paginated_lists
-# Process       : uses CLI str arg of repo name during call to GitHub to 
-#                 retrieve pygithub repo object, uses repo object in call to 
-#                 retrieve paginated list of all pull requsts associated with 
-#                 that repo, and all associated issues depending on the output
-#                 file desired
-# Parameters    : 
-#                 - name  : input_repo_str
-#                   - type: str 
-#                   - desc: commandline arg containing repo name
-#                 - name  : output_type
-#                   - type: str
-#                   - desc: one of two formats for CSV output
-#                 - name  : session
-#                   - type: pygithub "Github" object
-#                   - desc: instance of "Github" class used to authenticate
-#                           actions/calls to GitHub in pygithub library
-#                   - docs: https://pygithub.readthedocs.io/en/latest/github.html
-# Postconditions: paginated lists of relevant info are available to program
-# Notes         : utilizes try-except block to preempt code breaking due to
-#                 exception thrown for rate limiting
-#                   - docs: https://pygithub.readthedocs.io/en/latest/utilities.html
-# Other Docs    :
+# Function name: get_paginated_lists
+# Process      : uses CLI str arg of repo name during call to GitHub to 
+#                retrieve pygithub repo object, uses repo object in call to 
+#                retrieve paginated list of all pull requsts associated with 
+#                that repo, and all associated issues depending on the output
+#                file desired
+# Parameters   : 
+#                - name  : input_repo_str
+#                  - type: str 
+#                  - desc: commandline arg containing repo name
+#                - name  : output_type
+#                  - type: str
+#                  - desc: one of two formats for CSV output
+#                - name  : session
+#                  - type: pygithub "Github" object
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library
+#                  - docs: https://pygithub.readthedocs.io/en/latest/github.html
+# Output       : 
+#                - name  : issue_list
+#                  - type: paginated list of pygithub issue objects
+#                  - desc: none
+#                  - docs: 
+#                     - topic : pygithub issue objects
+#                       - link: https://pygithub.readthedocs.io/en/latest/github_objects/Issue.html
+#                 - name  : pr_list
+#                   - type: paginated list of pygithub pull request objects 
+#                   - desc: none
+#                   - docs: 
+#                     - topic : pygithub pull request objects
+#                       - link: https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html
+# Notes        : utilizes try-except block to preempt code breaking due to
+#                exception thrown for rate limiting
+#                  - docs: https://pygithub.readthedocs.io/en/latest/utilities.html
+# Other Docs   : 
+#                 - topic : pygithub repo objects
+#                   - link: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 #--------------------------------------------------------------------------- 
 def get_paginated_lists( input_repo_str, output_type, session ):
 
