@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Authors: Jacob Stuck and Jacob Penney
+# Authors: Jacob Penney and Jacob Stuck
 # Notes  : documentation for pygithub can be found @
 #          https://pygithub.readthedocs.io/en/latest/index.html
 # --------------------------------------------------------------------------- 
@@ -68,7 +68,8 @@ def main():
     userauth_list = read_user_info( auth_file )  
 
     # authenticate the user with GitHub
-    github_sesh = github.Github( userauth_list[0] )
+    # github_sesh = github.Github( userauth_list[0] )
+    github_sesh = github.Github()
 
     # display remaining calls to GitHub
     print( "\nProgram starting..." )
@@ -454,8 +455,8 @@ def get_issue_info( issue_list, session ):
 #                   - type: int
 #                   - desc: if "remaining", contains remaining requests for
 #                           the current hour for the current authenticated 
-#                           session. if "reset", the amount of time before
-#                           remaining calls are reset to full value
+#                           session. if "reset", the amount of time in seconds 
+#                           before API calls are reset to full value
 #                   - docs: none
 # Notes        : none
 # Other Docs   : none
@@ -507,7 +508,9 @@ def get_limit_info( session, type_flag ):
 #                  - type: pygithub "Github" object
 #                  - desc: instance of "Github" class used to authenticate
 #                          actions/calls to GitHub in pygithub library
-#                  - docs: https://pygithub.readthedocs.io/en/latest/github.html
+#                  - docs: 
+#                    - topic : pygithub Github objects 
+#                      - link: https://pygithub.readthedocs.io/en/latest/github.html
 # Output       : 
 #                - name  : issue_list
 #                  - type: paginated list of pygithub issue objects
@@ -534,13 +537,14 @@ def get_paginated_lists( input_repo_str, output_type, session ):
      issues_list         = []
      pr_list             = [] 
 
-           
-     # retrieve GitHub repo object
-     repo_obj = session.get_repo( input_repo_str )  
-
+     
      # loop until both lists are fully retrieved to in case of socket timout
      while all_lists_retrieved == False:
         try:
+             
+            # retrieve GitHub repo object
+            repo_obj = session.get_repo( input_repo_str )   
+
             print( "\n\nGathering GitHub data paginated lists..." )
             
             # retrieve paginated list of pull requests
@@ -570,12 +574,43 @@ def get_paginated_lists( input_repo_str, output_type, session ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : get_PR_info
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
-# Other Docs    :
+# Function name: get_PR_info
+# Process      : creates list of relevant pull request info, depending on type
+#                of output CSV desired, via calls to GitHub API 
+# Parameters   : 
+#                - name  : pr_list
+#                  - type: paginated list of pygithub pull request objects 
+#                  - desc: none
+#                  - docs: 
+#                    - topic : pygithub pull request objects
+#                      - link: https://pygithub.readthedocs.io/en/latest/github_objects/PullRequest.html 
+#                - name  : session
+#                  - type: pygithub "Github" object
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library
+#                  - docs: 
+#                    - topic : pygithub Github objects
+#                      - link: https://pygithub.readthedocs.io/en/latest/github.html 
+#                - name  : output_type
+#                  - type: str
+#                  - desc: one of two formats for CSV output 
+# Output       : 
+#                 - name  : pr_metalist
+#                   - type: Python list of python lists
+#                   - desc: each index is a list of info related to a pr in
+#                           the input repo
+#                   - docs: none
+#                 - name  : commit_list
+#                   - type: Python list of pygithub commit objects
+#                   - desc: list of commit objects containing relevant commit
+#                           info
+#                   - docs: https://pygithub.readthedocs.io/en/latest/github_objects/Commit.html#github.Commit.Commit 
+# Notes        : get_commit_info() depends on the paginated list of commits 
+#                output from this function, as opposed to get_paginated_lists().
+#                This is because I wanted to make sure that I was retrieving a 
+#                list of commits specifically associated with the pr's I would 
+#                gather here.
+# Other Docs   : none
 #--------------------------------------------------------------------------- 
 def get_PR_info( pr_list, session, output_type ):
 
@@ -664,11 +699,24 @@ def get_PR_info( pr_list, session, output_type ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : print_rem_calls 
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Function name: print_rem_calls 
+# Process      : prints the amount of remaining calls that the
+#                user-authenticated GitHub session has left for the current
+#                hour. Acts as a wrapper for get_limit_info() with the
+#                "remaining" flag.
+# Parameters   : 
+#                - name  : session
+#                  - type: pygithub "Github" object
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library
+#                  - docs: 
+#                    - topic : pygithub Github objects 
+#                      - link: https://pygithub.readthedocs.io/en/latest/github.html 
+# Output       : prints remaining calls to screen during program execution
+# Notes        : none
+# Other Docs   : 
+#                 - topic : str.format() method
+#                   - link: https://www.w3schools.com/python/ref_string_format.asp
 #--------------------------------------------------------------------------- 
 def print_rem_calls( session ):
 
@@ -684,15 +732,28 @@ def print_rem_calls( session ):
 
 
 
-# ---------------------------------------------------------------------------
-# Function: read_user_info
-# Process: open the provided text file, read out user info, and return it as
-#          a string or list
-# Parameters: text file containing user info
-# Postcondition: returns variables holding user info
-# Exceptions: none
-# Note: none
-# ---------------------------------------------------------------------------
+#--------------------------------------------------------------------------- 
+# Function name: read_user_info
+# Process      : opens and reads text file containing GitHub user
+#                authentification info in the format:
+#                       
+#                       <username>
+#                       <personal access token>
+#
+# Parameters   : 
+#                 - name  : userinfo_file
+#                   - type: .txt file
+#                   - desc: contains GitHub user authentification info
+#                   - docs: none
+# Output       : 
+#                 - name  : parsed_userinfo_list
+#                   - type: list of str values
+#                   - desc: contains the user auth info stripped of
+#                           whitespace and new line chars
+#                   - docs: none
+# Notes        : none
+# Other Docs   : none
+#--------------------------------------------------------------------------- 
 def read_user_info( userinfo_file ):
 
     # variables
@@ -719,17 +780,30 @@ def read_user_info( userinfo_file ):
             parsed_userinfo_list.append( space_stripped_value )
 
 
+    userinfo_file_obj.close()
+
+
     return parsed_userinfo_list
 
 
 
 
 #--------------------------------------------------------------------------- 
-# Function name : run_timer 
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Function name: run_timer 
+# Process      : acts as a wrapper for get_limit_info( "reset" ) and timer(),
+#                calculating time until GitHub API calls can be made again and
+#                sleeping the program run until then
+# Parameters   : 
+#                - name  : session
+#                  - type: pygithub "Github" object
+#                  - desc: instance of "Github" class used to authenticate
+#                          actions/calls to GitHub in pygithub library
+#                  - docs: 
+#                    - topic : pygithub Github objects 
+#                      - link: https://pygithub.readthedocs.io/en/latest/github.html  
+# Output       : program sleeps and prints remaining time
+# Notes        : none
+# Other Docs   : none
 #--------------------------------------------------------------------------- 
 def run_timer( session ):
     
@@ -743,26 +817,38 @@ def run_timer( session ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : timer
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Function name: timer
+# Process      : convert seconds until permitted API call quantity restoration
+#                into hours (will always be one) and sleep for that amount of
+#                time, always decrementing by one second so as to print
+#                countdown to screen
+# Parameters   : 
+#                 - name  : countdown_time
+#                   - type: int
+#                   - desc: time until GitHub API calls can be made again, in
+#                           seconds
+#                   - docs: none
+# Output       : program sleeps and prints remaining time 
+# Notes        : implemented in run_timer() wrapper function
+# Other Docs   : 
+#                - topic : time library
+#                  - link: https://docs.python.org/3/library/time.html
+#                - topic : divmod
+#                  - link: https://www.w3schools.com/python/ref_func_divmod.asp
 #--------------------------------------------------------------------------- 
 def timer( countdown_time ):
 
+    print('\n')
+
     while countdown_time > 0:
         
-        # cast float value to an int
-        int_time = int( countdown_time )
-
         # modulo function returns time tuple  
-        minutes, seconds = divmod( int_time, 60 )
+        minutes, seconds = divmod( countdown_time, 60 )
 
         # format the time string before printing
         countdown = '{:02d}:{:02d}'.format( minutes, seconds )
 
-        # print time string on the same line as before
+        # print time string on the same line each decrement
         print( "Time until calls can be made: " + countdown, end="\r" )
 
         time.sleep( 1 )
@@ -772,11 +858,12 @@ def timer( countdown_time ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name : write_csv_output
-# Process       : 
-# Parameters    : 
-# Postconditions: 
-# Notes         : 
+# Function name: write_csv_output
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
 #--------------------------------------------------------------------------- 
 def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
 
