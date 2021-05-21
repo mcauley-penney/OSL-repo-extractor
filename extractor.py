@@ -19,9 +19,7 @@
 
 #   LOW:
 #   - post-completion:
-#       - clean spacing
 #       - clean annotations
-#       - clean comments
 
 
 # imports
@@ -40,11 +38,11 @@ COMMIT_COL_NAMES = ["Author_Login", "Committer_login", "PR_Number",
 PR_COL_NAMES     = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                     "Issue_Title", "Issue_Body", "PR_Closed_Date", 
                     "PR_Author", "PR_Title", "PR_Body", "PR_Comments",
-                    "Issue_Comments", "Commit_Author", "Commit_Date", 
-                    "Commit_Message", "isPR"]
+                    "Issue_Comments", "PR_Author" "Commit_Author", 
+                    "Commit_Date", "Commit_Message", "isPR"]
 
-RATE_LIMIT       = 5
-TIME_FORM_STR    =  "%m/%d/%y %I:%M:%S %p"
+RATE_LIMIT       = 102
+TIME_FORM_STR    = "%m/%d/%y %I:%M:%S %p"
 
 
 
@@ -209,11 +207,11 @@ def get_CLI_args():
 def get_commit_info( commit_list, session, output_type ):
 
     # init variables
+    commit_file_list     = []
     commit_info_list     = []
     commit_info_metalist = []
     commit_list_index    = 0
     cur_commit           = None
-    file_list            = []
 
     # commit list entry init
     #   This is necessary to prevent empty entries/indice misallignment 
@@ -224,7 +222,7 @@ def get_commit_info( commit_list, session, output_type ):
     commit_date              = " =||= "
     commit_committer         = " =||= "
     commit_SHA               = " =||= "             
-    file_list                = " =||= "             
+    commit_file_list         = " =||= "             
     commit_patch_text        = " =||= "     
     commit_adds              = " =||= "
     commit_rms               = " =||= "            
@@ -240,14 +238,13 @@ def get_commit_info( commit_list, session, output_type ):
             # retrieve list of commits for one pr
             cur_commit = commit_list[commit_list_index] 
 
-
             if cur_commit != " =||= ":
 
                 # get relevant author
                 commit_author = cur_commit.commit.author.name
                 
                 # get relevant commit message
-                commit_message = "\"" + cur_commit.commit.message + "\""
+                commit_message = cur_commit.commit.message
 
                 # prepare base list for both output types
                 commit_info_list = [
@@ -260,21 +257,19 @@ def get_commit_info( commit_list, session, output_type ):
 
                     # get relevant commit date
                     commit_date_raw = cur_commit.commit.author.date
-
                     commit_date = commit_date_raw.strftime( TIME_FORM_STR )
 
                     commit_info_list += [commit_date]
-
 
                 else:
                     
                     # reset variables
                     commit_adds          = 0
                     commit_changes       = 0
+                    commit_file_list     = []
                     commit_patch_text    = ""
                     commit_rms           = 0
                     commit_status_str    = ""
-                    file_list            = []
                     
                     
                     # get relevant commit file list
@@ -288,7 +283,7 @@ def get_commit_info( commit_list, session, output_type ):
 
                     # retrieve each modified file and place in list
                     for file in commit_files:
-                        file_list.append( file.filename )
+                        commit_file_list.append( file.filename )
                         commit_adds       += int( file.additions )
                         commit_changes    += int( file.changes )
                         commit_patch_text += str( file.patch ) + ", "
@@ -301,7 +296,7 @@ def get_commit_info( commit_list, session, output_type ):
                     commit_info_list += [
                             commit_committer,
                             commit_SHA, 
-                            file_list, 
+                            commit_file_list, 
                             commit_patch_text,
                             commit_adds,
                             commit_rms,
@@ -388,7 +383,7 @@ def get_issue_info( issue_list, session ):
 
             # clean and quote issue body str
             issue_body_stripped = issue_body_str.strip( '\n' )
-            issue_body_str      = "\"" + issue_body_stripped + "\""
+            issue_body_str      = issue_body_stripped
 
 
             # replace empty issue comment str w/ special symbol
@@ -624,8 +619,8 @@ def get_PR_info( pr_list, session, output_type ):
 
     while index < RATE_LIMIT:
         try:
-            cur_pr = pr_list[index]
-            pr_num_str         = cur_pr.number
+            cur_pr     = pr_list[index]
+            pr_num_str = cur_pr.number
 
             # get paginated list of commits for each pr
             pr_commits         = cur_pr.get_commits()
@@ -644,8 +639,7 @@ def get_PR_info( pr_list, session, output_type ):
                 pr_title_str       = str( cur_pr.title )  
 
                 #  clean each pr body of new line chars and place in quotes
-                pr_body_stripped = pr_body_str.strip( '\n' )
-                pr_body_str = "\"" + pr_body_stripped + "\"" 
+                pr_body_str = pr_body_str.strip( '\n' )
 
                 # add special string in place of empty comments
                 if pr_comment_str == '0':
@@ -895,17 +889,19 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
      
 
     # Open the output csv file in preparation for writing
-    with open( output_file_name, 'w', newline='\n', encoding="utf-8" ) as csvfile:
+    with open( output_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
+
+        # create writer dialect
+
 
         # create writer object
-        writer = csv.writer( csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
-                             quotechar='', escapechar='\\' )
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter='\a',
+                             quotechar='\"', escapechar='\\' )
           
         print( "\n\nWriting data..." )
 
         # write column labels
         writer.writerow( label_cols ) 
-
 
         # aggregate data lists into rows
         while aggregation_index < RATE_LIMIT:
@@ -921,8 +917,9 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
 
             # get output type-dependent values
             if output_type == "pr":
-                cur_issue         = issue_info_metalist[aggregation_index]
+                commit_date       = cur_commit[2] 
                 
+                cur_issue         = issue_info_metalist[aggregation_index]
                 issue_closed_date = cur_issue[0] 
                 issue_author      = cur_issue[1]
                 issue_title       = cur_issue[2]
@@ -930,7 +927,6 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
                 issue_comments    = cur_issue[4]  
                 isPR              = cur_issue[5] 
 
-                commit_date       = cur_commit[2] 
 
                 pr_author         = cur_pr[1] 
                 pr_body           = cur_pr[2] 
@@ -979,7 +975,7 @@ def write_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
             aggregation_index += 1
      
 
-    print( "\nOutput complete!" )
+    print( "\nOutput complete" )
 
 
 
