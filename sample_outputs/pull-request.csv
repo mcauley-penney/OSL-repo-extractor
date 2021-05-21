@@ -16,36 +16,27 @@ Merge branch 'sorting'            Commit_Message
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 23/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
 "3/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
 "" =||= "" =||= "simonharrerSimon Harrer3/12/2014 5:20:08 PMGradle build works basically. Reuses existing folder structure.
 
+
 33/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page.3/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page." =||= "" =||= "egonwEgon Willighagen3/15/2014 9:33:10 AMSome example new Dutch translations via the GitHub web page.
+
 
 43/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
 "3/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
 "" =||= "" =||= Even though the other translation files have been updated, I accept this pull request.
 For next time, please try to commit only the ""really"" changed file and revert the changes of the other one. You can also use the edit button at https://github.com/JabRef/jabref/blob/master/src/resource/JabRef_es.properties
  =||= "jtornerojtornero3/17/2014 9:28:26 PMSpanish translation update
+
+
 53/18/2014 5:12:53 AMUpdate JabRef_in.properties"Indonesian translation added
 "3/18/2014 5:12:53 AMUpdate JabRef_in.properties"Indonesian translation added
 "" =||= "" =||= "was123was1233/18/2014 12:01:58 AM"Update JabRef_in.properties
 
 Indonesian translation added"
+
 63/19/2014 7:46:25 PMFixed splash-dev.svg3/19/2014 7:46:25 PMFixed splash-dev.svg" =||= "" =||= "olenzOlaf Lenz3/19/2014 7:41:29 PMFixed splash-dev.svg
 73/23/2014 4:03:12 PM" I have implemented 2 features requested in Ticket #841.""```
 The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
