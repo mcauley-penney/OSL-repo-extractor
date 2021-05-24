@@ -1,0 +1,5 @@
+type=pr 
+auth_file=user_auth.txt
+repo=JabRef/jabref 
+rows=6000
+output=config_test.csv
