@@ -13,6 +13,7 @@ olenz                             PR_Author
 Olaf Lenz                         Commit_Author
 3/12/2014 9:16:45 AM              Commit_Date
 Merge branch 'sorting'            Commit_Message
+                                    isPR
 
 
 
@@ -119,7 +120,13 @@ can be closed.
 95/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs"Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
 "5/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs"Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
 "" =||= "" =||= "ansellPeter Ansell5/7/2014 1:02:09 AMadd CSIRO copyright 2014
-105/20/2014 12:55:20 PMtry to fix some obvious bugs about `groups`"Hi All,
+
+1. 10
+2. 5/20/2014 12:55:20 PM
+3. 
+4.try to fix some obvious bugs about `groups`
+
+5."Hi All,
 I just upgraded to 2.10 and I found some bugs immediately.
 1. in the right-click-menu there is no `move-to-group` but 2 `remove
 from group` instead.
@@ -132,8 +139,12 @@ I tried the dev version, all problems still exist. Here is my fixation.
 
 Cheers,
 
-W.L.
-"5/20/2014 12:55:20 PMtry to fix some obvious bugs about `groups`"Hi All,
+W.L."
+
+6. 5/20/2014 12:55:20 PM
+7. try to fix some obvious bugs about `groups`
+
+8."Hi All,
 I just upgraded to 2.10 and I found some bugs immediately.
 1. in the right-click-menu there is no `move-to-group` but 2 `remove
 from group` instead.
@@ -146,6 +157,41 @@ I tried the dev version, all problems still exist. Here is my fixation.
 
 Cheers,
 
-W.L.
-"" =||= "" =||= After 2.10 the BibtexEntryType.java is changed a lot. The optional fields and required fields are very different. If one need the field order is exactly the same as the 2.9.2, one should manually define the order. 2.10 also fixes some bugs in entry sorting. Some entries will be always different from 2.9.2. So I think backward-compatibility does not make sense any more. If one really want the bib file arranged in the same way as 2.9.2, he should just use 2.9.2. Upgrade all client to 2.10 makes more sense here.
- =||= "braindevicesLing Wang5/20/2014 2:56:41 AMfix bug causing double entries.
+W.L."
+
+9." =||= "
+10." =||= After 2.10 the BibtexEntryType.java is changed a lot. The optional fields and required fields are very different. If one need the field order is exactly the same as the 2.9.2, one should manually define the order. 2.10 also fixes some bugs in entry sorting. Some entries will be always different from 2.9.2. So I think backward-compatibility does not make sense any more. If one really want the bib file arranged in the same way as 2.9.2, he should just use 2.9.2. Upgrade all client to 2.10 makes more sense here.
+=||= "
+
+11.braindevices
+12.Ling Wang
+13.5/20/2014 2:56:41 AM
+14.fix bug causing double entries.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

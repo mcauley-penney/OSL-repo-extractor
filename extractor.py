@@ -34,6 +34,7 @@ COMMIT_COL_NAMES = ["Author_Login", "Committer_login", "PR_Number",
                     "Patch_text", "Additions", "Deletions",
                     "Status", "Changes"]
 
+
 PR_COL_NAMES     = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                     "Issue_Title", "Issue_Body", "PR_Closed_Date", 
                     "PR_Author", "PR_Title", "PR_Body", "PR_Comments",
@@ -80,7 +81,7 @@ def main():
 
     # write output to csv file
     write_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
-
+ 
 
 
 
@@ -374,6 +375,8 @@ def get_issue_info( issue_list, session ):
             issue_closed_date = str( cur_issue.closed_at.strftime( TIME_FORM_STR ))
             issue_title_str   = str( cur_issue.title )
 
+
+            print( "\nissue_comment_str" + str( cur_issue.comments ))
 
             # check if the current issue has an associated PR
             if cur_issue.pull_request is not None:
