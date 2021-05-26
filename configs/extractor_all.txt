@@ -1,0 +1,5 @@
+type=commit
+auth_file=user_auth.txt
+repo=McAuleyPenney/GitHub-Repo-Extractor 
+rows=all
+output=prog_runs/extractor_all.csv

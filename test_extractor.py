@@ -8,7 +8,9 @@
 # TODO:
 
 #   HIGH:   
-#   1. create checks to protect from lack of PRs and commits  
+#   0. Determine what the most important piece of data is, e.g.        
+#      Do we only want to include data if the issue is related to a PR  
+#   1. create checks to protect from lack of PRs and commits?
 #   2. circumvent socket timeout
 #       - where does it come from?
 
@@ -37,8 +39,8 @@ INVALID_TOKEN_STR = """\n    Invalid personal access token!\n
 
 PR_COL_NAMES  = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                  "Issue_Title", "Issue_Body", "PR_Closed_Date", 
-                 "PR_Author", "PR_Title", "PR_Body", "PR_Comments",
-                 "Issue_Comments", "PR_Author" "Commit_Author", 
+                 "PR_Title", "PR_Body", "PR_Comments",
+                 "Issue_Comments", "PR_Author", "Commit_Author", 
                  "Commit_Date", "Commit_Message", "isPR"]
 
 TIME_FORM_STR = "%m/%d/%y %I:%M:%S %p"
@@ -123,21 +125,30 @@ def exe_gather_and_write( conf_list ):
 
     # gather list lens and init issue_list_len to == pr_list_len
     #   this makes certain test passes if output_type is not "pr"
-    pr_list_len     = len( pr_info_list ) - 1
-    commit_list_len = len( commit_info_list ) - 1
+    pr_list_len     = len( pr_info_list ) 
+    commit_list_len = len( commit_info_list )
     issue_list_len  = pr_list_len
 
     if output_type == "pr":
         issue_info_list = metalist_list[2]
-        issue_list_len = len( issue_info_list ) - 1
+        issue_list_len = len( issue_info_list )
+
+    print()
+    print( pr_list_len )
+    print( commit_list_len )
+    print( issue_list_len )
 
 
-    if pr_list_len != commit_list_len or pr_list_len != issue_list_len:
+    # TODO:
+    #   Determine what the most important piece of data is, e.g.
+    #   Do we only want to include data if the issue is related to a PR 
+    if pr_list_len == commit_list_len and pr_list_len == issue_list_len:
         row_quant = pr_list_len
 
-        write_csv_output( metalist_list, row_quant, output_type, out_file_name ) 
+        write_csv_output( metalist_list, row_quant, output_type, out_file_name )
 
     else:
+        print( '\n' )
         print( "Info lists are incongruent length! See info getter functions!" )
 
 
@@ -221,28 +232,31 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
     commit_file_list         = " =||= "             
     commit_patch_text        = " =||= "     
     commit_adds              = " =||= "
-    commit_rms               = " =||= "            
+    commit_removes           = " =||= "            
     quoted_commit_status_str = " =||= "
     commit_changes           = " =||= "         
 
+    # establish entire list
+    commit_info_list = [ commit_author, commit_message, commit_committer,
+                         commit_SHA, commit_file_list, commit_patch_text,
+                         commit_adds, commit_removes, quoted_commit_status_str,
+                         commit_changes ] 
 
     # init other vars
-    commit_file_list     = [ commit_author, commit_message ]
-    commit_info_list     = []
+    commit_file_list     = [] 
     commit_info_metalist = []
     commit_list_index    = 0
     cur_commit           = None
 
-    
- 
     # enforce index safety
     if row_quant == str.lower( "all" ):
-        row_quant = len( commit_py_list ) -1
+        row_quant = len( commit_py_list )
 
     else:
         row_quant = int( row_quant )
 
 
+    # begin process  
     print( "\n\nGetting commit info..." )
 
     while commit_list_index < row_quant:
@@ -254,9 +268,14 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
 
                 # get relevant author
                 commit_author = cur_commit.commit.author.name
-                
+
                 # get relevant commit message
                 commit_message = cur_commit.commit.message
+
+                commit_info_list = [ 
+                        commit_author, 
+                        commit_message 
+                        ]
 
                 # get output type-dependent info. Appends start at index 2
                 if output_type == "pr":
@@ -274,7 +293,7 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
                     commit_changes       = 0
                     commit_file_list     = []
                     commit_patch_text    = ""
-                    commit_rms           = 0
+                    commit_removes       = 0
                     commit_status_str    = ""
                     
                     
@@ -293,7 +312,7 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
                         commit_adds       += int( file.additions )
                         commit_changes    += int( file.changes )
                         commit_patch_text += str( file.patch ) + ", "
-                        commit_rms        += int( file.deletions )
+                        commit_removes    += int( file.deletions )
                         commit_status_str += file.status + ", "
 
                     
@@ -305,7 +324,7 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
                             commit_file_list, 
                             commit_patch_text,
                             commit_adds,
-                            commit_rms,
+                            commit_removes,
                             quoted_commit_status_str,
                             commit_changes
                             ]
@@ -411,11 +430,15 @@ def get_info_metalists( session, repo_str, row_quant, output_type ):
 #--------------------------------------------------------------------------- 
 def get_issue_info( issue_paged_list, session, row_quant ):
 
-    index              = 0
-    isPR               = 0
-    issue_comment_str  = " =||= "
-    issue_context_list = []
-    issue_metalist     = []
+    # init info entries that can be empty to prevent empty spaces in output
+    issue_closed_date = " =||= "
+    issue_comment_str = " =||= "
+
+    # init vars 
+    index             = 0
+    isPR              = 0
+    issue_info_list   = []
+    issue_metalist    = []
 
 
     # enforce index safety
@@ -436,12 +459,15 @@ def get_issue_info( issue_paged_list, session, row_quant ):
             # get info from curret issue
             issue_author_str  = str( cur_issue.user.name ) 
             issue_body_str    = str( cur_issue.body )
-            issue_closed_date = str( cur_issue.closed_at.strftime( TIME_FORM_STR ))
             issue_title_str   = str( cur_issue.title )
+
+            if cur_issue.closed_at is not None:
+                issue_closed_date = str( cur_issue.closed_at.strftime( TIME_FORM_STR ))
 
             # get issue comment at last position
             comments_paged_list = cur_issue.get_comments() 
 
+            # get comments if comments exist. Else, defaults to special char
             if comments_paged_list.totalCount > 0:
                 last_comment_pos    = comments_paged_list.totalCount - 1
                 last_comment        = comments_paged_list[last_comment_pos]
@@ -451,11 +477,20 @@ def get_issue_info( issue_paged_list, session, row_quant ):
             if cur_issue.pull_request is not None:
                 isPR = 1 
             
-            # clean and quote issue body str
-            issue_body_stripped = issue_body_str.strip( '\n' )
-            issue_body_str      = issue_body_stripped
+            if issue_author_str == "None":
+                issue_author_str = " =||= "
 
-            issue_context_list  = [
+
+            # clean and quote issue body str
+            if issue_body_str == '':
+                issue_body_str    = " =||= "
+
+            else:
+                issue_body_stripped = issue_body_str.strip( '\n' )
+                issue_body_str      = issue_body_stripped 
+
+
+            issue_info_list = [
                     issue_closed_date, 
                     issue_author_str, 
                     issue_title_str, 
@@ -465,7 +500,7 @@ def get_issue_info( issue_paged_list, session, row_quant ):
                     ]
 
 
-            issue_metalist.append( issue_context_list )
+            issue_metalist.append( issue_info_list )
 
             print_rem_calls( session )
 
@@ -598,29 +633,33 @@ def get_paginated_lists( session, repo_str, output_type ):
    
     # loop until both lists are fully retrieved
     while all_lists_retrieved == False:
-       try:
-           # retrieve GitHub repo object
-           repo_obj = session.get_repo( repo_str )   
+        try:
+            # retrieve GitHub repo object
+            repo_obj = session.get_repo( repo_str )   
 
-           print( "\n\nGathering GitHub data paginated lists..." )
-           
-           # retrieve paginated list of pull requests
-           pr_list = repo_obj.get_pulls( base='master', direction='asc', 
-                                         sort='created', state='all' ) 
+            # get base branch
+            #   This precludes a bug where the repo returns no paginated lists
+            base_branch = repo_obj.default_branch
 
-           if output_type == "pr": 
-               # retrieve paginated list of issues
-               issues_list = repo_obj.get_issues( direction='asc',
-                                                  sort='created', 
-                                                  state='closed' )
+            print( "\n\nGathering GitHub data paginated lists..." )
+            
+            # retrieve paginated list of pull requests
+            pr_list = repo_obj.get_pulls( base=base_branch, direction='asc', 
+                                          sort='created', state='all' ) 
+
+            if output_type == "pr": 
+                # retrieve paginated list of issues
+                issues_list = repo_obj.get_issues( direction='asc',
+                                                   sort='created', 
+                                                   state='all' )
 
 
-           print_rem_calls( session )
+            print_rem_calls( session )
 
-           all_lists_retrieved = True
+            all_lists_retrieved = True
 
 
-       except github.RateLimitExceededException:
+        except github.RateLimitExceededException:
            run_timer( session ) 
 
 
@@ -679,7 +718,6 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type ):
     # establish base values
     most_recent_commit = " =||= "
     pr_author_str      = " =||= " 
-    pr_body_str        = " =||= "
     pr_closed_date_str = " =||= "
     pr_comment_str     = " =||= "
     pr_title_str       = " =||= "
@@ -724,11 +762,19 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type ):
                 pr_title_str       = str( cur_pr.title )  
 
                 #  clean each pr body of new line chars and place in quotes
-                pr_body_str = pr_body_str.strip( '\n' )
+                if pr_body_str == "":
+                    pr_body_str = " =||= "
+
+                else:
+                    pr_body_str = pr_body_str.strip( '\n' )
+
 
                 # add special string in place of empty comments
                 if pr_comment_str == '0':
                     pr_comment_str = " =||= " 
+
+                if pr_title_str == '':
+                    pr_title_str = " =||= "
 
 
                 pr_info_list += [
@@ -739,7 +785,6 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type ):
                         pr_title_str,
                         ]
 
-
             # append each list of pr info to a metalist
             pr_metalist.append( pr_info_list )
 
@@ -748,7 +793,7 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type ):
             last_commit_position = pr_commits.totalCount - 1
             
             # test if index value is valid
-            if last_commit_position >= 0:
+            if last_commit_position > -1:
 
                 #  get most recent commit
                 most_recent_commit = pr_commits[last_commit_position]

@@ -1,5 +1,0 @@
-type=pr 
-auth_file=user_auth.txt
-repo=alacritty/alacritty
-rows=all
-output=Issue_com_test.csv

@@ -1,0 +1,5 @@
+type=pr 
+auth_file=user_auth.txt
+repo=cartertaylor/SociAll 
+rows=all
+output=prog_runs/sociall_all_test.csv

@@ -1,0 +1,3396 @@
+Author_LoginCommitter_loginPR_NumberSHACommit_MessageFile_namePatch_textAdditionsDeletionsStatusChanges
+jacobPenneyjacobPenney1753f09ee6ea198458a2fa3aa0eb5c62a9d475226[refactor]: amend csv writing to allow for delimiter usage['.DS_Store', '.gitignore', 'GithubParser.py', 'output.csv', 'repo_input.txt', 'sample_outputs/commit.csv', 'sample_outputs/pr_ez.csv', 'sample_outputs/pull-request.csv']"None, @@ -0,0 +1 @@
++user_auth.txt, @@ -10,6 +10,10 @@
+ # TODO:
+ #   - clean annotations
+ #   - add arg_parser description
++#   - create checks to protect from lack of pull requests
++#   - get issue info in one loop?
++
++
+ 
+ 
+ # imports
+@@ -20,43 +24,20 @@
+ 
+ # constants
+ COMMA       = ','
+-DESCRIPTORS = (
+-        ""PR_Number,Issue_Closed_Date, Issue_Author, Issue_Title, Issue_Body,""
+-        "" Issue_comments, PR_Closed_Date,PR_Author, PR_Title, PR_Body,""
+-        "" PR_Comments, Commit_Author, Commit_Date, Commit_Message, isPR""
+-         )
+ NEW_LINE    = '\n'
+-OUTPUT_DASH = ""---------------------""
+ RATE_LIMIT  = 5
+ READ        = 'r' 
+-WRITE       = 'w'
+ 
+ 
+ 
+ 
+ def main():
+-    # establish positional argument capability
+-    arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
+-      
+-
+-    # add repo input CLI arg
+-    arg_parser.add_argument( 'input_file', type=str,  
+-                              help=""""""text file containing properly 
+-                              formatted arguments"""""" ) 
+ 
+-
+-    # add auth token CLI arg
+-    arg_parser.add_argument( 'auth_file', type=str, 
+-                              help=""""""text file containing user 
+-                              authentification info"""""" ) 
+-
+-
+-    arg_parser.add_argument( 'output_file_name', type=str, 
+-                              help=""CSV file to write output to"" )      
+-     
++    print( ""Gathering GitHub data...\n"" )
+ 
+     # retrieve positional arguments as variables
+-    CLI_args = arg_parser.parse_args() 
++    CLI_args = get_args() 
++
+     repo_input_file_to_open = CLI_args.input_file
+     userauth_file_to_open = CLI_args.auth_file
+     output_file_name =  CLI_args.output_file_name
+@@ -80,21 +61,23 @@ def main():
+ 
+ 
+     # retrieve paginated list of pull requests
+-    pr_paginated_list = repo_input_paginated_list.get_pulls( 
+-                                state='open', sort='created', base='master' )
+-
++    pr_paginated_list = repo_input_paginated_list.get_pulls( base='master',  
++                                               direction='asc', sort='created',
++                                               state='all' )
+ 
++    
+     # retrieve paginated list of issues
+-    issues_paginated_list = repo_input_paginated_list.get_issues( state=""closed"" )
++    issues_paginated_list = repo_input_paginated_list.get_issues(direction='asc',
++                                                sort='created', state='closed' )
++     
++    print( ""Writing data...\n"" )
+      
+-
+     # write output to csv file
+-    write_csv_output( issues_paginated_list, output_file_name,
+-                      pr_paginated_list )
+-
++    write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
+     
+ 
+ 
++
+ # ---------------------------------------------------------------------------
+ # Function: create_input_list 
+ # Process: accepts the name of a file to open, opens the file, reads its
+@@ -136,6 +119,49 @@ def create_input_list( fileToOpen ):
+ 
+ 
+  
++#--------------------------------------------------------------------------- 
++# Function name : get_args 
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def get_args():
++
++    # TODO
++    #   add mutex arg for diff filetype
++
++    # establish positional argument capability
++    arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
++      
++
++    # add repo input CLI arg
++    arg_parser.add_argument( 'input_file', type=str,  
++                              help=""""""text file containing properly formatted 
++                              arguments"""""" ) 
++
++
++    # add auth token CLI arg
++    arg_parser.add_argument( 'auth_file', type=str, 
++                              help=""""""text file containing user 
++                              authentification info"""""" ) 
++
++
++    arg_parser.add_argument( 'output_file_name', type=str, 
++                              help=""CSV file to write output to"" )      
++     
++
++    # retrieve positional arguments as variables
++    CLI_args = arg_parser.parse_args()  
++
++
++    return CLI_args
++
++
++
++ 
++
++ 
+ # ---------------------------------------------------------------------------
+ # Function: 
+ # Process: 
+@@ -151,14 +177,11 @@ def get_issue_author( issue_list ):
+     while index < RATE_LIMIT:
+         cur_issue = issue_list[index]
+         issueAuthorStr = str( cur_issue.user.name )
+-        print( issueAuthorStr )
+ 
+         outList.append( issueAuthorStr )
+         index += 1
+ 
+ 
+-    print( OUTPUT_DASH + ""loop exit-IssueAuthor"" + OUTPUT_DASH )
+-
+     return outList
+ 
+ 
+@@ -178,14 +201,15 @@ def get_issue_body( issue_list ):
+ 
+     while index < RATE_LIMIT:
+         cur_issue = cur_issue = issue_list[index]
+-        issueBodyStr = str( cur_issue.body )
+-        print( ""getting body at index:"" + str( index ) )
++        issue_body_str = str( cur_issue.body )
+ 
+-        outList.append( issueBodyStr )
+-        index += 1
++        stripped_issue_body_str = issue_body_str.replace( '\\', '' )
++
++        out_issue_body_str = ""\"""" + stripped_issue_body_str + ""\""""
+ 
++        outList.append( out_issue_body_str  )
++        index += 1
+ 
+-    print( OUTPUT_DASH + ""loop exit-IssueBody"" + OUTPUT_DASH )
+ 
+     return outList
+ 
+@@ -207,14 +231,11 @@ def get_issue_closedDate( issue_list ):
+     while index < RATE_LIMIT:
+         cur_issue = issue_list[index]
+         issueDateStr = str( cur_issue.closed_at )
+-        print( issueDateStr )
+ 
+         outList.append( issueDateStr )
+         index += 1
+ 
+     
+-    print( OUTPUT_DASH + ""loop exit-closedDates"" + OUTPUT_DASH)
+-
+     return outList
+ 
+ 
+@@ -235,14 +256,11 @@ def get_issue_comments( issue_list ):
+     while index < RATE_LIMIT:
+         cur_issue = issue_list[index]
+         issueCommentStr = str( cur_issue.comments )
+-        print( ""getting comments at index:"" + str( index ) )
+ 
+         outList.append( issueCommentStr )
+         index += 1
+ 
+ 
+-    print( OUTPUT_DASH + ""loop exit-IssueComments"" + OUTPUT_DASH )
+-
+     return outList
+ 
+ 
+@@ -263,42 +281,36 @@ def get_issue_title( issue_list ):
+     while index < RATE_LIMIT:
+         cur_issue = issue_list[index]
+         issueTitleStr = str( cur_issue.title )
+-        print( ""Getting issue title at index: "" + str( index ) )
+ 
+         outList.append( issueTitleStr )
+         index+=1
+ 
+ 
+-    print( OUTPUT_DASH + ""loop exit-IssueTitle"" + OUTPUT_DASH )
+-
+     return outList
+ 
+ 
+ 
+ 
+ # ---------------------------------------------------------------------------
+-# Function: get_PR_number
++# Function: get_PR_init_info
+ # Process: 
+ # Parameters: 
+ # Postcondition: 
+ # Exceptions: none
+ # Note: none
+ # ---------------------------------------------------------------------------
+-def get_PR_number( pr_list ):
++def get_PR_init_info( pr_list ):
+     outList = []
+-    index = 0
++    index   = 0
+ 
+     while index < RATE_LIMIT:
+         cur_pr = pr_list[index]
+-        prStr = str( cur_pr.number ) + "",""
+-        print( prStr )
++        pr_num = str( cur_pr.number ) 
+ 
+-        outList.append( prStr )
++        outList.append( pr_num )
+         index+=1
+ 
+ 
+-    print( OUTPUT_DASH + ""loop exit-PRNumber"" + OUTPUT_DASH )
+-
+     return outList
+ 
+ 
+@@ -366,20 +378,24 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+  
+ 
+     # Open the output csv file in preparation for writing
+-    with open( output_file_name, WRITE, newline="""", 
++    with open( output_file_name, 'w', newline="""", 
+                                                 encoding=""utf-8"" ) as csvfile:
+         writer = csv.writer( 
+-                csvfile, quoting=csv.QUOTE_NONE, delimiter='|', 
+-                quotechar='', escapechar='\\', lineterminator='\n' 
+-                )
++                csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
++                quotechar='', escapechar='\\', lineterminator=NEW_LINE )
+ 
+ 
+         # write labels at top of output
+-        writer.writerow( [DESCRIPTORS] )
++        writer.writerow( [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
++                          ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
++                          ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
++                          ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
++                          ""Commit_Message"", ""isPR""] )
+ 
+ 
+         # retrieve lists of PR and issue data
+-        pr_num_list = get_PR_number( pr_list )
++        pr_num_list = get_PR_init_info( pr_list )
++
+         issue_closed_dates_list = get_issue_closedDate( issues_list )
+         issue_authors_list = get_issue_author( issues_list )
+         issue_titles_list = get_issue_title( issues_list )
+@@ -396,10 +412,10 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+ 
+ 
+             # print rows to output file 
+-            output_row = pr_num + issue_closed_date
+-            # output_row = pr_num + issue_closed_date + issue_author + issue_title + issue_body
++            # output_row = [ pr_info, issue_title, issue_author ]
+         
+-            writer.writerow( [output_row] )
++            writer.writerow( [ pr_num, issue_closed_date, issue_title,
++                               issue_body, issue_author ] )
+ 
+             aggregation_index += 1
+      , @@ -0,0 +1,10 @@
++PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
++12014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.\
++""Olaf Lenz
++22014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. \
++""Simon Harrer
++32014-03-15 12:55:32Some example new Dutch translations via the GitHub web page.""""Egon Willighagen
++42014-03-17 22:20:50Spanish translation update""Three new strings translated.\
++""Jorge Tornero
++52014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added\
++""None, @@ -0,0 +1 @@
++""JabRef/jabref"", None, @@ -0,0 +1,4 @@
++PR_Number Issue_Closed_Date Issue_Author Issue_Title Issue_Body PR_Closed_Date PR_Title PR_Body PR_Comments Issue_Comments PR_Author Commit_Author Commit_Date Commit_Message
++1 3/12/2014 11:38:01 AM New Sorting/Export preferences ""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
++"" 3/12/2014 11:38:01 AM New Sorting/Export preferences ""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
++"" =||= "" "" =||= "" olenz Olaf Lenz 3/12/2014 9:16:45 AM Merge branch 'sorting', @@ -0,0 +1,130 @@
++PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyPR_Closed_DatePR_TitlePR_BodyPR_CommentsIssue_CommentsPR_AuthorCommit_AuthorCommit_DateCommit_Message
++13/12/2014 11:38:01 AMNew Sorting/Export preferences""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
++""3/12/2014 11:38:01 AMNew Sorting/Export preferences""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
++"""" =||= """" =||= ""olenzOlaf Lenz3/12/2014 9:16:45 AMMerge branch 'sorting'
++23/12/2014 6:29:22 PMBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
++""3/12/2014 6:29:22 PMBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
++"""" =||= """" =||= ""simonharrerSimon Harrer3/12/2014 5:20:08 PMGradle build works basically. Reuses existing folder structure.
++33/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page.3/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page."" =||= """" =||= ""egonwEgon Willighagen3/15/2014 9:33:10 AMSome example new Dutch translations via the GitHub web page.
++43/17/2014 10:20:50 PMSpanish translation update""Three new strings translated.
++""3/17/2014 10:20:50 PMSpanish translation update""Three new strings translated.
++"""" =||= """" =||= Even though the other translation files have been updated, I accept this pull request.
++For next time, please try to commit only the """"really"""" changed file and revert the changes of the other one. You can also use the edit button at https://github.com/JabRef/jabref/blob/master/src/resource/JabRef_es.properties
++ =||= ""jtornerojtornero3/17/2014 9:28:26 PMSpanish translation update
++53/18/2014 5:12:53 AMUpdate JabRef_in.properties""Indonesian translation added
++""3/18/2014 5:12:53 AMUpdate JabRef_in.properties""Indonesian translation added
++"""" =||= """" =||= ""was123was1233/18/2014 12:01:58 AM""Update JabRef_in.properties
++
++Indonesian translation added""
++63/19/2014 7:46:25 PMFixed splash-dev.svg3/19/2014 7:46:25 PMFixed splash-dev.svg"" =||= """" =||= ""olenzOlaf Lenz3/19/2014 7:41:29 PMFixed splash-dev.svg
++73/23/2014 4:03:12 PM"" I have implemented 2 features requested in Ticket #841.""""```
++The user can now specify an arbitrary number of file-link columns in te """"Entry table columns"""" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
++
++For each file-link column whenever there are multiple files, the letter """"m"""" is displayed at the bottom right corner of the icon.
++```
++
++ Committer: noravanq
++
++ On branch master
++ Changes to be committed:
++   (use """"git reset HEAD <file>..."""" to unstage)
++
++```
++modified:   src/main/java/net/sf/jabref/GUIGlobals.java
++modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
++modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
++modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
++modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
++modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java
++```
++""3/23/2014 4:03:12 PM"" I have implemented 2 features requested in Ticket #841.""""```
++The user can now specify an arbitrary number of file-link columns in te """"Entry table columns"""" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
++
++For each file-link column whenever there are multiple files, the letter """"m"""" is displayed at the bottom right corner of the icon.
++```
++
++ Committer: noravanq
++
++ On branch master
++ Changes to be committed:
++   (use """"git reset HEAD <file>..."""" to unstage)
++
++```
++modified:   src/main/java/net/sf/jabref/GUIGlobals.java
++modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
++modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
++modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
++modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
++modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java
++```
++"""" =||= """" =||= ""noravanqnoravanq3/23/2014 4:48:49 AM"" I have implemented 2 features requested in Ticket #841.
++
++    The user can now specify an arbitrary number of file-link columns in te """"Entry table columns"""" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
++
++    For each file-link column whenever there are multiple files, the letter """"m"""" is displayed at the bottom right corner of the icon.
++
++ Committer: noravanq
++
++ On branch master
++ Changes to be committed:
++   (use """"git reset HEAD <file>..."""" to unstage)
++
++	modified:   src/main/java/net/sf/jabref/GUIGlobals.java
++	modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
++	modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
++	modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
++	modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
++	modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java""
++84/23/2014 9:23:03 PMPDF-file metadata: Privacy Filtering all metadata""This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry """"Write XMP metadata to PDFs"""" in the """"Tools"""" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.
++
++Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. 
++
++The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by """"jabref/""""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.
++
++If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: 
++https://sourceforge.net/p/jabref/bugs/869/
++can be closed.
++""4/23/2014 9:23:03 PMPDF-file metadata: Privacy Filtering all metadata""This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry """"Write XMP metadata to PDFs"""" in the """"Tools"""" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.
++
++Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. 
++
++The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by """"jabref/""""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.
++
++If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: 
++https://sourceforge.net/p/jabref/bugs/869/
++can be closed.
++"""" =||= """" =||= thx!
++ =||= ""adaerrAdrian Daerr4/22/2014 6:19:15 PMErase fields listed in XMP Privacy Settings from PDF DocumentInformation when XMP-tagging
++95/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs""Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
++""5/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs""Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
++"""" =||= """" =||= ""ansellPeter Ansell5/7/2014 1:02:09 AMadd CSIRO copyright 2014
++105/20/2014 12:55:20 PMtry to fix some obvious bugs about `groups`""Hi All,
++I just upgraded to 2.10 and I found some bugs immediately.
++1. in the right-click-menu there is no `move-to-group` but 2 `remove
++from group` instead.
++2. I like the new add/remove/move panel, but the scrolling is not
++working, which is a big problem. Because I have lots of groups which
++cannot even fit into the full screen height after expansion.
++3. no way to expand or collapse all nodes
++
++I tried the dev version, all problems still exist. Here is my fixation.
++
++Cheers,
++
++W.L.
++""5/20/2014 12:55:20 PMtry to fix some obvious bugs about `groups`""Hi All,
++I just upgraded to 2.10 and I found some bugs immediately.
++1. in the right-click-menu there is no `move-to-group` but 2 `remove
++from group` instead.
++2. I like the new add/remove/move panel, but the scrolling is not
++working, which is a big problem. Because I have lots of groups which
++cannot even fit into the full screen height after expansion.
++3. no way to expand or collapse all nodes
++
++I tried the dev version, all problems still exist. Here is my fixation.
++
++Cheers,
++
++W.L.
++"""" =||= """" =||= After 2.10 the BibtexEntryType.java is changed a lot. The optional fields and required fields are very different. If one need the field order is exactly the same as the 2.9.2, one should manually define the order. 2.10 also fixes some bugs in entry sorting. Some entries will be always different from 2.9.2. So I think backward-compatibility does not make sense any more. If one really want the bib file arranged in the same way as 2.9.2, he should just use 2.9.2. Upgrade all client to 2.10 makes more sense here.
++ =||= ""braindevicesLing Wang5/20/2014 2:56:41 AMfix bug causing double entries., "562768"""removed, added, modified, added, added, added, added, added, """5695
+jacobPenneyjacobPenney2782aad1971988b262486010bef00560df1743e55[refactor]: condense getter methods['extractor.py']"@@ -41,17 +41,17 @@ def main():
+     repo_input_file_to_open = CLI_args.input_file
+     userauth_file_to_open = CLI_args.auth_file
+     output_file_name =  CLI_args.output_file_name
++     
++
++    # get user info
++    userauth_list = read_user_info( userauth_file_to_open )  
+ 
+ 
+     # get repo inputs
+     repo_list = create_input_list( repo_input_file_to_open )  
+     test_repo = repo_list[0]
+ 
+ 
+-    # get user info
+-    userauth_list = read_user_info( userauth_file_to_open ) 
+-
+-
+     # authenticate with GitHub
+     git_session = Github( userauth_list[0] )
+     
+@@ -157,8 +157,6 @@ def get_args():
+ 
+     return CLI_args
+ 
+-
+-
+  
+ 
+  
+@@ -170,148 +168,82 @@ def get_args():
+ # Exceptions: none
+ # Note: none
+ # ---------------------------------------------------------------------------  
+-def get_issue_author( issue_list ):
+-    outList = []
+-    index   = 0
+-
+-    while index < RATE_LIMIT:
+-        cur_issue = issue_list[index]
+-        issueAuthorStr = str( cur_issue.user.name )
++def get_issue_info( issue_list ):
+ 
+-        outList.append( issueAuthorStr )
+-        index += 1
+-
+-
+-    return outList
+-
+-
+-
+-
+-# ---------------------------------------------------------------------------
+-# Function: 
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------
+-def get_issue_body( issue_list ):
+-    outList = []
+     index   = 0
+-
+-    while index < RATE_LIMIT:
+-        cur_issue = cur_issue = issue_list[index]
+-        issue_body_str = str( cur_issue.body )
+-
+-        stripped_issue_body_str = issue_body_str.replace( '\\', '' )
+-
+-        out_issue_body_str = ""\"""" + stripped_issue_body_str + ""\""""
+-
+-        outList.append( out_issue_body_str  )
+-        index += 1
+-
+-
+-    return outList
++    issue_context_list = []
++    issue_metalist = []
+ 
+ 
+-
+-
+-# ---------------------------------------------------------------------------
+-# Function: 
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# --------------------------------------------------------------------------- 
+-def get_issue_closedDate( issue_list ):
+-    outList = []
+-    index   = 0
+-
+     while index < RATE_LIMIT:
+         cur_issue = issue_list[index]
+-        issueDateStr = str( cur_issue.closed_at )
+-
+-        outList.append( issueDateStr )
++ 
++        issue_author_str      = str( cur_issue.user.name )
++        issue_body_str        = str( cur_issue.body )
++        issue_comment_str     = str( cur_issue.comments ) 
++        issue_closed_date_str = str( cur_issue.closed_at )
++        issue_title_str       = str( cur_issue.title )
++        
++        issue_context_list = [
++                issue_closed_date_str, 
++                issue_author_str, 
++                issue_title_str, 
++                issue_body_str,
++                issue_comment_str 
++                ]
++
++        issue_metalist.append( issue_context_list )
+         index += 1
+ 
+-    
+-    return outList
+-
+-
+-
+-
+-# ---------------------------------------------------------------------------
+-# Function: 
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------
+-def get_issue_comments( issue_list ):
+-    outList = []
+-    index   = 0
+-
+-    while index < RATE_LIMIT:
+-        cur_issue = issue_list[index]
+-        issueCommentStr = str( cur_issue.comments )
+-
+-        outList.append( issueCommentStr )
+-        index += 1
+ 
++    return issue_metalist
+ 
+-    return outList
+ 
+ 
+ 
+ 
+ # ---------------------------------------------------------------------------
+-# Function: 
++# Function: get_PR_init_info
+ # Process: 
+ # Parameters: 
+ # Postcondition: 
+ # Exceptions: none
+ # Note: none
+-# ---------------------------------------------------------------------------   
+-def get_issue_title( issue_list ):
+-    outList = []
+-    index = 0
+-
+-    while index < RATE_LIMIT:
+-        cur_issue = issue_list[index]
+-        issueTitleStr = str( cur_issue.title )
+-
+-        outList.append( issueTitleStr )
+-        index+=1
+-
+-
+-    return outList
+-
++# ---------------------------------------------------------------------------
++def get_PR_info( pr_list ):
+ 
++    # TODO:
++    #   need author?
+ 
+ 
+-# ---------------------------------------------------------------------------
+-# Function: get_PR_init_info
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------
+-def get_PR_init_info( pr_list ):
+-    outList = []
+     index   = 0
++    pr_info_list = []
++    pr_metalist = []
++
+ 
+     while index < RATE_LIMIT:
+         cur_pr = pr_list[index]
+-        pr_num = str( cur_pr.number ) 
+ 
+-        outList.append( pr_num )
++        # author_str      = str( cur_pr.author ) 
++        pr_body_str        = str( cur_pr.body )
++        pr_closed_date_str = str( cur_pr.closed_at )
++        pr_comment_str     = str( cur_pr.comments )
++        pr_num_str         = str( cur_pr.number ) 
++        pr_title_str       = str( cur_pr.title ) 
++
++        pr_info_list = [
++                pr_body_str,
++                pr_closed_date_str,
++                pr_comment_str,
++                pr_num_str,
++                pr_title_str
++                ]
++
++        pr_metalist.append( pr_info_list )
+         index+=1
+ 
+ 
+-    return outList
++    return pr_metalist
+ 
+ 
+ 
+@@ -369,11 +301,6 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+     aggregation_index       = 0
+ 
+     # data lists
+-    issue_authors_list      = []
+-    issue_bodies_list       = []
+-    issue_closed_dates_list = []
+-    isssue_comments_list    = []
+-    issue_titles_list       = []
+     pr_num_list             = []  
+  
+ 
+@@ -394,30 +321,25 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+ 
+ 
+         # retrieve lists of PR and issue data
+-        pr_num_list = get_PR_init_info( pr_list )
++       #  pr_num_list = get_PR_init_info( pr_list )
+ 
+-        issue_closed_dates_list = get_issue_closedDate( issues_list )
+-        issue_authors_list = get_issue_author( issues_list )
+-        issue_titles_list = get_issue_title( issues_list )
+-        issue_bodies_list = get_issue_body( issues_list )
+-
+-        
+-        # aggregate data lists into rows
+-        while aggregation_index < RATE_LIMIT:
+-            issue_author = issue_authors_list[aggregation_index]
+-            issue_body = issue_bodies_list[aggregation_index] 
+-            issue_closed_date = issue_closed_dates_list[aggregation_index] 
+-            issue_title = issue_titles_list[aggregation_index] 
+-            pr_num = pr_num_list[aggregation_index] 
++       #  
++       #  # aggregate data lists into rows
++       #  while aggregation_index < RATE_LIMIT:
++       #      issue_author = issue_authors_list[aggregation_index]
++       #      issue_body = issue_bodies_list[aggregation_index] 
++       #      issue_closed_date = issue_closed_dates_list[aggregation_index] 
++       #      issue_title = issue_titles_list[aggregation_index] 
++       #      pr_num = pr_num_list[aggregation_index] 
+ 
+ 
+-            # print rows to output file 
+-            # output_row = [ pr_info, issue_title, issue_author ]
++       #      # print rows to output file 
++       #      # output_row = [ pr_info, issue_title, issue_author ]
+         
+-            writer.writerow( [ pr_num, issue_closed_date, issue_title,
+-                               issue_body, issue_author ] )
++       #      writer.writerow( [ pr_num, issue_closed_date, issue_title,
++       #                         issue_body, issue_author ] )
+ 
+-            aggregation_index += 1
++       #      aggregation_index += 1
+      
+ 
+ , "63141"""renamed, """204
+jacobPenneyjacobPenney358b7b28fd185e2fa953ded1df9e695c1c270af38[refactor]: update csv writing mechanism to accomodate getter method consolidation['extractor.py', 'output.csv']"@@ -2,7 +2,7 @@
+ # Author: Jacob Stuck and Jacob Penney
+ # Purpose:
+ # Process: 
+-# Notes: documentation can be found @:
++# Notes: documentation for pygithub can be found @:
+ #   - Github: https://pygithub.readthedocs.io/en/latest/github.html
+ # --------------------------------------------------------------------------- 
+ 
+@@ -11,8 +11,15 @@
+ #   - clean annotations
+ #   - add arg_parser description
+ #   - create checks to protect from lack of pull requests
+-#   - get issue info in one loop?
+-
++#   - need:
++#       - PR: NEED AUTHOR
++#           - Author, Number, Closed_Date, Title, Body, Comments
++# 
++#       - issue: DONE
++#           - Closed_Date, Author, Title, Body, Comments 
++# 
++#       - commits:
++#           - Author Date Message
+ 
+ 
+ 
+@@ -57,21 +64,28 @@ def main():
+     
+ 
+     # retrieve paginated list of repos
+-    repo_input_paginated_list = git_session.get_repo( test_repo )
+-
++    repo_paginated_list = git_session.get_repo( test_repo )
++     
+ 
+-    # retrieve paginated list of pull requests
+-    pr_paginated_list = repo_input_paginated_list.get_pulls( base='master',  
+-                                               direction='asc', sort='created',
+-                                               state='all' )
++    # retrieve paginated list of commits
++    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
++                                                            sort='created', 
++                                                            state='closed' )
++     
+ 
+-    
+     # retrieve paginated list of issues
+-    issues_paginated_list = repo_input_paginated_list.get_issues(direction='asc',
+-                                                sort='created', state='closed' )
+-     
+-    print( ""Writing data...\n"" )
++    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
++                                                            sort='created', 
++                                                            state='closed' )
+      
++
++    # retrieve paginated list of pull requests
++    pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
++                                                       direction='asc', 
++                                                       sort='created',
++                                                       state='all' )
++
++
+     # write output to csv file
+     write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
+     
+@@ -157,17 +171,30 @@ def get_args():
+ 
+     return CLI_args
+ 
+- 
++
++
++
++#--------------------------------------------------------------------------- 
++# Function name : 
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def get_commit_info(  ):
++    pass
++
++
+ 
+  
+-# ---------------------------------------------------------------------------
+-# Function: 
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------  
++
++#--------------------------------------------------------------------------- 
++# Function name : get_issue_info
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
+ def get_issue_info( issue_list ):
+ 
+     index   = 0
+@@ -184,6 +211,9 @@ def get_issue_info( issue_list ):
+         issue_closed_date_str = str( cur_issue.closed_at )
+         issue_title_str       = str( cur_issue.title )
+         
++        issue_body_stripped = issue_body_str.strip( NEW_LINE )
++        issue_body_str = ""\"""" + issue_body_stripped + ""\""""
++
+         issue_context_list = [
+                 issue_closed_date_str, 
+                 issue_author_str, 
+@@ -201,15 +231,13 @@ def get_issue_info( issue_list ):
+ 
+ 
+ 
+-
+-# ---------------------------------------------------------------------------
+-# Function: get_PR_init_info
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------
++#--------------------------------------------------------------------------- 
++# Function name : get_PR_info
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
+ def get_PR_info( pr_list ):
+ 
+     # TODO:
+@@ -298,15 +326,28 @@ def read_user_info( userinfo_file ):
+ # ---------------------------------------------------------------------------
+ def write_csv_output( issues_list, output_file_name, pr_list ):
+     # index for aggregation loop
+-    aggregation_index       = 0
++    aggregation_index   = 0
+ 
+     # data lists
+-    pr_num_list             = []  
++    issue_info_metalist = []  
++    pr_info_metalist    = []  
+  
++    # retrieve lists of PR and issue data                 
++    issue_info_metalist = get_issue_info( issues_list )   
++    pr_info_metalist = get_PR_info( pr_list )             
++                                                          
++    
++    # print( ""issues:"")
++    # for issue in issue_info_metalist:                     
++    #     print( issue )                                    
++
++    # print( ""\nPR's:"")
++    # for pr in pr_info_metalist:                           
++    #     print( pr )                                       
+ 
+     # Open the output csv file in preparation for writing
+-    with open( output_file_name, 'w', newline="""", 
+-                                                encoding=""utf-8"" ) as csvfile:
++    with open( output_file_name, 'w', newline=""\n"", encoding=""utf-8"" ) as csvfile:
++
+         writer = csv.writer( 
+                 csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+                 quotechar='', escapechar='\\', lineterminator=NEW_LINE )
+@@ -321,25 +362,36 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+ 
+ 
+         # retrieve lists of PR and issue data
+-       #  pr_num_list = get_PR_init_info( pr_list )
++        issue_info_metalist = get_issue_info( issues_list )  
++        pr_info_metalist = get_PR_info( pr_list )
+ 
+-       #  
+-       #  # aggregate data lists into rows
+-       #  while aggregation_index < RATE_LIMIT:
+-       #      issue_author = issue_authors_list[aggregation_index]
+-       #      issue_body = issue_bodies_list[aggregation_index] 
+-       #      issue_closed_date = issue_closed_dates_list[aggregation_index] 
+-       #      issue_title = issue_titles_list[aggregation_index] 
+-       #      pr_num = pr_num_list[aggregation_index] 
+ 
++        print( ""Writing data...\n"" )
+ 
+-       #      # print rows to output file 
+-       #      # output_row = [ pr_info, issue_title, issue_author ]
+-        
+-       #      writer.writerow( [ pr_num, issue_closed_date, issue_title,
+-       #                         issue_body, issue_author ] )
++        # aggregate data lists into rows
++        while aggregation_index < RATE_LIMIT:
++            cur_issue = issue_info_metalist[aggregation_index]
++            issue_closed_date = cur_issue[0] 
++            issue_author      = cur_issue[1]
++            issue_title       = cur_issue[2]
++            issue_body        = cur_issue[3] 
++            issue_comments    = cur_issue[4]  
++
++
++            cur_pr = pr_info_metalist[aggregation_index]
++            pr_body         = cur_pr[0] 
++            pr_closed_date  = cur_pr[1] 
++            pr_comments     = cur_pr[2] 
++            pr_num          = cur_pr[3] 
++            pr_title        = cur_pr[4] 
++
++       
++            writer.writerow( [ pr_num, issue_closed_date, issue_author, 
++                               issue_title, issue_body, pr_closed_date,
++                               pr_title, pr_body, pr_comments, issue_comments,
++                               ] )
+ 
+-       #      aggregation_index += 1
++            aggregation_index += 1
+      
+ 
+ , @@ -1,10 +1,10 @@
+ PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
+-12014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.\
+-""Olaf Lenz
+-22014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. \
+-""Simon Harrer
+-32014-03-15 12:55:32Some example new Dutch translations via the GitHub web page.""""Egon Willighagen
+-42014-03-17 22:20:50Spanish translation update""Three new strings translated.\
+-""Jorge Tornero
+-52014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added\
+-""None
++12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferencesThis will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.\
++00
++22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integrationThis adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. \
++00
++32014-03-15 12:55:32Egon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page.00
++42014-03-17 22:20:50Jorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation updateThree new strings translated.\
++11
++52014-03-18 05:12:53NoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.propertiesIndonesian translation added\
++00, "11260"""modified, modified, """172
+jacobPenneyjacobPenney4172482774026bfd0ff4dbeeb8e63a2966f218a3e[feat]: add conditionals to catch empty strings['extractor.py', 'output.csv', 'sample_outputs/pull-request.csv']"@@ -11,15 +11,13 @@
+ #   - clean annotations
+ #   - add arg_parser description
+ #   - create checks to protect from lack of pull requests
+-#   - need:
+-#       - PR: NEED AUTHOR
+-#           - Author, Number, Closed_Date, Title, Body, Comments
+-# 
+-#       - issue: DONE
+-#           - Closed_Date, Author, Title, Body, Comments 
+-# 
++#   - transcend rate limit
++#   - for output, need:
+ #       - commits:
+-#           - Author Date Message
++#           - Author, Date, Message
++# 
++#       - isPR
++#           - what is this?
+ 
+ 
+ 
+@@ -32,8 +30,7 @@
+ # constants
+ COMMA       = ','
+ NEW_LINE    = '\n'
+-RATE_LIMIT  = 5
+-READ        = 'r' 
++RATE_LIMIT  = 2
+ 
+ 
+ 
+@@ -68,9 +65,7 @@ def main():
+      
+ 
+     # retrieve paginated list of commits
+-    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
+-                                                            sort='created', 
+-                                                            state='closed' )
++    commits_paginated_list = repo_paginated_list.get_commits()
+      
+ 
+     # retrieve paginated list of issues
+@@ -87,7 +82,8 @@ def main():
+ 
+ 
+     # write output to csv file
+-    write_csv_output( issues_paginated_list, output_file_name, pr_paginated_list )
++    write_csv_output( commits_paginated_list, issues_paginated_list, 
++                      output_file_name, pr_paginated_list )
+     
+ 
+ 
+@@ -108,7 +104,7 @@ def create_input_list( fileToOpen ):
+ 
+ 
+     # open file
+-    repo_input_file_obj = open( fileToOpen, READ )
++    repo_input_file_obj = open( fileToOpen, 'r' )
+ 
+     # read contents out
+     api_input_contents = repo_input_file_obj.readlines()
+@@ -148,23 +144,19 @@ def get_args():
+     # establish positional argument capability
+     arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
+       
+-
+     # add repo input CLI arg
+     arg_parser.add_argument( 'input_file', type=str,  
+                               help=""""""text file containing properly formatted 
+                               arguments"""""" ) 
+ 
+-
+     # add auth token CLI arg
+     arg_parser.add_argument( 'auth_file', type=str, 
+                               help=""""""text file containing user 
+                               authentification info"""""" ) 
+ 
+-
+     arg_parser.add_argument( 'output_file_name', type=str, 
+                               help=""CSV file to write output to"" )      
+      
+-
+     # retrieve positional arguments as variables
+     CLI_args = arg_parser.parse_args()  
+ 
+@@ -181,13 +173,31 @@ def get_args():
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_commit_info(  ):
+-    pass
++def get_commit_info( commit_list ):
+ 
++    index   = 0
++    commit_context_list = []
++    commit_metalist     = [] 
+ 
++    while index < RATE_LIMIT:
++        cur_commit = commit_list[index] 
+ 
+- 
++        commit_author_str   = str( cur_commit.commit.author )
++        commit_message_str  = str( cur_commit.commit.message )
++
++        commit_context_list = [
++                commit_author_str,
++                commit_message_str
++                ]
++
++        commit_metalist.append( commit_context_list )
++        index += 1
++
++    return commit_context_list
+ 
++
++
++ 
+ #--------------------------------------------------------------------------- 
+ # Function name : get_issue_info
+ # Process       : 
+@@ -197,9 +207,9 @@ def get_commit_info(  ):
+ #--------------------------------------------------------------------------- 
+ def get_issue_info( issue_list ):
+ 
+-    index   = 0
++    index              = 0
+     issue_context_list = []
+-    issue_metalist = []
++    issue_metalist     = []
+ 
+ 
+     while index < RATE_LIMIT:
+@@ -212,9 +222,12 @@ def get_issue_info( issue_list ):
+         issue_title_str       = str( cur_issue.title )
+         
+         issue_body_stripped = issue_body_str.strip( NEW_LINE )
+-        issue_body_str = ""\"""" + issue_body_stripped + ""\""""
++        issue_body_str      = ""\"""" + issue_body_stripped + ""\""""
++        
++        if issue_comment_str == '0':
++            issue_comment_str = "" =||= "" 
+ 
+-        issue_context_list = [
++        issue_context_list  = [
+                 issue_closed_date_str, 
+                 issue_author_str, 
+                 issue_title_str, 
+@@ -244,27 +257,35 @@ def get_PR_info( pr_list ):
+     #   need author?
+ 
+ 
+-    index   = 0
++    index        = 0
+     pr_info_list = []
+-    pr_metalist = []
++    pr_metalist  = []
+ 
+ 
+     while index < RATE_LIMIT:
+         cur_pr = pr_list[index]
+ 
+-        # author_str      = str( cur_pr.author ) 
++        # author_str       = str( cur_pr.author ) 
+         pr_body_str        = str( cur_pr.body )
+         pr_closed_date_str = str( cur_pr.closed_at )
+         pr_comment_str     = str( cur_pr.comments )
+         pr_num_str         = str( cur_pr.number ) 
+         pr_title_str       = str( cur_pr.title ) 
++        pr_user_str        = str( cur_pr.user.login ) 
++
++        pr_body_stripped = pr_body_str.strip( NEW_LINE )
++        pr_body_str = ""\"""" + pr_body_stripped + ""\"""" 
++
++        if pr_comment_str == '0':
++            pr_comment_str = "" =||= ""
+ 
+         pr_info_list = [
+                 pr_body_str,
+                 pr_closed_date_str,
+                 pr_comment_str,
+                 pr_num_str,
+-                pr_title_str
++                pr_title_str,
++                pr_user_str
+                 ]
+ 
+         pr_metalist.append( pr_info_list )
+@@ -292,7 +313,7 @@ def read_user_info( userinfo_file ):
+ 
+ 
+     # open text file
+-    userinfo_file_obj = open( userinfo_file, READ )
++    userinfo_file_obj = open( userinfo_file, 'r' )
+ 
+     # read contents out of file object
+     userinfo_list = userinfo_file_obj.readlines()
+@@ -316,15 +337,16 @@ def read_user_info( userinfo_file ):
+ 
+ 
+ 
+-# ---------------------------------------------------------------------------
+-# Function: 
+-# Process: 
+-# Parameters: 
+-# Postcondition: 
+-# Exceptions: none
+-# Note: none
+-# ---------------------------------------------------------------------------
+-def write_csv_output( issues_list, output_file_name, pr_list ):
++#--------------------------------------------------------------------------- 
++# Function name : write_csv_output
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def write_csv_output( commits_paginated_list, issues_list, 
++                      output_file_name, pr_list ):
++
+     # index for aggregation loop
+     aggregation_index   = 0
+ 
+@@ -337,16 +359,8 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+     pr_info_metalist = get_PR_info( pr_list )             
+                                                           
+     
+-    # print( ""issues:"")
+-    # for issue in issue_info_metalist:                     
+-    #     print( issue )                                    
+-
+-    # print( ""\nPR's:"")
+-    # for pr in pr_info_metalist:                           
+-    #     print( pr )                                       
+-
+     # Open the output csv file in preparation for writing
+-    with open( output_file_name, 'w', newline=""\n"", encoding=""utf-8"" ) as csvfile:
++    with open( output_file_name, 'w', newline="""", encoding=""utf-8"" ) as csvfile:
+ 
+         writer = csv.writer( 
+                 csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+@@ -362,38 +376,51 @@ def write_csv_output( issues_list, output_file_name, pr_list ):
+ 
+ 
+         # retrieve lists of PR and issue data
++        commit_info_metalist = get_commit_info( commits_paginated_list )
+         issue_info_metalist = get_issue_info( issues_list )  
+         pr_info_metalist = get_PR_info( pr_list )
+ 
+-
+         print( ""Writing data...\n"" )
+ 
+         # aggregate data lists into rows
+         while aggregation_index < RATE_LIMIT:
+-            cur_issue = issue_info_metalist[aggregation_index]
++            print( aggregation_index )
++
++            cur_commit     = commit_info_metalist[aggregation_index]
++            commit_author  = cur_commit[0]
++            commit_message = cur_commit[1] 
++
++            cur_issue         = issue_info_metalist[aggregation_index]
+             issue_closed_date = cur_issue[0] 
+             issue_author      = cur_issue[1]
+             issue_title       = cur_issue[2]
+             issue_body        = cur_issue[3] 
+             issue_comments    = cur_issue[4]  
+ 
+-
+-            cur_pr = pr_info_metalist[aggregation_index]
++            cur_pr          = pr_info_metalist[aggregation_index]
+             pr_body         = cur_pr[0] 
+             pr_closed_date  = cur_pr[1] 
+             pr_comments     = cur_pr[2] 
+             pr_num          = cur_pr[3] 
+             pr_title        = cur_pr[4] 
++            pr_author       = cur_pr[5]
+ 
+        
+-            writer.writerow( [ pr_num, issue_closed_date, issue_author, 
+-                               issue_title, issue_body, pr_closed_date,
+-                               pr_title, pr_body, pr_comments, issue_comments,
+-                               ] )
++            # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
++            #        Issue_Title, Issue_Body, PR_Closed_Date,     DONE
++            #        RR_Title, PR_Body, PR_Comments               DONE
++            #        Issue_comments, PR_Author, Commit_Author, 
++            #        Commit_Date, Commit_Message, isPR
++            writer.writerow( [pr_num, issue_closed_date, issue_author, 
++                             issue_title, issue_body, pr_closed_date, 
++                             pr_title, pr_body, pr_comments, 
++                             issue_comments, pr_author, commit_author,
++                             commit_message]
++                             )
+ 
+             aggregation_index += 1
+      
+-
++                                                       
+ 
+ 
+ if __name__ == '__main__':, @@ -1,10 +1,3 @@
+ PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
+-12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferencesThis will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.\
+-00
+-22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integrationThis adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. \
+-00
+-32014-03-15 12:55:32Egon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page.00
+-42014-03-17 22:20:50Jorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation updateThree new strings translated.\
+-11
+-52014-03-18 05:12:53NoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.propertiesIndonesian translation added\
+-00
++12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" =||=  =||= olenzGi
++22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. "" =||=  =||= simonharrerUp, @@ -1,11 +1,41 @@
+-PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyPR_Closed_DatePR_TitlePR_BodyPR_CommentsIssue_CommentsPR_AuthorCommit_AuthorCommit_DateCommit_Message
+-13/12/2014 11:38:01 AMNew Sorting/Export preferences""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
+-""3/12/2014 11:38:01 AMNew Sorting/Export preferences""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.
+-"""" =||= """" =||= ""olenzOlaf Lenz3/12/2014 9:16:45 AMMerge branch 'sorting'
++
++- 1                               PR_Number
++- 3/12/2014 11:38:01 AM         Issue_Closed_Date 
++- X                                 Issue_Author
++- New Sorting/Export preferences Issue_Title
++- ""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" Issue_Body
++- 3/12/2014 11:38:01 AM           PR_Closed_Date
++New Sorting/Export preferences    PR_Title
++""This will add a new """"File Sorting"""" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" PR_Body
++"" =||= ""                          PR_Comments
++"" =||= ""                          Issue_Comments
++olenz                             PR_Author
++Olaf Lenz                         Commit_Author
++3/12/2014 9:16:45 AM              Commit_Date
++Merge branch 'sorting'            Commit_Message
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
++
+ 23/12/2014 6:29:22 PMBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
+ ""3/12/2014 6:29:22 PMBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
+ """" =||= """" =||= ""simonharrerSimon Harrer3/12/2014 5:20:08 PMGradle build works basically. Reuses existing folder structure.
++
+ 33/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page.3/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page."" =||= """" =||= ""egonwEgon Willighagen3/15/2014 9:33:10 AMSome example new Dutch translations via the GitHub web page.
++
+ 43/17/2014 10:20:50 PMSpanish translation update""Three new strings translated.
+ ""3/17/2014 10:20:50 PMSpanish translation update""Three new strings translated.
+ """" =||= """" =||= Even though the other translation files have been updated, I accept this pull request., "12171"""modified, modified, modified, """192
+jacobPenneyjacobPenney559a0d0bb5f21de0e31fd28647c8d4989cb240c3c[feat, refactor]: add rate limit exception handling, refactor function to get rate information['extractor.py', 'output.csv']"@@ -23,18 +23,30 @@
+ # imports
+ import argparse
+ import csv
+-from github import Github
++import github
++import time
+ 
+ 
+ # constants
+ COMMA       = ','
++COLUMN_NAMES = [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
++                ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
++                ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
++                ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
++                ""Commit_Message"", ""isPR""]
+ NEW_LINE    = '\n'
+-RATE_LIMIT  = 10
++RATE_LIMIT  = 2500
+ 
+ 
+ 
+ 
+ def main():
++
++    commits_paginated_list = []
++    issues_paginated_list = []
++    pr_paginated_list = []
++
++
+     # retrieve positional arguments as variables
+     CLI_args = get_args() 
+ 
+@@ -53,35 +65,42 @@ def main():
+ 
+ 
+     # authenticate with GitHub
+-    github_sesh = Github( userauth_list[0] )
++    github_sesh = github.Github( userauth_list[0] )
+      
+ 
+-    # retrieve paginated list of repos
+-    repo_paginated_list = github_sesh.get_repo( test_repo )
+-      
++    try:
++        # retrieve paginated list of repos
++        repo_paginated_list = github_sesh.get_repo( test_repo )
+ 
+-    print( ""Gathering GitHub data paginated lists...\n"" )
+ 
++        print( ""Gathering GitHub data paginated lists...\n"" )
+ 
+-    # retrieve paginated list of commits
+-    commits_paginated_list = repo_paginated_list.get_commit( sha=""master"" )
+-     
+ 
+-    # retrieve paginated list of issues
+-    issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
+-                                                            sort='created', 
+-                                                            state='closed' )
+-     
++        # retrieve paginated list of commits
++        commits_paginated_list = repo_paginated_list.get_commit( sha=""master"" )
++         
++
++        # retrieve paginated list of issues
++        issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
++                                                                sort='created', 
++                                                                state='closed' )
++         
++
++        # retrieve paginated list of pull requests
++        pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
++                                                           direction='asc', 
++                                                           sort='created',
++                                                           state='all' )
++
++
++    except github.RateLimitExceededException:
++            sleep_time = get_limit_info( github_sesh, ""reset"" )
++            timer( sleep_time )
+ 
+-    # retrieve paginated list of pull requests
+-    pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
+-                                                       direction='asc', 
+-                                                       sort='created',
+-                                                       state='all' )
+ 
+ 
+     # write output to csv file
+-    write_csv_output( commits_paginated_list, github_sesh, 
++    init_csv_output( commits_paginated_list, github_sesh, 
+                       issues_paginated_list, output_file_name, 
+                       pr_paginated_list )
+     
+@@ -175,7 +194,7 @@ def get_args():
+ #--------------------------------------------------------------------------- 
+ def get_commit_info( commit_list ):
+ 
+-    index   = 0
++    index               = 0
+     commit_context_list = []
+     commit_metalist     = [] 
+ 
+@@ -208,53 +227,103 @@ def get_commit_info( commit_list ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_issue_info( issue_list ):
++def get_issue_info( issue_list, auth_session ):
+ 
+     index              = 0
+     issue_context_list = []
+     issue_metalist     = []
+ 
+ 
++    print( ""issue rate usage: "" )
++
+     while index < RATE_LIMIT:
+-        cur_issue = issue_list[index]
+- 
+-        issue_author_str      = str( cur_issue.user.name )
+-        issue_body_str        = str( cur_issue.body )
+-        issue_comment_str     = str( cur_issue.comments ) 
+-        issue_closed_date_str = str( cur_issue.closed_at )
+-        issue_title_str       = str( cur_issue.title )
+-        
+-        issue_body_stripped = issue_body_str.strip( NEW_LINE )
+-        issue_body_str      = ""\"""" + issue_body_stripped + ""\""""
++        try:
++            cur_issue             = issue_list[index]   # here
++            issue_author_str      = str( cur_issue.user.name ) # here
++            issue_body_str        = str( cur_issue.body )
++            issue_comment_str     = str( cur_issue.comments ) 
++            issue_closed_date_str = str( cur_issue.closed_at )
++            issue_title_str       = str( cur_issue.title )
++            
++
++            issue_body_stripped = issue_body_str.strip( NEW_LINE )
++            issue_body_str      = ""\"""" + issue_body_stripped + ""\""""
++            
++            if issue_comment_str == '0':
++                issue_comment_str = "" =||= "" 
++
++
++            issue_context_list  = [
++                    issue_closed_date_str, 
++                    issue_author_str, 
++                    issue_title_str, 
++                    issue_body_str,
++                    issue_comment_str 
++                    ]
++
++            issue_metalist.append( issue_context_list )
++
++            remaining_calls = get_limit_info( auth_session, ""remaining"" )
++
++            print( ""calls left: "" + str( remaining_calls ) )
++
++            index += 1
+         
+-        if issue_comment_str == '0':
+-            issue_comment_str = "" =||= "" 
+-
+-        issue_context_list  = [
+-                issue_closed_date_str, 
+-                issue_author_str, 
+-                issue_title_str, 
+-                issue_body_str,
+-                issue_comment_str 
+-                ]
+ 
+-        issue_metalist.append( issue_context_list )
+-        index += 1
++        except github.RateLimitExceededException:
++            sleep_time = get_limit_info( auth_session, ""reset"" )
++            print( ""Sleeping for "" + str( sleep_time ) + "" seconds"" )
++            timer( sleep_time )
+ 
+ 
+     return issue_metalist
+ 
+ 
+ 
+ 
++#--------------------------------------------------------------------------- 
++# Function name : get_limit_info
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def get_limit_info( session, type_flag ):
++
++    out_rate_info = None
++
++    rate_info = session.get_rate_limit().core
++
++    if type_flag == ""remaining"":
++        out_rate_info = rate_info.remaining
++
++
++    elif type_flag == ""reset"":
++
++        # get the amount of time to wait until reset as a datetime object
++        reset_time_obj = rate_info.reset.timestamp()
++
++
++        # get the current time in the same format
++        cur_time = time.time()
++
++        # calculate the amount of time to sleep
++        out_rate_info = reset_time_obj - cur_time 
++
++
++    return out_rate_info
++
++
++
++
+ #--------------------------------------------------------------------------- 
+ # Function name : get_PR_info
+ # Process       : 
+ # Parameters    : 
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_PR_info( pr_list ):
++def get_PR_info( pr_list, session ):
+ 
+     # TODO:
+     #   need author?
+@@ -264,6 +333,7 @@ def get_PR_info( pr_list ):
+     pr_info_list = []
+     pr_metalist  = []
+ 
++    print( ""PR rate usage: "" )
+ 
+     while index < RATE_LIMIT:
+         cur_pr = pr_list[index]
+@@ -279,6 +349,8 @@ def get_PR_info( pr_list ):
+         pr_body_stripped = pr_body_str.strip( NEW_LINE )
+         pr_body_str = ""\"""" + pr_body_stripped + ""\"""" 
+ 
++        print( get_limit_info( session, ""remaining"" ) )
++
+         if pr_comment_str == '0':
+             pr_comment_str = "" =||= ""
+ 
+@@ -292,36 +364,12 @@ def get_PR_info( pr_list ):
+                 ]
+ 
+         pr_metalist.append( pr_info_list )
+-        index+=1
+-
+-
+-    return pr_metalist
+-
+-
+-
+-
+-#--------------------------------------------------------------------------- 
+-# Function name : 
+-# Process       : 
+-# Parameters    : 
+-# Postconditions: 
+-# Notes         : 
+-#--------------------------------------------------------------------------- 
+-def get_limit_info( session, type_flag ):
+-
+-    out_rate_info = None
+-
+-    
+-    rate_info = session.get_rate_limit()
+ 
+-    if type_flag == ""remaining"":
+-        out_rate_info = rate_info.core.remaining
+ 
+-    elif type_flag == ""reset"":
+-        out_rate_info = rate_info.core.reset
++        index+=1
+ 
+ 
+-    return out_rate_info 
++    return pr_metalist
+ 
+ 
+ 
+@@ -362,7 +410,35 @@ def read_user_info( userinfo_file ):
+ 
+ 
+     return parsed_userinfo_list
+- 
++
++
++
++
++#--------------------------------------------------------------------------- 
++# Function name : timer
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def timer( countdown_time ):
++    while countdown_time > 0:
++        
++        # cast float value to an int
++        int_time = int( countdown_time )
++
++        # modulo function returns time tuple  
++        minutes, seconds = divmod( int_time, 60 )
++
++        # format the time string before printing
++        countdown = '{:d}:{:d}'.format( minutes, seconds )
++
++        # print time string on the same line as before
++        print( countdown, end=""\r"" )
++
++        time.sleep( 1 )
++        countdown_time -= 1
++
+ 
+ 
+ 
+@@ -373,8 +449,8 @@ def read_user_info( userinfo_file ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def write_csv_output( commits_list, github_sesh, issues_list, output_file_name, 
+-                      pr_list ):
++def init_csv_output( commits_list, github_sesh, issues_list, output_file_name, 
++                     pr_list ):
+ 
+     # index for aggregation loop
+     aggregation_index   = 0
+@@ -383,32 +459,22 @@ def write_csv_output( commits_list, github_sesh, issues_list, output_file_name,
+     issue_info_metalist = []  
+     pr_info_metalist    = []  
+  
+-    # retrieve lists of PR and issue data                 
+-    issue_info_metalist = get_issue_info( issues_list )   
+-    pr_info_metalist = get_PR_info( pr_list )             
+-                                                          
+ 
+     # Open the output csv file in preparation for writing
+     with open( output_file_name, 'w', newline="""", encoding=""utf-8"" ) as csvfile:
+ 
+         writer = csv.writer( 
+                 csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+                 quotechar='', escapechar='\\', lineterminator=NEW_LINE )
++          
+ 
+-
+-        # write labels at top of output
+-        writer.writerow( [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
+-                          ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
+-                          ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
+-                          ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
+-                          ""Commit_Message"", ""isPR""] )
++        writer.writerow( COLUMN_NAMES )
+ 
+ 
+         # retrieve lists of PR and issue data
+         # commit_info_metalist = get_commit_info( commits_paginated_list )
+-        get_commit_info( commits_list )
+-        issue_info_metalist = get_issue_info( issues_list )  
+-        pr_info_metalist = get_PR_info( pr_list )
++        issue_info_metalist = get_issue_info( issues_list, github_sesh )  
++        pr_info_metalist = get_PR_info( pr_list, github_sesh )
+ 
+         print( ""Writing data...\n"" )
+ 
+@@ -458,8 +524,8 @@ def write_csv_output( commits_list, github_sesh, issues_list, output_file_name,
+ 
+             aggregation_index += 1
+      
+-                                                       
+ 
+ 
++             
+ if __name__ == '__main__':
+     main() , @@ -1,91 +1 @@
+ PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
+-12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" =||=  =||= olenz
+-22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. "" =||=  =||= simonharrer
+-32014-03-15 12:55:32Egon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page."""" =||=  =||= egonw
+-42014-03-17 22:20:50Jorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation update""Three new strings translated.""11jtornero
+-52014-03-18 05:12:53NoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added"" =||=  =||= was123
+-62014-03-19 19:46:25Olaf LenzFixed splash-dev.svg""""2014-03-19 19:46:25Fixed splash-dev.svg"""" =||=  =||= olenz
+-72014-03-23 16:03:12None I have implemented 2 features requested in Ticket #841.""```\
+-The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.\
+-\
+-For each file-link column whenever there are multiple files, the letter ""m"" is displayed at the bottom right corner of the icon.\
+-```\
+-\
+- Committer: noravanq\
+-\
+- On branch master\
+- Changes to be committed:\
+-   (use ""git reset HEAD <file>..."" to unstage)\
+-\
+-```\
+-modified:   src/main/java/net/sf/jabref/GUIGlobals.java\
+-modified:   src/main/java/net/sf/jabref/JabRefPreferences.java\
+-modified:   src/main/java/net/sf/jabref/TableColumnsTab.java\
+-modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java\
+-modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java\
+-modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java\
+-```""2014-03-23 16:03:12 I have implemented 2 features requested in Ticket #841.""```\
+-The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.\
+-\
+-For each file-link column whenever there are multiple files, the letter ""m"" is displayed at the bottom right corner of the icon.\
+-```\
+-\
+- Committer: noravanq\
+-\
+- On branch master\
+- Changes to be committed:\
+-   (use ""git reset HEAD <file>..."" to unstage)\
+-\
+-```\
+-modified:   src/main/java/net/sf/jabref/GUIGlobals.java\
+-modified:   src/main/java/net/sf/jabref/JabRefPreferences.java\
+-modified:   src/main/java/net/sf/jabref/TableColumnsTab.java\
+-modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java\
+-modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java\
+-modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java\
+-```"" =||=  =||= noravanq
+-82014-04-23 21:23:03Adrian DaerrPDF-file metadata: Privacy Filtering all metadata""This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry ""Write XMP metadata to PDFs"" in the ""Tools"" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.\
+-\
+-Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. \
+-\
+-The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by ""jabref/""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.\
+-\
+-If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: \
+-https://sourceforge.net/p/jabref/bugs/869/\
+-can be closed.""2014-04-23 21:23:03PDF-file metadata: Privacy Filtering all metadata""This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry ""Write XMP metadata to PDFs"" in the ""Tools"" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.\
+-\
+-Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. \
+-\
+-The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by ""jabref/""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.\
+-\
+-If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: \
+-https://sourceforge.net/p/jabref/bugs/869/\
+-can be closed.""11adaerr
+-92014-05-20 12:53:43Peter AnsellSupport FindFullText with ACS DOIs""Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.""2014-05-20 12:53:43Support FindFullText with ACS DOIs""Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents."" =||=  =||= ansell
+-102014-05-20 12:55:20Nonetry to fix some obvious bugs about `groups`""Hi All,\
+-I just upgraded to 2.10 and I found some bugs immediately.\
+-1. in the right-click-menu there is no `move-to-group` but 2 `remove\
+-from group` instead.\
+-2. I like the new add/remove/move panel, but the scrolling is not\
+-working, which is a big problem. Because I have lots of groups which\
+-cannot even fit into the full screen height after expansion.\
+-3. no way to expand or collapse all nodes\
+-\
+-I tried the dev version, all problems still exist. Here is my fixation.\
+-\
+-Cheers,\
+-\
+-W.L.""2014-05-20 12:55:20try to fix some obvious bugs about `groups`""Hi All,\
+-I just upgraded to 2.10 and I found some bugs immediately.\
+-1. in the right-click-menu there is no `move-to-group` but 2 `remove\
+-from group` instead.\
+-2. I like the new add/remove/move panel, but the scrolling is not\
+-working, which is a big problem. Because I have lots of groups which\
+-cannot even fit into the full screen height after expansion.\
+-3. no way to expand or collapse all nodes\
+-\
+-I tried the dev version, all problems still exist. Here is my fixation.\
+-\
+-Cheers,\
+-\
+-W.L.""11braindevices, "156180"""modified, modified, """336
+jacobPenneyjacobPenney60b50e806025031c954b9af310027679a309e0786[refactor, fix]: refactor means of getting reset time, add mechanism to loop if paginated lists retrieval is interrupted by rate limiting['extractor.py']"@@ -9,9 +9,11 @@
+ 
+ # TODO:
+ #   - features:
++#       - add mutex arg for diff filetype
+ #       - create checks to protect from lack of pull requests
+ #       - transcend rate limit
+-#           - further testing needed
++#           - must allow to continue looping to get paginated lists
++#               - may use booleans to pick up where we left off
+ #       - circumvent socket timeout
+ #       - for output, need:
+ #           - commits:
+@@ -48,66 +50,65 @@
+ 
+ def main():
+ 
++    # init variables
++    all_lists_retrieved = False
+     commits_paginated_list = []
+     issues_paginated_list = []
+     pr_paginated_list = []
+ 
+ 
+     # retrieve positional arguments as variables
+-    CLI_args = get_args() 
++    ( repo_input_file, auth_file, output_file_name ) = get_args() 
+ 
+-    repo_input_file_to_open = CLI_args.input_file
+-    userauth_file_to_open = CLI_args.auth_file
+-    output_file_name =  CLI_args.output_file_name
+-     
+ 
+     # get user info
+-    userauth_list = read_user_info( userauth_file_to_open )  
++    userauth_list = read_user_info( auth_file )  
+ 
+ 
+     # get repo inputs
+-    repo_list = create_input_list( repo_input_file_to_open )  
++    repo_list = create_input_list( repo_input_file )  
+     test_repo = repo_list[0]
+ 
+ 
+     # authenticate with GitHub
+-    github_sesh = github.Github( userauth_list[0] )
++    # github_sesh = github.Github( userauth_list[0] )
++    github_sesh = github.Github(  )
+      
++    while all_lists_retrieved == False:
++        try:
++            # retrieve paginated list of repos
++            repo_paginated_list = github_sesh.get_repo( test_repo )
++
++            print( ""Gathering GitHub data paginated lists...\n"" )
++
++            # retrieve paginated list of commits
++            commits_paginated_list = repo_paginated_list.get_commits(
++                                                                sha=""master"" )
++               
++            # retrieve paginated list of issues
++            issues_paginated_list = repo_paginated_list.get_issues( 
++                                                             direction='asc',
++                                                             sort='created', 
++                                                             state='closed' )
++             
++            # retrieve paginated list of pull requests
++            pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
++                                                               direction='asc', 
++                                                               sort='created',
++                                                               state='all' )
+ 
+-    try:
+-        # retrieve paginated list of repos
+-        repo_paginated_list = github_sesh.get_repo( test_repo )
+-
+-
+-        print( ""Gathering GitHub data paginated lists...\n"" )
+-
+-
+-        # retrieve paginated list of commits
+-        commits_paginated_list = repo_paginated_list.get_commit( sha=""master"" )
+-         
+-
+-        # retrieve paginated list of issues
+-        issues_paginated_list = repo_paginated_list.get_issues( direction='asc',
+-                                                                sort='created', 
+-                                                                state='closed' )
+-         
+-
+-        # retrieve paginated list of pull requests
+-        pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
+-                                                           direction='asc', 
+-                                                           sort='created',
+-                                                           state='all' )
++            all_lists_retrieved = True
+ 
+ 
+-    except github.RateLimitExceededException:
++        except github.RateLimitExceededException:
+             sleep_time = get_limit_info( github_sesh, ""reset"" )
+             timer( sleep_time )
+ 
+ 
+     # write output to csv file
+     init_csv_output( commits_paginated_list, github_sesh, 
+-                      issues_paginated_list, output_file_name, 
+-                      pr_paginated_list )
++                     issues_paginated_list, output_file_name, 
++                     pr_paginated_list )
+     
+ 
+ 
+@@ -162,9 +163,6 @@ def create_input_list( fileToOpen ):
+ #--------------------------------------------------------------------------- 
+ def get_args():
+ 
+-    # TODO
+-    #   add mutex arg for diff filetype
+-
+     # establish positional argument capability
+     arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
+       
+@@ -185,7 +183,7 @@ def get_args():
+     CLI_args = arg_parser.parse_args()  
+ 
+ 
+-    return CLI_args
++    return ( CLI_args.input_file, CLI_args.auth_file, CLI_args.output_file_name )
+ 
+ 
+ 
+@@ -207,10 +205,10 @@ def get_commit_info( commit_list ):
+     cur_commit = commit_list 
+ 
+     commit_author_str   = str( cur_commit.commit.author )
+-
+     print( commit_author_str )
+ 
+     commit_message_str  = str( cur_commit.commit.message )
++    print( commit_message_str )
+ 
+     commit_context_list = [
+             commit_author_str,
+@@ -296,26 +294,17 @@ def get_limit_info( session, type_flag ):
+ 
+     out_rate_info = None
+ 
+-    rate_info = session.get_rate_limit().core
+ 
+     if type_flag == ""remaining"":
+-        out_rate_info = rate_info.remaining
+-
++        out_rate_info = session.rate_limiting[0]
+     
+     elif type_flag == ""reset"":
+ 
+-        # The pygithub library returns the amount of time until 
+-        # reset as a datetime object 
+-        reset_time_obj = rate_info.reset
+-         
+-        # get seconds from epoch from datetime object
+-            # subtracting 7 hours in seconds fixes 
+-            # time discprepancy issue. Find a solution
+-            # that isn't a hack?
+-        reset_time_secs = reset_time_obj.timestamp() - 25200
++        # get time until reset as an integer
++        reset_time_secs = session.rate_limiting_resettime
+ 
+-        # get the current time in the same format
+-        cur_time_secs = time.time()
++        # get the current time as an integer
++        cur_time_secs = int( time.time() )
+ 
+         # calculate the amount of time to sleep
+         out_rate_info = reset_time_secs - cur_time_secs 
+@@ -441,7 +430,7 @@ def timer( countdown_time ):
+         minutes, seconds = divmod( int_time, 60 )
+ 
+         # format the time string before printing
+-        countdown = '{:d}:{:d}'.format( minutes, seconds )
++        countdown = '{:02d}:{:02d}'.format( minutes, seconds )
+ 
+         # print time string on the same line as before
+         print( ""Time until calls can be made: "" + countdown, end=""\r"" ), "4455"""modified, """99
+jacobPenneyjacobPenney73f4aaa53c087cd3f7f525ed9a70f8eb22aa0715c[feat]: add commit mining for author and message['extractor.py']"@@ -12,8 +12,6 @@
+ #       - add mutex arg for diff filetype
+ #       - create checks to protect from lack of pull requests
+ #       - transcend rate limit
+-#           - must allow to continue looping to get paginated lists
+-#               - may use booleans to pick up where we left off
+ #       - circumvent socket timeout
+ #       - for output, need:
+ #           - commits:
+@@ -24,6 +22,7 @@
+ #   - post-completion:
+ #       - clean spacing
+ #       - clean annotations
++#       - clean comments
+ #       - add arg_parser description 
+ 
+ 
+@@ -36,27 +35,26 @@
+ 
+ 
+ # constants
+-COMMA       = ','
+ COLUMN_NAMES = [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
+                 ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
+                 ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
+                 ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
+                 ""Commit_Message"", ""isPR""]
+ NEW_LINE    = '\n'
+-RATE_LIMIT  = 2500
++RATE_LIMIT  = 5
+ 
+ 
+ 
+ 
++#--------------------------------------------------------------------------- 
++# Function name : driver
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
+ def main():
+ 
+-    # init variables
+-    all_lists_retrieved = False
+-    commits_paginated_list = []
+-    issues_paginated_list = []
+-    pr_paginated_list = []
+-
+-
+     # retrieve positional arguments as variables
+     ( repo_input_file, auth_file, output_file_name ) = get_args() 
+ 
+@@ -66,50 +64,69 @@ def main():
+ 
+ 
+     # get repo inputs
+-    repo_list = create_input_list( repo_input_file )  
+-    test_repo = repo_list[0]
++    repo_input_list = create_input_list( repo_input_file )  
++    test_repo = repo_input_list[0]
+ 
+ 
+     # authenticate with GitHub
+-    # github_sesh = github.Github( userauth_list[0] )
+-    github_sesh = github.Github(  )
++    github_sesh = github.Github( userauth_list[0] )
++    # github_sesh = github.Github(  )
+      
+-    while all_lists_retrieved == False:
+-        try:
+-            # retrieve paginated list of repos
+-            repo_paginated_list = github_sesh.get_repo( test_repo )
+ 
+-            print( ""Gathering GitHub data paginated lists...\n"" )
++    # retrieve paginated list of repos
++    repo_paginated_list = github_sesh.get_repo( test_repo ) 
+ 
+-            # retrieve paginated list of commits
+-            commits_paginated_list = repo_paginated_list.get_commits(
+-                                                                sha=""master"" )
+-               
+-            # retrieve paginated list of issues
+-            issues_paginated_list = repo_paginated_list.get_issues( 
+-                                                             direction='asc',
+-                                                             sort='created', 
+-                                                             state='closed' )
+-             
+-            # retrieve paginated list of pull requests
+-            pr_paginated_list = repo_paginated_list.get_pulls( base='master',  
+-                                                               direction='asc', 
+-                                                               sort='created',
+-                                                               state='all' )
+ 
+-            all_lists_retrieved = True
++    # retrieve paginated list of issues and pull requests
++    ( issues_paginated_list, pr_paginated_list ) = get_paginated_lists(
++                                                        repo_paginated_list,
++                                                        github_sesh)
+ 
+ 
+-        except github.RateLimitExceededException:
+-            sleep_time = get_limit_info( github_sesh, ""reset"" )
+-            timer( sleep_time )
++    # write output to csv file
++    init_csv_output( repo_paginated_list, github_sesh, issues_paginated_list, 
++                     output_file_name, pr_paginated_list )
+ 
+ 
+-    # write output to csv file
+-    init_csv_output( commits_paginated_list, github_sesh, 
+-                     issues_paginated_list, output_file_name, 
+-                     pr_paginated_list )
+-    
++
++
++#--------------------------------------------------------------------------- 
++# Function name : get_args 
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def get_args():
++
++    # establish positional argument capability
++    arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
++      
++    # add repo input CLI arg
++    arg_parser.add_argument( 'input_file', type=str,  
++                              help=""""""text file containing properly formatted 
++                              arguments"""""" ) 
++
++    # add auth token CLI arg
++    arg_parser.add_argument( 'auth_file', type=str, 
++                              help=""""""text file containing user 
++                              authentification info"""""" ) 
++
++    # add output file name CLI arg
++    arg_parser.add_argument( 'output_file_name', type=str, 
++                              help=""CSV file to write output to"" )      
++     
++    # retrieve positional arguments
++    CLI_args = arg_parser.parse_args()  
++
++    # separate into individual variables
++    input_file = CLI_args.input_file
++    auth_file = CLI_args.auth_file
++    output_file_name = CLI_args.output_file_name
++
++
++    return ( input_file, auth_file, output_file_name )
++
+ 
+ 
+ 
+@@ -142,7 +159,7 @@ def create_input_list( fileToOpen ):
+         quote_stripped_line = newLine_stripped_line.replace( '""', '' )
+ 
+         # strip lines on commas to create list of items
+-        repo_list = quote_stripped_line.split( COMMA )
++        repo_list = quote_stripped_line.split( ',' )
+ 
+ 
+     # close file 
+@@ -152,73 +169,54 @@ def create_input_list( fileToOpen ):
+     return repo_list
+ 
+ 
+-
+  
++
+ #--------------------------------------------------------------------------- 
+-# Function name : get_args 
+-# Process       : 
++# Function name : get_commit_info
++# Process       : retrieves the most recent commit from the current pull
++#                 request
+ # Parameters    : 
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_args():
++def get_commit_info( commit_metalist, session ):
+ 
+-    # establish positional argument capability
+-    arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
+-      
+-    # add repo input CLI arg
+-    arg_parser.add_argument( 'input_file', type=str,  
+-                              help=""""""text file containing properly formatted 
+-                              arguments"""""" ) 
++    # still need:
++    #   - author
++    #   - date
+ 
+-    # add auth token CLI arg
+-    arg_parser.add_argument( 'auth_file', type=str, 
+-                              help=""""""text file containing user 
+-                              authentification info"""""" ) 
++    commit                = None
++    commit_info_list      = []
++    commit_list_index     = 0
++    commit_metalist_index = 0
++    commit_status_paginated_list = None
+ 
+-    arg_parser.add_argument( 'output_file_name', type=str, 
+-                              help=""CSV file to write output to"" )      
+-     
+-    # retrieve positional arguments as variables
+-    CLI_args = arg_parser.parse_args()  
+-
+-
+-    return ( CLI_args.input_file, CLI_args.auth_file, CLI_args.output_file_name )
+-
+-
+-
+-
+-#--------------------------------------------------------------------------- 
+-# Function name : 
+-# Process       : 
+-# Parameters    : 
+-# Postconditions: 
+-# Notes         : 
+-#--------------------------------------------------------------------------- 
+-def get_commit_info( commit_list ):
++    while commit_metalist_index < RATE_LIMIT:
++        
++        # retrieve list of commits for one pr
++        cur_commit_list = commit_metalist[commit_metalist_index]
+ 
+-    index               = 0
+-    commit_context_list = []
+-    commit_metalist     = [] 
++        # get the last actionable index for that list
++        last_position = cur_commit_list.totalCount - 1
+ 
+-    # while index < RATE_LIMIT:
+-    cur_commit = commit_list 
++        # retrieve commit of interest from that position
++        commit_of_interest = cur_commit_list[last_position]
++        
++        # get relevant author
++        commit_author = commit_message = commit_of_interest.commit.author
++        print( commit_author ) 
+ 
+-    commit_author_str   = str( cur_commit.commit.author )
+-    print( commit_author_str )
++        # get relevant commit message
++        commit_message = commit_of_interest.commit.message
++        print( commit_message )
++         
+ 
+-    commit_message_str  = str( cur_commit.commit.message )
+-    print( commit_message_str )
++        commit_metalist_index += 1
+ 
+-    commit_context_list = [
+-            commit_author_str,
+-            commit_message_str
+-            ]
++        # print_rem_calls( session )
+ 
+-    commit_metalist.append( commit_context_list )
+-        # index += 1
+ 
+-    return commit_context_list
++    return commit_info_list
+ 
+ 
+ 
+@@ -230,18 +228,18 @@ def get_commit_info( commit_list ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_issue_info( issue_list, auth_session ):
++def get_issue_info( issue_list, session ):
+ 
+     index              = 0
+     issue_context_list = []
+     issue_metalist     = []
+ 
+ 
+-    print( ""issue rate usage: "" )
++    print( ""Getting issue info..."" )
+ 
+     while index < RATE_LIMIT:
+         try:
+-            cur_issue             = issue_list[index]   # here
++            cur_issue             = issue_list[index]          # here
+             issue_author_str      = str( cur_issue.user.name ) # here
+             issue_body_str        = str( cur_issue.body )
+             issue_comment_str     = str( cur_issue.comments ) 
+@@ -265,17 +263,16 @@ def get_issue_info( issue_list, auth_session ):
+                     ]
+ 
+             issue_metalist.append( issue_context_list )
+-
+-            remaining_calls = get_limit_info( auth_session, ""remaining"" )
+-
+-            print( ""calls left: "" + str( remaining_calls ) )
+-
+             index += 1
+         
++            print_rem_calls( session )
++
+ 
+         except github.RateLimitExceededException:
+-            sleep_time = get_limit_info( auth_session, ""reset"" )
+-            timer( sleep_time )
++            run_timer( session )
++
++
++    print('\n')
+ 
+ 
+     return issue_metalist
+@@ -296,7 +293,10 @@ def get_limit_info( session, type_flag ):
+ 
+ 
+     if type_flag == ""remaining"":
++
++        # get remaining calls before reset from GitHub API
+         out_rate_info = session.rate_limiting[0]
++
+     
+     elif type_flag == ""reset"":
+ 
+@@ -315,6 +315,48 @@ def get_limit_info( session, type_flag ):
+ 
+ 
+ 
++#--------------------------------------------------------------------------- 
++# Function name : get_paginated_lists
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def get_paginated_lists( input_repo, session ):
++
++     all_lists_retrieved = False
++     issues_list         = []
++     pr_list             = [] 
++
++
++     while all_lists_retrieved == False:
++        try:
++
++            print( ""Gathering GitHub data paginated lists...\n"" )
++
++            # retrieve paginated list of issues
++            issues_list = input_repo.get_issues( direction='asc',
++                                                 sort='created', 
++                                                 state='closed' )
++             
++
++            # retrieve paginated list of pull requests
++            pr_list = input_repo.get_pulls( base='master', direction='asc', 
++                                            sort='created', state='all' )
++
++
++            all_lists_retrieved = True
++
++
++        except github.RateLimitExceededException:
++            run_timer( session ) 
++
++
++     return ( issues_list, pr_list )
++
++
++
++
+ #--------------------------------------------------------------------------- 
+ # Function name : get_PR_info
+ # Process       : 
+@@ -328,47 +370,84 @@ def get_PR_info( pr_list, session ):
+     #   need author?
+ 
+ 
+-    index        = 0
+-    pr_info_list = []
+-    pr_metalist  = []
++    index           = 0
++    pr_commits_list = []
++    pr_info_list    = []
++    pr_metalist     = []
+ 
+-    print( ""PR rate usage: "" )
++
++    print( ""Getting pull request info..."" )
+ 
+     while index < RATE_LIMIT:
+-        cur_pr = pr_list[index]
++        try:
++            cur_pr = pr_list[index]
++
++            # author_str       = str( cur_pr.author ) 
++            pr_body_str        = str( cur_pr.body )
++            pr_closed_date_str = str( cur_pr.closed_at )
++            pr_comment_str     = str( cur_pr.comments )
++            pr_num_str         = str( cur_pr.number ) 
++            pr_title_str       = str( cur_pr.title ) 
++            pr_user_str        = str( cur_pr.user.login ) 
++            pr_commits         = cur_pr.get_commits()
++
++
++
++            pr_body_stripped = pr_body_str.strip( NEW_LINE )
++            pr_body_str = ""\"""" + pr_body_stripped + ""\"""" 
++
+ 
+-        # author_str       = str( cur_pr.author ) 
+-        pr_body_str        = str( cur_pr.body )
+-        pr_closed_date_str = str( cur_pr.closed_at )
+-        pr_comment_str     = str( cur_pr.comments )
+-        pr_num_str         = str( cur_pr.number ) 
+-        pr_title_str       = str( cur_pr.title ) 
+-        pr_user_str        = str( cur_pr.user.login ) 
++            if pr_comment_str == '0':
++                pr_comment_str = "" =||= ""
+ 
+-        pr_body_stripped = pr_body_str.strip( NEW_LINE )
+-        pr_body_str = ""\"""" + pr_body_stripped + ""\"""" 
++            
++            pr_info_list = [
++                    pr_body_str,
++                    pr_closed_date_str,
++                    pr_comment_str,
++                    pr_num_str,
++                    pr_title_str,
++                    pr_user_str
++                    ]
+ 
+-        print( get_limit_info( session, ""remaining"" ) )
+ 
+-        if pr_comment_str == '0':
+-            pr_comment_str = "" =||= ""
++            pr_commits_list.append( pr_commits )
++            pr_metalist.append( pr_info_list )
+ 
+-        pr_info_list = [
+-                pr_body_str,
+-                pr_closed_date_str,
+-                pr_comment_str,
+-                pr_num_str,
+-                pr_title_str,
+-                pr_user_str
+-                ]
++            print_rem_calls( session )
+ 
+-        pr_metalist.append( pr_info_list )
++            index+=1
+ 
+ 
+-        index+=1
++        except github.RateLimitExceededException:
++            run_timer( session ) 
++
++    
++    print('\n')
+ 
+ 
+-    return pr_metalist
++    return pr_metalist, pr_commits_list
++
++
++
++
++#--------------------------------------------------------------------------- 
++# Function name : print_rem_calls 
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def print_rem_calls( session ):
++
++    # get remaining calls before reset
++    remaining_calls = get_limit_info( session, ""remaining"" )
++
++    # format as a string
++    rem_calls_str = '{:4d}'.format( remaining_calls ) 
++
++    # print output in place
++    print( ""    calls left: "" + str( rem_calls_str ), end=""\r"" )  
+ 
+ 
+ 
+@@ -413,6 +492,20 @@ def read_user_info( userinfo_file ):
+ 
+ 
+ 
++#--------------------------------------------------------------------------- 
++# Function name : run_timer 
++# Process       : 
++# Parameters    : 
++# Postconditions: 
++# Notes         : 
++#--------------------------------------------------------------------------- 
++def run_timer( session ):
++    sleep_time = get_limit_info( session, ""reset"" )
++    timer( sleep_time ) 
++
++
++
++
+ #--------------------------------------------------------------------------- 
+ # Function name : timer
+ # Process       : 
+@@ -421,6 +514,7 @@ def read_user_info( userinfo_file ):
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+ def timer( countdown_time ):
++
+     while countdown_time > 0:
+         
+         # cast float value to an int
+@@ -448,13 +542,14 @@ def timer( countdown_time ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def init_csv_output( commits_list, github_sesh, issues_list, output_file_name, 
++def init_csv_output( repo_list, github_sesh, issues_list, output_file_name, 
+                      pr_list ):
+ 
+     # index for aggregation loop
+     aggregation_index   = 0
+ 
+     # data lists
++    commits_url_list    = []
+     issue_info_metalist = []  
+     pr_info_metalist    = []  
+  
+@@ -471,57 +566,57 @@ def init_csv_output( commits_list, github_sesh, issues_list, output_file_name,
+ 
+ 
+         # retrieve lists of PR and issue data
+-        # commit_info_metalist = get_commit_info( commits_paginated_list )
+         issue_info_metalist = get_issue_info( issues_list, github_sesh )  
+-        pr_info_metalist = get_PR_info( pr_list, github_sesh )
+-
+-        print( ""Writing data...\n"" )
+-
+-        # aggregate data lists into rows
+-        while aggregation_index < RATE_LIMIT:
+-            # cur_commit     = commit_info_metalist[aggregation_index]
+-            # commit_author  = cur_commit[0]
+-            # commit_message = cur_commit[1] 
+-
+-            cur_issue         = issue_info_metalist[aggregation_index]
+-            issue_closed_date = cur_issue[0] 
+-            issue_author      = cur_issue[1]
+-            issue_title       = cur_issue[2]
+-            issue_body        = cur_issue[3] 
+-            issue_comments    = cur_issue[4]  
+-
+-            cur_pr          = pr_info_metalist[aggregation_index]
+-            pr_body         = cur_pr[0] 
+-            pr_closed_date  = cur_pr[1] 
+-            pr_comments     = cur_pr[2] 
+-            pr_num          = cur_pr[3] 
+-            pr_title        = cur_pr[4] 
+-            pr_author       = cur_pr[5]
++        pr_info_metalist, commits_url_list = get_PR_info( pr_list, github_sesh )
++        commit_info_metalist = get_commit_info( commits_url_list, github_sesh )
++
++        # print( ""Writing data...\n"" )
++
++        # # aggregate data lists into rows
++        # while aggregation_index < RATE_LIMIT:
++        #     # cur_commit     = commit_info_metalist[aggregation_index]
++        #     # commit_author  = cur_commit[0]
++        #     # commit_message = cur_commit[1] 
++
++        #     cur_issue         = issue_info_metalist[aggregation_index]
++        #     issue_closed_date = cur_issue[0] 
++        #     issue_author      = cur_issue[1]
++        #     issue_title       = cur_issue[2]
++        #     issue_body        = cur_issue[3] 
++        #     issue_comments    = cur_issue[4]  
++
++        #     cur_pr          = pr_info_metalist[aggregation_index]
++        #     pr_body         = cur_pr[0] 
++        #     pr_closed_date  = cur_pr[1] 
++        #     pr_comments     = cur_pr[2] 
++        #     pr_num          = cur_pr[3] 
++        #     pr_title        = cur_pr[4] 
++        #     pr_author       = cur_pr[5]
+ 
+        
+-            # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
+-            #        Issue_Title, Issue_Body, PR_Closed_Date,     DONE
+-            #        RR_Title, PR_Body, PR_Comments               DONE
+-            #        Issue_comments, PR_Author, Commit_Author, 
+-            #        Commit_Date, Commit_Message, isPR
+-            # --------------------------------------------------------------
+-            # writer.writerow( [pr_num, issue_closed_date, issue_author, 
+-            #                  issue_title, issue_body, pr_closed_date, 
+-            #                  pr_title, pr_body, pr_comments, 
+-            #                  issue_comments, pr_author, commit_author,
+-            #                  commit_message]
+-            #                  )
++        #     # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
++        #     #        Issue_Title, Issue_Body, PR_Closed_Date,     DONE
++        #     #        RR_Title, PR_Body, PR_Comments               DONE
++        #     #        Issue_comments, PR_Author, Commit_Author, 
++        #     #        Commit_Date, Commit_Message, isPR
++        #     # --------------------------------------------------------------
++        #     # writer.writerow( [pr_num, issue_closed_date, issue_author, 
++        #     #                  issue_title, issue_body, pr_closed_date, 
++        #     #                  pr_title, pr_body, pr_comments, 
++        #     #                  issue_comments, pr_author, commit_author,
++        #     #                  commit_message]
++        #     #                  )
+ 
+-            writer.writerow( [pr_num, issue_closed_date, issue_author, 
+-                             issue_title, issue_body, pr_closed_date, 
+-                             pr_title, pr_body, pr_comments, 
+-                             issue_comments, pr_author]
+-                             ) 
++        #     writer.writerow( [pr_num, issue_closed_date, issue_author, 
++        #                      issue_title, issue_body, pr_closed_date, 
++        #                      pr_title, pr_body, pr_comments, 
++        #                      issue_comments, pr_author]
++        #                      ) 
+ 
+ 
+ 
+ 
+-            aggregation_index += 1
++        #     aggregation_index += 1
+      
+ 
+ , "273178"""modified, """451
+jacobPenneyjacobPenney8515723ce9baae8f13fb399b7448993e044857f48[refactor]: amended commit mining function['extractor.py', 'output.csv']"@@ -14,9 +14,6 @@
+ #       - transcend rate limit
+ #       - circumvent socket timeout
+ #       - for output, need:
+-#           - commits:
+-#               - Date
+-# 
+ #           - isPR
+ # 
+ #   - post-completion:
+@@ -84,7 +81,7 @@ def main():
+ 
+ 
+     # write output to csv file
+-    init_csv_output( repo_paginated_list, github_sesh, issues_paginated_list, 
++    init_csv_output( github_sesh, issues_paginated_list, 
+                      output_file_name, pr_paginated_list )
+ 
+ 
+@@ -179,22 +176,20 @@ def create_input_list( fileToOpen ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_commit_info( commit_metalist, session ):
+-
+-    # still need:
+-    #   - date
++def get_commit_info( commit_paged_list, session ):
+ 
+-    commit                = None
+     commit_info_list      = []
+-    commit_list_index     = 0
++    commit_info_metalist  = []
+     commit_metalist_index = 0
+-    commit_status_paginated_list = None
++    commit_of_interest    = None
++
++    print( ""Getting commit info..."" )
+ 
+     while commit_metalist_index < RATE_LIMIT:
+         try:
+         
+             # retrieve list of commits for one pr
+-            cur_commit_list = commit_metalist[commit_metalist_index]
++            cur_commit_list = commit_paged_list[commit_metalist_index]
+ 
+             # get the last actionable index for that list
+             last_position = cur_commit_list.totalCount - 1
+@@ -203,27 +198,38 @@ def get_commit_info( commit_metalist, session ):
+             commit_of_interest = cur_commit_list[last_position]
+             
+             # get relevant author
+-            commit_author = commit_message = commit_of_interest.commit.author
+-            print( commit_author ) 
++            commit_author = commit_message = commit_of_interest.commit.author.name
++            
++            # get relevant commit date
++            commit_date = commit_of_interest.commit.author.date.strftime(
++                                                    ""%m/%d/%y %I:%M:%S %p"" )
+ 
+             # get relevant commit message
+             commit_message = commit_of_interest.commit.message
+-            print( commit_message )
+ 
+-            commit_date = commit_of_interest.commit.author.date
+-            print( commit_date )
+-            
+ 
+-            commit_metalist_index += 1
++            commit_info_list = [
++                    commit_author,
++                    commit_date,
++                    commit_message
++                    ]
++
+ 
+-            # print_rem_calls( session )
++            commit_info_metalist.append( commit_info_list )
++
++            print_rem_calls( session )
+  
++            commit_metalist_index += 1
++
+ 
+         except github.RateLimitExceededException:
+             run_timer( session ) 
+ 
+ 
+-    return commit_info_list
++    print('\n')
++
++
++    return commit_info_metalist
+ 
+ 
+ 
+@@ -269,11 +275,13 @@ def get_issue_info( issue_list, session ):
+                     issue_comment_str 
+                     ]
+ 
++
+             issue_metalist.append( issue_context_list )
+-            index += 1
+-        
++
+             print_rem_calls( session )
+ 
++            index += 1
++        
+ 
+         except github.RateLimitExceededException:
+             run_timer( session )
+@@ -375,7 +383,7 @@ def get_PR_info( pr_list, session ):
+ 
+     # init variables
+     index           = 0
+-    pr_commits_list = []
++    commits_paginated_list = []
+     pr_info_list    = []
+     pr_metalist     = []
+ 
+@@ -413,7 +421,7 @@ def get_PR_info( pr_list, session ):
+                     ]
+ 
+ 
+-            pr_commits_list.append( pr_commits )
++            commits_paginated_list.append( pr_commits )
+             pr_metalist.append( pr_info_list )
+ 
+             print_rem_calls( session )
+@@ -428,7 +436,7 @@ def get_PR_info( pr_list, session ):
+     print('\n')
+ 
+ 
+-    return pr_metalist, pr_commits_list
++    return pr_metalist, commits_paginated_list
+ 
+ 
+ 
+@@ -544,16 +552,15 @@ def timer( countdown_time ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def init_csv_output( repo_list, github_sesh, issues_list, output_file_name, 
+-                     pr_list ):
++def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
+ 
+     # index for aggregation loop
+     aggregation_index   = 0
+ 
+     # data lists
+-    commits_url_list    = []
+-    issue_info_metalist = []  
+-    pr_info_metalist    = []  
++    commit_info_metalist = []
++    issue_info_metalist  = []  
++    pr_info_metalist     = []  
+  
+ 
+     # Open the output csv file in preparation for writing
+@@ -569,48 +576,55 @@ def init_csv_output( repo_list, github_sesh, issues_list, output_file_name,
+ 
+         # retrieve lists of PR and issue data
+         issue_info_metalist = get_issue_info( issues_list, github_sesh )  
+-        pr_info_metalist, commits_url_list = get_PR_info( pr_list, github_sesh )
+-        commit_info_metalist = get_commit_info( commits_url_list, github_sesh )
+-
+-        # print( ""Writing data...\n"" )
+-
+-        # # aggregate data lists into rows
+-        # while aggregation_index < RATE_LIMIT:
+-        #     # cur_commit     = commit_info_metalist[aggregation_index]
+-        #     # commit_author  = cur_commit[0]
+-        #     # commit_message = cur_commit[1] 
+-
+-        #     cur_issue         = issue_info_metalist[aggregation_index]
+-        #     issue_closed_date = cur_issue[0] 
+-        #     issue_author      = cur_issue[1]
+-        #     issue_title       = cur_issue[2]
+-        #     issue_body        = cur_issue[3] 
+-        #     issue_comments    = cur_issue[4]  
+-
+-        #     cur_pr          = pr_info_metalist[aggregation_index]
+-        #     pr_author       = cur_pr[0] 
+-        #     pr_body         = cur_pr[1] 
+-        #     pr_closed_date  = cur_pr[2] 
+-        #     pr_comments     = cur_pr[3] 
+-        #     pr_num          = cur_pr[4] 
+-        #     pr_title        = cur_pr[5] 
++
++        pr_info_metalist, commits_paginated_list = get_PR_info( pr_list, 
++                                                                github_sesh )
++
++        commit_info_metalist = get_commit_info( commits_paginated_list, 
++                                                github_sesh )
++
++
++        print( ""Writing data...\n"" )
++
++
++        # aggregate data lists into rows
++        while aggregation_index < RATE_LIMIT:
++            cur_commit     = commit_info_metalist[aggregation_index]
++            commit_author  = cur_commit[0]
++            commit_date    = cur_commit[1] 
++            commit_message = cur_commit[2] 
++
++            cur_issue         = issue_info_metalist[aggregation_index]
++            issue_closed_date = cur_issue[0] 
++            issue_author      = cur_issue[1]
++            issue_title       = cur_issue[2]
++            issue_body        = cur_issue[3] 
++            issue_comments    = cur_issue[4]  
++
++            cur_pr          = pr_info_metalist[aggregation_index]
++            pr_author       = cur_pr[0] 
++            pr_body         = cur_pr[1] 
++            pr_closed_date  = cur_pr[2] 
++            pr_comments     = cur_pr[3] 
++            pr_num          = cur_pr[4] 
++            pr_title        = cur_pr[5] 
+ 
+        
+-        #     # order: PR_Number, Issue_Closed_Date, Issue_Author,  DONE
+-        #     #        Issue_Title, Issue_Body, PR_Closed_Date,     DONE
+-        #     #        RR_Title, PR_Body, PR_Comments               DONE
+-        #     #        Issue_comments, PR_Author, Commit_Author, 
+-        #     #        Commit_Date, Commit_Message, isPR
+-        #     # --------------------------------------------------------------
+-        #     # writer.writerow( [pr_num, issue_closed_date, issue_author, 
+-        #     #                  issue_title, issue_body, pr_closed_date, 
+-        #     #                  pr_title, pr_body, pr_comments, 
+-        #     #                  issue_comments, pr_author, commit_author,
+-        #     #                  commit_message]
+-        #     #                  )
++            # order: PR_Number, Issue_Closed_Date, Issue_Author,  
++            #        Issue_Title, Issue_Body, PR_Closed_Date,     
++            #        RR_Title, PR_Body, PR_Comments               
++            #        Issue_comments, PR_Author, Commit_Author, 
++            #        Commit_Date, Commit_Message, isPR
++            # --------------------------------------------------------------
++            writer.writerow( [pr_num, issue_closed_date, issue_author, 
++                             issue_title, issue_body, pr_closed_date, 
++                             pr_title, pr_body, pr_comments, 
++                             issue_comments, pr_author, commit_author,
++                             commit_date, commit_message]
++                             )
+ 
+         
+-        #     aggregation_index += 1
++            aggregation_index += 1
+      
+ 
+ , @@ -1 +1,8 @@
+ PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
++12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" =||=  =||= olenzOlaf Lenz03/12/14 09:16:45 AMMerge branch 'sorting'
++22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. "" =||=  =||= simonharrerSimon Harrer03/12/14 05:20:08 PMGradle build works basically. Reuses existing folder structure.
++32014-03-15 12:55:32Egon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page."""" =||=  =||= egonwEgon Willighagen03/15/14 09:33:10 AMSome example new Dutch translations via the GitHub web page.
++42014-03-17 22:20:50Jorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation update""Three new strings translated.""11jtornerojtornero03/17/14 09:28:26 PMSpanish translation update
++52014-03-18 05:12:53NoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added"" =||=  =||= was123was12303/18/14 12:01:58 AMUpdate JabRef_in.properties\
++\
++Indonesian translation added, "9069"""modified, modified, """159
+jacobPenneyjacobPenney9eabd624ade6cddb3042a2ebc610e754bc1b2a64d[fix]: correct typo, add am/pm to issue closed date['extractor.py', 'output.csv']"@@ -198,7 +198,7 @@ def get_commit_info( commit_paged_list, session ):
+             commit_of_interest = cur_commit_list[last_position]
+             
+             # get relevant author
+-            commit_author = commit_message = commit_of_interest.commit.author.name
++            commit_author = commit_of_interest.commit.author.name
+             
+             # get relevant commit date
+             commit_date = commit_of_interest.commit.author.date.strftime(
+@@ -256,7 +256,8 @@ def get_issue_info( issue_list, session ):
+             issue_author_str      = str( cur_issue.user.name ) # here
+             issue_body_str        = str( cur_issue.body )
+             issue_comment_str     = str( cur_issue.comments ) 
+-            issue_closed_date_str = str( cur_issue.closed_at )
++            issue_closed_date_str = str( cur_issue.closed_at.strftime(
++                                                    ""%m/%d/%y %I:%M:%S %p"" ) )
+             issue_title_str       = str( cur_issue.title )
+             
+ , @@ -1,8 +1,8 @@
+ PR_NumberIssue_Closed_DateIssue_AuthorIssue_TitleIssue_BodyIssue_commentsPR_Closed_Date,PR_Author, PR_Title, PR_BodyPR_CommentsCommit_AuthorCommit_DateCommit_MessageisPR
+-12014-03-12 11:38:01Olaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" =||=  =||= olenzOlaf Lenz03/12/14 09:16:45 AMMerge branch 'sorting'
+-22014-03-12 18:29:22Simon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. "" =||=  =||= simonharrerSimon Harrer03/12/14 05:20:08 PMGradle build works basically. Reuses existing folder structure.
+-32014-03-15 12:55:32Egon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page."""" =||=  =||= egonwEgon Willighagen03/15/14 09:33:10 AMSome example new Dutch translations via the GitHub web page.
+-42014-03-17 22:20:50Jorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation update""Three new strings translated.""11jtornerojtornero03/17/14 09:28:26 PMSpanish translation update
+-52014-03-18 05:12:53NoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added"" =||=  =||= was123was12303/18/14 12:01:58 AMUpdate JabRef_in.properties\
++103/12/14 11:38:01 AMOlaf LenzNew Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.""2014-03-12 11:38:01New Sorting/Export preferences""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."" =||=  =||= olenzOlaf Lenz03/12/14 09:16:45 AMMerge branch 'sorting'
++203/12/14 06:29:22 PMSimon HarrerBasic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. ""2014-03-12 18:29:22Basic gradle integration""This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. "" =||=  =||= simonharrerSimon Harrer03/12/14 05:20:08 PMGradle build works basically. Reuses existing folder structure.
++303/15/14 12:55:32 PMEgon WillighagenSome example new Dutch translations via the GitHub web page.""""2014-03-15 12:55:32Some example new Dutch translations via the GitHub web page."""" =||=  =||= egonwEgon Willighagen03/15/14 09:33:10 AMSome example new Dutch translations via the GitHub web page.
++403/17/14 10:20:50 PMJorge TorneroSpanish translation update""Three new strings translated.""2014-03-17 22:20:50Spanish translation update""Three new strings translated.""11jtornerojtornero03/17/14 09:28:26 PMSpanish translation update
++503/18/14 05:12:53 AMNoneUpdate JabRef_in.properties""Indonesian translation added""2014-03-18 05:12:53Update JabRef_in.properties""Indonesian translation added"" =||=  =||= was123was12303/18/14 12:01:58 AMUpdate JabRef_in.properties\
+ \
+ Indonesian translation added, "87"""modified, modified, """15
+jacobPenneyjacobPenney10e8761b73533054fff613831616379bce1e366948[refactor, feat]: add output type arg functionality, refactor main and writer func['extractor.py']"@@ -6,15 +6,20 @@
+ #   - Github: https://pygithub.readthedocs.io/en/latest/github.html
+ # --------------------------------------------------------------------------- 
+ 
+-
+ # TODO:
+-#   - features:
+-#       - add mutex arg for diff filetype
++#   - features ( by priority ):
++#       - for PR output, need:
++#           - isPR
++#       - for Commit output, need: 
++#           - All 🙃 
+ #       - create checks to protect from lack of pull requests
+ #       - transcend rate limit
+ #       - circumvent socket timeout
+-#       - for output, need:
+-#           - isPR
++#   
++#   -TODAY:
++#       - rewrite output function
++#       - begin adding functionality for commit file
++#   
+ # 
+ #   - post-completion:
+ #       - clean spacing
+@@ -23,7 +28,6 @@
+ #       - add arg_parser description 
+ 
+ 
+-
+ # imports
+ import argparse
+ import csv
+@@ -32,13 +36,19 @@
+ 
+ 
+ # constants
+-COLUMN_NAMES = [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
+-                ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
+-                ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
+-                ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
+-                ""Commit_Message"", ""isPR""]
+-NEW_LINE    = '\n'
+-RATE_LIMIT  = 5
++COMMIT_COL_NAMES = [""Author_Login"", ""Committer_login"", ""PR_Number"",
++                    ""SHA"", ""Commit_Message"", ""File_name"",
++                    ""Patch_text"", ""Additions"", ""Deletions"",
++                    ""Status"", ""Changes""]
++
++PR_COL_NAMES     = [""PR_Number"", ""Issue_Closed_Date"", ""Issue_Author"",
++                    ""Issue_Title"", ""Issue_Body"", ""Issue_comments"", 
++                    ""PR_Closed_Date,PR_Author, PR_Title, PR_Body"",
++                    ""PR_Comments"", ""Commit_Author"", ""Commit_Date"", 
++                    ""Commit_Message"", ""isPR""]
++
++NEW_LINE         = '\n'
++RATE_LIMIT       = 5        
+ 
+ 
+ 
+@@ -53,36 +63,28 @@
+ def main():
+ 
+     # retrieve positional arguments as variables
+-    ( repo_input_file, auth_file, output_file_name ) = get_args() 
++    ( repo_str, auth_file, output_file_name, output_type ) = get_args() 
+ 
+ 
+     # get user info
+     userauth_list = read_user_info( auth_file )  
+ 
+ 
+-    # get repo inputs
+-    repo_input_list = create_input_list( repo_input_file )  
+-    test_repo = repo_input_list[0]
+-
+-
+     # authenticate with GitHub
+     github_sesh = github.Github( userauth_list[0] )
+     # github_sesh = github.Github(  )
+      
+ 
+     # retrieve paginated list of repos
+-    repo_paginated_list = github_sesh.get_repo( test_repo ) 
++    repo_paginated_list = github_sesh.get_repo( repo_str ) 
+ 
+ 
+     # retrieve paginated list of issues and pull requests
+-    ( issues_paginated_list, pr_paginated_list ) = get_paginated_lists(
+-                                                        repo_paginated_list,
+-                                                        github_sesh)
++    paged_list_tuple = get_paginated_lists( repo_paginated_list, github_sesh)
+ 
+ 
+     # write output to csv file
+-    init_csv_output( github_sesh, issues_paginated_list, 
+-                     output_file_name, pr_paginated_list )
++    create_csv_output( github_sesh, output_file_name, output_type, paged_list_tuple )
+ 
+ 
+ 
+@@ -96,13 +98,24 @@ def main():
+ #--------------------------------------------------------------------------- 
+ def get_args():
+ 
++    output_type = """"
++
+     # establish positional argument capability
+     arg_parser = argparse.ArgumentParser( description=""TODO"" ) 
+-      
++    
++    # establish mutually exclusive argument capability
++    mutually_excl_args = arg_parser.add_mutually_exclusive_group()  
++
++    # add mutually exclusive args to choose output type
++    mutually_excl_args.add_argument( '-p', '--pr', action=""store_true"",
++                                     help=""Create \""pull request\"" type file"" )
++
++    mutually_excl_args.add_argument( '-c', '--commit', action=""store_true"",
++                                     help=""Create \""commit\"" type file"" )  
++
+     # add repo input CLI arg
+-    arg_parser.add_argument( 'input_file', type=str,  
+-                              help=""""""text file containing properly formatted 
+-                              arguments"""""" ) 
++    arg_parser.add_argument( 'repo_name', type=str,  
++                              help=""repo name in the format \""user/repo\"""" ) 
+ 
+     # add auth token CLI arg
+     arg_parser.add_argument( 'auth_file', type=str, 
+@@ -117,57 +130,22 @@ def get_args():
+     CLI_args = arg_parser.parse_args()  
+ 
+     # separate into individual variables
+-    input_file = CLI_args.input_file
++    repo_name = CLI_args.repo_name
+     auth_file = CLI_args.auth_file
+     output_file_name = CLI_args.output_file_name
+ 
++    if CLI_args.pr:
++        output_type = ""pull request""
+ 
+-    return ( input_file, auth_file, output_file_name )
++    elif CLI_args.commit:
++        output_type = ""commit""
+ 
+ 
++    return ( repo_name, auth_file, output_file_name, output_type )
+ 
+ 
+-# ---------------------------------------------------------------------------
+-# Function: create_input_list 
+-# Process: accepts the name of a file to open, opens the file, reads its
+-#          contents out, and processes that content into a list
+-# Parameters: name of the file to open
+-# Postcondition: returns a list of input from the input text
+-# Exceptions: none 
+-# Note: none
+-# ---------------------------------------------------------------------------
+-def create_input_list( fileToOpen ):
+- 
+-    # variables
+-    repo_list = []
+ 
+ 
+-    # open file
+-    repo_input_file_obj = open( fileToOpen, 'r' )
+-
+-    # read contents out
+-    api_input_contents = repo_input_file_obj.readlines()
+-
+-    for line in api_input_contents:
+-        # strip rows of new line characters
+-        newLine_stripped_line = line.strip( NEW_LINE )
+-
+-        # strip rows of quote characters
+-        quote_stripped_line = newLine_stripped_line.replace( '""', '' )
+-
+-        # strip lines on commas to create list of items
+-        repo_list = quote_stripped_line.split( ',' )
+-
+-
+-    # close file 
+-    repo_input_file_obj.close()
+-
+-
+-    return repo_list
+-
+-
+- 
+-
+ #--------------------------------------------------------------------------- 
+ # Function name : get_commit_info
+ # Process       : retrieves the most recent commit from the current pull
+@@ -553,7 +531,10 @@ def timer( countdown_time ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
++def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
++
++    # unpack lists
++    issues_list, pr_list = list_tuple
+ 
+     # index for aggregation loop
+     aggregation_index   = 0
+@@ -567,12 +548,14 @@ def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
+     # Open the output csv file in preparation for writing
+     with open( output_file_name, 'w', newline="""", encoding=""utf-8"" ) as csvfile:
+ 
+-        writer = csv.writer( 
+-                csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
+-                quotechar='', escapechar='\\', lineterminator=NEW_LINE )
++        # create writer object
++        writer = csv.writer( csvfile, quoting=csv.QUOTE_NONE, delimiter='\a', 
++                             quotechar='', escapechar='\\', 
++                             lineterminator=NEW_LINE )
+           
+ 
+-        writer.writerow( COLUMN_NAMES )
++        # write column labels
++        writer.writerow( PR_COL_NAMES )
+ 
+ 
+         # retrieve lists of PR and issue data
+@@ -629,6 +612,8 @@ def init_csv_output( github_sesh, issues_list, output_file_name, pr_list ):
+      
+ 
+ 
+-             
++
+ if __name__ == '__main__':
+     main() 
++
++, "6176"""modified, """137
+McAuleyPenneyGitHub11a4cc0b1f6b728e26542fed9e809b65cf99d756ffUpdate extractor.py['extractor.py']"@@ -10,15 +10,29 @@
+ #   - features ( by priority ):
+ #       - for PR output, need:
+ #           - isPR
++
++#       - for Commit output, need: 
++#           - Author_Login       DONE:
++#           - Committer_login
++#           - PR_Number          DONE:
++#           - SHA,
++#           - Commit_Message
++#           - File_name
++#           - Patch_text
++#           - Additions
++#           - Deletions
++#           - Status
++#           - Changes
++
+ #       - for Commit output, need: 
+ #           - All 🙃 
+ #       - create checks to protect from lack of pull requests
+ #       - transcend rate limit
+ #       - circumvent socket timeout
+ #   
+ #   -TODAY:
+-#       - rewrite output function
+-#       - begin adding functionality for commit file
++#       - rewrite output function                        DONE:
++#       - begin adding functionality for commit file     DONE: 
+ #   
+ # 
+ #   - post-completion:
+@@ -135,7 +149,7 @@ def get_args():
+     output_file_name = CLI_args.output_file_name
+ 
+     if CLI_args.pr:
+-        output_type = ""pull request""
++        output_type = ""pr""
+ 
+     elif CLI_args.commit:
+         output_type = ""commit""
+@@ -154,7 +168,7 @@ def get_args():
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_commit_info( commit_paged_list, session ):
++def get_commit_info( commit_paged_list, session, output_type ):
+ 
+     commit_info_list      = []
+     commit_info_metalist  = []
+@@ -245,7 +259,6 @@ def get_issue_info( issue_list, session ):
+             if issue_comment_str == '0':
+                 issue_comment_str = "" =||= "" 
+ 
+-
+             issue_context_list  = [
+                     issue_closed_date_str, 
+                     issue_author_str, 
+@@ -358,7 +371,7 @@ def get_paginated_lists( input_repo, session ):
+ # Postconditions: 
+ # Notes         : 
+ #--------------------------------------------------------------------------- 
+-def get_PR_info( pr_list, session ):
++def get_PR_info( pr_list, session, output_type ):
+ 
+     # init variables
+     index           = 0
+@@ -389,19 +402,24 @@ def get_PR_info( pr_list, session ):
+             if pr_comment_str == '0':
+                 pr_comment_str = "" =||= ""
+ 
+-            
++
+             pr_info_list = [
+-                    pr_author_str,
+-                    pr_body_str,
+-                    pr_closed_date_str,
+-                    pr_comment_str,
+-                    pr_num_str,
+-                    pr_title_str,
+-                    ]
++                    pr_num_str
++                    ]  
++
++
++            if output_type == ""pr"":
++                pr_info_list += [
++                        pr_author_str,
++                        pr_body_str,
++                        pr_closed_date_str,
++                        pr_comment_str,
++                        pr_title_str,
++                        ]
+ 
+ 
+-            commits_paginated_list.append( pr_commits )
+             pr_metalist.append( pr_info_list )
++            commits_paginated_list.append( pr_commits )
+ 
+             print_rem_calls( session )
+ 
+@@ -542,7 +560,11 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
+     # data lists
+     commit_info_metalist = []
+     issue_info_metalist  = []  
++    output_row           = []
+     pr_info_metalist     = []  
++
++    # output columns
++    label_cols = COMMIT_COL_NAMES
+  
+ 
+     # Open the output csv file in preparation for writing
+@@ -554,66 +576,85 @@ def create_csv_output( github_sesh, output_file_name, output_type, list_tuple ):
+                              lineterminator=NEW_LINE )
+           
+ 
+-        # write column labels
+-        writer.writerow( PR_COL_NAMES )
+-
+-
+         # retrieve lists of PR and issue data
+-        issue_info_metalist = get_issue_info( issues_list, github_sesh )  
++        if output_type == ""pr"":
++            label_cols = PR_COL_NAMES
++
++            issue_info_metalist = get_issue_info( issues_list, github_sesh )  
+ 
++        
+         pr_info_metalist, commits_paginated_list = get_PR_info( pr_list, 
+-                                                                github_sesh )
++                                                                github_sesh,
++                                                                output_type )
+ 
+         commit_info_metalist = get_commit_info( commits_paginated_list, 
+-                                                github_sesh )
+-
++                                                github_sesh, output_type )
+ 
+         print( ""Writing data...\n"" )
+ 
++        # write column labels
++        writer.writerow( label_cols ) 
++
+ 
+         # aggregate data lists into rows
+         while aggregation_index < RATE_LIMIT:
++
++            # get ecumenical values
+             cur_commit     = commit_info_metalist[aggregation_index]
+             commit_author  = cur_commit[0]
+-            commit_date    = cur_commit[1] 
+-            commit_message = cur_commit[2] 
+-
+-            cur_issue         = issue_info_metalist[aggregation_index]
+-            issue_closed_date = cur_issue[0] 
+-            issue_author      = cur_issue[1]
+-            issue_title       = cur_issue[2]
+-            issue_body        = cur_issue[3] 
+-            issue_comments    = cur_issue[4]  
+ 
+             cur_pr          = pr_info_metalist[aggregation_index]
+-            pr_author       = cur_pr[0] 
+-            pr_body         = cur_pr[1] 
+-            pr_closed_date  = cur_pr[2] 
+-            pr_comments     = cur_pr[3] 
+-            pr_num          = cur_pr[4] 
+-            pr_title        = cur_pr[5] 
+-
+-       
+-            # order: PR_Number, Issue_Closed_Date, Issue_Author,  
+-            #        Issue_Title, Issue_Body, PR_Closed_Date,     
+-            #        RR_Title, PR_Body, PR_Comments               
+-            #        Issue_comments, PR_Author, Commit_Author, 
+-            #        Commit_Date, Commit_Message, isPR
+-            # --------------------------------------------------------------
+-            writer.writerow( [pr_num, issue_closed_date, issue_author, 
+-                             issue_title, issue_body, pr_closed_date, 
+-                             pr_title, pr_body, pr_comments, 
+-                             issue_comments, pr_author, commit_author,
+-                             commit_date, commit_message]
+-                             )
+-
+-        
++            pr_num          = cur_pr[0] 
++
++
++            # get output type-dependent values
++            if output_type == ""pr"":
++                cur_issue         = issue_info_metalist[aggregation_index]
++
++                commit_date    = cur_commit[1] 
++                commit_message = cur_commit[2] 
++
++                issue_closed_date = cur_issue[0] 
++                issue_author      = cur_issue[1]
++                issue_title       = cur_issue[2]
++                issue_body        = cur_issue[3] 
++                issue_comments    = cur_issue[4]  
++
++                pr_author       = cur_pr[1] 
++                pr_body         = cur_pr[2] 
++                pr_closed_date  = cur_pr[3] 
++                pr_comments     = cur_pr[4] 
++                pr_title        = cur_pr[5] 
++
++
++                # order: PR_Number, Issue_Closed_Date, Issue_Author,  
++                #        Issue_Title, Issue_Body, PR_Closed_Date,     
++                #        RR_Title, PR_Body, PR_Comments               
++                #        Issue_comments, PR_Author, Commit_Author, 
++                #        Commit_Date, Commit_Message, isPR
++                # ------------------------------------------------------------
++                output_row = [pr_num, issue_closed_date, issue_author,  
++                              issue_title, issue_body, pr_closed_date,   
++                              pr_title, pr_body, pr_comments,            
++                              issue_comments, pr_author, commit_author,  
++                              commit_date, commit_message]               
++
++            else:
++                # order:  Author_Login, Committer_login, PR_Number,
++                #         SHA, Commit_Message, File_name,
++                #         Patch_text, Additions, Deletions,
++                #         Status, Changes
++                # ------------------------------------------------------------
++                output_row = [commit_author]                
++
++
++            writer.writerow( output_row ) 
++                             
+             aggregation_index += 1
+      
+ 
+ 
+ 
+ if __name__ == '__main__':
+     main() 
+-
+-
++ , "9756"""modified, """153
