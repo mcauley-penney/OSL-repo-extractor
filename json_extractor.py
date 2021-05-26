@@ -24,6 +24,7 @@
 import argparse
 import csv
 import github
+import json
 import time
 
 
@@ -36,6 +37,13 @@ COMMIT_COL_NAMES = ["Author_Login", "Committer_login", "PR_Number",
 INVALID_TOKEN_STR = """\n    Invalid personal access token!\n 
     Please see https://github.com/settings/tokens 
     to create a token with \"repo\" permissions!""" 
+
+MENU_PROMPT = """
+Please choose type of operation:                                      
+    [1] get pull request and commit JSON list                            
+    [2] get issue JSON list                                              
+    [3] get all three relevant lists
+    [4] compile pull request, commit, and issue JSON lists into CSV""" 
 
 PR_COL_NAMES  = ["PR_Number", "Issue_Closed_Date", "Issue_Author",
                  "Issue_Title", "Issue_Body", "PR_Closed_Date", 
@@ -68,7 +76,7 @@ def main():
     config_file_name = get_CLI_args()
 
     # get prog run info
-    conf_list = read_user_info( config_file_name ) 
+    conf_list = read_config( config_file_name ) 
     auth_token = conf_list[1]
         
     # authenticate the user with GitHub
@@ -85,13 +93,13 @@ def main():
 
     except github.RateLimitExceededException:
         run_timer( session ) 
-        exe_gather_and_write( conf_list )
+        exe_menu( conf_list )
         
 
     else:
-        exe_gather_and_write( conf_list )
+        exe_menu( conf_list )
 
-        
+
 
 
 #--------------------------------------------------------------------------- 
@@ -102,54 +110,76 @@ def main():
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def exe_gather_and_write( conf_list ):
+def exe_menu( conf_list ):
 
-    output_type     = conf_list[0]
-    session         = conf_list[1]
-    repo_str        = conf_list[2]
-    row_quant       = conf_list[3]
-    out_file_name   = conf_list[4]
- 
-    
-    print( "\nAttempting program start..." )
-
-    # display remaining calls to GitHub
-    print_rem_calls( session ) 
+    output_type          = conf_list[0]
+    session              = conf_list[1]
+    repo_str             = conf_list[2]
+    branch_name          = conf_list[3]
+    row_quant            = conf_list[4]
+    pr_json_filename     = conf_list[5]
+    commit_json_filename = conf_list[6]
+    issue_json_filename  = conf_list[7]
+    csv_filename         = conf_list[8]
      
-    # retrieve metalists of pull request, commit, and issue data
-    metalist_list = get_info_metalists( session, repo_str, 
-                                        row_quant, output_type )
+    # display menu   
+    print( MENU_PROMPT )
+    op_choice = input("\nChoice: ")
 
-    pr_info_list     = metalist_list[0]
-    commit_info_list = metalist_list[1]
+    if op_choice == "1" or op_choice == "2" or op_choice == "3": 
 
-    # gather list lens and init issue_list_len to == pr_list_len
-    #   this makes certain test passes if output_type is not "pr"
-    pr_list_len     = len( pr_info_list ) 
-    commit_list_len = len( commit_info_list )
-    issue_list_len  = pr_list_len
+        print( "\n\nAttempting program start..." )
 
-    if output_type == "pr":
-        issue_info_list = metalist_list[2]
-        issue_list_len = len( issue_info_list )
+        # retrieve paginated lists of pull request, commit, and issue data
+        paged_list_tuple = get_paginated_lists( session, repo_str,
+                                                branch_name, output_type )
 
-    print()
-    print( pr_list_len )
-    print( commit_list_len )
-    print( issue_list_len )
+        pr_paged_list, issue_paged_list = paged_list_tuple 
+
+        if op_choice == "1" or op_choice == "3":
+            get_PR_commit_json( session, pr_paged_list, row_quant, output_type, 
+                                pr_json_filename, commit_json_filename )
+
+        if op_choice == "2" or op_choice == "3": 
+            get_issue_json( session, issue_paged_list, row_quant, 
+                            issue_json_filename )
+
+    elif op_choice == "4": 
+
+        # read metalists out of JSON storage
+        pr_info_list     = read_json( pr_json_filename )
+        commit_info_list = read_json( commit_json_filename )
+
+        info_metalist_list = [pr_info_list, commit_info_list]
 
 
-    # TODO:
-    #   Determine what the most important piece of data is, e.g.
-    #   Do we only want to include data if the issue is related to a PR 
-    if pr_list_len == commit_list_len and pr_list_len == issue_list_len:
-        row_quant = pr_list_len
+        # gather list lens and init issue_list_len to == pr_list_len.
+        #   - this makes certain test passes if output_type is not "pr"
+        pr_list_len     = len( pr_info_list ) 
+        commit_list_len = len( commit_info_list )
+        issue_list_len  = pr_list_len
 
-        write_csv_output( metalist_list, row_quant, output_type, out_file_name )
 
-    else:
-        print( '\n' )
-        print( "Info lists are incongruent length! See info getter functions!" )
+        if output_type == "pr":
+            issue_info_list = read_json( issue_json_filename )
+            issue_list_len = len( issue_info_list )
+            info_metalist_list += [issue_info_list]
+ 
+
+        # TODO:
+        #   Determine what the most important piece of data is, e.g.
+        #   Do we only want to include data if the issue is related to a PR 
+        #   May end up removing this comparison
+        if pr_list_len == commit_list_len and pr_list_len == issue_list_len:
+
+            row_quant = pr_list_len
+ 
+            write_csv_output( info_metalist_list, row_quant, output_type, 
+                              csv_filename )
+
+        else:
+           print( '\n' )
+           print( "Info lists are incongruent length! See info getter functions!" ) 
 
 
 
@@ -348,53 +378,6 @@ def get_commit_info( session, commit_py_list, row_quant, output_type ):
 
 
 
-#--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
-#--------------------------------------------------------------------------- 
-def get_info_metalists( session, repo_str, row_quant, output_type ):
-    
-    # init vars
-    metalist_list = []
-
-
-    # get paginated lists of PRs and issues
-    paged_list_tuple = get_paginated_lists( session, repo_str, output_type )
-
-    pr_paged_list, issue_paged_list = paged_list_tuple
-
-
-    # get metalist of pr information and commit info paginated list
-    #   We get the commit paginated lists here because it allows us to segment
-    #   each group of commits into their own lists. It is possible to retrieve
-    #   a monolithic list of commits from the github object but they would not
-    #   be broken up by PR
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
-                                                        row_quant, output_type )
-    
-
-    # get metalist of commit information
-    commit_info_metalist = get_commit_info( session, commits_paged_list,
-                                            row_quant, output_type ) 
-
-
-    # create list of metalists
-    metalist_list = [ pr_info_metalist, commit_info_metalist ]
-    
-
-    # if creating PR file, retrieve issue metalist and update output
-    if output_type == "pr":
-        issue_info_metalist = get_issue_info( issue_paged_list, session,
-                                              row_quant )
-
-        metalist_list += [ issue_info_metalist ]
-
-
-    return metalist_list
 
 
  
@@ -428,7 +411,7 @@ def get_info_metalists( session, repo_str, row_quant, output_type ):
 #                   - link: https://docs.github.com/en/rest/guides/traversing-with-pagination
 #                   - link: https://pygithub.readthedocs.io/en/latest/utilities.html#github.PaginatedList.PaginatedList
 #--------------------------------------------------------------------------- 
-def get_issue_info( issue_paged_list, session, row_quant ):
+def get_issue_info( session, issue_paged_list, row_quant ):
 
     # init info entries that can be empty to prevent empty spaces in output
     issue_closed_date = " =||= "
@@ -510,8 +493,27 @@ def get_issue_info( issue_paged_list, session, row_quant ):
         except github.RateLimitExceededException:
             run_timer( session )
 
+    print()
 
     return issue_metalist
+
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name: get_issue_json
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def get_issue_json( session, issue_paged_list, row_quant, issue_json_filename ):
+
+    issue_info_metalist = get_issue_info( session, issue_paged_list, row_quant )
+
+    write_json_output( issue_info_metalist, issue_json_filename )
+
 
 
 
@@ -623,7 +625,7 @@ def get_limit_info( session, type_flag ):
 #                 - topic : pygithub repo objects
 #                   - link: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 #--------------------------------------------------------------------------- 
-def get_paginated_lists( session, repo_str, output_type ):
+def get_paginated_lists( session, repo_str, branch, output_type ):
 
     # init vars 
     all_lists_retrieved = False
@@ -639,12 +641,13 @@ def get_paginated_lists( session, repo_str, output_type ):
 
             # get base branch
             #   This precludes a bug where the repo returns no paginated lists
-            base_branch = repo_obj.default_branch
+            if branch == "default":
+                branch = repo_obj.default_branch
 
             print( "\n\nGathering GitHub data paginated lists..." )
             
             # retrieve paginated list of pull requests
-            pr_list = repo_obj.get_pulls( base=base_branch, direction='asc', 
+            pr_list = repo_obj.get_pulls( base="master", direction='asc', 
                                           sort='created', state='all' ) 
 
             if output_type == "pr": 
@@ -664,6 +667,36 @@ def get_paginated_lists( session, repo_str, output_type ):
 
 
     return pr_list, issues_list 
+
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name: get_PR_commit_json
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def get_PR_commit_json( session, pr_paged_list, row_quant, output_type, 
+                        pr_json_filename, commit_json_filename ):
+    
+    # get metalist of pr information and commit info paginated list
+    #   We get the commit paginated lists here because it allows us to segment
+    #   each group of commits into their own lists. It is possible to retrieve
+    #   a monolithic list of commits from the github object but they would not
+    #   be broken up by PR
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+                                                        row_quant, output_type )
+
+    # get metalist of commit information
+    commit_info_metalist = get_commit_info( session, commits_paged_list,
+                                            row_quant, output_type ) 
+
+
+    write_json_output( pr_info_metalist, pr_json_filename )        
+    write_json_output( commit_info_metalist, commit_json_filename ) 
 
 
 
@@ -852,7 +885,7 @@ def print_rem_calls( session ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name: read_user_info
+# Function name: read_config
 # Process      : opens and reads text file containing GitHub user
 #                authentification info in the format:
 #                       
@@ -873,7 +906,7 @@ def print_rem_calls( session ):
 # Notes        : none
 # Other Docs   : none
 #--------------------------------------------------------------------------- 
-def read_user_info( config_file_name ):
+def read_config( config_file_name ):
 
     conf_list = []
 
@@ -932,11 +965,33 @@ def read_user_info( config_file_name ):
             print( "\nAuthorization file not found!" ) 
             
 
-    if len( conf_list ) == 5:
+    if len( conf_list ) == 9:
         return conf_list
 
     else:
         print( "\nIncorrect configuration! Please update your settings!" )
+
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name: 
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def read_json( file_name ):
+    
+    with open( file_name, 'r' ) as json_file:
+
+        info_metalist = json.load( json_file )
+
+
+    return info_metalist
+
+
 
 
 
@@ -1048,6 +1103,7 @@ def write_csv_output( metalist_list, row_quant, output_type, out_file_name ):
 
             # get shared values
             cur_commit     = commit_info_metalist[aggregation_index]
+
             commit_author  = cur_commit[0]
             commit_message = cur_commit[1] 
 
@@ -1086,7 +1142,6 @@ def write_csv_output( metalist_list, row_quant, output_type, out_file_name ):
                               issue_comments, pr_author, commit_author,  
                               commit_date, commit_message, isPR]
 
-
             else:
                 commit_committer  = cur_commit[2]
                 commit_SHA        = cur_commit[3]
@@ -1115,6 +1170,28 @@ def write_csv_output( metalist_list, row_quant, output_type, out_file_name ):
      
 
     print( "\nOutput complete" )
+
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name: 
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def write_json_output( output_py_metalist, output_file_name ):
+
+    # convert python metalist to JSON string
+    output_JSON_str = json.dumps( output_py_metalist )
+
+    # write JSON string to file
+    with open( output_file_name, 'w' ) as json_file:
+
+        json_file.write( output_JSON_str )
+
 
 
 
