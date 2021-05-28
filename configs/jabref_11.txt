@@ -1,9 +1,0 @@
-type=pr 
-auth_file=user_auth.txt
-repo=JabRef/jabref
-branch_name=master
-rows=11
-pr_json_filename=jabref_11_pr.json
-commit_json_filename=jabref_11_commit.json 
-issue_json_filename=jabref_11_issue.json 
-output=prog_runs/jabref_11.csv

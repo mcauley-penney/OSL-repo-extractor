@@ -1,5 +1,0 @@
-type=pr 
-auth_file=user_auth.txt
-repo=folke/esbuild-runner 
-rows=all
-output=prog_runs/test_all.csv

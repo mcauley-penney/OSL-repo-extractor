@@ -1,0 +1,11 @@
+type                 = 
+auth_file            =
+repo                 =
+branch_name          =
+rows                 =
+pr_state             = closed
+issue_state          = closed
+pr_json_filename     = json_files/ 
+commit_json_filename = json_files/ 
+issue_json_filename  = json_files/ 
+output               = prog_runs/  

@@ -1,0 +1,11 @@
+type                 = pr
+auth_file            = user_auth.txt
+repo                 = JabRef/jabref
+branch_name          = master
+rows                 = 90
+pr_state             = closed
+issue_state          = closed
+issue_json_filename  = json_files/jabref_issue_list.json 
+pr_json_filename     = json_files/jabref_pr_list.json
+commit_json_filename = json_files/jabref_commit_list.json 
+output               = prog_runs/jabref_full_output.csv

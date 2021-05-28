@@ -1,0 +1,9 @@
+type                 = pr
+auth_file            = user_auth.txt
+repo                 = folke/esbuild-runner  
+branch_name          = default
+rows                 = all
+pr_json_filename     = json_files/esbuild_pr.json
+commit_json_filename = json_files/esbuild_commit.json 
+issue_json_filename  = json_files/esbuild_issue.json 
+output               = esbuild-runner.csv
