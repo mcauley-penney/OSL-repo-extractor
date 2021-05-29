@@ -65,6 +65,21 @@ For next time, please try to commit only the ""really"" changed file and revert 
 Indonesian translation added"
 
 63/19/2014 7:46:25 PMFixed splash-dev.svg3/19/2014 7:46:25 PMFixed splash-dev.svg" =||= "" =||= "olenzOlaf Lenz3/19/2014 7:41:29 PMFixed splash-dev.svg
+
+    PR_Number
+    Issue_Closed_Date 
+    Issue_Author
+    Issue_Title
+    PR_Closed_Date
+    PR_Title
+    PR_Comments
+    Issue_Comments
+    PR_Author
+    Commit_Author
+    Commit_Date
+    Commit_Message
+    isPR  
+
 73/23/2014 4:03:12 PM" I have implemented 2 features requested in Ticket #841.""```
 The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
 
