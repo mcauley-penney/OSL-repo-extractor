@@ -1,12 +1,12 @@
 type                 = pr
-auth_file            = user_auth.txt
+auth_file            = jmp_auth.txt
 repo                 = JabRef/jabref
 branch_name          = master
 rows                 = all
 issue_state          = closed
 pr_state             = closed
-log_file             = log_files/jabref_issue_log.txt
-issue_json_filename  = json_files/jabref_issue_list.json 
+log_file             = log_files/jabref_pr_log.txt
+issue_json_filename  = json_files/jabref_issue_list_NOT_USING.json 
 pr_json_filename     = json_files/jabref_pr_list.json
 commit_json_filename = json_files/jabref_commit_list.json 
 output               = prog_runs/jabref_full_output.csv
