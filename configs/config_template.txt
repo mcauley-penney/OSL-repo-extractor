@@ -9,4 +9,5 @@ log_file             =
 pr_json_filename     = json_files/ 
 commit_json_filename = json_files/ 
 issue_json_filename  = json_files/ 
-output               = prog_runs/  
+pr_csv_filename      = prog_runs/  
+commit_csv_filename  = prog_runs/  

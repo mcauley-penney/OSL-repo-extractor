@@ -1,0 +1,12 @@
+output_type          = commit
+auth_file            = auths/mcauley_auth.txt
+repo                 = JabRef/jabref
+branch_name          = master
+rows                 = 100
+issue_state          = closed
+pr_state             = closed
+log_file             = log_files/jabref_100commit_log.txt
+issue_json_filename  = json_files/jabref_100issue_list.json 
+pr_json_filename     = json_files/jabref_100pr_list.json
+commit_json_filename = json_files/jabref_100commit_list.json 
+output_file_name     = prog_runs/jabref_100commit_output.csv

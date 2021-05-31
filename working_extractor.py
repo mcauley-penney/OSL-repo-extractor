@@ -6,18 +6,31 @@
 
 
 # TODO:
-# HIGH:
-#   - add ability to write JSON as program executes
-#       - fix JSON exe
-#   - add logger
-#  NOTE:
-#   
-#   
+#    HIGH:
+#       - fix comment getters
+#           - as of rn, comment getters concatenate before writing to JSON. It
+#             would be better if they were just stored as a list and
+#             concatenated at CSV writing so that we could choose which
+#             comments to use
+#       
+#       
+# 
 
-# - post-completion:
-#     - clean:
-#         - annotations
-#         - spacing
+#    MED:
+#       - add ability to write JSON as program executes
+#           - requires functions to "save" corrupted data, e.g. get rest of
+#             data if it fails at less than row_quant
+
+#    LOW:
+#       - modify logger when needed
+#       - post-completion:
+#           - clean:
+#               - annotations
+#               - spacing
+#               - logging and printing
+#                   - clean up the statements, e.g. always logger then print,
+#                     use dict to store long str instead of constants, put
+#                     prints and logs in proper places
 
 
 # imports
@@ -39,8 +52,14 @@ COMMIT_COL_NAMES = ["Author_Login", "Committer_login", "PR_Number",
 
 COMMIT_MENU_PROMPT = """
 Please choose type of operation:                                      
-    [1] get pull request and commit JSON lists
+    [2] get pull request and commit JSON lists
     [4] compile pull request and commit JSON lists into CSV"""  
+
+END_PROG = """
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+"""
 
 ERR104_MSG = """
     Error 104: Connection aborted by peer (GitHub)! 
@@ -52,32 +71,32 @@ INVALID_TOKEN_STR = """
     Please see https://github.com/settings/tokens 
     to create a token with \"repo\" permissions!""" 
 
-LOG_FORMAT = "%(asctime)s: %(message)s"    
+LOG_FORMAT = "\n%(asctime)s: %(message)s"    
 
 LOG_HEADER = """ 
-    Config: 
-        - %s
-        - %s
-        - %s
-        - %s
-        - %s 
-        - %s
-        - %s
-        - %s
-        - %s
-        - %s
-        - %s
-        - %s
-"""
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - output type          : %s
+        - session              : %s
+        - repo                 : %s
+        - branch name          : %s
+        - rows                 : %s
+        - issue state          : %s        
+        - pr state             : %s         
+        - log file             : %s        
+        - issue json filename  : %s
+        - pr json filename     : %s
+        - commit json filename : %s
+        - output file name     : %s       
+        - config file name     : %s"""
 
 NAN = "NaN"
 
-NL_TAB = "\n    "
-
 PROG_TITLE = """
 GITHUB REPO EXTRACTOR
----------------------
-"""
+---------------------"""
 
 PR_MENU_PROMPT = """
 Please choose type of operation:                                      
@@ -94,7 +113,7 @@ PR_COL_NAMES  = ["Issue_Number", "Issue_Title", "Issue_Author_Name",
                  "PR_Comments", "Commit_Author_Name",
                  "Commit_Date", "Commit_Message", "isPR"]
 
-TIME_FORM_STR = "%m/%d/%y %I:%M:%S %p"
+TIME_FORMAT = "%m/%d/%y, %I:%M:%S %p"
 
 
 
@@ -120,9 +139,13 @@ def main():
 
     # get prog run info
     conf_list = read_config( config_file_name ) 
+
+    # establish logging capabilities
+    log_filename = conf_list[7]
+    logger = init_logger( log_filename )  
+
+    # authenticate the user with GitHub and insert session into list
     auth_token = conf_list[1]
-        
-    # authenticate the user with GitHub
     session = github.Github( auth_token, timeout=100, retry=10 ) 
     conf_list[1] = session
 
@@ -136,11 +159,21 @@ def main():
 
     except github.RateLimitExceededException:
         run_timer( session ) 
-        exe_menu( conf_list )
+        exe_menu( conf_list, logger )
         
 
     else:
-        exe_menu( conf_list )
+        try:
+            exe_menu( conf_list, logger )
+
+
+        except:
+            logger.exception( "\n    Uncaught exception:\n\n" )
+            print( "\n    Uncaught exception! Please see log file!" )
+
+
+    finally:
+        logger.info( END_PROG ) 
 
 
 
@@ -153,7 +186,7 @@ def main():
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def check_row_quant_safety( paged_list, config_quant ):
+def check_row_quant_safety( paged_list, config_quant, logger ):
 
     output_quant    = 0
     stripped_quant  = config_quant.strip()
@@ -166,10 +199,13 @@ def check_row_quant_safety( paged_list, config_quant ):
         output_quant = int( config_quant ) 
 
     else:
-        print( "\nrow_quant config value is invalid!" )
+        logger.error( "\n    row_quant config value is invalid." )
+        print( "\n    row_quant config value is invalid!" )
 
 
     return output_quant
+
+
 
 
 #--------------------------------------------------------------------------- 
@@ -180,7 +216,7 @@ def check_row_quant_safety( paged_list, config_quant ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def exe_menu( conf_list ):
+def exe_menu( conf_list, logger ):
 
     # gather config values
     output_type          = conf_list[0]
@@ -190,76 +226,92 @@ def exe_menu( conf_list ):
     row_quant            = conf_list[4]
     issue_state          = conf_list[5]
     pr_state             = conf_list[6]
-    log_file_name        = conf_list[7]
     issue_json_filename  = conf_list[8]
     pr_json_filename     = conf_list[9]
     commit_json_filename = conf_list[10]
-    csv_filename         = conf_list[11]
+    pr_csv_filename      = conf_list[11]
+    commit_csv_filename  = conf_list[12]
 
     # init other vars
-    menu          = PR_MENU_PROMPT
+    conf_tuple = tuple( conf_list )
+    menu = PR_MENU_PROMPT
 
     if output_type == "commit":
         menu = COMMIT_MENU_PROMPT 
 
 
-    # establish logging capabilities
-    logger = init_logger( log_file_name ) 
-
     # print config to log file
-    # logger.info( LOG_HEADER % ( conf_list ) )
+    logger.info( LOG_HEADER %( conf_tuple ))
 
-    # print program info to STDOUT
-    print( PROG_TITLE )
+    try:
 
-    print( menu )
-        
-    # get user choice of operation
-    op_choice = input("\nExecute ")
+        # print program info to STDOUT
+        print( PROG_TITLE )
 
+        print( menu )
+            
+        # get user choice of operation
+        op_choice = input("\nExecute ")
 
-    # enact menu choices
-    #   The first three choices have a lot of overlap in functionality. This
-    #   set of conditionals allow us to broadly catch those choices and not
-    #   repeat code
-    if op_choice == "1" or op_choice == "2" or op_choice == "3": 
-
-        # logger.info( "Program Started." )
         print( "\n\nAttempting program start..." )
 
-        # retrieve paginated lists of pull request, commit, and issue data
-        paged_metalist = get_paginated_lists( session, repo_str, branch_name, 
-                                              pr_state, issue_state, op_choice )
+        # enact menu choices
+        #   The first three choices have a lot of overlap in functionality. This
+        #   set of conditionals allow us to broadly catch those choices and not
+        #   repeat code
+        if op_choice == "1" or op_choice == "2" or op_choice == "3": 
 
-        # empty metalist
-        issue_paged_list, pr_paged_list = paged_metalist 
+            # retrieve paginated lists of pull request, commit, and issue data
+            paged_metalist = get_paginated_lists( session, repo_str, branch_name, 
+                                                  logger, pr_state, issue_state,
+                                                  op_choice )
 
-
-        if op_choice == "1" or op_choice == "3": 
-            get_issue_json( session, issue_paged_list, row_quant, logger, 
-                            issue_json_filename )
-         
-
-        if op_choice == "2" or op_choice == "3":
-            get_PR_commit_json( session, pr_paged_list, row_quant, output_type, 
-                                logger, pr_json_filename, commit_json_filename ) 
+            # empty metalist
+            issue_paged_list, pr_paged_list = paged_metalist 
 
 
-    elif op_choice == "4": 
+            if op_choice == "1" or op_choice == "3": 
+                get_issue_json( session, issue_paged_list, row_quant, logger, 
+                                issue_json_filename )
+             
 
-        # read metalists out of JSON storage
-        pr_info_list     = json_io( pr_json_filename, 'r', None )
-        commit_info_list = json_io( commit_json_filename, 'r',  None )
+            if op_choice == "2" or op_choice == "3":
 
-        info_metalist_list = [pr_info_list, commit_info_list]
+                get_PR_commit_json( session, pr_paged_list, row_quant, 
+                                    output_type, logger, pr_json_filename, 
+                                    commit_json_filename )
 
 
-        if output_type == "pr":
-            issue_info_list = json_io( issue_json_filename, 'r', None )
-            info_metalist_list += [issue_info_list]
+        elif op_choice == "4": 
 
-        write_pr_csv( info_metalist_list, csv_filename )
-        # write_csv_output( info_metalist_list, output_type, csv_filename )
+            # read metalists out of JSON storage
+            logger.info( "\n    Reading pull request JSON." )
+            pr_info_list     = json_io( pr_json_filename, 'r', None )
+
+
+            logger.info( "\n    Reading commit JSON." )
+            commit_info_list = json_io( commit_json_filename, 'r',  None )
+
+            info_metalist_list = [pr_info_list, commit_info_list]
+
+
+            if output_type == "pr":
+                logger.info( "\n    Reading issue JSON." )
+                issue_info_list = json_io( issue_json_filename, 'r', None )
+
+                info_metalist_list += [issue_info_list]
+
+                logger.info( "\n    Writing \"pr\" type CSV." )
+                write_pr_csv( info_metalist_list, pr_csv_filename )
+
+            else:
+                logger.info( "\n    Writing \"commit\" type CSV." )
+                write_commit_csv( info_metalist_list, commit_csv_filename )
+
+
+    except KeyboardInterrupt:
+        logger.exception( "\n   Program interrupted by KeyboardInterrupt!\n\n" )
+        print()
 
 
 
@@ -328,7 +380,7 @@ def get_CLI_args():
 # Notes        : empty fields should be caught and populated with " =||= "
 # Other Docs   : none
 #--------------------------------------------------------------------------- 
-def get_commit_info( session, commit_py_list, output_type, json_filename ):
+def get_commit_info( session, commit_py_list, output_type, logger, json_filename ):
 
     # commit list entry init
     #   This is necessary to prevent empty entries/indice misallignment 
@@ -359,8 +411,8 @@ def get_commit_info( session, commit_py_list, output_type, json_filename ):
     cur_commit        = None
 
 
-    # begin process  
-    print( "\n\n    Getting commit info..." )
+    logger.info( "\n    Acquiring commit data." )
+    print( "\n\n    Getting commit info..." ) 
 
     while commit_list_index < len( commit_py_list ):
         try:
@@ -384,7 +436,7 @@ def get_commit_info( session, commit_py_list, output_type, json_filename ):
                 if output_type == "pr":
 
                     # get relevant commit date
-                    commit_date = commit_author.date.strftime( TIME_FORM_STR )
+                    commit_date = commit_author.date.strftime( TIME_FORMAT )
 
                     commit_info_list += [commit_date]
 
@@ -415,21 +467,21 @@ def get_commit_info( session, commit_py_list, output_type, json_filename ):
                         commit_changes    += int( file.changes )
                         commit_patch_text += str( file.patch ) + ", "
                         commit_removes    += int( file.deletions )
-                        commit_status_str += file.status + ", "
+                        commit_status_str += str( file.status ) + ", "
 
                     
                     quoted_commit_status_str = "\"" + commit_status_str + "\""
 
-            commit_info_list += [
-                    commit_committer,
-                    commit_SHA, 
-                    commit_file_list, 
-                    commit_patch_text,
-                    commit_adds,
-                    commit_removes,
-                    quoted_commit_status_str,
-                    commit_changes
-                    ]
+                    commit_info_list += [
+                            commit_committer,
+                            commit_SHA, 
+                            commit_file_list, 
+                            commit_patch_text,
+                            commit_adds,
+                            commit_removes,
+                            quoted_commit_status_str,
+                            commit_changes
+                            ]
 
 
             # append list of collected commit info to metalist
@@ -492,23 +544,24 @@ def get_commit_info( session, commit_py_list, output_type, json_filename ):
 #                   - link: https://pygithub.readthedocs.io/en/latest/utilities.html#github.PaginatedList.PaginatedList
 #--------------------------------------------------------------------------- 
 def get_issue_info( session, issue_paged_list, row_quant, logger, json_filename ):
-
-    # init info entries that can be empty to prevent empty spaces in output
-    issue_closed_date = NAN
-    issue_comment_str = ""
-
+    
     # init vars 
     index           = 0
     issue_info_list = []
     issue_metalist  = []
 
-    safe_quant = check_row_quant_safety( issue_paged_list, row_quant )
 
-    logger.info( "Beginning issue info acquisition." )
-    print( "\n    Getting issue info..." )
+    safe_quant = check_row_quant_safety( issue_paged_list, row_quant, logger )
+
+    logger.info( "\n    Acquiring pull request data." )
+    print( "\n    Getting issue info..." )  
 
     while index < safe_quant:
         try:
+
+            # reset vars 
+            issue_comment_str = ""  
+
             # work on one issue from paginated list at a time
             cur_issue         = issue_paged_list[index]          
             cur_issue_user    = cur_issue.user
@@ -523,12 +576,16 @@ def get_issue_info( session, issue_paged_list, row_quant, logger, json_filename 
             # protect code from failure if chosen issue state is not "closed"
             if cur_issue.closed_at is not None:
                 closed_date_obj = cur_issue.closed_at
-                issue_closed_date = closed_date_obj.strftime( TIME_FORM_STR )
+                issue_closed_date = closed_date_obj.strftime( TIME_FORMAT )
+            
+            else:
+                issue_closed_date = NAN
 
 
             # get issue comment at last position
             comments_paged_list = cur_issue.get_comments() 
 
+            
             if comments_paged_list.totalCount == 0:
                 issue_comment_str = NAN
 
@@ -537,16 +594,16 @@ def get_issue_info( session, issue_paged_list, row_quant, logger, json_filename 
                     issue_comment_str += comment.body + " =||= "
 
 
-            if issue_name_str == "None":
+            if issue_name_str == "":
                 issue_name_str = NAN
 
 
-            if issue_login_str == "None":
+            if issue_login_str == "":
                 issue_login_str = NAN
 
 
             # clean and quote issue body str
-            if issue_body_str is None or issue_body_str == '':
+            if issue_body_str is None or issue_body_str == "":
                 issue_body_str = NAN
 
             else:
@@ -601,9 +658,11 @@ def get_issue_info( session, issue_paged_list, row_quant, logger, json_filename 
 def get_issue_json( session, issue_paged_list, row_quant, logger, 
                     issue_json_filename ):
 
+
     issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
                                      logger, issue_json_filename )
 
+    logger.info( "\n    Writing issue data to JSON." )
     json_io( issue_json_filename, 'w', issue_metalist )
 
 
@@ -715,8 +774,8 @@ def get_limit_info( session, type_flag ):
 #                 - topic : pygithub repo objects
 #                   - link: https://pygithub.readthedocs.io/en/latest/github_objects/Repository.html
 #--------------------------------------------------------------------------- 
-def get_paginated_lists( session, repo_str, branch, pr_state, issue_state, 
-                         op_choice ):
+def get_paginated_lists( session, repo_str, branch, logger, pr_state, 
+                         issue_state, op_choice ):
 
     # init vars 
     all_lists_retrieved = False
@@ -731,10 +790,13 @@ def get_paginated_lists( session, repo_str, branch, pr_state, issue_state,
             # retrieve GitHub repo object
             repo_obj = session.get_repo( repo_str )   
 
-            print( "\n    Gathering GitHub data paginated lists..." )
-            
             if op_choice == "1" or op_choice == "3":
-                 issues_list = repo_obj.get_issues( direction='asc',
+                
+                logger.info( "\n    Acquiring paginated list of issues." )
+                print( "\n    Gathering paginated list of issues..." )
+
+
+                issues_list = repo_obj.get_issues( direction='asc',
                                                     sort='created', 
                                                     state=issue_state )
 
@@ -747,6 +809,9 @@ def get_paginated_lists( session, repo_str, branch, pr_state, issue_state,
                 if branch == "default":
                     branch = repo_obj.default_branch 
 
+
+                logger.info( "\n    Acquiring paginated list of pull requests." )
+                print( "\n    Gathering paginated list of pull requests..." )
 
                 pr_list = repo_obj.get_pulls( base=branch, direction='asc',     
                                               sort='created', state=pr_state )  
@@ -780,6 +845,8 @@ def get_paginated_lists( session, repo_str, branch, pr_state, issue_state,
 #--------------------------------------------------------------------------- 
 def get_PR_commit_json( session, pr_paged_list, row_quant, output_type, logger,
                         pr_json_filename, commit_json_filename ):
+
+    
     
     # get metalist of pr information and commit info paginated list
     #   We get the commit paginated lists here because it allows us to segment
@@ -788,15 +855,22 @@ def get_PR_commit_json( session, pr_paged_list, row_quant, output_type, logger,
     #   be broken up by PR
     pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
                                                         row_quant, output_type,
-                                                        pr_json_filename )
+                                                        logger, pr_json_filename )
+    
 
-    # get metalist of commit information
     commit_info_metalist = get_commit_info( session, commits_paged_list,
-                                            output_type, commit_json_filename ) 
+                                            output_type, logger, 
+                                            commit_json_filename ) 
 
 
+    logger.info( "\n    Writing pull request data to JSON." )
     json_io( pr_json_filename, 'w', pr_info_metalist )
+    logger.info( "\n    Finished writing pull request data to JSON." )
+
+
+    logger.info( "\n    Writing commit data to JSON." )
     json_io( commit_json_filename, 'w', commit_info_metalist ) 
+    logger.info( "\n    Finished writing commit data to JSON." )
 
 
 
@@ -840,7 +914,8 @@ def get_PR_commit_json( session, pr_paged_list, row_quant, output_type, logger,
 #                gather here.
 # Other Docs   : none
 #--------------------------------------------------------------------------- 
-def get_PR_info( session, pr_paged_list, row_quant, output_type, json_filename ):
+def get_PR_info( session, pr_paged_list, row_quant, output_type, logger, 
+                 json_filename ):
 
     # init variables
     commits_list       = []
@@ -858,10 +933,10 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type, json_filename )
     pr_comment_str     = NAN
 
 
-    safe_quant = check_row_quant_safety( pr_paged_list, row_quant )
+    safe_quant = check_row_quant_safety( pr_paged_list, row_quant, logger )
 
-
-    print( "\n    Getting pull request info..." )
+    logger.info( "\n    Acquiring pull request data and paginated list of commits." )
+    print( "\n    Getting pull request info..." ) 
 
     while index < safe_quant:
         try:
@@ -888,7 +963,6 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type, json_filename )
                 pr_author_login = cur_pr_user.login
                 pr_body_str     = cur_pr.body
 
-
                 if pr_title_str == "":
                     pr_title_str = NAN 
 
@@ -902,7 +976,7 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type, json_filename )
 
 
                 if cur_pr.closed_at is not None:
-                   pr_closed_date_str = cur_pr.closed_at.strftime( TIME_FORM_STR )
+                   pr_closed_date_str = cur_pr.closed_at.strftime( TIME_FORMAT )
 
 
                 pr_info_list += [
@@ -913,6 +987,7 @@ def get_PR_info( session, pr_paged_list, row_quant, output_type, json_filename )
                         pr_body_str,
                         pr_comment_str
                         ]
+
 
             # append each list of pr info to a metalist
             pr_metalist.append( pr_info_list )
@@ -972,7 +1047,7 @@ def init_logger( log_file_name ):
     out_file_handler = logging.FileHandler( log_file_name )
 
     # create formatting
-    formatter = logging.Formatter( LOG_FORMAT )
+    formatter = logging.Formatter( LOG_FORMAT, TIME_FORMAT )
     out_file_handler.setFormatter( formatter )
 
     # set log level
@@ -1014,7 +1089,7 @@ def json_io( file_name, mode, output_py_metalist ):
             output_JSON_str = json.dumps( output_py_metalist ) 
 
             json_file.write( output_JSON_str )
-
+    
 
     return output 
 
@@ -1050,7 +1125,7 @@ def print_rem_calls( session ):
     rem_calls_str = '{:4d}'.format( remaining_calls ) 
 
     # print output in place
-    print( "        calls left until sleep: " + str( rem_calls_str ), end='\r' )  
+    print( "        calls left until sleep: " + str( rem_calls_str ), end='\r' )
 
    
 
@@ -1106,6 +1181,9 @@ def read_config( config_file_name ):
         # remove empty entries
         conf_list = [item for item in conf_list if item != ''] 
 
+        # append config file name for logging
+        conf_list.append( config_file_name )
+
         # get auth_file name
         auth_file_name = conf_list[1]
      
@@ -1136,7 +1214,7 @@ def read_config( config_file_name ):
             print( "\nAuthorization file not found!" ) 
             
 
-    if len( conf_list ) == 12:
+    if len( conf_list ) == 13:
         return conf_list
 
     else:
@@ -1197,6 +1275,7 @@ def run_timer( session ):
 def timer( countdown_time ):
 
     while countdown_time > 0:
+
         # modulo function returns time tuple  
         minutes, seconds = divmod( countdown_time, 60 )
 
@@ -1213,153 +1292,13 @@ def timer( countdown_time ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name: write_csv_output
-# Process      : open output CSV using file name given as CLI arg, 
+# Function name: 
+# Process      : 
 # Parameters   : 
 # Output       : 
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_csv_output( metalist_list, output_type, out_file_name ):
-
-    # index for aggregation loop
-    master_index   = 0
-    pr_index       = 0
-
-    # data lists
-    issue_info_metalist  = []
-    output_row           = [] 
-    pr_info_metalist     = metalist_list[0]  
-    commit_info_metalist = metalist_list[1]
-    loop_len             = len( pr_info_metalist )
-
-    # output columns
-    label_cols = COMMIT_COL_NAMES
- 
-    # define output_type-dependent vars
-    if output_type == "pr":
-        issue_info_metalist = metalist_list[2]
-        label_cols          = PR_COL_NAMES
-        loop_len            = len( issue_info_metalist )
-
-
-    print( str( len( issue_info_metalist ) ) )
-    print( str( len( pr_info_metalist ) ) )
-    print( str( len( commit_info_metalist ) ) )
-
-    # Open the output csv file in preparation for writing
-#     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
-# 
-#         # create writer object
-#         writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter='\a',
-#                              quotechar='\"', escapechar='\\' )
-#           
-#         print( "\n\n    Writing data..." )
-# 
-# 
-#         write_pr_csv( metalist_list, writer ):
-# 
-#         # write column labels
-#         writer.writerow( label_cols ) 
-# 
-#         # aggregate data lists into rows
-#         while master_index < loop_len:
-# 
-#             # get shared values
-#             cur_pr         = pr_info_metalist[pr_index]
-#             pr_num         = cur_pr[0]  
-# 
-#             cur_commit     = commit_info_metalist[master_index]
-#             commit_author_name  = cur_commit[0]
-#             commit_message      = cur_commit[1] 
-# 
-#             # get output type-dependent values
-#             if output_type == "pr":
-#                 cur_issue          = issue_info_metalist[master_index]
-#                 issue_num          = cur_issue[0]
-#                 issue_title        = cur_issue[1]
-#                 issue_author_name  = cur_issue[2]
-#                 issue_author_login = cur_issue[3]
-#                 issue_closed_date  = cur_issue[4] 
-#                 issue_body         = cur_issue[5] 
-#                 issue_comments     = cur_issue[6]  
-# 
-# 
-#                 print( "\nissue num: " + issue_num )
-#                 print( "pr num   : " + pr_num )
-# 
-#                 if issue_num == pr_num:
-#                     pr_title          = cur_pr[1] 
-#                     pr_author_name    = cur_pr[2] 
-#                     pr_author_login   = cur_pr[3] 
-#                     pr_closed_date    = cur_pr[4] 
-#                     pr_body           = cur_pr[5] 
-#                     pr_comments       = cur_pr[6]  
-# 
-#                     commit_date       = cur_commit[2] 
-# 
-#                     pr_index += 1
-# 
-#                 else:
-#                     pr_title          = NAN 
-#                     pr_author_name    = NAN 
-#                     pr_author_login   = NAN 
-#                     pr_closed_date    = NAN 
-#                     pr_body           = NAN 
-#                     pr_comments       = NAN  
-# 
-# 
-#                     commit_date       = cur_commit[2]  
-# 
-# 
-#                 # order: "Issue_Number", "Issue_Title", "Issue_Author_Name",
-#                 #        "Issue_Author_Login","Issue_Closed_Date", "Issue_Body",
-#                 #        "Issue_Comments", "PR_Title", "PR_Author_Name",
-#                 #        "PR_Author_Login", "PR_Closed_Date", "PR_Body", 
-#                 #        "PR_Comments", "Commit_Author_Name",
-#                 #        "Commit_Date", "Commit_Message", "isPR"   
-#                 # ------------------------------------------------------------
-#                 output_row = [issue_num, issue_title, issue_author_name,  
-#                               issue_author_login, issue_closed_date, issue_body,
-#                               issue_comments, pr_title, pr_author_name,
-#                               pr_author_login, pr_closed_date, pr_body, 
-#                               pr_comments, commit_author_name,
-#                               commit_date, commit_message, isPR]
-#  
-# 
-# 
-#             else:
-#                 commit_committer  = cur_commit[2]
-#                 commit_SHA        = cur_commit[3]
-#                 commit_file_list  = cur_commit[4]
-#                 commit_patch_text = cur_commit[5] 
-#                 commit_adds       = cur_commit[6]
-#                 commit_rms        = cur_commit[7]
-#                 commit_status     = cur_commit[8] 
-#                 commit_changes    = cur_commit[9] 
-# 
-# 
-#                 # order:  Author_Login, Committer_login, PR_Number,     
-#                 #         SHA, Commit_Message, File_name,               
-#                 #         Patch_text, Additions, Deletions,             
-#                 #         Status, Changes                               
-#                 # ------------------------------------------------------------
-#                 output_row = [commit_author_name, commit_committer, pr_num,
-#                               commit_SHA, commit_message, commit_file_list,
-#                               commit_patch_text, commit_adds, commit_rms,
-#                               commit_status, commit_changes]
-# 
-# 
-#             writer.writerow( output_row ) 
-#                              
-#             master_index += 1
-     
-
-    print( "\nOutput complete" )
-
-
-
-
 def write_pr_csv( metalist_list, out_file_name ):
 
     # unpack list of metalists
@@ -1367,20 +1306,10 @@ def write_pr_csv( metalist_list, out_file_name ):
     commit_metalist = metalist_list[1]
     issue_metalist  = metalist_list[2]
 
-    # init pr vals
-    pr_title        = NAN
-    pr_author_name  = NAN
-    pr_author_login = NAN
-    pr_closed_date  = NAN
-    pr_body         = NAN
-    pr_comments     = NAN
- 
     # init other vars
     issue_index    = 0
     pr_index       = 0
     issue_list_len = len( issue_metalist )
-    pr_list_len    = len( pr_metalist )
-
 
 
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
@@ -1469,16 +1398,79 @@ def write_pr_csv( metalist_list, out_file_name ):
             issue_index += 1
 
 
+    print( "\nCSV Output complete" )
 
 
 
-def write_commit_csv( metalist_list, writer_obj ):
 
-    pr_info_metalist     = metalist_list[0]  
-    commit_info_metalist = metalist_list[1] 
-     
-    # write column labels
-    writer_obj.writerow( COMMIT_COL_NAMES ) 
+#--------------------------------------------------------------------------- 
+# Function name: 
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def write_commit_csv( metalist_list, out_file_name ):
+    
+    # unpack list of metalists
+    pr_metalist     = metalist_list[0]
+    commit_metalist = metalist_list[1]
+
+    # init other vars
+    index       = 0
+    pr_list_len = len( pr_metalist )
+
+    
+    with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
+
+        # create writer object
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter='\a',
+                             quotechar='\"', escapechar='\\' )
+          
+        print( "\n\n    Writing data..." ) 
+ 
+        # write column labels
+        writer.writerow( COMMIT_COL_NAMES ) 
+
+        # aggregate data lists into rows
+        while index < pr_list_len:
+
+            # get shared values
+            cur_pr         = pr_metalist[index]
+            pr_num         = cur_pr[0]  
+
+            cur_commit          = commit_metalist[index]
+            commit_author_name  = cur_commit[0]
+            commit_message      = cur_commit[1] 
+            commit_committer    = cur_commit[2]
+            commit_SHA          = cur_commit[3]
+            commit_file_list    = cur_commit[4]
+            commit_patch_text   = cur_commit[5] 
+            commit_adds         = cur_commit[6]
+            commit_rms          = cur_commit[7]
+            commit_status       = cur_commit[8] 
+            commit_changes      = cur_commit[9] 
+
+
+            # order:  Author_Login, Committer_login, PR_Number,     
+            #         SHA, Commit_Message, File_name,               
+            #         Patch_text, Additions, Deletions,             
+            #         Status, Changes                               
+            # ------------------------------------------------------------
+            output_row = [commit_author_name, commit_committer, pr_num,
+                          commit_SHA, commit_message, commit_file_list,
+                          commit_patch_text, commit_adds, commit_rms,
+                          commit_status, commit_changes]
+
+
+            writer.writerow( output_row ) 
+                             
+            index += 1
+ 
+
+    print( "\nCSV Output complete" )
+
 
 
 
