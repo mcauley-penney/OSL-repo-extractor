@@ -1,13 +1,16 @@
-type                 = 
-auth_file            =
+- CONFIG TEMPLATE
+
 repo                 =
 branch_name          =
+auth_file            =
 rows                 =
 issue_state          = closed
 pr_state             = closed
-log_file             = 
+log_file             =  
+
+issue_json_filename  = json_files/ 
 pr_json_filename     = json_files/ 
 commit_json_filename = json_files/ 
-issue_json_filename  = json_files/ 
+
 pr_csv_filename      = prog_runs/  
 commit_csv_filename  = prog_runs/  

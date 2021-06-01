@@ -1,9 +1,0 @@
-type                 = pr
-auth_file            = user_auth.txt
-repo                 = McAuleyPenney/GitHub-Repo-Extractor 
-branch_name          = default
-rows                 = all
-pr_json_filename     = json_files/extractor_pr_list.json
-commit_json_filename = json_files/extractor_commit_list.json 
-issue_json_filename  = json_files/extractor_issue_list.json 
-output               = prog_runs/extractor_output.csv

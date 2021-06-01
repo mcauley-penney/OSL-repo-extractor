@@ -1,12 +1,18 @@
-type                 = pr
-auth_file            = jmp_auth.txt
+- JabRef config file
+- This config uses an alternate account to authorize mining.
+- This way, we can mine one repo with two accounts at the same time.
+
 repo                 = JabRef/jabref
-branch_name          = master
+branch_name          = master 
+auth_file            = auths/jmp_auth.txt
 rows                 = all
 issue_state          = closed
 pr_state             = closed
-log_file             = log_files/jabref_pr_log.txt
-issue_json_filename  = json_files/jabref_issue_list_NOT_USING.json 
+log_file             = log_files/jabref_issue_log.txt 
+
+issue_json_filename  = json_files/jabref_issue_list.json 
 pr_json_filename     = json_files/jabref_pr_list.json
 commit_json_filename = json_files/jabref_commit_list.json 
-output               = prog_runs/jabref_full_output.csv
+
+pr_csv_filename      = prog_runs/jabref_pr_output.csv
+commit_csv_filename  = prog_runs/jabref_commit_output.csv  

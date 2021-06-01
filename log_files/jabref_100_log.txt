@@ -1,0 +1,252 @@
+
+05/31/21, 07:36:26 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fc859961be0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/jabref_100_log.txt        
+
+        - issue json file  : json_files/jabref_100-issue_list.json
+        - pr JSON file     : json_files/jabref_100-pr_list.json
+        - commit JSON file : json_files/jabref_100-commit_list.json
+
+        - "pr" CSV file    : csv_files/jabref_100_pr_output.csv       
+        - "commit" CSV file: csv_files/jabref_100_commit_output.csv
+
+05/31/21, 07:36:27 PM: 
+    Reading pull request JSON.
+
+05/31/21, 07:36:27 PM: 
+    Reading commit JSON.
+
+05/31/21, 07:36:28 PM: 
+    Reading issue JSON.
+
+05/31/21, 07:36:28 PM: 
+    Writing "pr" type CSV.
+
+05/31/21, 07:36:28 PM: 
+    Writing "commit" type CSV.
+
+05/31/21, 07:36:28 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+05/31/21, 07:38:35 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f09e28b09a0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/jabref_100_log.txt        
+
+        - issue json file  : json_files/jabref_100-issue_list.json
+        - pr JSON file     : json_files/jabref_100-pr_list.json
+        - commit JSON file : json_files/jabref_100-commit_list.json
+
+        - "pr" CSV file    : csv_files/jabref_100_pr_output.csv       
+        - "commit" CSV file: csv_files/jabref_100_commit_output.csv
+
+05/31/21, 07:38:37 PM: 
+    Reading pull request JSON.
+
+05/31/21, 07:38:37 PM: 
+    Reading commit JSON.
+
+05/31/21, 07:38:37 PM: 
+    Reading issue JSON.
+
+05/31/21, 07:38:37 PM: 
+    Writing "pr" type CSV.
+
+05/31/21, 07:38:37 PM: 
+    Writing "commit" type CSV.
+
+05/31/21, 07:38:37 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+05/31/21, 07:39:04 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fee2e72d940>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/jabref_100_log.txt        
+
+        - issue json file  : json_files/jabref_100-issue_list.json
+        - pr JSON file     : json_files/jabref_100-pr_list.json
+        - commit JSON file : json_files/jabref_100-commit_list.json
+
+        - "pr" CSV file    : csv_files/jabref_100_pr_output.csv       
+        - "commit" CSV file: csv_files/jabref_100_commit_output.csv
+
+05/31/21, 07:39:05 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+05/31/21, 07:39:09 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fdde6f5b940>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/jabref_100_log.txt        
+
+        - issue json file  : json_files/jabref_100-issue_list.json
+        - pr JSON file     : json_files/jabref_100-pr_list.json
+        - commit JSON file : json_files/jabref_100-commit_list.json
+
+        - "pr" CSV file    : csv_files/jabref_100_pr_output.csv       
+        - "commit" CSV file: csv_files/jabref_100_commit_output.csv
+
+05/31/21, 07:39:10 PM: 
+    Reading pull request JSON.
+
+05/31/21, 07:39:10 PM: 
+    Reading commit JSON.
+
+05/31/21, 07:39:10 PM: 
+    Reading issue JSON.
+
+05/31/21, 07:39:10 PM: 
+    Writing "pr" type CSV.
+
+05/31/21, 07:39:10 PM: 
+    Writing "commit" type CSV.
+
+05/31/21, 07:39:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+05/31/21, 07:44:15 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref_2000.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f480c74a940>
+        - rows             : 200
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/jabref_100_log.txt        
+
+        - issue json file  : json_files/jabref_2000-issue_list.json
+        - pr JSON file     : json_files/jabref_2000-pr_list.json
+        - commit JSON file : json_files/jabref_2000-commit_list.json
+
+        - "pr" CSV file    : csv_files/jabref_2000_pr_output.csv       
+        - "commit" CSV file: csv_files/jabref_2000_commit_output.csv
+
+05/31/21, 07:44:20 PM: 
+    Acquiring paginated list of issues.
+
+05/31/21, 07:44:20 PM: 
+    Acquiring paginated list of pull requests.
+
+05/31/21, 07:44:20 PM: 
+    Acquiring pull request data.
+
+05/31/21, 07:45:51 PM: 
+    Writing issue data to JSON.
+
+05/31/21, 07:45:51 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+05/31/21, 07:46:10 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 282, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 839, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 921, in get_PR_info
+    cur_pr      = pr_paged_list[index]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+05/31/21, 07:46:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
