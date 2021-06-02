@@ -1,7 +1,7 @@
 - JabRef config file
 
 repo                 = JabRef/jabref
-branch_name          = master 
+branch_name          = master
 auth_file            = auths/mcauley_auth.txt
 rows                 = all
 issue_state          = closed

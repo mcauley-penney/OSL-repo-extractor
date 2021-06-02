@@ -7,6 +7,9 @@
 
 # TODO:
 #    HIGH:
+#       PERF:
+#           - un-HACK: this bad boy
+# 
 #       FEAT:
 #           - fix comment getters
 #               - as of rn, comment getters concatenate before writing to JSON. 
@@ -14,7 +17,10 @@
 #                 concatenated at CSV writing so that we could choose which
 #                 comments to use
 # 
-#       - add dict function to contain long str constants
+#           - add dict function to contain long str constants
+#           - add ability to pull all info from another branch?
+#               - look into differences between jabref master and main
+# 
 
 #    MED:
 #       - add ability to write JSON as program executes
@@ -152,26 +158,12 @@ def main():
     conf_list[3] = session
 
     try:
-        # get value to test if user is properly authenticated
-        session.get_user().name                                       
-
-
-    except github.BadCredentialsException:
-        print( INVALID_TOKEN_STR )
-
-    except github.RateLimitExceededException:
-        run_timer( session ) 
         exe_menu( conf_list, logger )
-        
-
-    else:
-        try:
-            exe_menu( conf_list, logger )
 
 
-        except:
-            logger.exception( "\n    Uncaught exception:\n\n" )
-            print( "\n    Uncaught exception! Please see log file!" )
+    except:
+        logger.exception( "\n    Uncaught exception:\n\n" )
+        print( "\n    Uncaught exception! Please see log file!" )
 
 
     finally:
@@ -246,7 +238,6 @@ def exe_menu( conf_list, logger ):
     logger.info( LOG_HEADER %( conf_tuple ))
 
     try:
-
         print( PROG_INTRO )
 
         op_choice = input("\nExecute ")
@@ -257,31 +248,45 @@ def exe_menu( conf_list, logger ):
         #   set of conditionals allow us to broadly catch those choices and not
         #   repeat code
         if op_choice == "1" or op_choice == "2" or op_choice == "3": 
-        
-            print( "\n\nAttempting program start..." )
 
-            print_rem_calls( session )
-            print()
-
-            # retrieve paginated lists of pull request, commit, and issue data
-            paged_metalist = get_paginated_lists( session, repo_str, branch_name,
-                                                  logger, pr_state, issue_state,
-                                                  op_choice )
-
-            # empty metalist
-            issue_paged_list, pr_paged_list = paged_metalist 
+            try:
+                # get value to test if user is properly authenticated
+                session.get_user().name                                       
 
 
-            if op_choice == "1" or op_choice == "3": 
-                get_issue_json( session, issue_paged_list, row_quant, logger, 
-                                issue_json_filename )
-             
+            except github.BadCredentialsException:
+                print( INVALID_TOKEN_STR ) 
 
-            if op_choice == "2" or op_choice == "3":
+            except github.RateLimitExceededException:
+                run_timer( session )  
 
-                get_PR_commit_json( session, pr_paged_list, row_quant, 
-                                    logger, pr_json_filename, 
-                                    commit_json_filename )
+
+            else:
+                print( "\n\nAttempting program start..." )
+
+                print_rem_calls( session )
+                print()
+
+                # retrieve paginated lists of pull request, commit, and issue data
+                paged_metalist = get_paginated_lists( session, repo_str, 
+                                                      branch_name, logger, 
+                                                      pr_state, issue_state,
+                                                      op_choice )
+
+                # empty metalist
+                issue_paged_list, pr_paged_list = paged_metalist 
+
+
+                if op_choice == "1" or op_choice == "3": 
+                    get_issue_json( session, issue_paged_list, row_quant, logger,
+                                    issue_json_filename )
+                 
+
+                if op_choice == "2" or op_choice == "3":
+
+                    get_PR_commit_json( session, pr_paged_list, row_quant, 
+                                        logger, pr_json_filename, 
+                                        commit_json_filename )
 
 
         elif op_choice == "4": 
@@ -1284,8 +1289,9 @@ def write_pr_csv( metalist_list, out_file_name ):
 
     # init other vars
     issue_index    = 0
-    pr_index       = 0
     issue_list_len = len( issue_metalist )
+    pr_index       = 0
+    pr_list_len    = len( pr_metalist )
 
 
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
@@ -1300,6 +1306,8 @@ def write_pr_csv( metalist_list, out_file_name ):
         while issue_index < issue_list_len:
 
             # reset vars
+            cur_pr          = None
+            pr_num          = None
             pr_title        = NAN
             pr_author_name  = NAN
             pr_author_login = NAN
@@ -1342,7 +1350,8 @@ def write_pr_csv( metalist_list, out_file_name ):
                 commit_message     = cur_commit[1]
                 commit_date        = cur_commit[2]  
 
-                pr_index += 1
+                if pr_index < pr_list_len -1 :
+                    pr_index += 1
 
 
             # order: "Issue_Number", "Issue_Title", "Issue_Author_Name",
@@ -1390,9 +1399,6 @@ def write_commit_csv( metalist_list, out_file_name ):
     # unpack list of metalists
     pr_metalist     = metalist_list[0]
     commit_metalist = metalist_list[1]
-
-    print( "\nPR list len: " + str( len( pr_metalist )))
-    print( "Commit list len: " + str( len( commit_metalist )))
 
     # init other vars
     index       = 0
