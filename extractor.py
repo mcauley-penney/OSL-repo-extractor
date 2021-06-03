@@ -26,17 +26,22 @@
 #       - add ability to write JSON as program executes
 #           - requires functions to "save" corrupted data, e.g. get rest of
 #             data if it fails at less than row_quant
+# 
+#       - add ability to get all info from all branches into one file?
+# 
+#       - fix printing:
+#           - "Sleeping" is cleared completely. We want it to remain and for
+#              all of the stuff after to be cleared
+#               - clear jumps up two and then all that stuff that did print
+#                 doesn't anymore? Else in try except block fixed it??
+#                   - implement in all other getters
+#           - Make logger global, create print_and_log( msg_format, log_type )
 
 #    LOW:
-#       - modify logger when needed
 #       - post-completion:
 #           - clean:
 #               - annotations
 #               - spacing
-#               - logging and printing
-#                   - clean up the statements, e.g. always logger then print,
-#                     use dict to store long str instead of constants, put
-#                     prints and logs in proper places
 
 
 # imports
@@ -1293,6 +1298,7 @@ def write_pr_csv( metalist_list, out_file_name ):
     pr_index       = 0
     pr_list_len    = len( pr_metalist )
 
+    print( str( issue_list_len ) )
 
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
 
@@ -1404,6 +1410,8 @@ def write_commit_csv( metalist_list, out_file_name ):
     index       = 0
     pr_list_len = len( pr_metalist )
 
+    print( "\nPR list len    : " + str( pr_list_len ) )
+    print( "commit list len: " + str( len( commit_metalist ) ) )
     
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
 

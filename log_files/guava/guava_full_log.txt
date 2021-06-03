@@ -1,0 +1,915 @@
+
+06/02/21, 05:06:01 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f7cbaf64f40>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:06:09 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:06:10 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:06:15 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 847, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 970, in get_PR_info
+    print( "PR_commits totalCount:" + str( pr_commits.totalCount ) )
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:06:15 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:08:45 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f1a4b6d8f40>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:08:46 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:08:47 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:17:50 PM: 
+    Writing pull request data to JSON.
+
+06/02/21, 05:17:50 PM: 
+    Finished writing pull request data to JSON.
+
+06/02/21, 05:17:50 PM: 
+    Acquiring commit data.
+
+06/02/21, 05:22:21 PM: 
+    Writing commit data to JSON.
+
+06/02/21, 05:22:21 PM: 
+    Finished writing commit data to JSON.
+
+06/02/21, 05:22:21 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:33:18 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f7b23f62f40>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:33:20 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 248, in exe_menu
+    op_choice = input("\nExecute ")
+KeyboardInterrupt
+
+06/02/21, 05:33:20 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:33:45 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f79f831bf40>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:33:47 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:33:47 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:33:48 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 847, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 929, in get_PR_info
+    cur_pr      = pr_paged_list[index]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:33:48 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:34:05 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7ff277b77f40>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:34:09 PM: 
+    Acquiring paginated list of issues.
+
+06/02/21, 05:34:09 PM: 
+    Acquiring pull request data.
+
+06/02/21, 05:34:10 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 286, in exe_menu
+    get_issue_json( session, issue_paged_list, row_quant, logger,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 652, in get_issue_json
+    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 585, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:34:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:35:26 PM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 166, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 244, in exe_menu
+    logger.info( LOG_HEADER %( conf_tuple ))
+TypeError: not all arguments converted during string formatting
+
+06/02/21, 05:35:26 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:36:02 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f57fa28bfa0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:36:03 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 250, in exe_menu
+    op_choice = input("\nExecute ")
+KeyboardInterrupt
+
+06/02/21, 05:36:03 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:39:01 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f238e247ee0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:39:02 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:39:03 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:39:09 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 294, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 849, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 973, in get_PR_info
+    print( "PR_commits totalCount:" + str( pr_commits.totalCount ) )
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:39:09 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:40:30 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fa68f056ee0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:40:31 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:40:31 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:40:35 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 294, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 849, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 973, in get_PR_info
+    print( "PR_commits totalCount:" + str( pr_commits.totalCount ) )
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:40:35 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:44:20 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fb284a24100>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : TRue          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:44:22 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:44:22 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:44:26 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 294, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 849, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 938, in get_PR_info
+    pr_author_name  = cur_pr_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:44:26 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 05:44:43 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f3436a11100>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 05:44:45 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 05:44:46 PM: 
+    Acquiring pull request data and paginated list of commits.
+
+06/02/21, 05:44:49 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 294, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 849, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 975, in get_PR_info
+    if pr_commits.totalCount > 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 05:44:49 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 07:10:50 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f201f2f9430>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 07:10:52 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 07:11:05 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 279, in exe_menu
+    paged_metalist = get_paginated_lists( session, repo_str,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 815, in get_paginated_lists
+    pr_list = [pr for pr in pr_list if pr.merged == True]
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 815, in <listcomp>
+    pr_list = [pr for pr in pr_list if pr.merged == True]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 07:11:05 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+06/02/21, 07:11:21 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fd5d36fc430>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/guava/guava_full_log.txt        
+
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+06/02/21, 07:11:23 PM: 
+    Acquiring paginated list of pull requests.
+
+06/02/21, 07:11:56 PM: 
+   Program interrupted by KeyboardInterrupt!
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 279, in exe_menu
+    paged_metalist = get_paginated_lists( session, repo_str,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 815, in get_paginated_lists
+    pr_list = [pr for pr in pr_list if pr.merged == True]
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 815, in <listcomp>
+    pr_list = [pr for pr in pr_list if pr.merged == True]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+06/02/21, 07:11:56 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+

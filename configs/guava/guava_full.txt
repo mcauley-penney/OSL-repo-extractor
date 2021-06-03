@@ -1,0 +1,17 @@
+- CONFIG TEMPLATE
+
+repo                 = google/guava
+branch_name          = master
+auth_file            = auths/mcauley_auth.txt
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = false
+log_file             = log_files/guava/guava_full_log.txt 
+
+issue_json_filename  = outputs/guava_full/guava_full_issues.json 
+pr_json_filename     = outputs/guava_full/guava_full_pr.json
+commit_json_filename = outputs/guava_full/guava_full_commit.json 
+
+pr_csv_filename      = outputs/guava_full/guava_full_pr_output.csv
+commit_csv_filename  = outputs/guava_full/guava_full_commit_output.csv  

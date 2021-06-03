@@ -2,15 +2,16 @@
 
 repo                 =
 branch_name          =
-auth_file            =
+auth_file            = auths/mcauley_auth.txt 
 rows                 =
 issue_state          = closed
 pr_state             = closed
+diagnostics          = True
 log_file             =  
 
-issue_json_filename  = json_files/ 
-pr_json_filename     = json_files/ 
-commit_json_filename = json_files/ 
+issue_json_filename  = outputs/ 
+pr_json_filename     = outputs/ 
+commit_json_filename = outputs/ 
 
-pr_csv_filename      = prog_runs/  
-commit_csv_filename  = prog_runs/  
+pr_csv_filename      = outputs/  
+commit_csv_filename  = outputs/  

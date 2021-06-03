@@ -1,0 +1,16 @@
+- JabRef config file
+
+repo                 = JabRef/jabref
+branch_name          = master 
+auth_file            = auths/mcauley_auth.txt
+rows                 = 200
+issue_state          = closed
+pr_state             = closed
+log_file             = log_files/jabref_200_log.txt 
+
+issue_json_filename  = json_files/jabref_200_issue_list.json 
+pr_json_filename     = json_files/jabref_200_pr_list.json
+commit_json_filename = json_files/jabref_200_commit_list.json 
+
+pr_csv_filename      = csv_files/jabref_200_pr_output.csv
+commit_csv_filename  = csv_files/jabref_200_commit_output.csv 
