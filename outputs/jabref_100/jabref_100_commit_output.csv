@@ -7977,6 +7977,20 @@ Moreover, only available L&Fs are listed in the preference window."['CHANGELOG'
              }
          } catch (Exception e) {
              e.printStackTrace();, "3410"""modified, modified, modified, """44
+Nicolas PavillonNicolas Pavillon55c5c65778f59af540cb238e8ac245498eb7b868f1"Update copyright years,
+Add name to contributors"['src/main/java/net/sf/jabref/JabRefFrame.java', 'src/main/resources/help/About.html']"@@ -1,4 +1,4 @@
+-/*  Copyright (C) 2003-2012 JabRef contributors.
++/*  Copyright (C) 2003-2015 JabRef contributors.
+     This program is free software; you can redistribute it and/or modify
+     it under the terms of the GNU General Public License as published by
+     the Free Software Foundation; either version 2 of the License, or, @@ -87,6 +87,7 @@ <h2>Contributions from:</h2>
+         Alex Montgomery,
+         Saverio Mori,
+         Ambrogio Oliva,
++        Nicolas Pavillon,
+         Brian Quistorff,
+         Ward Poelmans,
+         Stephan Rave,, "21"""modified, modified, """3
 Nicolas PavillonNicolas Pavillon56d9f0c86f36d3e104d11ec602afdcd68709b1c89dMove registration of Apple events to fix document opening when application starts['src/main/java/net/sf/jabref/JabRefFrame.java']"@@ -449,8 +449,6 @@ public JabRefFrame() {
    private void init() {
  	    tabbedPane = new DragDropPopupPane(manageSelectors, databaseProperties, bibtexKeyPattern);
@@ -11683,6 +11697,15 @@ stefan-kolbstefan-kolb83c59e66a2902b7e1ed3cc05178b927f41982d56f7Change sourc
          Please submit bugs and feature requests to
          <a href=""https://github.com/JabRef/jabref/issues"">https://github.com/JabRef/jabref/issues</a>.
      </p>, "11"""modified, """2
+Francois CharetteFrancois Charette842afe0ff70629497e19573ed48e3ffe79d3b79cf5typo['src/main/java/net/sf/jabref/BibtexEntryType.java']"@@ -1058,7 +1058,7 @@ public static void saveCustomEntryTypes(JabRefPreferences prefs) {
+ 
+     /**
+      * Get an array of the required fields in a form appropriate for the entry customization
+-     * dialog - that is, thie either-or fields together and separated by slashes.
++     * dialog - that is, the either-or fields together and separated by slashes.
+      *
+      * @return Array of the required fields in a form appropriate for the entry customization dialog.
+      */, "11"""modified, """2
 Joerg LenhardJoerg Lenhard85e8b8afb984cf53fb028c730e10d641833109999aUse correct package for LabelPatternUtilTest['src/test/java/net/sf/jabref/logic/labelPattern/LabelPatternUtilTest.java']"@@ -1,4 +1,4 @@
 -package net.sf.jabref.gui.labelPattern;
 +package net.sf.jabref.logic.labelPattern;
@@ -12347,6 +12370,56 @@ Removes CLI option --nosplash -s"['src/graphics/splash/README.md', 'src/graphic
 -        }
 -    }
 -}, None, "1844"""removed, removed, removed, removed, removed, removed, removed, modified, modified, removed, removed, removed, """845
+Francois CharetteFrancois Charette90afb4c712d556546785b6d2f3c460b0bc27577b30Move net.sf.jabref.TestUtils to package net.sf.jabref.testutils and rename to GuiTestUtils['src/test/java/net/sf/jabref/imports/GeneralFetcherTest.java', 'src/test/java/net/sf/jabref/testutils/GuiTestUtils.java']"@@ -4,7 +4,7 @@
+ import net.sf.jabref.JabRefFrame;
+ import net.sf.jabref.JabRefMain;
+ import net.sf.jabref.SidePaneManager;
+-import net.sf.jabref.TestUtils;
++import net.sf.jabref.testutils.GuiTestUtils;
+ 
+ import org.junit.After;
+ import org.junit.Assert;
+@@ -38,12 +38,12 @@
+     @Test @Ignore
+     public void testResetButton() throws Exception {
+         String testString = ""test string"";
+-        JTextField tf = (JTextField) TestUtils.getChildNamed(GeneralFetcherTest.gf, ""tf"");
++        JTextField tf = (JTextField) GuiTestUtils.getChildNamed(GeneralFetcherTest.gf, ""tf"");
+         Assert.assertNotNull(tf); // tf found?
+         tf.setText(testString);
+         tf.postActionEvent(); // send message
+         Assert.assertEquals(testString, tf.getText());
+-        JButton reset = (JButton) TestUtils.getChildNamed(GeneralFetcherTest.gf, ""reset"");
++        JButton reset = (JButton) GuiTestUtils.getChildNamed(GeneralFetcherTest.gf, ""reset"");
+         Assert.assertNotNull(reset); // reset found?
+         reset.doClick(); // ""click"" reset
+         Assert.assertEquals("""", tf.getText());, @@ -1,14 +1,13 @@
+-package net.sf.jabref;
++package net.sf.jabref.testutils;
+ 
+ import java.awt.*;
+ 
+ /**
+- * Provides helper methods for unit testing such as methods for making testing
+- * of GUIs easier.
++ * Provides helper methods for making testing of GUIs easier.
+  *
+  * @author Dennis Hartrampf, Ines Moosdorf
+  */
+-public class TestUtils {
++public class GuiTestUtils {
+ 
+     /**
+      * Get a Component by name.
+@@ -27,7 +26,7 @@ public static Component getChildNamed(Component parent, String name) {
+             Component[] children = ((Container) parent).getComponents();
+ 
+             for (Component aChildren : children) {
+-                Component child = TestUtils.getChildNamed(aChildren, name);
++                Component child = GuiTestUtils.getChildNamed(aChildren, name);
+                 if (child != null) {
+                     return child;
+                 }, "78"""modified, renamed, """15
 Joerg LenhardJoerg Lenhard932f6fbab4f280b187d99920fba1a62b0fc1f5f6aeMerge branch 'master' into logic-improvements['src/main/java/net/sf/jabref/gui/preftabs/AdvancedTab.java', 'src/main/java/net/sf/jabref/logic/remote/RemoteUtil.java', 'src/test/java/net/sf/jabref/Bug1283.java', 'src/test/java/net/sf/jabref/logic/remote/RemoteUtilTest.java', 'src/test/java/net/sf/jabref/logic/util/MonthUtilTest.java']"@@ -296,7 +296,7 @@ public boolean validateSettings() {
  
          try {
@@ -14694,6 +14767,14 @@ Joerg LenhardJoerg Lenhard108ba02d2ba4285e6847b60e801146d549ebb7a8453Refacto
 +        return type;
      }
  }, "3333"""modified, """66
+MLEPMLEP12541f526e880a8bf31215a2e56cdc5794f4de685edAdd of Persian localization (by Behrouz Javanmardi)['src/main/resources/help/About.html']"@@ -73,6 +73,7 @@ <h2>Contributions from:</h2>
+         Yara Grassi Gouffon,
+         Leonardo Haddad Carlos
+         Sascha Hunold,
++        Behrouz Javanmardi,
+         Philip Johnson,
+         Bernd Kalbfuss,
+         Martin K&auml;hmer,, "10"""modified, """1
 matthiasgeigermatthiasgeiger12786caeba3440addfce26ee222bcd06effead129edadd test google.co.uk, move file to test folder['src/test/java/net/sf/jabref/logic/util/io/URLUtilTest.java']"@@ -49,6 +49,11 @@ public void cleanGoogleSearchURL() throws Exception {
                  ""https://moz.com/ugc/the-ultimate-guide-to-the-google-search-parameters"",
                  URLUtil.cleanGoogleSearchURL(""https://www.google.fr/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0CCEQFjAAahUKEwjJurHd2sfHAhWBsxQKHSrEAaM&url=https%3A%2F%2Fmoz.com%2Fugc%2Fthe-ultimate-guide-to-the-google-search-parameters&ei=0THeVYmOJIHnUqqIh5gK&usg=AFQjCNHnid_r_d2LP8_MqvI7lQnTC3lB_g&sig2=ICzxDroG2ENTJSUGmdhI2w"")
@@ -14733,301 +14814,3 @@ intended behavior is already implemented in replaceSelection() (see API)"['src/
          replaceSelection(textToInsert);
      }
  , "112"""modified, modified, """13
-matthiasgeigermatthiasgeiger137fa3bf4005f0b0bab5d1a87ddf3db2e91d962a331Use KeyBinds constants in EntryEditor['src/main/java/net/sf/jabref/gui/entryeditor/EntryEditor.java']"@@ -49,6 +49,7 @@
- 
- import net.sf.jabref.*;
- import net.sf.jabref.gui.fieldeditors.*;
-+import net.sf.jabref.gui.keyboard.KeyBinds;
- import net.sf.jabref.logic.bibtex.BibtexEntryWriter;
- import net.sf.jabref.logic.autocompleter.AutoCompleter;
- import net.sf.jabref.exporter.LatexFieldFormatter;
-@@ -341,23 +342,23 @@ private void setupToolBar() {
-         ActionMap actionMap = toolBar.getActionMap();
-         InputMap inputMap = toolBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
- 
--        inputMap.put(prefs.getKey(""Close entry editor""), ""close"");
-+        inputMap.put(prefs.getKey(KeyBinds.CLOSE_ENTRY_EDITOR), ""close"");
-         actionMap.put(""close"", closeAction);
--        inputMap.put(prefs.getKey(""Entry editor, store field""), ""store"");
-+        inputMap.put(prefs.getKey(KeyBinds.ENTRY_EDITOR_STORE_FIELD), ""store"");
-         actionMap.put(""store"", storeFieldAction);
--        inputMap.put(prefs.getKey(""Autogenerate BibTeX keys""), ""generateKey"");
-+        inputMap.put(prefs.getKey(KeyBinds.AUTOGENERATE_BIB_TE_X_KEYS), ""generateKey"");
-         actionMap.put(""generateKey"", generateKeyAction);
--        inputMap.put(prefs.getKey(""Automatically link files""), ""autoLink"");
-+        inputMap.put(prefs.getKey(KeyBinds.AUTOMATICALLY_LINK_FILES), ""autoLink"");
-         actionMap.put(""autoLink"", autoLinkAction);
--        inputMap.put(prefs.getKey(""Entry editor, previous entry""), ""prev"");
-+        inputMap.put(prefs.getKey(KeyBinds.ENTRY_EDITOR_PREVIOUS_ENTRY), ""prev"");
-         actionMap.put(""prev"", prevEntryAction);
--        inputMap.put(prefs.getKey(""Entry editor, next entry""), ""next"");
-+        inputMap.put(prefs.getKey(KeyBinds.ENTRY_EDITOR_NEXT_ENTRY), ""next"");
-         actionMap.put(""next"", nextEntryAction);
--        inputMap.put(prefs.getKey(""Undo""), ""undo"");
-+        inputMap.put(prefs.getKey(KeyBinds.UNDO), ""undo"");
-         actionMap.put(""undo"", undoAction);
--        inputMap.put(prefs.getKey(""Redo""), ""redo"");
-+        inputMap.put(prefs.getKey(KeyBinds.REDO), ""redo"");
-         actionMap.put(""redo"", redoAction);
--        inputMap.put(prefs.getKey(""Help""), ""help"");
-+        inputMap.put(prefs.getKey(KeyBinds.HELP), ""help"");
-         actionMap.put(""help"", helpAction);
- 
-         toolBar.setFloatable(false);, "109"""modified, """19
-matthiasgeigermatthiasgeiger143159b7bed7200292852684a9741a4394d5ec5c326Better Fix for SF bug #1285['src/main/java/net/sf/jabref/gui/entryeditor/EntryEditorTab.java']"@@ -27,6 +27,7 @@
- import java.util.Map;
- 
- import javax.swing.*;
-+import javax.swing.text.JTextComponent;
- 
- import net.sf.jabref.*;
- import net.sf.jabref.gui.*;
-@@ -295,7 +296,14 @@ public boolean updateField(String field, String content) {
-             return false;
-         }
-         FieldEditor fieldEditor = editors.get(field);
--        fieldEditor.setText(content);
-+        // trying to preserve current edit position (fixes SF bug #1285)
-+        if(fieldEditor.getTextComponent() instanceof JTextComponent) {
-+            int initialCaretPosition = ((JTextComponent) fieldEditor).getCaretPosition();
-+            fieldEditor.setText(content);
-+            ((JTextComponent) fieldEditor).setCaretPosition(initialCaretPosition);
-+        } else {
-+            fieldEditor.setText(content);
-+        }
-         return true;
-     }
- , "91"""modified, """10
-Simon HarrerSimon Harrer147873932362d01253f3512a28ea1dbe623dcb8dcd4Icons are now all called explicitly.['src/main/java/net/sf/jabref/JabRefPreferences.java', 'src/main/java/net/sf/jabref/external/ExternalFileType.java', 'src/main/java/net/sf/jabref/external/ExternalFileTypeEditor.java', 'src/main/java/net/sf/jabref/external/ExternalFileTypeEntryEditor.java', 'src/main/java/net/sf/jabref/external/SynchronizeFileField.java', 'src/main/java/net/sf/jabref/external/UnknownExternalFileType.java', 'src/main/java/net/sf/jabref/importer/EntryFromPDFCreator.java', 'src/main/java/net/sf/jabref/logic/util/io/JabRefDesktop.java']"@@ -36,8 +36,7 @@
- import javax.swing.JTable;
- import javax.swing.KeyStroke;
- 
--import net.sf.jabref.gui.BibtexFields;
--import net.sf.jabref.gui.GUIGlobals;
-+import net.sf.jabref.gui.*;
- import net.sf.jabref.gui.entryeditor.EntryEditorTabList;
- import net.sf.jabref.gui.keyboard.KeyBinds;
- import net.sf.jabref.gui.preftabs.ImportSettingsTab;
-@@ -54,8 +53,6 @@
- import net.sf.jabref.external.DroppedFileHandler;
- import net.sf.jabref.external.ExternalFileType;
- import net.sf.jabref.external.UnknownExternalFileType;
--import net.sf.jabref.gui.CleanUpAction;
--import net.sf.jabref.gui.PersistenceTableColumnListener;
- import net.sf.jabref.importer.CustomImportList;
- import net.sf.jabref.logic.remote.RemotePreferences;
- import net.sf.jabref.specialfields.SpecialFieldsUtils;
-@@ -376,7 +373,7 @@
-     // Map containing all registered external file types:
-     private final TreeSet<ExternalFileType> externalFileTypes = new TreeSet<ExternalFileType>();
- 
--    private final ExternalFileType HTML_FALLBACK_TYPE = new ExternalFileType(""URL"", ""html"", ""text/html"", """", ""www"");
-+    private final ExternalFileType HTML_FALLBACK_TYPE = new ExternalFileType(""URL"", ""html"", ""text/html"", """", ""www"", IconTheme.getImage(""www""));
- 
-     // The following field is used as a global variable during the export of a database.
-     // By setting this field to the path of the database's default file directory, formatters
-@@ -1389,29 +1386,29 @@ public CustomEntryType getCustomEntryType(int number) {
- 
-     public List<ExternalFileType> getDefaultExternalFileTypes() {
-         List<ExternalFileType> list = new ArrayList<ExternalFileType>();
--        list.add(new ExternalFileType(""PDF"", ""pdf"", ""application/pdf"", ""evince"", ""pdfSmall""));
--        list.add(new ExternalFileType(""PostScript"", ""ps"", ""application/postscript"", ""evince"", ""psSmall""));
--        list.add(new ExternalFileType(""Word"", ""doc"", ""application/msword"", ""oowriter"", ""openoffice""));
--        list.add(new ExternalFileType(""Word 2007+"", ""docx"", ""application/vnd.openxmlformats-officedocument.wordprocessingml.document"", ""oowriter"", ""openoffice""));
--        list.add(new ExternalFileType(""OpenDocument text"", ""odt"", ""application/vnd.oasis.opendocument.text"", ""oowriter"", ""openoffice""));
--        list.add(new ExternalFileType(""Excel"", ""xls"", ""application/excel"", ""oocalc"", ""openoffice""));
--        list.add(new ExternalFileType(""Excel 2007+"", ""xlsx"", ""application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"", ""oocalc"", ""openoffice""));
--        list.add(new ExternalFileType(""OpenDocument spreadsheet"", ""ods"", ""application/vnd.oasis.opendocument.spreadsheet"", ""oocalc"", ""openoffice""));
--        list.add(new ExternalFileType(""PowerPoint"", ""ppt"", ""application/vnd.ms-powerpoint"", ""ooimpress"", ""openoffice""));
--        list.add(new ExternalFileType(""PowerPoint 2007+"", ""pptx"", ""application/vnd.openxmlformats-officedocument.presentationml.presentation"", ""ooimpress"", ""openoffice""));
--        list.add(new ExternalFileType(""OpenDocument presentation"", ""odp"", ""application/vnd.oasis.opendocument.presentation"", ""ooimpress"", ""openoffice""));
--        list.add(new ExternalFileType(""Rich Text Format"", ""rtf"", ""application/rtf"", ""oowriter"", ""openoffice""));
--        list.add(new ExternalFileType(""PNG image"", ""png"", ""image/png"", ""gimp"", ""picture""));
--        list.add(new ExternalFileType(""GIF image"", ""gif"", ""image/gif"", ""gimp"", ""picture""));
--        list.add(new ExternalFileType(""JPG image"", ""jpg"", ""image/jpeg"", ""gimp"", ""picture""));
--        list.add(new ExternalFileType(""Djvu"", ""djvu"", """", ""evince"", ""psSmall""));
--        list.add(new ExternalFileType(""Text"", ""txt"", ""text/plain"", ""emacs"", ""emacs""));
--        list.add(new ExternalFileType(""LaTeX"", ""tex"", ""application/x-latex"", ""emacs"", ""emacs""));
--        list.add(new ExternalFileType(""CHM"", ""chm"", ""application/mshelp"", ""gnochm"", ""www""));
--        list.add(new ExternalFileType(""TIFF image"", ""tiff"", ""image/tiff"", ""gimp"", ""picture""));
--        list.add(new ExternalFileType(""URL"", ""html"", ""text/html"", ""firefox"", ""www""));
--        list.add(new ExternalFileType(""MHT"", ""mht"", ""multipart/related"", ""firefox"", ""www""));
--        list.add(new ExternalFileType(""ePUB"", ""epub"", ""application/epub+zip"", ""firefox"", ""www""));
-+        list.add(new ExternalFileType(""PDF"", ""pdf"", ""application/pdf"", ""evince"", ""pdfSmall"", IconTheme.getImage(""pdfSmall"")));
-+        list.add(new ExternalFileType(""PostScript"", ""ps"", ""application/postscript"", ""evince"", ""psSmall"", IconTheme.getImage(""psSmall"")));
-+        list.add(new ExternalFileType(""Word"", ""doc"", ""application/msword"", ""oowriter"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""Word 2007+"", ""docx"", ""application/vnd.openxmlformats-officedocument.wordprocessingml.document"", ""oowriter"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""OpenDocument text"", ""odt"", ""application/vnd.oasis.opendocument.text"", ""oowriter"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""Excel"", ""xls"", ""application/excel"", ""oocalc"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""Excel 2007+"", ""xlsx"", ""application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"", ""oocalc"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""OpenDocument spreadsheet"", ""ods"", ""application/vnd.oasis.opendocument.spreadsheet"", ""oocalc"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""PowerPoint"", ""ppt"", ""application/vnd.ms-powerpoint"", ""ooimpress"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""PowerPoint 2007+"", ""pptx"", ""application/vnd.openxmlformats-officedocument.presentationml.presentation"", ""ooimpress"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""OpenDocument presentation"", ""odp"", ""application/vnd.oasis.opendocument.presentation"", ""ooimpress"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""Rich Text Format"", ""rtf"", ""application/rtf"", ""oowriter"", ""openoffice"", IconTheme.getImage(""openoffice"")));
-+        list.add(new ExternalFileType(""PNG image"", ""png"", ""image/png"", ""gimp"", ""picture"", IconTheme.getImage(""picture"")));
-+        list.add(new ExternalFileType(""GIF image"", ""gif"", ""image/gif"", ""gimp"", ""picture"", IconTheme.getImage(""picture"")));
-+        list.add(new ExternalFileType(""JPG image"", ""jpg"", ""image/jpeg"", ""gimp"", ""picture"", IconTheme.getImage(""picture"")));
-+        list.add(new ExternalFileType(""Djvu"", ""djvu"", """", ""evince"", ""psSmall"", IconTheme.getImage(""psSmall"")));
-+        list.add(new ExternalFileType(""Text"", ""txt"", ""text/plain"", ""emacs"", ""emacs"", IconTheme.getImage(""emacs"")));
-+        list.add(new ExternalFileType(""LaTeX"", ""tex"", ""application/x-latex"", ""emacs"", ""emacs"", IconTheme.getImage(""emacs"")));
-+        list.add(new ExternalFileType(""CHM"", ""chm"", ""application/mshelp"", ""gnochm"", ""www"", IconTheme.getImage(""www"")));
-+        list.add(new ExternalFileType(""TIFF image"", ""tiff"", ""image/tiff"", ""gimp"", ""picture"", IconTheme.getImage(""picture"")));
-+        list.add(new ExternalFileType(""URL"", ""html"", ""text/html"", ""firefox"", ""www"", IconTheme.getImage(""www"")));
-+        list.add(new ExternalFileType(""MHT"", ""mht"", ""multipart/related"", ""firefox"", ""www"", IconTheme.getImage(""www"")));
-+        list.add(new ExternalFileType(""ePUB"", ""epub"", ""application/epub+zip"", ""firefox"", ""www"", IconTheme.getImage(""www"")));
- 
-         // On all OSes there is a generic application available to handle file opening,
-         // so we don't need the default application settings anymore:, @@ -34,16 +34,17 @@
-     private ImageIcon icon;
-     private final JLabel label = new JLabel();
- 
--
-     public ExternalFileType(String name, String extension, String mimeType,
--            String openWith, String iconName) {
-+            String openWith, String iconName, ImageIcon icon) {
-         label.setText(null);
-         this.name = name;
-         label.setToolTipText(this.name);
-         this.extension = extension;
-         this.mimeType = mimeType;
-         this.openWith = openWith;
-+
-         setIconName(iconName);
-+        setIcon(icon);
-     }
- 
-     /**
-@@ -61,7 +62,7 @@ public ExternalFileType(String name, String extension, String mimeType,
-      */
-     public ExternalFileType(String[] val) {
-         if (val == null || val.length < 4) {
--            throw new IllegalArgumentException(""Cannot contruct ExternalFileType without four elements in String[] argument."");
-+            throw new IllegalArgumentException(""Cannot construct ExternalFileType without four elements in String[] argument."");
-         }
-         this.name = val[0];
-         label.setToolTipText(this.name);
-@@ -71,12 +72,14 @@ public ExternalFileType(String[] val) {
-         if (val.length == 4) {
-             this.openWith = val[2];
-             setIconName(val[3]);
-+            setIcon(IconTheme.getImage(getIconName()));
-         }
-         // When mime type is included, the array length should be 5:
-         else if (val.length == 5) {
-             this.mimeType = val[2];
-             this.openWith = val[3];
-             setIconName(val[4]);
-+            setIcon(IconTheme.getImage(getIconName()));
-         }
-     }
- 
-@@ -134,15 +137,12 @@ public void setOpenWith(String openWith) {
-     }
- 
-     /**
--     * Set the string associated with this file type's icon. The string is used
--     * to get the actual icon.
-+     * Set the string associated with this file type's icon.
-      *
-      * @param name The icon name to use.
-      */
-     public void setIconName(String name) {
-         this.iconName = name;
--        this.icon = IconTheme.getImage(iconName);
--        label.setIcon(this.icon);
-     }
- 
-     /**
-@@ -155,8 +155,8 @@ public JLabel getIconLabel() {
-     }
- 
-     /**
--     * Get the string associated with this file type's icon. The string is used
--     * to get the actual icon by the method GUIGlobals.getIcon(String)
-+     * Get the string associated with this file type's icon.
-+     *
-      * @return The icon name.
-      */
-     public String getIconName() {
-@@ -169,6 +169,7 @@ public ImageIcon getIcon() {
- 
-     public void setIcon(ImageIcon icon) {
-         this.icon = icon;
-+        label.setIcon(this.icon);
-     }
- 
-     @Override
-@@ -182,7 +183,7 @@ public int compareTo(ExternalFileType o) {
-     }
- 
-     public ExternalFileType copy() {
--        return new ExternalFileType(name, extension, mimeType, openWith, iconName);
-+        return new ExternalFileType(name, extension, mimeType, openWith, iconName, icon);
-     }
- 
-     @Override, @@ -221,7 +221,7 @@ public static AbstractAction getAction(JDialog dialog) {
-         @Override
-         public void actionPerformed(ActionEvent e) {
-             // Generate a new file type:
--            ExternalFileType type = new ExternalFileType("""", """", """", """", ""new"");
-+            ExternalFileType type = new ExternalFileType("""", """", """", """", ""new"", IconTheme.getImage(""new""));
-             // Show the file type editor:
-             getEditor(type).setVisible(true);
-             if (entryEditor.okPressed()) {, @@ -246,6 +246,7 @@ private void storeSettings(ExternalFileType entry) {
- 
-         if (selectedIcon != null) {
-             entry.setIconName(selectedIcon);
-+            entry.setIcon(IconTheme.getImage(entry.getIconName()));
-         }
-         if (!OS.WINDOWS) {
-             entry.setOpenWith(application.getText().trim());, @@ -228,7 +228,7 @@ public void run() {
-                                 // User doesn't want to handle this unknown link type.
-                             } else if (answer == JOptionPane.YES_OPTION) {
-                                 // User wants to define the new file type. Show the dialog:
--                                ExternalFileType newType = new ExternalFileType(flEntry.getType().getName(), """", """", """", ""new"");
-+                                ExternalFileType newType = new ExternalFileType(flEntry.getType().getName(), """", """", """", ""new"", IconTheme.getImage(""new""));
-                                 ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(panel.frame(), newType);
-                                 editor.setVisible(true);
-                                 if (editor.okPressed()) {, @@ -15,6 +15,8 @@
- */
- package net.sf.jabref.external;
- 
-+import net.sf.jabref.gui.IconTheme;
-+
- /**
-  * This subclass of ExternalFileType is used to mark types that are unknown.
-  * This can be the case when a database is loaded which contains links to files
-@@ -23,7 +25,7 @@
- public class UnknownExternalFileType extends ExternalFileType {
- 
-     public UnknownExternalFileType(String name) {
--        super(name, """", """", """", ""unknown"");
-+        super(name, """", """", """", ""unknown"", IconTheme.getImage(""unknown""));
-     }
- 
- }, @@ -6,6 +6,7 @@
- import java.util.Calendar;
- import java.util.List;
- 
-+import net.sf.jabref.gui.IconTheme;
- import org.apache.pdfbox.pdmodel.PDDocument;
- import org.apache.pdfbox.pdmodel.PDDocumentInformation;
- 
-@@ -36,7 +37,7 @@ public EntryFromPDFCreator() {
-     private static ExternalFileType getPDFExternalFileType() {
-         ExternalFileType pdfFileType = JabRefPreferences.getInstance().getExternalFileTypeByExt(""pdf"");
-         if (pdfFileType == null) {
--            return new ExternalFileType(""PDF"", ""pdf"", ""application/pdf"", ""evince"", ""pdfSmall"");
-+            return new ExternalFileType(""PDF"", ""pdf"", ""application/pdf"", ""evince"", ""pdfSmall"", IconTheme.getImage(""pdfSmall""));
-         }
-         return pdfFileType;
-     }, @@ -315,7 +315,7 @@ public static boolean openExternalFileUnknown(JabRefFrame frame, BibtexEntry ent
-         }
-         else if (answer == JOptionPane.YES_OPTION) {
-             // User wants to define the new file type. Show the dialog:
--            ExternalFileType newType = new ExternalFileType(fileType.getName(), """", """", """", ""new"");
-+            ExternalFileType newType = new ExternalFileType(fileType.getName(), """", """", """", ""new"", IconTheme.getImage(""new""));
-             ExternalFileTypeEntryEditor editor = new ExternalFileTypeEntryEditor(frame, newType);
-             editor.setVisible(true);
-             if (editor.okPressed()) {, "4543"""modified, modified, modified, modified, modified, modified, modified, modified, """88

@@ -1,7 +1,6 @@
 - CONFIG TEMPLATE
 
 repo                 =
-branch_name          =
 auth_file            = auths/mcauley_auth.txt 
 rows                 =
 issue_state          = closed

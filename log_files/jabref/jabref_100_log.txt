@@ -1694,3 +1694,1139 @@ Attempting program start.
 
 ------------------------------------------------------------------------------
 
+
+Thu, 06/03/21, 11:05:21:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f19e75adca0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:05:27:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:05:27:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:05:27:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:05:27:%f AM:         Complete!
+
+Thu, 06/03/21, 11:05:28:%f AM: 
+    Getting PR data
+
+Thu, 06/03/21, 11:05:39:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 976, in get_PR_info
+    if pr_commits.totalCount > 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:05:39:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:06:12:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7ff3fc408c70>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:06:14:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:06:14:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:06:14:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:06:14:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:06:16:%f AM: 
+    Getting PR data
+
+Thu, 06/03/21, 11:06:33:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 935, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:06:33:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:06:58:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f05c2cc3c70>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:06:59:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:06:59:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:06:59:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:06:59:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:07:01:%f AM: 
+    Getting PR data
+
+Thu, 06/03/21, 11:08:42:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:08:42:%f AM: 
+    Writing list of PR data to JSON...
+
+Thu, 06/03/21, 11:08:42:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:08:42:%f AM: 
+    Getting commit data...
+
+Thu, 06/03/21, 11:09:02:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:09:02:%f AM: 
+    Writing list of commit data to JSON...
+
+Thu, 06/03/21, 11:09:02:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:09:02:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:12:56:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fb316742d90>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:12:58:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:12:58:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:12:58:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:12:58:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:12:59:%f AM: 
+    Getting PR data
+
+Thu, 06/03/21, 11:13:44:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 976, in get_PR_info
+    if pr_commits.totalCount > 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:13:44:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:13:46:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fd7b2142d60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:13:47:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:13:47:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:13:47:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:13:47:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:13:48:%f AM: 
+    Getting pull request data...
+
+Thu, 06/03/21, 11:14:07:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 983, in get_PR_info
+    most_recent_commit = pr_commits[last_commit_position]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:14:07:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:14:27:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7fe00523ad60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:14:28:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:14:28:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:14:28:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:14:28:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:14:28:%f AM: 
+    Getting pull request data...
+
+Thu, 06/03/21, 11:14:33:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 935, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:14:33:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:14:42:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f42c7b99d60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:14:43:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:14:43:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:14:43:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:14:43:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:14:44:%f AM: 
+    Getting pull request data...
+
+Thu, 06/03/21, 11:15:09:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 935, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:15:09:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Thu, 06/03/21, 11:15:55:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f669221fd60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Thu, 06/03/21, 11:15:57:%f AM: 
+Attempting program start...
+
+Thu, 06/03/21, 11:15:57:%f AM: 
+    Getting paginated list of issues...
+
+Thu, 06/03/21, 11:15:57:%f AM: 
+    Getting paginated list of pull requests...
+
+Thu, 06/03/21, 11:15:57:%f AM: 
+        Complete!
+
+Thu, 06/03/21, 11:15:59:%f AM: 
+    Getting pull request data...
+
+Thu, 06/03/21, 11:15:59:%f AM: 
+    Uncaught exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 303, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 853, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 933, in get_PR_info
+    cur_pr      = pr_paged_list[index]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Thu, 06/03/21, 11:15:59:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:47:00 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f09de025130>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 12:47:05 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:47:05 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 12:47:05 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:47:05 PM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 12:47:05 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:47:05 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 12:47:44 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:47:44 PM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 12:47:44 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:47:44 PM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 12:48:16 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 916, in get_PR_info
+    pr_author_name  = cur_pr_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 01:10:16 PM: 
+    Getting more pull request info...
+
+Fri, 06/04/21, 01:11:12 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:11:12 PM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 01:11:12 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:11:12 PM: 
+    Getting commit data...
+
+Fri, 06/04/21, 01:11:31 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:11:31 PM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 01:11:31 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:11:31 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 01:21:31 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f42a4fe1e80>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 01:21:33 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 01:21:33 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 01:21:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:21:33 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 01:21:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:21:33 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 01:21:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:21:33 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/04/21, 01:21:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:21:33 PM: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 01:21:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:21:33 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 01:48:20 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f15bd0e1100>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 01:48:25 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 121, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 258, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 01:48:25 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 01:53:45 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f6f29ad4100>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 01:53:47 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 121, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 258, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 01:53:47 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 03:57:34 PM.039:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f2d47eb4040>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 03:58:04 PM.457: 
+Attempting program start...
+
+Fri, 06/04/21, 03:58:04 PM.457: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 03:58:04 PM.458: 
+        Complete!
+
+Fri, 06/04/21, 03:58:04 PM.458: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 03:58:04 PM.461: 
+        Complete!
+
+Fri, 06/04/21, 03:58:04 PM.461: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 03:58:04 PM.473: 
+        Complete!
+
+Fri, 06/04/21, 03:58:04 PM.473: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 03:58:28.149:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ff1d86f7070>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 03:58:38.337: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 100, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 237, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 03:58:38.338: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 04:01:46.%f:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fd8374b2040>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 04:02:57.%f: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 100, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 237, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 04:02:57.%f: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+

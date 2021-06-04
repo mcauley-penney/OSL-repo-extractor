@@ -1,4 +1,5 @@
-- CONFIG TEMPLATE
+- Guava
+- link: https://github.com/google/guava
 
 repo                 = google/guava
 branch_name          = master

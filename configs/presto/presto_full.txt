@@ -1,0 +1,18 @@
+- Presto
+- Link: https://github.com/prestodb/presto
+
+repo                 = prestodb/presto 
+branch_name          = master
+auth_file            = auths/jmp_auth.txt 
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = True
+log_file             = log_files/presto/presto_full_log.txt
+
+issue_json_filename  = outputs/presto/presto_full_issues.json 
+pr_json_filename     = outputs/presto/presto_full_prs.json 
+commit_json_filename = outputs/presto/presto_full_commits.json 
+
+pr_csv_filename      = outputs/presto/presto_full_pr_output.csv  
+commit_csv_filename  = outputs/presto/presto_full_commit_output.csv

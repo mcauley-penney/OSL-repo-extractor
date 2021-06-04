@@ -1,0 +1,1712 @@
+
+Fri, 06/04/21, 09:07:00:%f AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : main
+        - session          : <github.MainClass.Github object at 0x7f6db5f0ee50>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito/mockito_full_prs.json
+        - commit JSON file : outputs/mockito/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+Attempting program start...
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+        Complete!
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+        Complete!
+
+Fri, 06/04/21, 09:07:05:%f AM: 
+    Getting issue data...
+
+Fri, 06/04/21, 10:09:36:%f AM: 
+        Complete!
+
+Fri, 06/04/21, 10:09:36:%f AM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 10:09:36:%f AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 111, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 285, in exe_menu
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 651, in get_issue_json
+    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1073, in json_io
+    # Other Docs   :
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/mockito/mockito_full_issues.json'
+
+Fri, 06/04/21, 10:09:36:%f AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 10:15:34 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : main
+        - session          : <github.MainClass.Github object at 0x7f12eba942b0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 10:15:41 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 111, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 10:15:41 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 10:16:21 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : main
+        - session          : <github.MainClass.Github object at 0x7f8e722f92b0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 10:16:36 AM: 
+
+    Personal Access Token valid!
+
+Fri, 06/04/21, 10:16:36 AM: 
+Attempting program start...
+
+Fri, 06/04/21, 10:16:36 AM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 10:16:36 AM: 
+        Complete!
+
+Fri, 06/04/21, 10:16:36 AM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 10:16:36 AM: 
+        Complete!
+
+Fri, 06/04/21, 10:16:36 AM: 
+    Getting issue data...
+
+Fri, 06/04/21, 10:27:43 AM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 581, in get_issue_info
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 11:07:15 AM: 
+    Getting more issue info...
+
+Fri, 06/04/21, 11:12:09 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:09 AM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 11:12:09 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:09 AM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 11:12:22 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:22 AM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 11:12:22 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:22 AM: 
+    Getting commit data...
+
+Fri, 06/04/21, 11:12:25 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:25 AM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 11:12:25 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:12:25 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:18:06 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : main
+        - session          : <github.MainClass.Github object at 0x7f6941963370>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:18:09 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 264, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/04/21, 11:18:09 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:18:28 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : default
+        - session          : <github.MainClass.Github object at 0x7f4782f6e370>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:18:29 AM: 
+Attempting program start...
+
+Fri, 06/04/21, 11:18:29 AM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 11:18:29 AM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 11:18:29 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:18:30 AM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 11:18:43 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:18:43 AM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 11:18:43 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:18:43 AM: 
+    Getting commit data...
+
+Fri, 06/04/21, 11:18:45 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:18:45 AM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 11:18:45 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:18:45 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:19:11 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f44c6856370>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:19:13 AM: 
+Attempting program start...
+
+Fri, 06/04/21, 11:19:13 AM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 11:19:13 AM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 11:19:13 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:19:13 AM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 11:23:45 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:23:45 AM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 11:23:45 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:23:45 AM: 
+    Getting commit data...
+
+Fri, 06/04/21, 11:24:34 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:24:34 AM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 11:24:34 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:24:34 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:31:05 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7ff89f0422b0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:31:06 AM: 
+Attempting program start...
+
+Fri, 06/04/21, 11:31:06 AM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 11:31:06 AM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 11:31:06 AM: 
+        Complete!
+
+Fri, 06/04/21, 11:31:06 AM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 11:37:35 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 305, in exe_menu
+    get_PR_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 857, in get_PR_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 939, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 11:37:35 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:48:18 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f04007d0580>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:58:45 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 272, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 278, in exe_menu
+    print()
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1322, in run_timer
+    sleep_time = get_limit_info( session, "reset" )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1362, in timer
+    # print time string on the same line each decrement
+KeyboardInterrupt
+
+Fri, 06/04/21, 11:58:45 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:58:47 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f673affb6a0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:58:47 AM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 272, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 11:59:17 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 272, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 280, in exe_menu
+    print()
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1325, in run_timer
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1365, in timer
+    countdown_time -= 1
+KeyboardInterrupt
+
+Fri, 06/04/21, 11:59:17 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 11:59:18 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f1f5c718670>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 11:59:20 AM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 272, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 12:07:18 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:10:11 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - branch name      : master
+        - session          : <github.MainClass.Github object at 0x7f4ff5ee4700>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:10:12 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:10:13 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 12:10:13 PM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 12:10:13 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:10:13 PM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 12:24:55 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:24:55 PM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 12:24:55 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:24:55 PM: 
+    Getting commit data...
+
+Fri, 06/04/21, 12:27:44 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:27:44 PM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 12:27:44 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:27:44 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:30:26 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 256, in exe_menu
+    log_header = header %( conf_tuple )
+TypeError: not enough arguments for format string
+
+Fri, 06/04/21, 12:30:26 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:31:02 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 256, in exe_menu
+    log_header = header %( conf_tuple )
+TypeError: not enough arguments for format string
+
+Fri, 06/04/21, 12:31:02 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:31:44 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7fb36dbddeb0>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:31:47 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:31:47 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:31:47 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:31:47 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:31:47 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:31:47 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:31:47 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1059, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:31:47 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:32:57 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f03a8c9b040>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:32:58 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:32:58 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:32:58 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:32:58 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:32:58 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:32:58 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:32:58 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1061, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:32:58 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:34:57 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7ff08fd3c100>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:35:03 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:35:03 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:35:03 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:35:03 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:35:03 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:35:03 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:35:03 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1061, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:35:03 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:36:31 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f449b841100>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:36:33 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:36:33 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:36:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:36:33 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:36:33 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:36:33 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:36:33 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1061, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:36:33 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:39:34 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f9f85b57130>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:39:39 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:39:39 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:39:39 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:39:39 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:39:39 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:39:39 PM: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 12:39:39 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:39:39 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:39:42 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7fde148df130>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:39:43 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:39:43 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:39:43 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:39:43 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:39:43 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:39:43 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:39:43 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1061, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:39:43 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:40:01 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f8bdff4d130>
+        - rows             : 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
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:40:02 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:40:03 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 286, in exe_menu
+    paged_metalist = get_paginated_lists( session, repo_str, logger,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 766, in get_paginated_lists
+    repo_obj = session.get_repo( repo_str )
+  File "/home/j/.local/lib/python3.9/site-packages/github/MainClass.py", line 330, in get_repo
+    headers, data = self.__requester.requestJsonAndCheck("GET", url)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.BadCredentialsException: 401 {"message": "Bad credentials", "documentation_url": "https://docs.github.com/rest"}
+
+Fri, 06/04/21, 12:40:03 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:41:34 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f98bc054130>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:41:37 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:41:37 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 12:41:37 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:41:37 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 12:41:40 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
+    get_issue_json( session, issue_paged_list, row_quant, logger,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 636, in get_issue_json
+    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 558, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Fri, 06/04/21, 12:41:40 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:42:02 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f90c4b29160>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:42:04 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:42:04 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 12:42:04 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:42:04 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 12:42:04 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:42:04 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 12:42:04 PM: 
+
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 325, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1061, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 12:42:04 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 12:45:57 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f81009fc160>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 12:45:59 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 12:45:59 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 12:45:59 PM: 
+        Complete!
+
+Fri, 06/04/21, 12:45:59 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 12:46:01 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 122, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 295, in exe_menu
+    get_issue_json( session, issue_paged_list, row_quant, logger,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 639, in get_issue_json
+    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 578, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Fri, 06/04/21, 12:46:01 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 01:22:15 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f5fb645ddf0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 01:22:17 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 01:22:17 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 01:22:17 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:22:17 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 01:22:17 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:22:17 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 01:22:17 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 121, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 322, in exe_menu
+    issue_info_list = json_io( issue_json_filename, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1058, in json_io
+    info_metalist = json.load( json_file )
+  File "/usr/lib/python3.9/json/__init__.py", line 293, in load
+    return loads(fp.read(),
+  File "/usr/lib/python3.9/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.9/json/decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 2 column 1 (char 7382921)
+
+Fri, 06/04/21, 01:22:17 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 01:23:23 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f1875ae5df0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 01:23:27 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 01:23:27 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 01:23:27 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:23:27 PM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/04/21, 01:23:27 PM: 
+        Complete!
+
+Fri, 06/04/21, 01:23:27 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 01:35:58 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 572, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 02:10:22 PM: 
+    Getting more issue info...
+
+Fri, 06/04/21, 02:13:38 PM: 
+        Complete!
+
+Fri, 06/04/21, 02:13:38 PM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 02:13:38 PM: 
+        Complete!
+
+Fri, 06/04/21, 02:13:38 PM: 
+    Getting pull request data...
+
+Fri, 06/04/21, 02:27:26 PM: 
+        Complete!
+
+Fri, 06/04/21, 02:27:26 PM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 02:27:26 PM: 
+        Complete!
+
+Fri, 06/04/21, 02:27:26 PM: 
+    Getting commit data...
+
+Fri, 06/04/21, 02:27:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 436, in get_commit_info
+    commit_files       = cur_commit.files
+  File "/home/j/.local/lib/python3.9/site-packages/github/Commit.py", line 91, in files
+    self._completeIfNotSet(self._files)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 03:10:29 PM: 
+    Getting commit data...
+
+Fri, 06/04/21, 03:13:05 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:13:05 PM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 03:13:05 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:13:05 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 03:27:25 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7f227159b040>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 03:27:27 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Complete!
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Complete!
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Complete!
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Complete!
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 03:27:27 PM: 
+    Complete!
+
+Fri, 06/04/21, 03:27:27 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 03:29:31 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - session          : <github.MainClass.Github object at 0x7ff266b2e040>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/mockito/mockito_full.txt        
+
+        - issue json file  : outputs/mockito_full/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/mockito_full_commits.json
+
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Fri, 06/04/21, 03:29:34 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 03:29:34 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/04/21, 03:29:34 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:29:34 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 03:29:34 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:29:34 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 03:29:34 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:29:34 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/04/21, 03:29:34 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:29:34 PM: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 03:29:34 PM: 
+        Complete!
+
+Fri, 06/04/21, 03:29:34 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
