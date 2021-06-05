@@ -1,0 +1,146 @@
+
+Fri, 06/04/21, 09:31:57 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fdee52534f0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref_TEST/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_TEST/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_TEST/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_TEST/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_TEST/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_TEST/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 09:31:59 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 09:31:59 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 09:31:59 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 09:32:00 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 09:32:03 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 101, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 266, in exe_menu
+    write_issue_json( session, issue_paged_list, row_quant, logger,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1376, in write_issue_json
+    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 549, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Fri, 06/04/21, 09:32:03 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/04/21, 09:38:58 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5386055550>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref_TEST/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_TEST/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_TEST/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_TEST/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_TEST/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_TEST/jabref_100_commit_output.csv
+
+
+Fri, 06/04/21, 09:39:01 PM: 
+Attempting program start...
+
+Fri, 06/04/21, 09:39:01 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/04/21, 09:39:01 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 09:39:01 PM: 
+    Getting issue data...
+
+Fri, 06/04/21, 09:39:38 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 09:39:38 PM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 09:39:38 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 09:39:38 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+

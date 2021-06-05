@@ -184,3 +184,31 @@ Traceback (most recent call last):
   File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
     raise self.__createException(status, responseHeaders, output)
 github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 05:36:35:%f PM: 
+    Getting more issue info...
+
+Fri, 06/04/21, 05:43:05:%f PM: 
+        Complete!
+
+Fri, 06/04/21, 05:43:05:%f PM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/04/21, 05:43:05:%f PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 111, in main
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 285, in exe_menu
+    # read metalists out of JSON storage
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 651, in get_issue_json
+    #                   - desc: if "remaining", contains remaining requests for
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1073, in json_io
+    "G_MORE_COMMIT" : getter + "more commit data...",
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/presto/presto_full_issues.json'
+
+Fri, 06/04/21, 05:43:05:%f PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+

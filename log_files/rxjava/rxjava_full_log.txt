@@ -1,681 +1,11 @@
-
-06/02/21, 11:02:24 AM:  
+Fri, 06/04/21, 04:56:31 PM:  
     PROGRAM START
     -------------
 
     Config used: 
         - config file name : configs/rxjava/rxjava_full.txt
         - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7f80035c5d60>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : json_files/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : json_files/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : json_files/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : csv_files/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: csv_files/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 11:02:25 AM: 
-   Program interrupted by KeyboardInterrupt!
-
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 243, in exe_menu
-    op_choice = input("\nExecute ")
-KeyboardInterrupt
-
-06/02/21, 11:02:25 AM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 11:19:26 AM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7fa796aaed60>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 11:19:31 AM: 
-    Acquiring paginated list of issues.
-
-06/02/21, 11:19:31 AM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 11:19:32 AM: 
-    Acquiring pull request data.
-
-06/02/21, 11:33:45 AM: Rate Limit imposed. Sleeping.
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 576, in get_issue_info
-    if comments_paged_list.totalCount == 0:
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
-    headers, data = self.__requester.requestJsonAndCheck(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
-    return self.__check(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
-    raise self.__createException(status, responseHeaders, output)
-github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
-
-06/02/21, 12:33:52 PM: Rate Limit imposed. Sleeping.
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 580, in get_issue_info
-    comments_paged_list = cur_issue.get_comments()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
-    newElements = self._grow()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
-    newElements = self._fetchNextPage()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
-    headers, data = self.__requester.requestJsonAndCheck(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
-    return self.__check(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
-    raise self.__createException(status, responseHeaders, output)
-github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
-
-06/02/21, 01:34:07 PM: Rate Limit imposed. Sleeping.
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 559, in get_issue_info
-    # work on one issue from paginated list at a time
-  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
-    self._completeIfNotSet(self._name)
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
-    self._completeIfNeeded()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
-    self.__complete()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
-    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
-    return self.__check(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
-    raise self.__createException(status, responseHeaders, output)
-github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
-
-06/02/21, 02:32:13 PM: 
-    Writing issue data to JSON.
-
-06/02/21, 02:32:15 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:22:06 PM: 
-    Writing pull request data to JSON.
-
-06/02/21, 03:22:06 PM: 
-    Finished writing pull request data to JSON.
-
-06/02/21, 03:22:06 PM: 
-    Acquiring commit data.
-
-06/02/21, 03:23:33 PM: 
-    Writing commit data to JSON.
-
-06/02/21, 03:23:33 PM: 
-    Finished writing commit data to JSON.
-
-06/02/21, 03:23:33 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:27:27 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7f5c3a142d60>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:27:30 PM: 
-    Reading pull request JSON.
-
-06/02/21, 03:27:30 PM: 
-    Reading commit JSON.
-
-06/02/21, 03:27:30 PM: 
-    Reading issue JSON.
-
-06/02/21, 03:27:30 PM: 
-    Writing "pr" type CSV.
-
-06/02/21, 03:27:30 PM: 
-    Writing "commit" type CSV.
-
-06/02/21, 03:27:30 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:33:04 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7f9d154c2eb0>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:33:06 PM: 
-    Reading pull request JSON.
-
-06/02/21, 03:33:06 PM: 
-    Reading commit JSON.
-
-06/02/21, 03:33:06 PM: 
-    Writing "commit" type CSV.
-
-06/02/21, 03:33:06 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:33:44 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7f802b6b4f40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:33:47 PM: 
-    Reading pull request JSON.
-
-06/02/21, 03:33:47 PM: 
-    Reading commit JSON.
-
-06/02/21, 03:33:47 PM: 
-    Reading issue JSON.
-
-06/02/21, 03:33:47 PM: 
-    Writing "pr" type CSV.
-
-06/02/21, 03:33:47 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:34:26 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 3.x
-        - session          : <github.MainClass.Github object at 0x7f5acc49af40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:34:28 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:34:29 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:38:02 PM: 
-    Writing pull request data to JSON.
-
-06/02/21, 03:38:02 PM: 
-    Finished writing pull request data to JSON.
-
-06/02/21, 03:38:02 PM: 
-    Acquiring commit data.
-
-06/02/21, 03:39:04 PM: 
-    Writing commit data to JSON.
-
-06/02/21, 03:39:04 PM: 
-    Finished writing commit data to JSON.
-
-06/02/21, 03:39:04 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:40:02 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 1.x
-        - session          : <github.MainClass.Github object at 0x7fb75e35bf40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:40:06 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:40:07 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:40:23 PM: 
-   Program interrupted by KeyboardInterrupt!
-
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 847, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 935, in get_PR_info
-    pr_author_name  = cur_pr_user.name
-  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
-    self._completeIfNotSet(self._name)
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
-    self._completeIfNeeded()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
-    self.__complete()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
-    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
-
-06/02/21, 03:40:23 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:40:39 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : 2.x
-        - session          : <github.MainClass.Github object at 0x7fa178ff2f40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:40:40 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:40:41 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:40:55 PM: 
-   Program interrupted by KeyboardInterrupt!
-
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 847, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 980, in get_PR_info
-    most_recent_commit = pr_commits[last_commit_position]
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
-    self.__fetchToIndex(index)
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
-    self._grow()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
-    newElements = self._fetchNextPage()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
-    headers, data = self.__requester.requestJsonAndCheck(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
-
-06/02/21, 03:40:55 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:44:27 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : default
-        - session          : <github.MainClass.Github object at 0x7f055fed7f40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:44:29 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:44:31 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:44:33 PM: 
-   Program interrupted by KeyboardInterrupt!
-
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 292, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 847, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 980, in get_PR_info
-    most_recent_commit = pr_commits[last_commit_position]
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
-    self.__fetchToIndex(index)
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
-    self._grow()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
-    newElements = self._fetchNextPage()
-  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
-    headers, data = self.__requester.requestJsonAndCheck(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
-
-06/02/21, 03:44:33 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:45:27 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : main
-        - session          : <github.MainClass.Github object at 0x7f3e785f8f40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:45:28 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:45:28 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 03:45:28 PM: 
-    Writing pull request data to JSON.
-
-06/02/21, 03:45:28 PM: 
-    Finished writing pull request data to JSON.
-
-06/02/21, 03:45:28 PM: 
-    Acquiring commit data.
-
-06/02/21, 03:45:28 PM: 
-    Writing commit data to JSON.
-
-06/02/21, 03:45:28 PM: 
-    Finished writing commit data to JSON.
-
-06/02/21, 03:45:28 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-06/02/21, 03:45:51 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - branch name      : master
-        - session          : <github.MainClass.Github object at 0x7f4741634f40>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-06/02/21, 03:45:52 PM: 
-    Acquiring paginated list of pull requests.
-
-06/02/21, 03:45:54 PM: 
-    Acquiring pull request data and paginated list of commits.
-
-06/02/21, 04:22:44 PM: 
-    Writing pull request data to JSON.
-
-06/02/21, 04:22:44 PM: 
-    Finished writing pull request data to JSON.
-
-06/02/21, 04:22:44 PM: 
-    Acquiring commit data.
-
-06/02/21, 04:26:15 PM: 
-    Writing commit data to JSON.
-
-06/02/21, 04:26:15 PM: 
-    Finished writing commit data to JSON.
-
-06/02/21, 04:26:15 PM: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-Fri, 06/04/21, 04:36:58:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - session          : <github.MainClass.Github object at 0x7f47cb8e2070>
+        - session          : <github.MainClass.Github object at 0x7efd38f65040>
         - rows             : all
         - issue state      : closed        
         - pr state         : closed          
@@ -690,220 +20,37 @@ Fri, 06/04/21, 04:36:58:
         - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
 
 
-Fri, 06/04/21, 04:37:01: 
+Fri, 06/04/21, 04:56:33 PM: 
 Attempting program start...
 
-Fri, 06/04/21, 04:37:01: 
+Fri, 06/04/21, 04:56:33 PM: 
     Getting paginated list of pull requests...
 
-Fri, 06/04/21, 04:37:01: 
+Fri, 06/04/21, 04:56:33 PM: 
         Complete!
 
-Fri, 06/04/21, 04:37:01: 
+Fri, 06/04/21, 04:56:33 PM: 
     Getting pull request data...
 
-Fri, 06/04/21, 04:47:06: 
-    Unspecified exception:
-
+Fri, 06/04/21, 04:59:36 PM: 
+    Rate Limit imposed. Sleeping...
 Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 100, in main
-    exe_menu( conf_list, logger )
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 274, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 800, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 883, in get_PR_info
-    if cur_pr.merged == True:
-  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
-    self._completeIfNotSet(self._merged)
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
-    self._completeIfNeeded()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
-    self.__complete()
-  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
-    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
-
-Fri, 06/04/21, 04:47:06: 
-    END OF PROGRAM RUN
-
-------------------------------------------------------------------------------
-
-
-Fri, 06/04/21, 04:47:08.158:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - session          : <github.MainClass.Github object at 0x7fe20cce6100>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - diagnostics      : True          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-
-Fri, 06/04/21, 04:47:10.587: 
-Attempting program start...
-
-Fri, 06/04/21, 04:47:10.750: 
-    Getting paginated list of pull requests...
-
-Fri, 06/04/21, 04:47:10.750: 
-        Complete!
-
-Fri, 06/04/21, 04:47:10.966: 
-    Getting pull request data...
-
-Fri, 06/04/21, 04:47:28.691: 
-    Unspecified exception:
-
-Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 100, in main
-    exe_menu( conf_list, logger )
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 274, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 800, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
   File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 924, in get_PR_info
     if pr_commits.totalCount > 0:
   File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
     headers, data = self.__requester.requestJsonAndCheck(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
 
-Fri, 06/04/21, 04:47:28.695: 
-    END OF PROGRAM RUN
+Fri, 06/04/21, 05:37:06 PM: 
+    Getting more pull request data...
 
-------------------------------------------------------------------------------
-
-
-Fri, 06/04/21, 04:48:03 PM:  
-    PROGRAM START
-    -------------
-
-    Config used: 
-        - config file name : configs/rxjava/rxjava_full.txt
-        - repo             : ReactiveX/RxJava
-        - session          : <github.MainClass.Github object at 0x7f44e44100d0>
-        - rows             : all
-        - issue state      : closed        
-        - pr state         : closed          
-        - diagnostics      : True          
-        - log file         : log_files/rxjava/rxjava_full_log.txt        
-
-        - issue json file  : outputs/rxjava_full/rxjava_full_issue_list.json
-        - pr JSON file     : outputs/rxjava_full/rxjava_full_pr_list.json
-        - commit JSON file : outputs/rxjava_full/rxjava_full_commit_list.json
-
-        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
-        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
-
-
-Fri, 06/04/21, 04:48:04 PM: 
-Attempting program start...
-
-Fri, 06/04/21, 04:48:04 PM: 
-    Getting paginated list of pull requests...
-
-Fri, 06/04/21, 04:48:04 PM: 
-        Complete!
-
-Fri, 06/04/21, 04:48:04 PM: 
-    Getting pull request data...
-
-Fri, 06/04/21, 04:48:23 PM: 
-    Unspecified exception:
-
+Fri, 06/04/21, 05:54:41 PM: 
+    Rate Limit imposed. Sleeping...
 Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 100, in main
-    exe_menu( conf_list, logger )
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 274, in exe_menu
-    get_PR_commit_json( session, pr_paged_list, row_quant,
-  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 800, in get_PR_commit_json
-    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
   File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 883, in get_PR_info
     if cur_pr.merged == True:
   File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
@@ -914,59 +61,72 @@ Traceback (most recent call last):
     self.__complete()
   File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
     headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
-    *self.requestJson(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
-    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
-    status, responseHeaders, output = self.__requestRaw(
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
-    response = cnx.getresponse()
-  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
-    r = verb(
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
-    return self.request('GET', url, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
-    r = adapter.send(request, **kwargs)
-  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
-    resp = conn.urlopen(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
-    httplib_response = self._make_request(
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
-    six.raise_from(e, None)
-  File "<string>", line 3, in raise_from
-  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
-    httplib_response = conn.getresponse()
-  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
-    response.begin()
-  File "/usr/lib/python3.9/http/client.py", line 307, in begin
-    version, status, reason = self._read_status()
-  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/usr/lib/python3.9/socket.py", line 704, in readinto
-    return self._sock.recv_into(b)
-  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
-    return self.read(nbytes, buffer)
-  File "/usr/lib/python3.9/ssl.py", line 1099, in read
-    return self._sslobj.read(len, buffer)
-KeyboardInterrupt
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
 
-Fri, 06/04/21, 04:48:23 PM: 
+Fri, 06/04/21, 06:37:11 PM: 
+    Getting more pull request data...
+
+Fri, 06/04/21, 06:56:12 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 883, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Fri, 06/04/21, 07:37:16 PM: 
+    Getting more pull request data...
+
+Fri, 06/04/21, 07:43:55 PM: 
+        Complete!
+
+Fri, 06/04/21, 07:43:55 PM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/04/21, 07:43:55 PM: 
+        Complete!
+
+Fri, 06/04/21, 07:43:55 PM: 
+    Getting commit data...
+
+Fri, 06/04/21, 07:53:59 PM: 
+        Complete!
+
+Fri, 06/04/21, 07:53:59 PM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/04/21, 07:53:59 PM: 
+        Complete!
+
+Fri, 06/04/21, 07:54:00 PM: 
     END OF PROGRAM RUN
 
 ------------------------------------------------------------------------------
 
 
-Fri, 06/04/21, 04:49:15 PM:  
+Fri, 06/04/21, 07:56:55 PM:  
     PROGRAM START
     -------------
 
     Config used: 
         - config file name : configs/rxjava/rxjava_full.txt
         - repo             : ReactiveX/RxJava
-        - session          : <github.MainClass.Github object at 0x7f5cec23b040>
+        - session          : <github.MainClass.Github object at 0x7f4d099ac130>
         - rows             : all
         - issue state      : closed        
         - pr state         : closed          
@@ -981,14 +141,46 @@ Fri, 06/04/21, 04:49:15 PM:
         - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
 
 
-Fri, 06/04/21, 04:49:17 PM: 
+Fri, 06/04/21, 07:56:57 PM: 
 Attempting program start...
 
-Fri, 06/04/21, 04:49:17 PM: 
-    Getting paginated list of pull requests...
+Fri, 06/04/21, 07:56:57 PM: 
+    Reading pull request data JSON...
 
-Fri, 06/04/21, 04:49:17 PM: 
+Fri, 06/04/21, 07:56:57 PM: 
         Complete!
 
-Fri, 06/04/21, 04:49:17 PM: 
-    Getting pull request data...
+
+Fri, 06/04/21, 07:56:57 PM: 
+    Reading commit data JSON...
+
+Fri, 06/04/21, 07:56:57 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 07:56:57 PM: 
+    Reading issue data JSON...
+
+Fri, 06/04/21, 07:56:57 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 07:56:57 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/04/21, 07:56:57 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 07:56:57 PM: 
+    Writing "commit" type CSV...
+
+Fri, 06/04/21, 07:56:58 PM: 
+        Complete!
+
+
+Fri, 06/04/21, 07:56:58 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
