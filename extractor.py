@@ -10,19 +10,7 @@
 #   - discuss branches and how they can determine data grabbed
 #       - how master and main may be available even though not shown
 
-
 # TODO:
-#    HIGH:
-#       FIX:
-#           - use OS.makedir to ensure that output dirs are created
-#               - slim down config by using a parent dir for outputs?
-#                   - forces all outputs to be in same place but creates
-#                     consistency
-#       FEAT:
-#           - clear print_rem_calls and timer lines before reprinting 
-# 
-# 
-# 
 #    LOW:
 #       - post-completion:
 #           - clean:
