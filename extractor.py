@@ -42,19 +42,17 @@ import time
 
 
 # constants
-NL_TAB = "\n    "
-
-DIAG_MSG = NL_TAB + "[Diagnostics]: "
-
-INVALID_TOKEN_STR = """
-    Invalid personal access token!
-    Please see https://github.com/settings/tokens 
-    to create a token with \"repo\" permissions!
-""" 
-
+BKGRN  = "\033[1;38;5;0;48;2;16;185;129m"  
+BKYEL  = "\033[1;38;5;0;48;2;251;191;36m"  
 NAN = "NaN"
-
+NL = '\n'
+RST    = "\033[0;0m" 
+TAB = "    "
+NL_TAB = NL + TAB
 TIME_FORMAT = "%D, %I:%M:%S %p"
+DIAG_MSG = TAB + BKYEL +" [Diagnostics]: " + RST + ' ' 
+
+
 
 
 
@@ -102,7 +100,7 @@ def main():
 
     except:
         logger.exception( NL_TAB + "Unspecified exception:\n\n" )
-        print( "\n" + NL_TAB + "Unspecified exception! Please see log file!" )
+        print( NL + NL_TAB + "Unspecified exception! Please see log file!" )
 
     finally:
         logger.info( end_prog ) 
@@ -213,7 +211,6 @@ Please choose type of CSV:
         - "pr" CSV file    : %s       
         - "commit" CSV file: %s
 """
-
     prog_intro = """
 GITHUB REPO EXTRACTOR
 ---------------------
@@ -230,7 +227,7 @@ Please choose type of operation:
     log_header = header %( conf_tuple )
 
     if diagnostics == "true":
-        print( DIAG_MSG + log_header )
+        print( NL + DIAG_MSG + log_header + RST )
 
     logger.info( log_header )
 
@@ -245,14 +242,14 @@ Please choose type of operation:
             session.get_user().name
 
         except github.BadCredentialsException:
-            print( INVALID_TOKEN_STR ) 
+            log_and_print( "INVAL_TOKEN", "EXCEPT", logger ) 
 
         except github.RateLimitExceededException:
             sleep( session, None, logger )
 
         else:
             if diagnostics == "true":
-                print( DIAG_MSG + "Personal Access Token valid!" )
+                print( NL + DIAG_MSG + "Personal Access Token valid!" )
 
 
             log_and_print( "PROG_START", "INFO", logger )
@@ -263,8 +260,10 @@ Please choose type of operation:
             issue_paged_list, pr_paged_list = paged_metalist 
 
             if op_choice == "1" or op_choice == "3": 
-                write_issue_json( session, issue_paged_list, row_quant, logger,
-                                issue_json_filename )
+                issue_metalist = get_issue_info( session, issue_paged_list, 
+                                                 row_quant, diagnostics, logger )
+
+                write_issue_json( issue_metalist, logger, issue_json_filename )
              
 
             if op_choice == "2" or op_choice == "3":
@@ -504,7 +503,7 @@ def get_commit_info( session, commit_py_list, logger ):
 #                   - link: https://docs.github.com/en/rest/guides/traversing-with-pagination
 #                   - link: https://pygithub.readthedocs.io/en/latest/utilities.html#github.PaginatedList.PaginatedList
 #--------------------------------------------------------------------------- 
-def get_issue_info( session, issue_paged_list, row_quant, logger ):
+def get_issue_info( session, issue_paged_list, row_quant, diagnostics, logger ):
     
     # init vars 
     index           = 0
@@ -515,6 +514,10 @@ def get_issue_info( session, issue_paged_list, row_quant, logger ):
     safe_quant = check_row_quant_safety( issue_paged_list, row_quant, logger )
 
     log_and_print( "G_DATA_ISSUE", "INFO", logger )
+
+    if diagnostics == "true":
+        print( NL_TAB + DIAG_MSG )
+
 
     while index < safe_quant:
         try:
@@ -585,6 +588,17 @@ def get_issue_info( session, issue_paged_list, row_quant, logger ):
 
         else:
             issue_metalist.append( issue_info_list )
+
+            if diagnostics == "true":
+
+                issue_list_len     = str( len( issue_metalist ))
+                row_quant_str      = str( safe_quant )
+                
+                print( "\n\n        Issue num             : " + issue_num )
+                print( "        Length of issue list  : " + issue_list_len
+                        + "/" + row_quant_str )
+                                          
+
             print_rem_calls( session )
             index += 1 
 
@@ -805,7 +819,13 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
     commits_list       = []
     index              = 0
     pr_metalist        = []
-        
+
+    # diagnostics strings
+    commit_list_len_diag = "        Length of commits list: "
+    commits_per_pr_diag  = "        Number of commits/pr  : " 
+    pr_list_len_diag     = "        Length of pr lists    : " 
+    pr_num_diag          = "\n\n        PR num                : "
+
     # establish base values
     most_recent_commit = NAN
     pr_title_str       = NAN
@@ -819,6 +839,10 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
     safe_quant = check_row_quant_safety( pr_paged_list, row_quant, logger )
 
     log_and_print( "G_DATA_PR", "INFO", logger )
+
+    if diagnostics == "true":
+        print( NL_TAB + DIAG_MSG )
+
 
     while index < safe_quant:
 
@@ -896,11 +920,12 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
                         commit_list_len = str( len( commits_list ))
                         num_of_commits  = str( pr_commits.totalCount )
                         pr_list_len     = str( len( pr_metalist ))
+                        row_quant_str   = str( safe_quant )
 
-                        print( "\n\n        PR num                : " + pr_num_str )
-                        print( "        Length of pr list     : " + pr_list_len )
-                        print( "        Length of commits list: " + commit_list_len )
-                        print( "        Number of commits/pr  : " + num_of_commits )
+                        print( pr_num_diag + pr_num_str )
+                        print( pr_list_len_diag + pr_list_len + '/' + row_quant_str )
+                        print( commit_list_len_diag + commit_list_len + '/' + row_quant_str)
+                        print( commits_per_pr_diag + num_of_commits )
 
 
                     print_rem_calls( session )
@@ -1012,7 +1037,7 @@ def log_and_print( msg_format, log_type, logger ):
     writer = NL_TAB + "Writing "
 
     str_dict = {
-            "COMPLETE"      : NL_TAB + "    Complete!\n",
+            "COMPLETE"      : " Complete! ",
             "G_DATA_COMMIT" : getter + "commit data...",
             "G_DATA_ISSUE"  : getter + "issue data...",
             "G_DATA_PR"     : getter + "pull request data...",
@@ -1022,6 +1047,11 @@ def log_and_print( msg_format, log_type, logger ):
             "G_MORE_PR"     : getter + "more pull request data...",
             "G_PAGED_ISSUES": getter + "paginated list of issues...",
             "G_PAGED_PR"    : getter + "paginated list of pull requests...",
+            "INVAL_TOKEN"   : """
+    Invalid personal access token!
+    Please see https://github.com/settings/tokens 
+    to create a token with \"repo\" permissions!
+""",
             "INVAL_ROW"     : NL_TAB + "row_quant config value is invalid!",
             "R_JSON_COMMIT" : reader + "commit data JSON...",
             "R_JSON_ISSUE"  : reader + "issue data JSON...",
@@ -1038,8 +1068,6 @@ def log_and_print( msg_format, log_type, logger ):
 
     out_msg = str_dict[msg_format]
 
-    print( out_msg )
-
     if log_type == "INFO":
         logger.info( out_msg )
 
@@ -1048,7 +1076,12 @@ def log_and_print( msg_format, log_type, logger ):
 
     elif log_type == "EXCEPT":
         logger.exception( out_msg )
+        
 
+    if msg_format == "COMPLETE":
+        out_msg = NL_TAB + TAB + BKGRN + out_msg + RST + '\n'
+
+    print( out_msg )
 
 
 
@@ -1171,7 +1204,7 @@ def read_config( config_file_name ):
         
         if str.lower( conf_list[6] ) == "true":
             print( "\n[Diagnostics enabled]" )
-            print( DIAG_MSG + "Configuration is correct length!" )
+            print( NL + DIAG_MSG + "Configuration is correct length!" )
 
         return conf_list
 
@@ -1370,17 +1403,14 @@ def write_commit_csv( metalist_list, out_file_name ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_issue_json( session, issue_paged_list, row_quant, logger, 
-                      issue_json_filename ):
-
-    issue_metalist = get_issue_info( session, issue_paged_list, row_quant,
-                                     logger )
+def write_issue_json( issue_metalist, logger, issue_json_filename ):
 
     log_and_print( "W_JSON_ISSUE", "INFO", logger )
 
     verify_dirs( issue_json_filename )
 
     json_io( issue_json_filename, 'w', issue_metalist )
+
     complete( logger )
 
 
