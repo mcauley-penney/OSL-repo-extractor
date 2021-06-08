@@ -470,3 +470,1432 @@ Sat, 06/05/21, 02:33:39 PM:
 
 ------------------------------------------------------------------------------
 
+
+Sat, 06/05/21, 09:31:12 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f920906a490>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:31:16 PM: 
+Attempting program start...
+
+Sat, 06/05/21, 09:31:16 PM: 
+    Getting paginated list of issues...
+
+Sat, 06/05/21, 09:31:16 PM:  Complete! 
+
+Sat, 06/05/21, 09:31:16 PM: 
+    Getting issue data...
+
+Sat, 06/05/21, 09:43:37 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 542, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Sat, 06/05/21, 09:43:54 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 542, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 577, in get_issue_info
+    sleep( session, "G_MORE_ISSUE", logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1243, in sleep
+    run_timer( session )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1227, in run_timer
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1290, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:43:54 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:44:00 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7effa6dfe490>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:44:03 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Sat, 06/05/21, 09:44:04 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 238, in exe_menu
+    sleep( session, None, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1243, in sleep
+    run_timer( session )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1227, in run_timer
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1290, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:44:04 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:44:58 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f77b64cf4c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:44:59 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Sat, 06/05/21, 09:45:11 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 238, in exe_menu
+    sleep( session, None, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1243, in sleep
+    run_timer( session )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1227, in run_timer
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1290, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:45:11 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:46:02 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7fa2cb07c4c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:46:03 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 225, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:46:03 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:46:08 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7efdfc27d4c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:46:10 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Sat, 06/05/21, 09:46:11 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 238, in exe_menu
+    sleep( session, None, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1243, in sleep
+    run_timer( session )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1227, in run_timer
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1290, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:46:11 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:47:57 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f152efa24c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:47:59 PM: 
+Attempting program start...
+
+Sat, 06/05/21, 09:47:59 PM: 
+    Getting paginated list of issues...
+
+Sat, 06/05/21, 09:47:59 PM:  Complete! 
+
+Sat, 06/05/21, 09:47:59 PM: 
+    Getting issue data...
+
+Sat, 06/05/21, 09:48:10 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 525, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:48:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:49:02 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f1c5fc034c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:49:05 PM: 
+Attempting program start...
+
+Sat, 06/05/21, 09:49:05 PM: 
+    Getting paginated list of issues...
+
+Sat, 06/05/21, 09:49:05 PM:  Complete! 
+
+Sat, 06/05/21, 09:49:05 PM: 
+    Getting issue data...
+
+Sat, 06/05/21, 09:49:06 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 542, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:49:06 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:49:47 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f6b3a3294c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:49:48 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 225, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:49:48 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:49:50 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f02269984c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:49:51 PM: 
+Attempting program start...
+
+Sat, 06/05/21, 09:49:52 PM: 
+    Getting paginated list of issues...
+
+Sat, 06/05/21, 09:49:52 PM:  Complete! 
+
+Sat, 06/05/21, 09:49:52 PM: 
+    Getting issue data...
+
+Sat, 06/05/21, 09:49:54 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 546, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:49:54 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:52:46 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f8f8212d4c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:52:47 PM: 
+Attempting program start...
+
+Sat, 06/05/21, 09:52:47 PM: 
+    Getting paginated list of issues...
+
+Sat, 06/05/21, 09:52:47 PM:  Complete! 
+
+Sat, 06/05/21, 09:52:48 PM: 
+    Getting issue data...
+
+Sat, 06/05/21, 09:52:50 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 253, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 546, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:52:50 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/05/21, 09:53:00 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f690f87d4c0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Sat, 06/05/21, 09:53:02 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Sat, 06/05/21, 09:53:09 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 232, in exe_menu
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 78055520.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 89, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 238, in exe_menu
+    sleep( session, None, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1243, in sleep
+    run_timer( session )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1227, in run_timer
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1290, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Sat, 06/05/21, 09:53:09 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 08:35:08 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f3411706640>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 08:35:17 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 08:35:17 AM: 
+    Getting paginated list of issues...
+
+Mon, 06/07/21, 08:35:17 AM:  Complete! 
+
+Mon, 06/07/21, 08:35:17 AM: 
+    Getting issue data...
+
+Mon, 06/07/21, 08:35:25 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 91, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 255, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 527, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 08:35:25 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 08:40:17 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f2a078487f0>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 08:40:19 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 08:40:19 AM: 
+    Getting paginated list of issues...
+
+Mon, 06/07/21, 08:40:19 AM:  Complete! 
+
+Mon, 06/07/21, 08:40:20 AM: 
+    Getting issue data...
+
+Mon, 06/07/21, 08:40:23 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 93, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 257, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 550, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 08:40:23 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 08:41:26 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7fefdc414970>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 08:41:28 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 08:41:28 AM: 
+    Getting paginated list of issues...
+
+Mon, 06/07/21, 08:41:28 AM:  Complete! 
+
+Mon, 06/07/21, 08:41:28 AM: 
+    Getting issue data...
+
+Mon, 06/07/21, 08:41:45 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 93, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 257, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 550, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 08:41:45 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 08:41:51 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f53dd8c1970>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 08:41:52 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 08:41:52 AM: 
+    Getting paginated list of pull requests...
+
+Mon, 06/07/21, 08:41:52 AM:  Complete! 
+
+Mon, 06/07/21, 08:41:56 AM: 
+    Getting pull request data...
+
+Mon, 06/07/21, 08:42:12 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 93, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 265, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1435, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 846, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 08:42:12 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 09:25:15 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f57f7f20970>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 09:25:17 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 09:25:17 AM: 
+    Getting paginated list of issues...
+
+Mon, 06/07/21, 09:25:17 AM:  Complete! 
+
+Mon, 06/07/21, 09:25:18 AM: 
+    Getting issue data...
+
+Mon, 06/07/21, 09:25:21 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 93, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 257, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 529, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 09:25:21 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Mon, 06/07/21, 09:25:47 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - session          : <github.MainClass.Github object at 0x7f7b8e4bd970>
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/presto/presto_full_log.txt        
+
+        - issue json file  : outputs/presto_full/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/presto_full_commits.json
+
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Mon, 06/07/21, 09:25:49 AM: 
+Attempting program start...
+
+Mon, 06/07/21, 09:25:49 AM: 
+    Getting paginated list of issues...
+
+Mon, 06/07/21, 09:25:49 AM:  Complete! 
+
+Mon, 06/07/21, 09:25:49 AM: 
+    Getting issue data...
+
+Mon, 06/07/21, 09:25:56 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 93, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 257, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 546, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Mon, 06/07/21, 09:25:56 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+

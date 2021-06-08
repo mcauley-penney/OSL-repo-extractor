@@ -12,19 +12,7 @@
 
 
 # TODO:
-#    HIGH:
-#       FIX:
-#           - use OS.makedir to ensure that output dirs are created
-#               - slim down config by using a parent dir for outputs?
-#                   - forces all outputs to be in same place but creates
-#                     consistency
-#       FEAT:
-#           - clear print_rem_calls and timer lines before reprinting 
-# 
-# 
-# 
-#    LOW:
-#       - post-completion:
+#   - post-completion:
 #           - clean:
 #               - annotations
 #               - spacing
@@ -42,15 +30,21 @@ import time
 
 
 # constants
-BKGRN  = "\033[1;38;5;0;48;2;16;185;129m"  
-BKYEL  = "\033[1;38;5;0;48;2;251;191;36m"  
-NAN = "NaN"
-NL = '\n'
-RST    = "\033[0;0m" 
-TAB = "    "
-NL_TAB = NL + TAB
-TIME_FORMAT = "%D, %I:%M:%S %p"
-DIAG_MSG = TAB + BKYEL +" [Diagnostics]: " + RST + ' ' 
+BKBLU     = "\033[1;38;5;15;48;2;0;111;184m"  
+BKGRN     = "\033[1;38;5;0;48;2;16;185;129m"  
+BKRED     = "\033[1;38;5;0;48;2;240;71;71m"  
+BKYEL     = "\033[1;38;5;0;48;2;251;191;36m"  
+NAN       = "NaN"
+NL        = '\n'
+RST       = "\033[0;0m" 
+TAB       = "    "
+TIME_FRMT = "%D, %I:%M:%S %p"
+
+NL_TAB      = NL + TAB
+DIAG_MSG    = TAB + BKYEL +" [Diagnostics]: " + RST + ' ' 
+INFO_MSG    = NL_TAB + BKBLU + " Info: " + RST
+ERR_MSG     = NL_TAB + BKRED + " Error: " + RST
+EXCEPT_MSG  = NL_TAB + BKRED + " Exception: " + RST
 
 
 
@@ -124,7 +118,7 @@ def check_row_quant_safety( paged_list, config_quant, logger ):
     str_param_quant = str.lower( stripped_quant )
     
 
-    # if all rows are desired or the desired amount is more than exist
+    # if all rows are desired or the desired amount is more than exists
     if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
        output_quant = int( paged_list.totalCount )
 
@@ -406,7 +400,7 @@ def get_commit_info( session, commit_py_list, logger ):
                 commit_author      = cur_commit.commit.author
                 commit_author_name = commit_author.name
                 commit_message     = cur_commit.commit.message
-                commit_date        = commit_author.date.strftime( TIME_FORMAT )
+                commit_date        = commit_author.date.strftime( TIME_FRMT )
                 commit_committer   = cur_commit.commit.committer.name 
                 commit_SHA         = cur_commit.sha 
                 commit_files       = cur_commit.files 
@@ -539,7 +533,7 @@ def get_issue_info( session, issue_paged_list, row_quant, diagnostics, logger ):
             # protect code from failure if chosen issue state is not "closed"
             if cur_issue.closed_at is not None:
                 closed_date_obj = cur_issue.closed_at
-                issue_closed_date = closed_date_obj.strftime( TIME_FORMAT )
+                issue_closed_date = closed_date_obj.strftime( TIME_FRMT )
             
             else:
                 issue_closed_date = NAN
@@ -872,7 +866,7 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 
 
                     if cur_pr.closed_at is not None:
-                       pr_closed_date_str = cur_pr.closed_at.strftime( TIME_FORMAT )
+                       pr_closed_date_str = cur_pr.closed_at.strftime( TIME_FRMT )
 
 
                     pr_info_list = [
@@ -960,7 +954,7 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 def init_logger( log_file_name ):
 
     log_msg_format  = "\n%(asctime)s: %(message)s"
-    log_time_format = "%a, " + TIME_FORMAT
+    log_time_format = "%a, " + TIME_FRMT
 
     # create logger
     logger = logging.getLogger( __name__ )
@@ -1071,15 +1065,21 @@ def log_and_print( msg_format, log_type, logger ):
     if log_type == "INFO":
         logger.info( out_msg )
 
+        if msg_format != "COMPLETE" and msg_format != "PROG_START":
+            out_msg = INFO_MSG + out_msg
+
     elif log_type == "ERROR":
         logger.error( out_msg )
+        out_msg = ERR_MSG + out_msg 
 
     elif log_type == "EXCEPT":
         logger.exception( out_msg )
+        out_msg = EXCEPT_MSG + out_msg 
         
 
     if msg_format == "COMPLETE":
         out_msg = NL_TAB + TAB + BKGRN + out_msg + RST + '\n'
+
 
     print( out_msg )
 
