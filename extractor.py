@@ -10,13 +10,11 @@
 #   - discuss branches and how they can determine data grabbed
 #       - how master and main may be available even though not shown
 
-
 # TODO:
-#   - post-completion:
-#           - clean:
-#               - annotations
-#               - spacing
-#           - create instruction manual
+# - clean:
+#    - annotations
+#    - spacing
+# - create instruction manual
 
 
 # imports
