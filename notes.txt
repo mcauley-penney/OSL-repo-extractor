@@ -1,2 +1,0 @@
-Fabio, 06/02, 10:51a:
-   RxJava, Guava, Mockito and Presto (4). We need to find another one. It must have linked issues and pull requests and java language

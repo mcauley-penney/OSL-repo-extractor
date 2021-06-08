@@ -3880,3 +3880,31 @@ Sat, 06/05/21, 09:06:10 PM:
 
 ------------------------------------------------------------------------------
 
+
+Sat, 06/05/21, 09:30:24 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f617a2fa490>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/05/21, 09:30:26 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
