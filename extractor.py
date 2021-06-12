@@ -11,14 +11,6 @@
 #       - how master and main may be available even though not shown
 
 # TODO:
-#   - post-completion:
-#    LOW:
-#       - post-completion:
-#           - clean:
-#               - annotations
-#               - spacing
-#           - create instruction manual
-
 
 # imports
 import argparse
