@@ -3908,3 +3908,3856 @@ Sat, 06/05/21, 09:30:26 PM:
 
 ------------------------------------------------------------------------------
 
+
+Fri, 06/11/21, 09:24:10 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 266, in exe_menu
+    log_header = header %( conf_tuple )
+TypeError: not all arguments converted during string formatting
+
+Fri, 06/11/21, 09:24:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 09:24:42 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fd9de785310>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 09:24:43 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 275, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/11/21, 09:24:43 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 09:41:40 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f1ed472e5b0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 09:41:43 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 09:41:43 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 09:41:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:41:43 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 09:41:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:41:43 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 09:41:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:41:43 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 09:41:55 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 365, in exe_menu
+    create_master_json( master_json_filename, info_metalist, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 208, in create_master_json
+    collate_py_lists( info_metalist )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 167, in collate_py_lists
+    print( cur_issue )
+KeyboardInterrupt
+
+Fri, 06/11/21, 09:41:55 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 09:42:42 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5976fbf5e0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 09:42:43 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 09:42:43 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 09:42:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:42:43 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 09:42:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:42:43 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 09:42:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:42:43 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 09:42:43 PM:  Complete! 
+
+Fri, 06/11/21, 09:42:43 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 10:58:56 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f605231bac0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 10:59:02 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 10:59:02 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 10:59:02 PM:  Complete! 
+
+Fri, 06/11/21, 10:59:02 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 10:59:02 PM:  Complete! 
+
+Fri, 06/11/21, 10:59:02 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 10:59:02 PM:  Complete! 
+
+Fri, 06/11/21, 10:59:02 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 10:59:02 PM:  Complete! 
+
+Fri, 06/11/21, 10:59:02 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 10:59:02 PM:  Complete! 
+
+Fri, 06/11/21, 10:59:02 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:00:58 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ff6ec63fa00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:01:00 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:01:00 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:01:00 PM:  Complete! 
+
+Fri, 06/11/21, 11:01:00 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:01:00 PM:  Complete! 
+
+Fri, 06/11/21, 11:01:00 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:01:00 PM:  Complete! 
+
+Fri, 06/11/21, 11:01:00 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:01:00 PM:  Complete! 
+
+Fri, 06/11/21, 11:01:00 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:01:00 PM:  Complete! 
+
+Fri, 06/11/21, 11:01:00 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:21:52 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7faf5253d970>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:22:04 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:22:04 PM: 
+    Getting paginated list of issues...
+
+Fri, 06/11/21, 11:22:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:22:04 PM: 
+    Getting paginated list of pull requests...
+
+Fri, 06/11/21, 11:22:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:22:04 PM: 
+    Getting issue data...
+
+Fri, 06/11/21, 11:22:42 PM:  Complete! 
+
+Fri, 06/11/21, 11:22:42 PM: 
+    Writing list of issue data to JSON...
+
+Fri, 06/11/21, 11:22:42 PM:  Complete! 
+
+Fri, 06/11/21, 11:22:42 PM: 
+    Getting pull request data...
+
+Fri, 06/11/21, 11:24:07 PM:  Complete! 
+
+Fri, 06/11/21, 11:24:07 PM: 
+    Writing list of PR data to JSON...
+
+Fri, 06/11/21, 11:24:07 PM:  Complete! 
+
+Fri, 06/11/21, 11:24:07 PM: 
+    Getting commit data...
+
+Fri, 06/11/21, 11:24:25 PM:  Complete! 
+
+Fri, 06/11/21, 11:24:25 PM: 
+    Writing list of commit data to JSON...
+
+Fri, 06/11/21, 11:24:25 PM:  Complete! 
+
+Fri, 06/11/21, 11:24:25 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:25:58 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fca78561970>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:26:01 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:26:01 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:26:01 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:01 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:26:01 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:01 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:26:01 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:01 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:26:01 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:01 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:26:01 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:01 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:26:03 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f9398194970>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:26:07 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/11/21, 11:26:07 PM:  Complete! 
+
+Fri, 06/11/21, 11:26:07 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:32:16 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fe56b0f29d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:32:16 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:32:16 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:32:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:32:16 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:32:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:32:16 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:32:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:32:16 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:32:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:32:16 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:32:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:32:16 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:33:10 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5e4f91ea60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:33:11 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:33:11 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:33:11 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:11 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:33:11 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:11 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:33:11 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:11 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:33:11 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:11 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:33:11 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:11 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:33:22 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f069cf10a60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:33:24 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:33:24 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:33:24 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:24 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:33:24 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:24 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:33:24 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:24 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:33:24 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:24 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:33:24 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:24 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:33:39 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f6ddeeeca90>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:33:39 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:33:39 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:33:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:39 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:33:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:39 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:33:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:39 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:33:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:39 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:33:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:33:39 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:34:03 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f9ce159faf0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:34:04 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:34:04 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:34:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:34:04 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:34:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:34:04 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:34:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:34:04 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:34:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:34:04 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:34:04 PM:  Complete! 
+
+Fri, 06/11/21, 11:34:04 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:36:11 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f8149fc39d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:36:16 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:36:16 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:36:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:16 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:36:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:16 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:36:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:16 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:36:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:16 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:36:16 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:16 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:36:31 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f58085139d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:36:50 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:36:50 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:36:50 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:50 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:36:50 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:50 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:36:50 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:50 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:36:50 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:50 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:36:50 PM:  Complete! 
+
+Fri, 06/11/21, 11:36:50 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:36:52 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fb2b641d9d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:36:54 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/11/21, 11:36:54 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 408, in exe_menu
+    write_pr_csv( master_info_list, pr_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1673, in write_pr_csv
+    pr_author_login   = cur_issue[10]
+IndexError: list index out of range
+
+Fri, 06/11/21, 11:36:54 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:37:37 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f505a8429d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:38:32 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 344, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Fri, 06/11/21, 11:38:32 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:40:09 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ff0fb830a30>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:40:10 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:40:10 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:40:10 PM:  Complete! 
+
+Fri, 06/11/21, 11:40:10 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:40:10 PM:  Complete! 
+
+Fri, 06/11/21, 11:40:10 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:40:10 PM:  Complete! 
+
+Fri, 06/11/21, 11:40:10 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:40:10 PM:  Complete! 
+
+Fri, 06/11/21, 11:40:10 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:40:10 PM:  Complete! 
+
+Fri, 06/11/21, 11:40:10 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:43:18 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5bf948aa60>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:43:20 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:43:20 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:43:20 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:20 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:43:20 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:20 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:43:20 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:20 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:43:20 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:20 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:43:20 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:20 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:43:39 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fa01cc00a90>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:43:39 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:43:39 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:43:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:39 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:43:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:39 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:43:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:39 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:43:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:39 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:43:39 PM:  Complete! 
+
+Fri, 06/11/21, 11:43:39 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:44:39 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f024356da90>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:44:41 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/11/21, 11:44:41 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 411, in exe_menu
+    write_pr_csv( master_info_list, pr_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1676, in write_pr_csv
+    pr_author_login   = cur_issue[10]
+IndexError: list index out of range
+
+Fri, 06/11/21, 11:44:41 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:45:26 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f92f5143b50>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:45:28 PM: 
+    Writing "PR" type CSV...
+
+Fri, 06/11/21, 11:45:28 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 411, in exe_menu
+    write_pr_csv( master_info_list, pr_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1672, in write_pr_csv
+    print( issue_num + " : " + isPR )
+TypeError: can only concatenate str (not "int") to str
+
+Fri, 06/11/21, 11:45:28 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Fri, 06/11/21, 11:45:39 PM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f7f48b4fb50>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Fri, 06/11/21, 11:45:41 PM: 
+Attempting program start...
+
+Fri, 06/11/21, 11:45:41 PM: 
+    Reading issue data JSON...
+
+Fri, 06/11/21, 11:45:41 PM:  Complete! 
+
+Fri, 06/11/21, 11:45:41 PM: 
+    Reading pull request data JSON...
+
+Fri, 06/11/21, 11:45:41 PM:  Complete! 
+
+Fri, 06/11/21, 11:45:41 PM: 
+    Reading commit data JSON...
+
+Fri, 06/11/21, 11:45:41 PM:  Complete! 
+
+Fri, 06/11/21, 11:45:41 PM: 
+     Collating lists...
+
+Fri, 06/11/21, 11:45:41 PM:  Complete! 
+
+Fri, 06/11/21, 11:45:41 PM: 
+    Writing master list of data to JSON...
+
+Fri, 06/11/21, 11:45:41 PM:  Complete! 
+
+Fri, 06/11/21, 11:45:41 PM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 12:00:33 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f118ae05a00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 12:00:36 AM: 
+    Writing "PR" type CSV...
+
+Sat, 06/12/21, 12:00:36 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 98, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 412, in exe_menu
+    write_pr_csv( master_info_list, pr_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1673, in write_pr_csv
+    print( issue_num + " : " + isPR )
+TypeError: can only concatenate str (not "int") to str
+
+Sat, 06/12/21, 12:00:36 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 12:01:27 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f9c9e2a9940>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 12:01:28 AM: 
+    Writing "PR" type CSV...
+
+Sat, 06/12/21, 12:01:28 AM:  Complete! 
+
+Sat, 06/12/21, 12:01:28 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:22:34 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f6aff9b0640>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:22:37 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:22:37 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:22:37 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:37 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:22:37 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:37 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:22:37 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:37 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:22:37 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:37 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:22:37 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:37 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:22:51 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fcb2e0a3580>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:22:52 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:22:52 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:22:52 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:52 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:22:52 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:52 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:22:52 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:52 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:22:52 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:52 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:22:52 AM:  Complete! 
+
+Sat, 06/12/21, 03:22:52 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:23:05 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f0b98a8b520>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:23:06 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:23:06 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:23:06 AM:  Complete! 
+
+Sat, 06/12/21, 03:23:06 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:23:06 AM:  Complete! 
+
+Sat, 06/12/21, 03:23:06 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:23:06 AM:  Complete! 
+
+Sat, 06/12/21, 03:23:06 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:23:06 AM:  Complete! 
+
+Sat, 06/12/21, 03:23:06 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:23:06 AM:  Complete! 
+
+Sat, 06/12/21, 03:23:06 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:25:29 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f0b4af20550>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:25:32 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:25:32 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 414, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1508, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:25:32 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:25:49 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7faf4b11f550>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:25:50 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:25:50 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 414, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1508, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:25:50 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:26:13 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f34ef61e550>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:26:14 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:26:14 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 414, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1508, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:26:14 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:27:29 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fcef336b5e0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:27:31 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:27:31 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:27:31 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:31 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:27:31 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:31 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:27:31 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:31 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:27:31 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:31 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:27:31 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:31 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:27:55 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fafa63716a0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:27:56 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:27:56 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:27:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:56 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:27:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:56 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:27:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:56 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:27:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:56 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:27:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:27:56 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:29:55 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fd8472598e0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:29:57 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:29:57 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:29:57 AM:  Complete! 
+
+Sat, 06/12/21, 03:29:57 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:29:57 AM:  Complete! 
+
+Sat, 06/12/21, 03:29:57 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:29:57 AM:  Complete! 
+
+Sat, 06/12/21, 03:29:57 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:29:57 AM:  Complete! 
+
+Sat, 06/12/21, 03:29:57 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:29:57 AM:  Complete! 
+
+Sat, 06/12/21, 03:29:57 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:30:12 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f757f0eca00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:30:14 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:30:14 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:30:14 AM:  Complete! 
+
+Sat, 06/12/21, 03:30:14 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:30:14 AM:  Complete! 
+
+Sat, 06/12/21, 03:30:14 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:30:14 AM:  Complete! 
+
+Sat, 06/12/21, 03:30:14 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:30:14 AM:  Complete! 
+
+Sat, 06/12/21, 03:30:14 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:30:14 AM:  Complete! 
+
+Sat, 06/12/21, 03:30:14 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:31:09 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ff9394f5b50>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:31:09 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:31:09 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:31:09 AM:  Complete! 
+
+Sat, 06/12/21, 03:31:09 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:31:09 AM:  Complete! 
+
+Sat, 06/12/21, 03:31:09 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:31:09 AM:  Complete! 
+
+Sat, 06/12/21, 03:31:09 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:31:09 AM:  Complete! 
+
+Sat, 06/12/21, 03:31:09 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:31:09 AM:  Complete! 
+
+Sat, 06/12/21, 03:31:09 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:32:23 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f96bec03c10>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:32:24 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:32:24 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:32:24 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:24 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:32:24 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:24 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:32:24 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:24 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:32:24 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 407, in exe_menu
+    create_master_json( json_file_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 262, in create_master_json
+    collated_list = collate_py_lists( info_metalist )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 200, in collate_py_lists
+    print( "7: " + issue_metalist[issue_index][7] )
+TypeError: can only concatenate str (not "list") to str
+
+Sat, 06/12/21, 03:32:24 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:32:43 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fd635dd5be0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:32:44 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:32:44 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:32:44 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:44 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:32:44 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:44 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:32:44 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:44 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:32:44 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:44 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:32:44 AM:  Complete! 
+
+Sat, 06/12/21, 03:32:44 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:36:55 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f9c0946fc70>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:36:56 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:36:56 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:36:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:36:56 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:36:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:36:56 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:36:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:36:56 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:36:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:36:56 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:36:56 AM:  Complete! 
+
+Sat, 06/12/21, 03:36:56 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:37:50 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f014da43d00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:37:51 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:37:51 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:37:51 AM:  Complete! 
+
+Sat, 06/12/21, 03:37:51 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:37:51 AM:  Complete! 
+
+Sat, 06/12/21, 03:37:51 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:37:51 AM:  Complete! 
+
+Sat, 06/12/21, 03:37:51 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:37:51 AM:  Complete! 
+
+Sat, 06/12/21, 03:37:51 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:37:51 AM:  Complete! 
+
+Sat, 06/12/21, 03:37:51 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:38:58 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f0336b55520>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:39:00 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:39:00 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 408, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1502, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:39:00 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:40:51 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5dec4f1580>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:40:53 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:40:53 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 408, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1506, in write_commit_csv
+    print( cur_issue[0] + " : " + len( cur_issue ) )
+TypeError: can only concatenate str (not "int") to str
+
+Sat, 06/12/21, 03:40:53 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:41:57 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f27158975e0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:41:58 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:41:59 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 408, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1502, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:41:59 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:52:26 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5351229640>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:52:30 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:52:30 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 03:52:30 AM:  Complete! 
+
+Sat, 06/12/21, 03:52:30 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 03:52:44 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 374, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1589, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 994, in get_PR_info
+    if pr_commits.totalCount > 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/12/21, 03:52:44 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:53:41 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f5d2120d760>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:53:42 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:53:42 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:53:42 AM:  Complete! 
+
+Sat, 06/12/21, 03:53:42 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:53:42 AM:  Complete! 
+
+Sat, 06/12/21, 03:53:42 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:53:42 AM:  Complete! 
+
+Sat, 06/12/21, 03:53:42 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:53:42 AM:  Complete! 
+
+Sat, 06/12/21, 03:53:42 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:53:42 AM:  Complete! 
+
+Sat, 06/12/21, 03:53:42 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:54:09 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fbabb6457c0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:54:10 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 03:54:10 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 03:54:10 AM:  Complete! 
+
+Sat, 06/12/21, 03:54:10 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 03:54:10 AM:  Complete! 
+
+Sat, 06/12/21, 03:54:10 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 03:54:10 AM:  Complete! 
+
+Sat, 06/12/21, 03:54:10 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 03:54:10 AM:  Complete! 
+
+Sat, 06/12/21, 03:54:10 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 03:54:10 AM:  Complete! 
+
+Sat, 06/12/21, 03:54:10 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 03:56:32 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fed32a74670>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 03:56:34 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 03:56:34 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 413, in exe_menu
+    write_commit_csv( master_info_list, commit_csv_filename )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1510, in write_commit_csv
+    cur_commit           = cur_issue[8]
+IndexError: list index out of range
+
+Sat, 06/12/21, 03:56:34 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:10:04 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f3ccaccba00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:10:06 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:10:06 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 04:10:06 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:06 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 04:10:06 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:06 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 04:10:06 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:06 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 04:10:06 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:06 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 04:10:06 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:06 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:10:07 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f3797be3a00>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:10:09 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 04:10:09 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:11:25 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f10e55dc910>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:11:27 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:11:27 AM:  Complete! 
+
+Sat, 06/12/21, 04:11:27 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:11:48 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f75e7a0f910>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:11:53 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 338, in exe_menu
+    op_choice = input( prog_intro )
+KeyboardInterrupt
+
+Sat, 06/12/21, 04:11:53 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:33:25 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f2b65752610>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:33:30 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:33:30 AM: 
+    Getting paginated list of issues...
+
+Sat, 06/12/21, 04:33:30 AM:  Complete! 
+
+Sat, 06/12/21, 04:33:30 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 04:33:30 AM:  Complete! 
+
+Sat, 06/12/21, 04:33:30 AM: 
+    Getting issue data...
+
+Sat, 06/12/21, 04:34:08 AM:  Complete! 
+
+Sat, 06/12/21, 04:34:08 AM: 
+    Writing list of issue data to JSON...
+
+Sat, 06/12/21, 04:34:08 AM:  Complete! 
+
+Sat, 06/12/21, 04:34:10 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 04:34:12 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 97, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 375, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1588, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1034, in get_PR_info
+    print( commits_per_pr_diag + num_of_commits )
+TypeError: can only concatenate str (not "int") to str
+
+Sat, 06/12/21, 04:34:12 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:35:53 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f06e5ba45b0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:35:57 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:35:57 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 04:35:57 AM:  Complete! 
+
+Sat, 06/12/21, 04:35:57 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 04:35:59 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 97, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 375, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1586, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1032, in get_PR_info
+    print( commits_per_pr_diag + num_of_commits )
+TypeError: can only concatenate str (not "int") to str
+
+Sat, 06/12/21, 04:35:59 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:37:30 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f64c5b175e0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:37:32 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:37:32 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 04:37:32 AM:  Complete! 
+
+Sat, 06/12/21, 04:37:32 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 04:38:57 AM:  Complete! 
+
+Sat, 06/12/21, 04:38:57 AM: 
+    Writing list of PR data to JSON...
+
+Sat, 06/12/21, 04:38:57 AM:  Complete! 
+
+Sat, 06/12/21, 04:38:57 AM: 
+    Getting commit data...
+
+Sat, 06/12/21, 04:38:57 AM:  Complete! 
+
+Sat, 06/12/21, 04:38:57 AM: 
+    Writing list of commit data to JSON...
+
+Sat, 06/12/21, 04:38:57 AM:  Complete! 
+
+Sat, 06/12/21, 04:38:57 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:40:23 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f34b79136d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:40:26 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:40:26 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 04:40:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:26 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 04:40:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:26 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 04:40:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:26 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 04:40:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:26 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 04:40:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:26 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:40:28 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f6921dca6d0>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:40:30 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:40:30 AM:  Complete! 
+
+Sat, 06/12/21, 04:40:30 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:41:17 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f456b2c2730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:41:18 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:41:18 AM:  Complete! 
+
+Sat, 06/12/21, 04:41:18 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:41:42 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f3348687760>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:41:43 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:41:44 AM:  Complete! 
+
+Sat, 06/12/21, 04:41:44 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:42:44 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f47de794730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:42:46 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:42:46 AM:  Complete! 
+
+Sat, 06/12/21, 04:42:46 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:43:59 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f96d40e5760>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:44:04 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:44:04 AM:  Complete! 
+
+Sat, 06/12/21, 04:44:04 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:45:23 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fc080734730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:45:26 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:45:26 AM: 
+    Getting paginated list of issues...
+
+Sat, 06/12/21, 04:45:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:45:26 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 04:45:26 AM:  Complete! 
+
+Sat, 06/12/21, 04:45:26 AM: 
+    Getting issue data...
+
+Sat, 06/12/21, 04:46:03 AM:  Complete! 
+
+Sat, 06/12/21, 04:46:03 AM: 
+    Writing list of issue data to JSON...
+
+Sat, 06/12/21, 04:46:03 AM:  Complete! 
+
+Sat, 06/12/21, 04:46:04 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 04:47:28 AM:  Complete! 
+
+Sat, 06/12/21, 04:47:28 AM: 
+    Writing list of PR data to JSON...
+
+Sat, 06/12/21, 04:47:28 AM:  Complete! 
+
+Sat, 06/12/21, 04:47:28 AM: 
+    Getting commit data...
+
+Sat, 06/12/21, 04:47:28 AM:  Complete! 
+
+Sat, 06/12/21, 04:47:28 AM: 
+    Writing list of commit data to JSON...
+
+Sat, 06/12/21, 04:47:28 AM:  Complete! 
+
+Sat, 06/12/21, 04:47:28 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:48:48 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f4ab9b36730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:48:49 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:48:49 AM:  Complete! 
+
+Sat, 06/12/21, 04:48:49 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:56:01 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f18134bc670>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:56:02 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 04:56:02 AM:  Complete! 
+
+Sat, 06/12/21, 04:56:02 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 04:59:46 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fe7fcfa1700>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 04:59:47 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 04:59:47 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 04:59:47 AM:  Complete! 
+
+Sat, 06/12/21, 04:59:47 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 05:00:35 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 374, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1594, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 950, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/12/21, 05:00:35 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:01:15 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f53c688d730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:01:18 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:01:18 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 05:01:18 AM:  Complete! 
+
+Sat, 06/12/21, 05:01:18 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 05:01:58 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 374, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1595, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1009, in get_PR_info
+    print( "Commit content : " + most_recent_commit )
+TypeError: can only concatenate str (not "Commit") to str
+
+Sat, 06/12/21, 05:01:58 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:03:19 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fd6c66e5730>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:03:22 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:03:22 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 05:03:22 AM:  Complete! 
+
+Sat, 06/12/21, 05:03:23 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 05:03:58 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 96, in main
+    exe_menu( conf_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 374, in exe_menu
+    write_pr_commit_json( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1595, in write_pr_commit_json
+    pr_info_metalist, commits_paged_list = get_PR_info( session, pr_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 950, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Sat, 06/12/21, 05:03:58 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:04:33 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fe6bba59670>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:04:37 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:04:37 AM: 
+    Getting paginated list of issues...
+
+Sat, 06/12/21, 05:04:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:04:37 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 05:04:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:04:38 AM: 
+    Getting issue data...
+
+Sat, 06/12/21, 05:05:14 AM:  Complete! 
+
+Sat, 06/12/21, 05:05:14 AM: 
+    Writing list of issue data to JSON...
+
+Sat, 06/12/21, 05:05:14 AM:  Complete! 
+
+Sat, 06/12/21, 05:05:15 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 05:06:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:06:37 AM: 
+    Writing list of PR data to JSON...
+
+Sat, 06/12/21, 05:06:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:06:37 AM: 
+    Getting commit data...
+
+Sat, 06/12/21, 05:06:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:06:37 AM: 
+    Writing list of commit data to JSON...
+
+Sat, 06/12/21, 05:06:37 AM:  Complete! 
+
+Sat, 06/12/21, 05:06:37 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:07:12 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ffb75006670>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:07:13 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:07:13 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 05:07:13 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:13 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 05:07:13 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:13 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 05:07:13 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:13 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 05:07:13 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:13 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 05:07:13 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:13 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:07:14 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7ff8b74d2670>
+        - rows             : 100
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:07:16 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 05:07:16 AM:  Complete! 
+
+Sat, 06/12/21, 05:07:16 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:09:04 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fdcf2876580>
+        - rows             : 40
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:09:09 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:09:09 AM: 
+    Getting paginated list of issues...
+
+Sat, 06/12/21, 05:09:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:09 AM: 
+    Getting paginated list of pull requests...
+
+Sat, 06/12/21, 05:09:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:09 AM: 
+    Getting issue data...
+
+Sat, 06/12/21, 05:09:24 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:24 AM: 
+    Writing list of issue data to JSON...
+
+Sat, 06/12/21, 05:09:24 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:24 AM: 
+    Getting pull request data...
+
+Sat, 06/12/21, 05:09:56 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:56 AM: 
+    Writing list of PR data to JSON...
+
+Sat, 06/12/21, 05:09:56 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:56 AM: 
+    Getting commit data...
+
+Sat, 06/12/21, 05:09:56 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:56 AM: 
+    Writing list of commit data to JSON...
+
+Sat, 06/12/21, 05:09:56 AM:  Complete! 
+
+Sat, 06/12/21, 05:09:56 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:10:08 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7fa4d53a8580>
+        - rows             : 40
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:10:09 AM: 
+Attempting program start...
+
+Sat, 06/12/21, 05:10:09 AM: 
+    Reading issue data JSON...
+
+Sat, 06/12/21, 05:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:09 AM: 
+    Reading pull request data JSON...
+
+Sat, 06/12/21, 05:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:09 AM: 
+    Reading commit data JSON...
+
+Sat, 06/12/21, 05:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:09 AM: 
+     Collating lists...
+
+Sat, 06/12/21, 05:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:09 AM: 
+    Writing master list of data to JSON...
+
+Sat, 06/12/21, 05:10:09 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:09 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:10:10 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f2c2a184580>
+        - rows             : 40
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:10:12 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 05:10:12 AM:  Complete! 
+
+Sat, 06/12/21, 05:10:12 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
+
+Sat, 06/12/21, 05:11:17 AM:  
+    PROGRAM START
+    -------------
+
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - session          : <github.MainClass.Github object at 0x7f61f015f580>
+        - rows             : 40
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : True          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Sat, 06/12/21, 05:11:19 AM: 
+    Writing "commit" type CSV...
+
+Sat, 06/12/21, 05:11:19 AM:  Complete! 
+
+Sat, 06/12/21, 05:11:19 AM: 
+    END OF PROGRAM RUN
+
+------------------------------------------------------------------------------
+
