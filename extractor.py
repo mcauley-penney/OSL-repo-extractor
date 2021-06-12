@@ -11,11 +11,6 @@
 #       - how master and main may be available even though not shown
 
 # TODO:
-# - clean:
-#    - annotations
-#    - spacing
-# - create instruction manual
-
 
 # imports
 import argparse
@@ -1339,9 +1334,9 @@ def write_commit_csv( metalist_list, out_file_name ):
     commit_metalist = metalist_list[1]
 
     # init other vars
-    commit_col_names = ["Author_Login", "Committer_login", "PR_Number",
-                        "SHA", "Commit_Message", "File_name",
-                        "Patch_text", "Additions", "Deletions",
+    commit_col_names = ["Author Login", "Committer login", "PR Number",
+                        "SHA", "Commit Message", "file name",
+                        "Patch text", "Additions", "Deletions",
                         "Status", "Changes"] 
     index       = 0
     pr_list_len = len( pr_metalist )
@@ -1375,6 +1370,8 @@ def write_commit_csv( metalist_list, out_file_name ):
             commit_changes      = cur_commit[10] 
 
 
+
+
             # order:  Author_Login, Committer_login, PR_Number,     
             #         SHA, Commit_Message, File_name,               
             #         Patch_text, Additions, Deletions,             
@@ -1385,8 +1382,14 @@ def write_commit_csv( metalist_list, out_file_name ):
                           commit_patch_text, commit_adds, commit_rms,
                           commit_status, commit_changes]
 
+            if len( commit_file_list ) > 0:
+                writer.writerow( output_row ) 
 
-            writer.writerow( output_row ) 
+            else:
+
+                no_files = NL_TAB + TAB + "No files for the last commit for PR"
+
+                print( no_files + " # " + pr_num )
                              
             index += 1
  
