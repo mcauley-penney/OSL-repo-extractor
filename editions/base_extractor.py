@@ -10,6 +10,8 @@
 #       - how master and main may be available even though not shown
 
 
+
+
 # imports
 import argparse
 import csv
@@ -106,7 +108,6 @@ def check_row_quant_safety( paged_list, config_quant, logger ):
     stripped_quant  = config_quant.strip()
     str_param_quant = str.lower( stripped_quant )
     
-    log_and_print( "VERIFY_ROW_NUM", "INFO", logger )
 
     # if all rows are desired or the desired amount is more than exists, adjust
     if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
@@ -117,9 +118,6 @@ def check_row_quant_safety( paged_list, config_quant, logger ):
 
     else:
         log_and_print( "INVAL_ROW", "ERROR", logger )
-
-
-    complete( logger )
 
 
     return output_quant
@@ -271,13 +269,11 @@ Please choose type of CSV:
     [1] Pull Request
     [2] Commit
     [3] Both
-
     Execute """  
     
     header = """ 
     PROGRAM START
     -------------
-
     Config used: 
         - config file name : %s
         - repo             : %s
@@ -287,12 +283,10 @@ Please choose type of CSV:
         - pr state         : %s          
         - diagnostics      : %s          
         - log file         : %s        
-
         - issue json file  : %s
         - pr JSON file     : %s
         - commit JSON file : %s
         - master JSON file : %s
-
         - "pr" CSV file    : %s       
         - "commit" CSV file: %s
 """
@@ -300,14 +294,12 @@ Please choose type of CSV:
     prog_intro = """
 GITHUB REPO EXTRACTOR
 ---------------------
-
 Please choose type of operation:                                      
     [1] get issue JSON list
     [2] get pull request and commit JSON lists
     [3] get all three relevant lists
     [4] collate JSON lists into unified JSON list
     [5] compile CSV outputs
-
     Execute """
 
 
@@ -321,8 +313,9 @@ Please choose type of operation:
     # get operation choice
     op_choice = input( prog_intro )
 
+
     # enact choice
-    if op_choice in { "1", "2", "3" }:
+    if op_choice == "1" or op_choice == "2" or op_choice == "3": 
 
         try:
             session.get_user().name
@@ -345,8 +338,7 @@ Please choose type of operation:
 
             issue_paged_list, pr_paged_list = paged_metalist 
 
-
-            if op_choice in { "1", "3" }: 
+            if op_choice == "1" or op_choice == "3": 
                 issue_metalist = get_issue_info( session, issue_paged_list, 
                                                  row_quant, diagnostics, logger )
 
@@ -354,7 +346,7 @@ Please choose type of operation:
                             logger ) 
              
 
-            if op_choice in { "2", "3" }: 
+            if op_choice == "2" or op_choice == "3":
 
                 # get metalist of pr information and commit info paginated list
                 #   We get the commit paginated lists here because it allows us
@@ -369,6 +361,7 @@ Please choose type of operation:
                 write_json( pr_metalist, issue_json_filename, "W_JSON_PR", 
                             logger )
 
+                print( commits_py_list )
 
                 commit_metalist = get_commit_info( session, commits_py_list, 
                                                    logger )
@@ -377,42 +370,40 @@ Please choose type of operation:
                             "W_JSON_COMMIT", logger ) 
 
 
-    if op_choice == "4": 
+            elif op_choice == "4": 
 
-        log_and_print( "PROG_START", "INFO", logger )
+                log_and_print( "PROG_START", "INFO", logger )
 
-        json_file_list = [
-                issue_json_filename, 
-                pr_json_filename, 
-                commit_json_filename,
-                master_json_filename
-                ]
+                json_file_list = [
+                        issue_json_filename, 
+                        pr_json_filename, 
+                        commit_json_filename,
+                        master_json_filename
+                        ]
 
-        # turn py lists into one list and write to JSON
-        create_master_json( json_file_list, logger )
-
-
-    if op_choice == "5": 
-
-        csv_choice = input( csv_prompt )
-
-        log_and_print( "PROG_START", "INFO", logger )
-
-        master_info_list = read_json( master_json_filename, 
-                                      "R_JSON_ALL", logger ) 
-
-        if csv_choice in { "1", "3" }:
-            log_and_print( "W_CSV_PR", "INFO", logger )
-            write_csv( master_info_list, pr_csv_filename, "pr" )
-            # write_pr_csv( master_info_list, pr_csv_filename )
-            complete( logger )
+                # turn py lists into one list and write to JSON
+                create_master_json( json_file_list, logger )
 
 
-        if csv_choice in { "1", "3" }:
-            log_and_print( "W_CSV_COMMIT", "INFO", logger )
-            write_csv( master_info_list, commit_csv_filename, "commit" )
-            # write_commit_csv( master_info_list, commit_csv_filename )
-            complete( logger )
+            elif op_choice == "5": 
+
+                csv_choice = input( csv_prompt )
+
+                log_and_print( "PROG_START", "INFO", logger )
+
+                master_info_list = read_json( master_json_filename, 
+                                              "R_JSON_ALL", logger ) 
+
+                if csv_choice == "1" or csv_choice == "3":
+                    log_and_print( "W_CSV_PR", "INFO", logger )
+                    write_pr_csv( master_info_list, pr_csv_filename )
+                    complete( logger )
+
+
+                if csv_choice == "2" or csv_choice == "3":
+                    log_and_print( "W_CSV_COMMIT", "INFO", logger )
+                    write_commit_csv( master_info_list, commit_csv_filename )
+                    complete( logger )
 
 
 
@@ -1169,7 +1160,6 @@ def log_and_print( msg_format, log_type, logger ):
             "R_JSON_ISSUE"  : reader + "issue data JSON...",
             "R_JSON_PR"     : reader + "pull request data JSON...",
             "SLEEP"         : NL_TAB + "Rate Limit imposed. Sleeping...",
-            "VERIFY_ROW_NUM": NL_TAB + "Validating row quantity config...",
             "W_CSV_COMMIT"  : writer + "\"commit\" type CSV...",
             "W_CSV_PR"      : writer + "\"PR\" type CSV...",
             "W_JSON_ALL"    : writer + "master list of data to JSON...",
@@ -1505,27 +1495,17 @@ def verify_dirs( file_path ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_csv( master_info_list, out_file_name, output_type ):
+def write_commit_csv( master_info_list, out_file_name ):
     
     # init other vars
-
-    list_index      = 0
-    master_list_len = len( master_info_list ) 
-
-    col_names   = ["Issue_Number", "Issue_Title", "Issue_Author_Name",      
-                   "Issue_Author_Login","Issue_Closed_Date", "Issue_Body",  
-                   "Issue_Comments", "PR_Title", "PR_Author_Name",          
-                   "PR_Author_Login", "PR_Closed_Date", "PR_Body",          
-                   "PR_Comments", "Commit_Author_Name",                     
-                   "Commit_Date", "Commit_Message", "isPR"]                  
-
-    if output_type == "commit":
-        col_names = ["Author_Login", "Committer_Login", "PR_Number",
-                     "SHA", "Commit_Message", "file_Name",
-                     "Patch_Text", "Additions", "Deletions",
-                     "Status", "Changes"] 
-
+    commit_col_names = ["Author Login", "Committer login", "PR Number",
+                        "SHA", "Commit Message", "file name",
+                        "Patch text", "Additions", "Deletions",
+                        "Status", "Changes"] 
+    list_index       = 0
+    pr_list_len = len( master_info_list )
     
+
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
 
         # create writer object
@@ -1533,28 +1513,12 @@ def write_csv( master_info_list, out_file_name, output_type ):
                              quotechar='\"', escapechar='\\' )
           
         # write column labels
-        writer.writerow( col_names ) 
+        writer.writerow( commit_col_names ) 
 
         # aggregate data lists into rows
-        while list_index < master_list_len:
-
-            pr_title        = NAN 
-            pr_author_name  = NAN
-            pr_author_login = NAN
-            pr_closed_date  = NAN
-            pr_body         = NAN
-            pr_comments     = NAN  
-
-            commit_author_name = NAN
-            commit_message     = NAN
-            commit_date        = NAN    
-            commit_file_list   = NAN
-            commit_patch_text  = NAN   
-
+        while list_index < pr_list_len:
 
             # master JSON row order
-            # ---------------------
-            #
             #   issue info : 0-6
             #       issue_num         : 0
             #       issue_title_str   : 1
@@ -1588,60 +1552,26 @@ def write_csv( master_info_list, out_file_name, output_type ):
             #
             #   isPR       : -1 ( last position )
 
-            cur_issue          = master_info_list[list_index]
-            isPR               = cur_issue[-1]
-
-            issue_num          = cur_issue[0]
-            issue_title        = cur_issue[1]
-            issue_author_name  = cur_issue[2]
-            issue_author_login = cur_issue[3]
-            issue_closed_date  = cur_issue[4] 
-            issue_body         = cur_issue[5] 
-            issue_comments     = cur_issue[6]   
+            cur_issue            = master_info_list[list_index]
+            isPR                 = cur_issue[-1]
 
             if isPR == 1:
 
-                pr_title          = cur_issue[7][1] 
-                pr_author_name    = cur_issue[7][2]
-                pr_author_login   = cur_issue[7][3]
-                pr_closed_date    = cur_issue[7][4]
-                pr_body           = cur_issue[7][5]
-                pr_comments       = cur_issue[7][6]  
+                issue_num          = cur_issue[0]
+                issue_title        = cur_issue[1]
+                issue_author       = cur_issue[2]
+                issue_closed_date  = cur_issue[4]
+                issue_body         = cur_issue[5]
 
-                commit_author_name = cur_issue[8][0]
-                commit_message     = cur_issue[8][1]
-                commit_date        = cur_issue[8][2]   
-                commit_file_list   = cur_issue[8][5]
-                commit_patch_text  = cur_issue[8][6]  
+                cur_commit         = master_info_list[list_index][8]
+                commit_message     = cur_commit[1] 
+                commit_file_list   = cur_commit[5]
+                commit_patch_text  = cur_commit[6] 
 
-           
-            if output_type == "pr":
+                # need: "pr_num", "author", "title",
+                #       "body","commit","file_name",
+                #       "date_closed","text"
                 
-                # Output orders
-                # ------------------------------------------------------------
-                # our order: "Issue_Number", "Issue_Title", "Issue_Author_Name",
-                #            "Issue_Author_Login","Issue_Closed_Date", "Issue_Body",
-                #            "Issue_Comments", "PR_Title", "PR_Author_Name",
-                #            "PR_Author_Login", "PR_Closed_Date", "PR_Body", 
-                #            "PR_Comments", "Commit_Author_Name",
-                #            "Commit_Date", "Commit_Message", "isPR"   
-                # ------------------------------------------------------------
-                # Daniels: issue_num, issue_closed_date, issue_author_login, 
-                #          issue_title, issue_body, pr_closed_date, pr_title, 
-                #          pr_comments, issue_comments,  pr_author_name, 
-                #          commit_author_name, commit_date, commit_message, 
-                #          isPR] 
-                # ------------------------------------------------------------
-
-                output_row = [issue_num, issue_title, issue_author_name,  
-                              issue_author_login, issue_closed_date, issue_body,
-                              issue_comments, pr_title, pr_author_name,
-                              pr_author_login, pr_closed_date, pr_body, 
-                              pr_comments, commit_author_name,
-                              commit_date, commit_message, isPR]  
-
-
-            elif output_type == "commit" and isPR == 1: 
 
                 # order:  Author_Login, Committer_login, PR_Number,     
                 #         SHA, Commit_Message, File_name,               
@@ -1653,7 +1583,7 @@ def write_csv( master_info_list, out_file_name, output_type ):
                 #               commit_patch_text, commit_adds, commit_rms,
                 #               commit_status, commit_changes] 
 
-                output_row = [ issue_num, issue_author_name, issue_title,
+                output_row = [ issue_num, issue_author, issue_title,
                                issue_body, commit_message, commit_file_list,
                                issue_closed_date, commit_patch_text ] 
 
@@ -1667,7 +1597,7 @@ def write_csv( master_info_list, out_file_name, output_type ):
 
 
             list_index += 1
-
+ 
 
 
 
@@ -1690,6 +1620,150 @@ def write_json( info_metalist, json_filename, msg_format, logger, ):
     complete( logger ) 
 
 
+
+
+#--------------------------------------------------------------------------- 
+# Function name: 
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#--------------------------------------------------------------------------- 
+def write_pr_csv( master_info_list, out_file_name ):
+
+    # init other vars
+    list_index    = 0
+    master_list_len = len( master_info_list )
+    pr_col_names   = ["Issue_Number", "Issue_Title", "Issue_Author_Name",      
+                      "Issue_Author_Login","Issue_Closed_Date", "Issue_Body",  
+                      "Issue_Comments", "PR_Title", "PR_Author_Name",          
+                      "PR_Author_Login", "PR_Closed_Date", "PR_Body",          
+                      "PR_Comments", "Commit_Author_Name",                     
+                      "Commit_Date", "Commit_Message", "isPR"]                 
+
+
+    with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
+
+        # create writer object
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter='\a',
+                             quotechar='\"', escapechar='\\' )
+          
+        # write column labels
+        writer.writerow( pr_col_names )
+
+        while list_index < master_list_len:
+
+            # reset vars
+            pr_title        = NAN
+            pr_author_name  = NAN
+            pr_author_login = NAN
+            pr_closed_date  = NAN
+            pr_body         = NAN
+            pr_comments     = NAN 
+
+            commit_author_name = NAN
+            commit_message     = NAN
+            commit_date        = NAN  
+
+
+            # row order
+            #   issue info : 0-6
+            #       0: issue_num,
+            #       1: issue_title_str,
+            #       2: issue_name_str, 
+            #       3: issue_login_str,
+            #       4: issue_closed_date, 
+            #       5: issue_body_str,
+            #       6: issue_comment_str, 
+
+            #   pr info    : [7][0-6]
+            #       7[0]: pr_num
+            #       7[1]: pr_title
+            #       7[2]: pr_author_name
+            #       7[3]: pr_author_login
+            #       7[4]: pr_closed_date
+            #       7[5]: pr_body
+            #       7[6]: pr_comments
+            #
+            #   commit info: [8][0-10]
+            #       8[0]: commit_author_name, 
+            #       8[1]: commit_message,
+            #       8[2]: commit_date,  
+            #       8[3]: commit_committer,
+            #       8[4]: commit_SHA, 
+            #       8[5]: commit_file_list, 
+            #       8[6]: commit_patch_text,
+            #       8[7]: commit_adds,
+            #       8[8]: commit_removes,
+            #       8[9]: quoted_commit_status_str,
+            #       8[10]: commit_changes 
+            #
+            #   isPR       : -1 (last)
+
+
+
+            
+            # get issue info 
+            cur_issue          = master_info_list[list_index]
+            isPR               = cur_issue[-1]
+
+            issue_num          = cur_issue[0]
+            issue_title        = cur_issue[1]
+            issue_author_name  = cur_issue[2]
+            issue_author_login = cur_issue[3]
+            issue_closed_date  = cur_issue[4] 
+            issue_body         = cur_issue[5] 
+            issue_comments     = cur_issue[6]  
+
+            if isPR == 1:
+
+                pr_title          = cur_issue[7][1] 
+                pr_author_name    = cur_issue[7][2]
+                pr_author_login   = cur_issue[7][3]
+                pr_closed_date    = cur_issue[7][4]
+                pr_body           = cur_issue[7][5]
+                pr_comments       = cur_issue[7][6]  
+
+                commit_author_name = cur_issue[8][0]
+                commit_message     = cur_issue[8][1]
+                commit_date        = cur_issue[8][2]  
+
+
+            # Output orders
+            # ------------------------------------------------------------
+            # our order: "Issue_Number", "Issue_Title", "Issue_Author_Name",
+            #            "Issue_Author_Login","Issue_Closed_Date", "Issue_Body",
+            #            "Issue_Comments", "PR_Title", "PR_Author_Name",
+            #            "PR_Author_Login", "PR_Closed_Date", "PR_Body", 
+            #            "PR_Comments", "Commit_Author_Name",
+            #            "Commit_Date", "Commit_Message", "isPR"   
+            # ------------------------------------------------------------
+            # Daniels: issue_num, issue_closed_date, issue_author_login, 
+            #          issue_title, issue_body, pr_closed_date, pr_title, 
+            #          pr_comments, issue_comments,  pr_author_name, 
+            #          commit_author_name, commit_date, commit_message, 
+            #          isPR] 
+            # ------------------------------------------------------------
+
+            output_row = [issue_num, issue_title, issue_author_name,  
+                          issue_author_login, issue_closed_date, issue_body,
+                          issue_comments, pr_title, pr_author_name,
+                          pr_author_login, pr_closed_date, pr_body, 
+                          pr_comments, commit_author_name,
+                          commit_date, commit_message, isPR] 
+
+
+
+
+            writer.writerow( output_row ) 
+
+            list_index += 1
+
+
+
+ 
+ 
 
 
 if __name__ == '__main__':

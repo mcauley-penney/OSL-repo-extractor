@@ -1,4 +1,4 @@
-Author LoginCommitter loginPR NumberSHACommit Messagefile namePatch textAdditionsDeletionsStatusChanges
+Author_LoginCommitter_LoginPR_NumberSHACommit_Messagefile_NamePatch_TextAdditionsDeletionsStatusChanges
 1Olaf LenzNew Sorting/Export preferences"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."Merge branch 'sorting'['src/java/net/sf/jabref/FileSortTab.java', 'src/java/net/sf/jabref/FileTab.java', 'src/java/net/sf/jabref/JabRefPreferences.java', 'src/java/net/sf/jabref/PrefsDialog3.java', 'src/java/net/sf/jabref/TablePrefsTab.java', 'src/java/net/sf/jabref/export/FileActions.java', 'src/java/net/sf/jabref/gui/ImportInspectionDialog.java', 'src/java/net/sf/jabref/gui/MainTable.java']03/12/14, 11:38:01 AM"@@ -0,0 +1,387 @@
 +/*  Copyright (C) 2013 JabRef contributors.
 + This program is free software; you can redistribute it and/or modify

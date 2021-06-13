@@ -60,6 +60,7 @@ def main():
      
     # init vars
     end_prog = NL + "END OF PROGRAM RUN" + NL + LOG_BAR
+    unspec_except_str = TAB  + "Unspecified exception! Please see "
 
     # retrieve positional arguments as variables
     config_file_name = get_CLI_args()
@@ -82,8 +83,9 @@ def main():
     except:
         logger.exception( NL_TAB + "Unspecified exception:\n\n" )
 
+
         print( NL + EXCEPT_MSG )
-        print( TAB  + "Unspecified exception! Please see log file!" )
+        print( unspec_except_str + log_filename + "!" )
 
     finally:
         logger.info( end_prog ) 
@@ -99,14 +101,14 @@ def main():
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def check_row_quant_safety( paged_list, config_quant, logger ):
+def check_row_quant_safety( paged_list, config_quant, msg, logger ):
 
     # init vars
     output_quant    = 0
     stripped_quant  = config_quant.strip()
     str_param_quant = str.lower( stripped_quant )
     
-    log_and_print( "VERIFY_ROW_NUM", "INFO", logger )
+    log_and_print( msg, "INFO", logger )
 
     # if all rows are desired or the desired amount is more than exists, adjust
     if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
@@ -364,17 +366,22 @@ Please choose type of operation:
                 list_tuple = get_PR_info( session, pr_paged_list, row_quant, 
                                           diagnostics, logger ) 
 
-                pr_metalist, commits_py_list = list_tuple
+                pr_metalist, commit_py_metalist, unmerged_pr_str = list_tuple
 
                 write_json( pr_metalist, issue_json_filename, "W_JSON_PR", 
                             logger )
 
-
-                commit_metalist = get_commit_info( session, commits_py_list, 
-                                                   logger )
+                commit_metalist, diag_strs = get_commit_info( session, 
+                                                               commit_py_metalist, 
+                                                               logger )
 
                 write_json( commit_metalist, commit_json_filename, 
                             "W_JSON_COMMIT", logger ) 
+
+                # log commit diagnostic information
+                logger.info( unmerged_pr_str )
+                logger.info( diag_strs[0] )
+                logger.info( diag_strs[1] )
 
 
     if op_choice == "4": 
@@ -413,6 +420,86 @@ Please choose type of operation:
             write_csv( master_info_list, commit_csv_filename, "commit" )
             # write_commit_csv( master_info_list, commit_csv_filename )
             complete( logger )
+
+
+
+
+#--------------------------------------------------------------------------- 
+# Function name: 
+# Process      : 
+# Parameters   : 
+# Output       : 
+# Notes        : 
+# Other Docs   : 
+#---------------------------------------------------------------------------  
+def filter_commits( session, commit_py_metalist, logger ):
+
+    index = 0
+
+    commit_info_list       = []
+    no_commit_str          = NL_TAB + "Pull Requsts with No Commits:"
+    no_changed_file_str    = NL_TAB + "Commits with no changed files:"
+
+    commit_py_metalist_len = len( commit_py_metalist )
+
+
+    log_and_print( "F_COMMIT", "INFO", logger )
+ 
+    while index < commit_py_metalist_len:
+
+        # reset vars
+        most_recent_commit = NAN
+
+        try:
+            cur_commit_pr_num     = commit_py_metalist[index][0]
+            cur_commit_paged_list = commit_py_metalist[index][1]
+
+            num_of_commits = cur_commit_paged_list.totalCount
+
+            # test if this PR has commits          
+            # if not, we do not want to include it and will instead put it on
+            # a list for diagnostics
+            if num_of_commits > 0:
+
+                # get index of last commit                
+                last_commit_position = num_of_commits - 1 
+
+                # store most recent\last commit                           
+                commit_of_interest = cur_commit_paged_list[last_commit_position]
+
+                # check if the commit has changed files and document if not
+                commit_files        = commit_of_interest.files         
+                num_of_commit_files = len( commit_files )              
+                                                                       
+                if num_of_commit_files > 0:                            
+                    most_recent_commit = commit_of_interest            
+
+                else: 
+                    no_changed_file_str += NL_TAB + TAB + cur_commit_pr_num
+
+
+            else:
+                no_commit_str += NL_TAB + TAB + cur_commit_pr_num
+
+
+        except github.RateLimitExceededException:
+            print()
+            sleep( session, "F_MORE_COMMIT", logger ) 
+
+        else:
+            commit_info_list.append( most_recent_commit )
+
+            print_rem_calls( session )
+
+            index += 1
+
+
+    diagnostics_lists = no_commit_str, no_changed_file_str
+
+    complete( logger )
+
+
+    return commit_info_list, diagnostics_lists
 
 
 
@@ -481,18 +568,24 @@ def get_CLI_args():
 # Notes        : empty fields should be caught and populated with " =||= "
 # Other Docs   : none
 #--------------------------------------------------------------------------- 
-def get_commit_info( session, commit_py_list, logger ):
+def get_commit_info( session, commit_py_metalist, logger ):
 
     # init other vars
-    commit_file_list  = [] 
-    commit_metalist   = []
-    commit_list_index = 0
-    cur_commit        = None
+    index      = 0
 
-    
+    commit_file_list       = [] 
+    commit_metalist        = []
+
+
+    commit_list, diag_lists = filter_commits( session, commit_py_metalist,
+                                                   logger )
+
+    commit_info_list_len = len( commit_list )
+
+
     log_and_print( "G_DATA_COMMIT", "INFO", logger )
 
-    while commit_list_index < len( commit_py_list ):
+    while index < commit_info_list_len:
         try:
              
             # reset variables
@@ -516,7 +609,7 @@ def get_commit_info( session, commit_py_list, logger ):
             commit_status_str    = "" 
 
             # retrieve list of commits for one pr
-            cur_commit = commit_py_list[commit_list_index] 
+            cur_commit = commit_list[index] 
 
             if cur_commit != NAN:
 
@@ -562,17 +655,17 @@ def get_commit_info( session, commit_py_list, logger ):
             # print remaining calls per hour
             print_rem_calls( session )
 
-            commit_list_index += 1
+            index += 1
 
 
         except github.RateLimitExceededException:
             print()
-            sleep( session, "G_DATA_COMMIT", logger )
+            sleep( session, "G_MORE_COMMIT", logger )
 
 
     complete( logger )
 
-    return commit_metalist
+    return commit_metalist, diag_lists
 
 
 
@@ -615,7 +708,8 @@ def get_issue_info( session, issue_paged_list, row_quant, diagnostics, logger ):
     issue_metalist  = []
 
 
-    safe_quant = check_row_quant_safety( issue_paged_list, row_quant, logger )
+    safe_quant = check_row_quant_safety( issue_paged_list, row_quant,
+                                         "V_ROW_#_ISSUE", logger )
 
     log_and_print( "G_DATA_ISSUE", "INFO", logger )
 
@@ -920,29 +1014,30 @@ def get_paginated_lists( session, repo_str, logger, pr_state, issue_state,
 def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 
     # init variables
-    commits_list       = []
-    index              = 0
-    pr_metalist        = []
+    index           = 0
+
+    commits_list    = []
+    pr_metalist     = []
+    unmerged_pr_str = NL_TAB + "Non-merged Pull Requests:"
 
     # diagnostics strings
     commit_list_len_diag = "        Length of commits list: "
-    commits_per_pr_diag  = "        Number of commits/pr  : " 
+    # commits_per_pr_diag  = "        Number of commits/pr  : " 
     pr_list_len_diag     = "        Length of pr lists    : " 
     pr_num_diag          = "\n\n        PR num                : "
 
 
-    safe_quant = check_row_quant_safety( pr_paged_list, row_quant, logger )
+    safe_quant = check_row_quant_safety( pr_paged_list, row_quant, 
+                                         "V_ROW_#_PR", logger )
 
     log_and_print( "G_DATA_PR", "INFO", logger )
 
     if diagnostics == "true":
         print( NL_TAB + DIAG_MSG )
 
-
     while index < safe_quant:
 
         # reset vars
-        most_recent_commit = NAN
         pr_title_str       = NAN
         pr_author_name     = NAN 
         pr_author_login    = NAN 
@@ -950,14 +1045,15 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
         pr_body_str        = NAN
         pr_comment_str     = NAN 
 
-        cur_pr = pr_paged_list[index]
+        cur_pr         = pr_paged_list[index]
+        cur_pr_commits = NAN
 
         try:
+            pr_num_str = str( cur_pr.number )
+
             if cur_pr.merged == True:
                 try:
                     cur_pr_user = cur_pr.user
-                    
-                    pr_num_str      = str( cur_pr.number )
 
                     pr_title_str    = cur_pr.title
                     pr_author_name  = cur_pr_user.name
@@ -990,26 +1086,8 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
                             pr_comment_str
                             ]
 
-                    # get paginated list of commits for each PR
-                    cur_pr_commits = cur_pr.get_commits() 
-                    num_of_commits = cur_pr_commits.totalCount
-
-                    # test if this PR has commits
-                    # if not, we do not want to include it
-                    if num_of_commits > 0:
-
-                        # get index of last commit
-                        last_commit_position = num_of_commits - 1
-
-                        # store last/most recent commit
-                        commit_of_interest = cur_pr_commits[last_commit_position]
-
-                        # check if the commit has changed files and omit if not
-                        commit_files        = commit_of_interest.files
-                        num_of_commit_files = len( commit_files ) 
-
-                        if num_of_commit_files > 0:
-                            most_recent_commit = commit_of_interest 
+                    # get paginated list of commits for each merged PR
+                    cur_pr_commits = pr_num_str, cur_pr.get_commits() 
 
 
                 except github.RateLimitExceededException:
@@ -1021,21 +1099,19 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
                     # append each list of pr info to a metalist
                     pr_metalist.append( pr_info_list ) 
 
-                    # append most recent commit to list of commits
-                    commits_list.append( most_recent_commit ) 
+                    # append paginated list of commits to list
+                    commits_list.append( cur_pr_commits ) 
 
                     # display info
                     if diagnostics == "true":
 
                         commit_list_len    = str( len( commits_list ))
-                        num_of_commits_str = str( num_of_commits )
                         pr_list_len        = str( len( pr_metalist ))
                         row_quant_str      = str( safe_quant )
 
                         print( pr_num_diag + pr_num_str )
                         print( pr_list_len_diag + pr_list_len + '/' + row_quant_str )
                         print( commit_list_len_diag + commit_list_len + '/' + row_quant_str)
-                        print( commits_per_pr_diag + num_of_commits_str )
 
 
                     print_rem_calls( session )
@@ -1044,6 +1120,7 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 
 
             else:
+                unmerged_pr_str += NL_TAB + TAB + pr_num_str
                 index += 1 
 
 
@@ -1054,7 +1131,9 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 
     complete( logger )
 
-    return pr_metalist, commits_list
+    print( unmerged_pr_str )
+
+    return pr_metalist, commits_list, unmerged_pr_str
  
 
 
@@ -1147,8 +1226,10 @@ def log_and_print( msg_format, log_type, logger ):
     writer = NL_TAB + "Writing "
 
     str_dict = {
-            "COLLATE"       : NL_TAB + " Collating lists...",
+            "COLLATE"       : NL_TAB + "collating lists...",
             "COMPLETE"      : " Complete! ",
+            "F_COMMIT"      : NL_TAB + "filtering commits...",
+            "F_MORE_COMMIT" : NL_TAB + "filtering commits...",
             "G_DATA_COMMIT" : getter + "commit data...",
             "G_DATA_ISSUE"  : getter + "issue data...",
             "G_DATA_PR"     : getter + "pull request data...",
@@ -1169,7 +1250,8 @@ def log_and_print( msg_format, log_type, logger ):
             "R_JSON_ISSUE"  : reader + "issue data JSON...",
             "R_JSON_PR"     : reader + "pull request data JSON...",
             "SLEEP"         : NL_TAB + "Rate Limit imposed. Sleeping...",
-            "VERIFY_ROW_NUM": NL_TAB + "Validating row quantity config...",
+            "V_ROW_#_ISSUE" : NL_TAB + "Validating row quantity config for issue data collection...",
+            "V_ROW_#_PR"    : NL_TAB + "Validating row quantity config for pull request data collection...",
             "W_CSV_COMMIT"  : writer + "\"commit\" type CSV...",
             "W_CSV_PR"      : writer + "\"PR\" type CSV...",
             "W_JSON_ALL"    : writer + "master list of data to JSON...",
