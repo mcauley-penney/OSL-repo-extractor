@@ -402,17 +402,11 @@ Please choose type of operation:
                                       "R_JSON_ALL", logger ) 
 
         if csv_choice in { "1", "3" }:
-            log_and_print( "W_CSV_PR", "INFO", logger )
-            write_csv( master_info_list, pr_csv_filename, "pr" )
-            # write_pr_csv( master_info_list, pr_csv_filename )
-            complete( logger )
+            write_csv( master_info_list, pr_csv_filename, "pr", logger )
 
 
         if csv_choice in { "1", "3" }:
-            log_and_print( "W_CSV_COMMIT", "INFO", logger )
-            write_csv( master_info_list, commit_csv_filename, "commit" )
-            # write_commit_csv( master_info_list, commit_csv_filename )
-            complete( logger )
+            write_csv( master_info_list, commit_csv_filename, "commit", logger )
 
 
 
@@ -1188,6 +1182,9 @@ def log_and_print( msg_format, log_type, logger ):
         if msg_format != "COMPLETE" and msg_format != "PROG_START":
             out_msg = INFO_MSG + out_msg
 
+        elif msg_format == "COMPLETE":
+            out_msg = NL_TAB + TAB + BKGRN + out_msg + TXTRST + '\n'
+
     elif log_type == "ERROR":
         logger.error( out_msg )
         out_msg = ERR_MSG + out_msg 
@@ -1196,10 +1193,6 @@ def log_and_print( msg_format, log_type, logger ):
         logger.exception( out_msg )
         out_msg = EXCEPT_MSG + out_msg 
         
-
-    if msg_format == "COMPLETE":
-        out_msg = NL_TAB + TAB + BKGRN + out_msg + TXTRST + '\n'
-
 
     print( out_msg )
 
@@ -1505,7 +1498,7 @@ def verify_dirs( file_path ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_csv( master_info_list, out_file_name, output_type ):
+def write_csv( master_info_list, out_file_name, output_type, logger ):
     
     # init other vars
 
@@ -1519,11 +1512,18 @@ def write_csv( master_info_list, out_file_name, output_type ):
                    "PR_Comments", "Commit_Author_Name",                     
                    "Commit_Date", "Commit_Message", "isPR"]                  
 
+    log_msg = "W_CSV_PR"
+
     if output_type == "commit":
         col_names = ["Author_Login", "Committer_Login", "PR_Number",
                      "SHA", "Commit_Message", "file_Name",
                      "Patch_Text", "Additions", "Deletions",
                      "Status", "Changes"] 
+
+        log_msg = "W_CSV_COMMIT"
+
+
+    log_and_print( log_msg, "INFO", logger )
 
     
     with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
@@ -1640,6 +1640,7 @@ def write_csv( master_info_list, out_file_name, output_type ):
                               pr_comments, commit_author_name,
                               commit_date, commit_message, isPR]  
 
+                writer.writerow( output_row ) 
 
             elif output_type == "commit" and isPR == 1: 
 
@@ -1648,10 +1649,6 @@ def write_csv( master_info_list, out_file_name, output_type ):
                 #         Patch_text, Additions, Deletions,             
                 #         Status, Changes                               
                 # ------------------------------------------------------------
-                # output_row = [commit_author_name, commit_committer, issue_num,
-                #               commit_SHA, commit_message, commit_file_list,
-                #               commit_patch_text, commit_adds, commit_rms,
-                #               commit_status, commit_changes] 
 
                 output_row = [ issue_num, issue_author_name, issue_title,
                                issue_body, commit_message, commit_file_list,
@@ -1667,6 +1664,9 @@ def write_csv( master_info_list, out_file_name, output_type ):
 
 
             list_index += 1
+
+
+    complete( logger )
 
 
 
