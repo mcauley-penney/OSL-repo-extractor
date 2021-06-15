@@ -11,6 +11,7 @@ log_file             =
 issue_json_filename  = outputs/ 
 pr_json_filename     = outputs/ 
 commit_json_filename = outputs/ 
+master_json_filename = outputs/ 
 
 pr_csv_filename      = outputs/  
 commit_csv_filename  = outputs/  

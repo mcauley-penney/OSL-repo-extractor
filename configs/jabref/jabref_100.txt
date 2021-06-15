@@ -1,8 +1,8 @@
 - JabRef config file
 
 repo                 = JabRef/jabref
-auth_file            = none
-rows                 = 100
+auth_file            = auths/mcauley_auth.txt
+rows                 = 10
 issue_state          = closed
 pr_state             = closed
 diagnostics          = true

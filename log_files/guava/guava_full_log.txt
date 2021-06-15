@@ -1,47 +1,116 @@
-06/03/21, 08:43:55 AM:  
+
+Mon, 06/14/21, 03:47:40 PM: 
+    Validating user authentification...
+
+Mon, 06/14/21, 03:47:40 PM: 
+    Non-fatal: 
+        Invalid personal access token!
+        Please see https://github.com/settings/tokens 
+        to create a token with "repo" permissions!
+        Continuing without authentification...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1570, in verify_auth
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.BadCredentialsException: 401 {"message": "Bad credentials", "documentation_url": "https://docs.github.com/rest"}
+
+Mon, 06/14/21, 03:47:40 PM:  Complete! 
+
+Mon, 06/14/21, 03:47:40 PM:  
     PROGRAM START
     -------------
-
     Config used: 
         - config file name : configs/guava/guava_full.txt
         - repo             : google/guava
-        - branch name      : master
-        - session          : <github.MainClass.Github object at 0x7fa73a99e6d0>
+        - auth file        : auths/mcauley_auth.txt
         - rows             : all
         - issue state      : closed        
         - pr state         : closed          
-        - diagnostics      : false          
+        - diagnostics      : true          
         - log file         : log_files/guava/guava_full_log.txt        
-
         - issue json file  : outputs/guava_full/guava_full_issues.json
         - pr JSON file     : outputs/guava_full/guava_full_pr.json
         - commit JSON file : outputs/guava_full/guava_full_commit.json
-
+        - master JSON file : outputs/
         - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
         - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
 
 
-06/03/21, 08:44:08 AM: 
+Mon, 06/14/21, 03:47:45 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 124, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 327, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Mon, 06/14/21, 03:47:45 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+Mon, 06/14/21, 03:48:02 PM: 
+    Validating user authentification...
+
+Mon, 06/14/21, 03:48:03 PM:  Complete! 
+
+Mon, 06/14/21, 03:48:03 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+        - master JSON file : outputs/
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Mon, 06/14/21, 03:48:05 PM: 
 Attempting program start...
 
-06/03/21, 08:44:09 AM: 
+Mon, 06/14/21, 03:48:06 PM: 
     Getting paginated list of issues...
 
-06/03/21, 08:44:09 AM: 
-        Complete!
+Mon, 06/14/21, 03:48:06 PM:  Complete! 
 
-06/03/21, 08:44:09 AM: 
-    Acquiring paginated list of pull requests...
+Mon, 06/14/21, 03:48:06 PM: 
+    Getting paginated list of pull requests...
 
-06/03/21, 08:44:09 AM: 
-        Complete!
+Mon, 06/14/21, 03:48:06 PM:  Complete! 
 
-06/03/21, 08:44:09 AM: 
+Mon, 06/14/21, 03:48:06 PM: 
+    Validating row quantity config for issue data collection...
+
+Mon, 06/14/21, 03:48:06 PM:  Complete! 
+
+Mon, 06/14/21, 03:48:06 PM: 
     Getting issue data...
 
-06/03/21, 08:58:52 AM: Rate Limit imposed. Sleeping.
+Mon, 06/14/21, 04:02:09 PM: 
+    Rate Limit imposed. Sleeping...
 Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 585, in get_issue_info
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 754, in get_issue_info
     for comment in comments_paged_list:
   File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
     newElements = self._grow()
@@ -55,9 +124,14 @@ Traceback (most recent call last):
     raise self.__createException(status, responseHeaders, output)
 github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
 
-06/03/21, 09:58:28 AM: Rate Limit imposed. Sleeping.
+Mon, 06/14/21, 04:48:04 PM: 
+    Getting more issue data...
+
+Mon, 06/14/21, 05:01:42 PM: 
+    Rate Limit imposed. Sleeping...
 Traceback (most recent call last):
-  File "/home/j/git/GitHub-Repo-Extractor/test/test_ext.py", line 581, in get_issue_info
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 750, in get_issue_info
+    if comments_paged_list.totalCount == 0:
   File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
     headers, data = self.__requester.requestJsonAndCheck(
   File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
@@ -66,160 +140,906 @@ Traceback (most recent call last):
     raise self.__createException(status, responseHeaders, output)
 github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
 
-06/03/21, 10:44:36 AM: 
-        Complete!
+Mon, 06/14/21, 05:48:06 PM: 
+    Getting more issue data...
 
-06/03/21, 10:44:36 AM: 
+Mon, 06/14/21, 05:48:28 PM:  Complete! 
+
+Mon, 06/14/21, 05:48:28 PM: 
     Writing list of issue data to JSON...
 
-06/03/21, 10:44:36 AM: 
-        Complete!
+Mon, 06/14/21, 05:48:28 PM:  Complete! 
 
-06/03/21, 10:44:37 AM: 
-    Getting PR data
+Mon, 06/14/21, 05:48:28 PM: 
+    Validating row quantity config for pull request data collection...
 
-06/03/21, 10:54:08 AM: 
-        Complete!
+Mon, 06/14/21, 05:48:29 PM:  Complete! 
 
-06/03/21, 10:54:08 AM: 
+Mon, 06/14/21, 05:48:29 PM: 
+    Getting pull request data...
+
+Mon, 06/14/21, 05:55:22 PM:  Complete! 
+
+Mon, 06/14/21, 05:55:22 PM: 
     Writing list of PR data to JSON...
 
-06/03/21, 10:54:08 AM: 
-        Complete!
+Mon, 06/14/21, 05:55:22 PM:  Complete! 
 
-06/03/21, 10:54:08 AM: 
+Mon, 06/14/21, 05:55:22 PM: 
+[Diagnostics]:
+    Non-merged pull requests:
+        1874
+        1876
+        1877
+        1892
+        1943
+        1948
+        1949
+        1950
+        1951
+        1969
+        1970
+        1971
+        1972
+        1979
+        1984
+        1990
+        2002
+        2012
+        2017
+        2020
+        2043
+        2044
+        2045
+        2046
+        2052
+        2059
+        2060
+        2062
+        2086
+        2099
+        2106
+        2111
+        2112
+        2122
+        2129
+        2136
+        2159
+        2162
+        2163
+        2164
+        2166
+        2167
+        2172
+        2174
+        2182
+        2183
+        2184
+        2185
+        2186
+        2189
+        2190
+        2191
+        2192
+        2194
+        2197
+        2198
+        2199
+        2204
+        2208
+        2211
+        2213
+        2214
+        2215
+        2216
+        2236
+        2243
+        2247
+        2248
+        2344
+        2345
+        2354
+        2377
+        2383
+        2385
+        2395
+        2398
+        2402
+        2420
+        2422
+        2424
+        2426
+        2428
+        2431
+        2432
+        2437
+        2439
+        2441
+        2447
+        2456
+        2457
+        2460
+        2480
+        2481
+        2490
+        2491
+        2499
+        2500
+        2506
+        2511
+        2517
+        2518
+        2519
+        2523
+        2527
+        2528
+        2531
+        2534
+        2535
+        2541
+        2543
+        2544
+        2545
+        2546
+        2555
+        2556
+        2558
+        2562
+        2564
+        2565
+        2567
+        2580
+        2581
+        2582
+        2583
+        2584
+        2588
+        2590
+        2592
+        2594
+        2595
+        2604
+        2607
+        2608
+        2613
+        2614
+        2615
+        2618
+        2620
+        2621
+        2624
+        2625
+        2626
+        2627
+        2628
+        2630
+        2635
+        2636
+        2637
+        2642
+        2649
+        2652
+        2655
+        2668
+        2669
+        2671
+        2673
+        2677
+        2680
+        2682
+        2687
+        2697
+        2698
+        2699
+        2715
+        2718
+        2728
+        2731
+        2734
+        2761
+        2771
+        2776
+        2789
+        2791
+        2798
+        2799
+        2802
+        2806
+        2807
+        2818
+        2819
+        2825
+        2844
+        2846
+        2848
+        2849
+        2856
+        2869
+        2875
+        2881
+        2882
+        2883
+        2889
+        2893
+        2894
+        2895
+        2900
+        2901
+        2902
+        2903
+        2904
+        2906
+        2907
+        2908
+        2916
+        2917
+        2919
+        2927
+        2938
+        2945
+        2946
+        2947
+        2951
+        2954
+        2955
+        2961
+        2973
+        2977
+        2983
+        2989
+        2990
+        3002
+        3004
+        3005
+        3007
+        3010
+        3018
+        3027
+        3032
+        3045
+        3047
+        3061
+        3062
+        3063
+        3071
+        3073
+        3076
+        3083
+        3085
+        3089
+        3090
+        3095
+        3107
+        3123
+        3127
+        3129
+        3141
+        3145
+        3152
+        3154
+        3157
+        3159
+        3161
+        3176
+        3186
+        3193
+        3211
+        3213
+        3216
+        3217
+        3221
+        3224
+        3225
+        3236
+        3237
+        3243
+        3244
+        3268
+        3269
+        3273
+        3274
+        3275
+        3276
+        3280
+        3282
+        3287
+        3294
+        3296
+        3297
+        3309
+        3310
+        3314
+        3315
+        3324
+        3355
+        3356
+        3362
+        3364
+        3366
+        3368
+        3377
+        3378
+        3379
+        3382
+        3383
+        3384
+        3385
+        3386
+        3387
+        3392
+        3398
+        3407
+        3408
+        3410
+        3412
+        3413
+        3433
+        3435
+        3438
+        3439
+        3447
+        3448
+        3453
+        3454
+        3456
+        3465
+        3466
+        3471
+        3472
+        3475
+        3476
+        3478
+        3481
+        3482
+        3483
+        3484
+        3485
+        3487
+        3489
+        3490
+        3492
+        3497
+        3498
+        3499
+        3500
+        3505
+        3507
+        3510
+        3513
+        3515
+        3516
+        3518
+        3523
+        3526
+        3529
+        3534
+        3538
+        3540
+        3545
+        3556
+        3557
+        3558
+        3559
+        3561
+        3565
+        3571
+        3577
+        3580
+        3589
+        3600
+        3601
+        3607
+        3609
+        3614
+        3622
+        3628
+        3631
+        3633
+        3638
+        3639
+        3643
+        3647
+        3649
+        3652
+        3653
+        3660
+        3663
+        3671
+        3672
+        3673
+        3676
+        3681
+        3689
+        3692
+        3694
+        3702
+        3706
+        3709
+        3712
+        3713
+        3716
+        3725
+        3727
+        3729
+        3730
+        3735
+        3745
+        3746
+        3749
+        3756
+        3759
+        3761
+        3766
+        3774
+        3788
+        3794
+        3795
+        3800
+        3806
+        3816
+        3820
+        3822
+        3826
+        3828
+        3829
+        3832
+        3843
+        3844
+        3845
+        3849
+        3853
+        3857
+        3870
+        3877
+        3878
+        3880
+        3883
+        3884
+        3886
+        3891
+        3901
+        3902
+        3908
+        3912
+        3920
+        3933
+        3934
+        3974
+        3993
+        4007
+        4008
+        4012
+        4015
+        4016
+        4018
+        4019
+        4021
+        4024
+        4026
+        4031
+        4032
+        4033
+        4036
+        5250
+        5251
+        5253
+        5255
+        5259
+        5260
+        5261
+        5265
+        5266
+        5272
+        5273
+        5274
+        5276
+        5281
+        5282
+        5287
+        5297
+        5298
+        5300
+        5301
+        5302
+        5303
+        5306
+        5312
+        5324
+        5348
+        5349
+        5350
+        5351
+        5360
+        5361
+        5363
+        5365
+        5367
+        5370
+        5371
+        5374
+        5382
+        5383
+        5384
+        5385
+        5386
+        5394
+        5400
+        5401
+        5402
+        5403
+        5404
+        5407
+        5409
+        5414
+        5416
+        5418
+        5421
+        5422
+        5423
+        5424
+        5425
+        5426
+        5427
+        5428
+        5429
+        5432
+        5433
+        5434
+        5440
+        5441
+        5442
+        5444
+        5446
+        5448
+        5453
+        5455
+        5458
+        5459
+        5465
+        5466
+        5467
+        5469
+        5470
+        5472
+        5473
+        5475
+        5477
+        5478
+        5480
+        5481
+        5484
+        5487
+        5488
+        5489
+        5491
+        5492
+        5493
+        5502
+        5506
+        5507
+        5508
+        5509
+        5510
+        5513
+        5514
+        5516
+        5518
+        5519
+        5521
+        5523
+        5524
+        5525
+        5526
+        5530
+        5531
+        5532
+        5537
+        5541
+        5542
+        5545
+        5546
+        5547
+        5548
+        5549
+        5550
+        5551
+        5552
+        5553
+        5554
+        5559
+        5560
+        5561
+        5563
+        5564
+        5565
+        5566
+        5567
+        5571
+        5573
+        5574
+        5576
+        5579
+        5581
+        5585
+        5586
+        5587
+        5590
+        5595
+        5596
+        5597
+        5601
+        5603
+
+Mon, 06/14/21, 05:55:22 PM: 
+    filtering commits...
+
+Mon, 06/14/21, 05:58:28 PM:  Complete! 
+
+Mon, 06/14/21, 05:58:28 PM: 
     Getting commit data...
 
-06/03/21, 10:55:15 AM: 
-        Complete!
+Mon, 06/14/21, 05:58:28 PM:  Complete! 
 
-06/03/21, 10:55:15 AM: 
+Mon, 06/14/21, 05:58:28 PM: 
     Writing list of commit data to JSON...
 
-06/03/21, 10:55:15 AM: 
-        Complete!
+Mon, 06/14/21, 05:58:28 PM:  Complete! 
 
-06/03/21, 10:55:15 AM: 
-    END OF PROGRAM RUN
+Mon, 06/14/21, 05:58:28 PM: 
+[Diagnostics]:
 
-------------------------------------------------------------------------------
+    Pull requsts with no commits:
+        5378
+        5395
+        5406
+        5412
+        5420
+        5430
+        5445
+        5447
+        5454
+        5461
+        5463
+        5468
+        5474
+        5479
+        5483
+        5485
+        5490
+        5494
+        5495
+        5496
+        5498
+        5499
+        5504
+        5515
+        5517
+        5520
+        5535
+        5543
+        5544
+        5562
+        5569
+        5578
+        5598
+        5604
 
+    Commits with no changed files:
 
-Thu, 06/03/21, 10:58:58:%f AM:  
+Mon, 06/14/21, 05:58:28 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+Mon, 06/14/21, 06:40:31 PM: 
+    Validating user authentification...
+
+Mon, 06/14/21, 06:40:31 PM:  Complete! 
+
+Mon, 06/14/21, 06:40:31 PM:  
     PROGRAM START
     -------------
-
     Config used: 
         - config file name : configs/guava/guava_full.txt
         - repo             : google/guava
-        - branch name      : master
-        - session          : <github.MainClass.Github object at 0x7fd6d7afaca0>
+        - auth file        : auths/mcauley_auth.txt
         - rows             : all
         - issue state      : closed        
         - pr state         : closed          
-        - diagnostics      : false          
+        - diagnostics      : true          
         - log file         : log_files/guava/guava_full_log.txt        
-
         - issue json file  : outputs/guava_full/guava_full_issues.json
         - pr JSON file     : outputs/guava_full/guava_full_pr.json
         - commit JSON file : outputs/guava_full/guava_full_commit.json
-
+        - master JSON file : outputs/
         - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
         - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
 
 
-Thu, 06/03/21, 10:59:01:%f AM: 
+Mon, 06/14/21, 06:40:44 PM: 
 Attempting program start...
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-    Reading pull request data JSON...
-
-Thu, 06/03/21, 10:59:01:%f AM: 
-        Complete!
-
-Thu, 06/03/21, 10:59:01:%f AM: 
-    Reading commit data JSON...
-
-Thu, 06/03/21, 10:59:01:%f AM: 
-        Complete!
-
-Thu, 06/03/21, 10:59:01:%f AM: 
+Mon, 06/14/21, 06:40:44 PM: 
     Reading issue data JSON...
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-        Complete!
+Mon, 06/14/21, 06:40:44 PM:  Complete! 
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-    Writing "PR" type CSV...
+Mon, 06/14/21, 06:40:44 PM: 
+    Reading pull request data JSON...
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-        Complete!
+Mon, 06/14/21, 06:40:44 PM:  Complete! 
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-    Writing "commit" type CSV...
+Mon, 06/14/21, 06:40:44 PM: 
+    Reading commit data JSON...
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-        Complete!
+Mon, 06/14/21, 06:40:44 PM:  Complete! 
 
-Thu, 06/03/21, 10:59:01:%f AM: 
-    END OF PROGRAM RUN
+Mon, 06/14/21, 06:40:44 PM: 
+    collating lists...
 
-------------------------------------------------------------------------------
+Mon, 06/14/21, 06:40:44 PM:  Complete! 
 
+Mon, 06/14/21, 06:40:44 PM: 
+    Writing master list of data to JSON...
 
-Thu, 06/03/21, 11:04:50:%f AM:  
+Mon, 06/14/21, 06:40:44 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 124, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 395, in exe_menu
+    create_master_json( json_file_list, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 284, in create_master_json
+    write_json( collated_list, master_json_filename, "W_JSON_ALL", logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1828, in write_json
+    json_io( json_filename, 'w', info_metalist )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 1188, in json_io
+    with open( file_path, mode ) as json_file:
+IsADirectoryError: [Errno 21] Is a directory: 'outputs/'
+
+Mon, 06/14/21, 06:40:44 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+Mon, 06/14/21, 06:42:32 PM: 
+    Validating user authentification...
+
+Mon, 06/14/21, 06:42:32 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:32 PM:  
     PROGRAM START
     -------------
-
     Config used: 
         - config file name : configs/guava/guava_full.txt
         - repo             : google/guava
-        - branch name      : master
-        - session          : <github.MainClass.Github object at 0x7ff131175ca0>
+        - auth file        : auths/mcauley_auth.txt
         - rows             : all
         - issue state      : closed        
         - pr state         : closed          
-        - diagnostics      : false          
+        - diagnostics      : true          
         - log file         : log_files/guava/guava_full_log.txt        
-
         - issue json file  : outputs/guava_full/guava_full_issues.json
         - pr JSON file     : outputs/guava_full/guava_full_pr.json
         - commit JSON file : outputs/guava_full/guava_full_commit.json
-
+        - master JSON file : outputs/guava_full/guava_full_master.json
         - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
         - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
 
 
-Thu, 06/03/21, 11:04:52:%f AM: 
+Mon, 06/14/21, 06:42:34 PM: 
 Attempting program start...
 
-Thu, 06/03/21, 11:04:52:%f AM: 
-    Reading pull request data JSON...
-
-Thu, 06/03/21, 11:04:52:%f AM:         Complete!
-
-Thu, 06/03/21, 11:04:52:%f AM: 
-    Reading commit data JSON...
-
-Thu, 06/03/21, 11:04:52:%f AM:         Complete!
-
-Thu, 06/03/21, 11:04:52:%f AM: 
+Mon, 06/14/21, 06:42:34 PM: 
     Reading issue data JSON...
 
-Thu, 06/03/21, 11:04:52:%f AM:         Complete!
+Mon, 06/14/21, 06:42:34 PM:  Complete! 
 
-Thu, 06/03/21, 11:04:52:%f AM: 
+Mon, 06/14/21, 06:42:34 PM: 
+    Reading pull request data JSON...
+
+Mon, 06/14/21, 06:42:34 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:34 PM: 
+    Reading commit data JSON...
+
+Mon, 06/14/21, 06:42:34 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:34 PM: 
+    collating lists...
+
+Mon, 06/14/21, 06:42:34 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:34 PM: 
+    Writing master list of data to JSON...
+
+Mon, 06/14/21, 06:42:34 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:34 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+Mon, 06/14/21, 06:42:35 PM: 
+    Validating user authentification...
+
+Mon, 06/14/21, 06:42:36 PM:  Complete! 
+
+Mon, 06/14/21, 06:42:36 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+        - master JSON file : outputs/guava_full/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Mon, 06/14/21, 06:43:11 PM: 
+Attempting program start...
+
+Mon, 06/14/21, 06:43:11 PM: 
+    Reading collated data JSON...
+
+Mon, 06/14/21, 06:43:11 PM:  Complete! 
+
+Mon, 06/14/21, 06:43:11 PM: 
     Writing "PR" type CSV...
 
-Thu, 06/03/21, 11:04:53:%f AM:         Complete!
+Mon, 06/14/21, 06:43:12 PM:  Complete! 
 
-Thu, 06/03/21, 11:04:53:%f AM: 
+Mon, 06/14/21, 06:43:12 PM: 
     Writing "commit" type CSV...
 
-Thu, 06/03/21, 11:04:53:%f AM:         Complete!
+Mon, 06/14/21, 06:43:12 PM:  Complete! 
 
-Thu, 06/03/21, 11:04:53:%f AM: 
-    END OF PROGRAM RUN
+Mon, 06/14/21, 06:43:12 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------
+Mon, 06/14/21, 06:45:56 PM: 
+    Validating user authentification...
 
+Mon, 06/14/21, 06:45:56 PM:  Complete! 
+
+Mon, 06/14/21, 06:45:56 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+        - master JSON file : outputs/guava_full/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Mon, 06/14/21, 06:46:03 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 124, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/TEST_extractor.py", line 327, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Mon, 06/14/21, 06:46:03 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------

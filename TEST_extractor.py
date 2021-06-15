@@ -53,7 +53,6 @@ Please choose type of CSV:
 HEADER = """ 
     PROGRAM START
     -------------
-
     Config used: 
         - config file name : %s
         - repo             : %s
@@ -63,12 +62,10 @@ HEADER = """
         - pr state         : %s          
         - diagnostics      : %s          
         - log file         : %s        
-
         - issue json file  : %s
         - pr JSON file     : %s
         - commit JSON file : %s
         - master JSON file : %s
-
         - "pr" CSV file    : %s       
         - "commit" CSV file: %s
 """
@@ -76,7 +73,6 @@ HEADER = """
 PROG_INTRO = """
 GITHUB REPO EXTRACTOR
 ---------------------
-
 Please choose type of operation:                                      
     [1] get issue JSON list
     [2] get pull request and commit JSON lists
@@ -85,6 +81,7 @@ Please choose type of operation:
     [5] compile CSV outputs
 
     Execute """ 
+
 
 
 
@@ -106,7 +103,8 @@ Please choose type of operation:
 def main():
      
     # init vars
-    end_prog          = NL + "END OF PROGRAM RUN" + NL + LOG_BAR
+    end_prog          = NL + "END OF PROGRAM RUN" + NL + LOG_BAR + NL
+    prog_start_log    = NL + LOG_BAR + NL + "START OF PROGRAM RUN"
     unspec_except_str = TAB  + "Unspecified exception! Please see log file:"
 
     # retrieve positional arguments as variables
@@ -119,9 +117,18 @@ def main():
     log_filename = cfg_list[7]
     logger       = init_logger( log_filename )  
 
+    # determine if user wants diagnostics
+    diagnostics   = cfg_list[6]
+
+    logger.info( prog_start_log )
+
+    if diagnostics == "true":
+        log_and_print( "R_CFG_DONE", "INFO", logger  )
+        complete( logger )
+
+
     # authenticate the user with GitHub and insert session into list
     authfile_name = cfg_list[2]
-    diagnostics   = cfg_list[6]
     session       = verify_auth( authfile_name, diagnostics, logger )
 
     try:
@@ -131,7 +138,7 @@ def main():
         logger.exception( NL_TAB + "Unspecified exception:\n\n" )
 
         print( NL + EXCEPT_MSG )
-        print( unspec_except_str + NL_TAB + TAB + log_filename )
+        print( unspec_except_str + NL_TAB + TAB + log_filename + NL )
 
     finally:
         logger.info( end_prog ) 
@@ -170,11 +177,10 @@ def check_row_quant_safety( paged_list, config_quant, log_msg, diagnostics, logg
         log_and_print( "INVAL_ROW", "ERROR", logger )
 
     if diagnostics == "true":
-        print( TAB + "Rows of data to be retrieved: " + str( output_quant ))
+        print( TAB + TAB + "Rows of data to be retrieved: " + str( output_quant ))
 
 
     complete( logger )
-
 
     return output_quant
 
@@ -367,7 +373,7 @@ def exe_menu( conf_list, session, logger ):
                         logger )
 
             # log issue diagnostic information
-            logger.info( NL + "[Diagnostics]:" + unmerged_pr_str )
+            logger.info( NL + "[Diagnostics]:" + NL + unmerged_pr_str )
 
 
             # get commit information
@@ -1247,14 +1253,15 @@ def log_and_print( msg_format, log_type, logger ):
         Invalid personal access token!
         Please see https://github.com/settings/tokens 
         to create a token with \"repo\" permissions!
-        Continuing without authentification...
-    """,
+        Continuing without authentification...""",
+
             "INVAL_ROW"     : NL_TAB + "row_quant config value is invalid!",
             "NO_AUTH"       : """
     Non-fatal: 
         Authorization file not found! 
-        Continuing without authentification...
-    """, 
+        Continuing without authentification...""", 
+
+            "R_CFG_DONE"    : NL_TAB + "Read configuration and initialize logging...",
             "R_JSON_ALL"    : reader + "collated data JSON...",
             "R_JSON_COMMIT" : reader + "commit data JSON...",
             "R_JSON_ISSUE"  : reader + "issue data JSON...",
@@ -1448,9 +1455,9 @@ def read_config( config_file_name ):
         diagnostics_flag = conf_list[6] = str.lower( conf_list[6] )
 
         if diagnostics_flag == "true":
-                
             print( NL + BKYEL + "[Diagnostics enabled]" + TXTRST )
             print( NL + DIAG_MSG + NL_TAB + "Configuration is correct length!" )
+
 
         return conf_list
 
