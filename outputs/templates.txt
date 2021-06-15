@@ -1,3 +1,5 @@
+- I use this template to compare outputs
+
 
 PR columns
 ----------
@@ -19,21 +21,3 @@ Commit_Date
 Commit_Message
 isPR 
 
-
-7784
-[Bot] Update CSL styles
-Oliver Kopp
-koppor
-06/03/21, 12:30:52 PM
-Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
-NaN
-[Bot] Update CSL styles
-Oliver Kopp
-koppor
-06/03/21, 12:30:52 PM
-Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
-NaN
-NaN
-NaN
-NaN
-1 

@@ -2,7 +2,7 @@
 - Link: https://github.com/prestodb/presto
 
 repo                 = prestodb/presto 
-auth_file            = auths/jmp_auth.txt 
+auth_file            = auths/mcauley_auth.txt 
 rows                 = all
 issue_state          = closed
 pr_state             = closed

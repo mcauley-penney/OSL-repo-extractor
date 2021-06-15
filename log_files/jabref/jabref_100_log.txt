@@ -1013,3 +1013,1810 @@ Mon, 06/14/21, 09:25:21 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Tue, 06/15/21, 11:24:03 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:24:03 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:24:03 AM:  Complete! 
+
+Tue, 06/15/21, 11:24:03 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:24:03 AM: 
+    Non-fatal: 
+        Authorization file not found! 
+        Continuing without authentification...
+
+Tue, 06/15/21, 11:24:03 AM:  Complete! 
+
+Tue, 06/15/21, 11:24:03 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : none
+        - rows             : 5
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:24:05 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:24:05 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:24:05 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 352, in exe_menu
+    issue_metalist = get_issue_info( session, issue_paged_list,
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 710, in get_issue_info
+    safe_quant = check_row_quant_safety( issue_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 170, in check_row_quant_safety
+    if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
+AttributeError: 'list' object has no attribute 'totalCount'
+
+Tue, 06/15/21, 11:24:05 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:26:50 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:26:50 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:26:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:50 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:26:50 AM: 
+    Non-fatal: 
+        Authorization file not found! 
+        Continuing without authentification...
+
+Tue, 06/15/21, 11:26:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:50 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : none
+        - rows             : 5
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:26:51 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:26:51 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:26:51 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:51 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:26:51 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:51 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:26:51 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:51 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:26:53 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:53 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:26:53 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:53 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:26:53 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:53 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:26:56 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:56 AM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 11:26:56 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:56 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 11:26:56 AM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 11:26:59 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    collating lists...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:26:59 AM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:26:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:27:10 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 410, in exe_menu
+    csv_choice = input( CSV_PROMPT )
+KeyboardInterrupt
+
+Tue, 06/15/21, 11:27:10 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:32:53 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:32:53 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:32:53 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:53 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:32:53 AM: 
+    Non-fatal: 
+        Authorization file not found! 
+        Continuing without authentification...
+
+Tue, 06/15/21, 11:32:53 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:53 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : none
+        - rows             : 5
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:32:56 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:32:57 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:32:57 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:57 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:32:57 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:57 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:32:57 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:57 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:32:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:59 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:32:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:59 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:32:59 AM:  Complete! 
+
+Tue, 06/15/21, 11:32:59 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:33:00 AM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for 47.215.144.170. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 11:33:04 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for 47.215.144.170. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 368, in exe_menu
+    list_tuple = get_PR_info( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 1129, in get_PR_info
+    sleep( session, "G_MORE_PR", logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 1495, in sleep
+    timer( sleep_time )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 1545, in timer
+    time.sleep( 1 )
+KeyboardInterrupt
+
+Tue, 06/15/21, 11:33:04 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:33:25 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:33:25 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:33:25 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:25 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:33:25 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:25 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 15
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:33:27 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:33:27 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:33:27 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:27 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:33:27 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:27 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:33:27 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:27 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:33:33 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:33 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:33:33 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:33 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:33:33 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:33 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:33:41 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:41 AM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 11:33:41 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:41 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 11:33:41 AM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 11:33:50 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    collating lists...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:50 AM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:33:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:33:54 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/test_extractor.py", line 412, in exe_menu
+    csv_choice = input( CSV_PROMPT )
+KeyboardInterrupt
+
+Tue, 06/15/21, 11:33:54 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:34:35 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:34:35 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:34:35 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:35 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:34:36 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:36 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:34:39 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:34:39 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:34:39 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:39 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:34:39 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:39 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:34:39 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:39 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:34:41 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:41 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:34:41 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:41 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:34:41 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:41 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:34:43 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:43 AM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 11:34:43 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:43 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 11:34:43 AM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 11:34:46 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    collating lists...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Reading collated data JSON...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Writing "PR" type CSV...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+    Writing "commit" type CSV...
+
+Tue, 06/15/21, 11:34:46 AM:  Complete! 
+
+Tue, 06/15/21, 11:34:46 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:35:38 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:35:38 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:35:38 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:38 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:35:38 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:38 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:35:40 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:35:40 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:35:40 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:40 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:35:40 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:40 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:35:40 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:40 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:35:42 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:42 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:35:42 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:42 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:35:42 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:42 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:35:45 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:45 AM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 11:35:45 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:45 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 11:35:45 AM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 11:35:49 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    collating lists...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Reading collated data JSON...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Writing "PR" type CSV...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+    Writing "commit" type CSV...
+
+Tue, 06/15/21, 11:35:49 AM:  Complete! 
+
+Tue, 06/15/21, 11:35:49 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:36:43 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:36:43 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:36:43 AM:  Complete! 
+
+Tue, 06/15/21, 11:36:43 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:36:50 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:36:50 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:36:50 AM:  Complete! 
+
+Tue, 06/15/21, 11:36:50 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:36:55 AM:  Complete! 
+
+Tue, 06/15/21, 11:36:55 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:37:00 AM: 
+Attempting program start...
+
+Tue, 06/15/21, 11:37:00 AM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 11:37:00 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:00 AM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 11:37:00 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:00 AM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 11:37:00 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:00 AM: 
+    Getting issue data...
+
+Tue, 06/15/21, 11:37:02 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:02 AM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 11:37:02 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:02 AM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 11:37:03 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:03 AM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 11:37:07 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:07 AM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 11:37:07 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:07 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 11:37:07 AM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    collating lists...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Reading collated data JSON...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Writing "PR" type CSV...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+    Writing "commit" type CSV...
+
+Tue, 06/15/21, 11:37:11 AM:  Complete! 
+
+Tue, 06/15/21, 11:37:11 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 11:59:27 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 11:59:27 AM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 11:59:27 AM:  Complete! 
+
+Tue, 06/15/21, 11:59:27 AM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 11:59:28 AM:  Complete! 
+
+Tue, 06/15/21, 11:59:28 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 11:59:29 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Tue, 06/15/21, 11:59:29 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:03:39 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:03:39 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:03:39 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:39 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:03:39 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:39 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:03:39 PM: 
+Attempting program start...
+
+Tue, 06/15/21, 12:03:40 PM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 12:03:40 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:40 PM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 12:03:40 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:40 PM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 12:03:40 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:40 PM: 
+    Getting issue data...
+
+Tue, 06/15/21, 12:03:41 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:41 PM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 12:03:41 PM:  Complete! 
+
+Tue, 06/15/21, 12:03:41 PM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 12:03:42 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 368, in exe_menu
+    list_tuple = get_PR_info( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1031, in get_PR_info
+    safe_quant = check_row_quant_safety( pr_paged_list, row_quant, "V_ROW_#_PR",
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 170, in check_row_quant_safety
+    if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Tue, 06/15/21, 12:03:42 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:12:42 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:12:42 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:12:42 PM:  Complete! 
+
+Tue, 06/15/21, 12:12:42 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:12:43 PM:  Complete! 
+
+Tue, 06/15/21, 12:12:43 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_3.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 3
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:12:43 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:12:43 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:12:43 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:12:43 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:12:43 PM:  Complete! 
+
+Tue, 06/15/21, 12:12:43 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:12:44 PM:  Complete! 
+
+Tue, 06/15/21, 12:12:44 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_4.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:12:44 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:12:44 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:27:28 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:27:28 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:27:28 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:28 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:27:28 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:28 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_3.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 3
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:27:28 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:27:28 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:27:29 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:27:29 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:27:29 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:29 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:27:29 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:29 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_4.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:27:29 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:27:29 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:27:52 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:27:52 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:27:52 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:52 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:27:53 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:53 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_3.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 3
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:27:53 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:27:53 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:27:53 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:27:53 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:27:53 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:53 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:27:53 PM:  Complete! 
+
+Tue, 06/15/21, 12:27:53 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_4.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:27:53 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:27:53 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:38:57 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:38:57 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:38:57 PM:  Complete! 
+
+Tue, 06/15/21, 12:38:57 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:38:58 PM:  Complete! 
+
+Tue, 06/15/21, 12:38:58 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_3.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 3
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:38:58 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:38:58 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 12:38:58 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 12:38:58 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 12:38:58 PM:  Complete! 
+
+Tue, 06/15/21, 12:38:58 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 12:38:58 PM:  Complete! 
+
+Tue, 06/15/21, 12:38:58 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : /home/j/git/GitHub-Repo-Extractor/configs/test_automated/jabref_4.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 12:38:58 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 339, in exe_menu
+    op_choice = input( PROG_INTRO )
+EOFError: EOF when reading a line
+
+Tue, 06/15/21, 12:38:58 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 02:10:05 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 02:10:05 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 02:10:05 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:05 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 02:10:06 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:06 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 02:10:07 PM: 
+Attempting program start...
+
+Tue, 06/15/21, 02:10:07 PM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 02:10:07 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:07 PM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 02:10:07 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:07 PM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 02:10:07 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:07 PM: 
+    Getting issue data...
+
+Tue, 06/15/21, 02:10:09 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:09 PM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 02:10:09 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:09 PM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 02:10:09 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:09 PM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 02:10:12 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:12 PM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 02:10:12 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:12 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 02:10:12 PM: 
+    filtering commits...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Getting commit data...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    collating lists...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Reading collated data JSON...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Writing "PR" type CSV...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/15/21, 02:10:14 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:14 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/15/21, 02:10:48 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 02:10:48 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 02:10:48 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:48 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 02:10:48 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:48 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Tue, 06/15/21, 02:10:49 PM: 
+Attempting program start...
+
+Tue, 06/15/21, 02:10:49 PM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 02:10:49 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:49 PM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 02:10:49 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:49 PM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 02:10:52 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:52 PM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 02:10:52 PM:  Complete! 
+
+Tue, 06/15/21, 02:10:52 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Tue, 06/15/21, 02:10:52 PM: 
+    filtering commits...
+
+Tue, 06/15/21, 02:10:53 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 135, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 380, in exe_menu
+    commit_metalist, diag_strs = get_commit_info( session,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 584, in get_commit_info
+    commit_list, diag_lists = filter_commits( session, commit_py_metalist,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 475, in filter_commits
+    commit_files        = commit_of_interest.files
+  File "/home/j/.local/lib/python3.9/site-packages/github/Commit.py", line 91, in files
+    self._completeIfNotSet(self._files)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Tue, 06/15/21, 02:10:53 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
