@@ -184,3 +184,1516 @@ Fri, 06/04/21, 07:56:58 PM:
 
 ------------------------------------------------------------------------------
 
+
+Tue, 06/15/21, 04:29:44 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/15/21, 04:29:44 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/15/21, 04:29:44 PM:  Complete! 
+
+Tue, 06/15/21, 04:29:44 PM: 
+    Validating user authentification...
+
+Tue, 06/15/21, 04:29:44 PM:  Complete! 
+
+Tue, 06/15/21, 04:29:44 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/rxjava/rxjava_full.txt
+        - repo             : ReactiveX/RxJava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/rxjava/rxjava_full_log.txt        
+        - issue json file  : outputs/rxjava_full/json/rxjava_full_issue_list.json
+        - pr JSON file     : outputs/rxjava_full/json/rxjava_full_pr_list.json
+        - commit JSON file : outputs/rxjava_full/json/rxjava_full_commit_list.json
+        - master JSON file : outputs/rxjava_full/json/rxjava_full_commit_list.json
+        - "pr" CSV file    : outputs/rxjava_full/rxjava_full_pr_output.csv       
+        - "commit" CSV file: outputs/rxjava_full/rxjava_full_commit_output.csv
+
+
+Tue, 06/15/21, 04:29:46 PM: 
+Attempting program start...
+
+Tue, 06/15/21, 04:29:46 PM: 
+    Getting paginated list of issues...
+
+Tue, 06/15/21, 04:29:46 PM:  Complete! 
+
+Tue, 06/15/21, 04:29:46 PM: 
+    Getting paginated list of pull requests...
+
+Tue, 06/15/21, 04:29:46 PM:  Complete! 
+
+Tue, 06/15/21, 04:29:46 PM: 
+    Validating row quantity config for issue data collection...
+
+Tue, 06/15/21, 04:29:46 PM:  Complete! 
+
+Tue, 06/15/21, 04:29:46 PM: 
+    Getting issue data...
+
+Tue, 06/15/21, 04:38:59 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 755, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:26 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:27 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 05:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 05:20:06 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:28 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:28 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 751, in get_issue_info
+    if comments_paged_list.totalCount == 0:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 149, in totalCount
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 06:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 06:20:18 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 755, in get_issue_info
+    for comment in comments_paged_list:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 56, in __iter__
+    newElements = self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 07:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 07:19:51 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:29 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:30 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 734, in get_issue_info
+    issue_name_str  = cur_issue_user.name
+  File "/home/j/.local/lib/python3.9/site-packages/github/NamedUser.py", line 276, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 08:06:31 PM: 
+    Getting more issue data...
+
+Tue, 06/15/21, 08:10:22 PM:  Complete! 
+
+Tue, 06/15/21, 08:10:22 PM: 
+    Writing list of issue data to JSON...
+
+Tue, 06/15/21, 08:10:23 PM:  Complete! 
+
+Tue, 06/15/21, 08:10:23 PM: 
+    Validating row quantity config for pull request data collection...
+
+Tue, 06/15/21, 08:10:23 PM:  Complete! 
+
+Tue, 06/15/21, 08:10:23 PM: 
+    Getting pull request data...
+
+Tue, 06/15/21, 08:25:46 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 09:06:31 PM: 
+    Getting more pull request data...
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Getting more pull request data...
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Getting more pull request data...
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Getting more pull request data...
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1054, in get_PR_info
+    if cur_pr.merged == True:
+  File "/home/j/.local/lib/python3.9/site-packages/github/PullRequest.py", line 259, in merged
+    self._completeIfNotSet(self._merged)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 09:06:32 PM: 
+    Getting more pull request data...
+
+Tue, 06/15/21, 09:20:44 PM:  Complete! 
+
+Tue, 06/15/21, 09:20:44 PM: 
+    Writing list of PR data to JSON...
+
+Tue, 06/15/21, 09:20:44 PM:  Complete! 
+
+Tue, 06/15/21, 09:20:44 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+        105
+        117
+        125
+        131
+        149
+        152
+        158
+        162
+        163
+        169
+        174
+        185
+        199
+        209
+        213
+        214
+        226
+        227
+        237
+        260
+        261
+        283
+        289
+        292
+        294
+        300
+        304
+        317
+        319
+        337
+        338
+        365
+        366
+        367
+        384
+        404
+        421
+        427
+        436
+        440
+        446
+        457
+        461
+        485
+        487
+        490
+        491
+        493
+        495
+        498
+        500
+        504
+        505
+        507
+        509
+        511
+        515
+        519
+        528
+        536
+        538
+        542
+        543
+        546
+        548
+        553
+        557
+        566
+        578
+        580
+        582
+        584
+        585
+        603
+        605
+        606
+        611
+        620
+        622
+        636
+        641
+        642
+        643
+        644
+        645
+        646
+        647
+        648
+        649
+        654
+        655
+        660
+        663
+        665
+        668
+        696
+        704
+        706
+        726
+        743
+        744
+        747
+        753
+        761
+        766
+        772
+        774
+        779
+        780
+        800
+        804
+        806
+        807
+        848
+        850
+        856
+        861
+        864
+        868
+        871
+        875
+        882
+        884
+        906
+        907
+        908
+        915
+        916
+        917
+        933
+        940
+        946
+        949
+        951
+        983
+        994
+        1008
+        1014
+        1026
+        1032
+        1043
+        1075
+        1082
+        1093
+        1102
+        1113
+        1114
+        1123
+        1143
+        1145
+        1146
+        1166
+        1170
+        1179
+        1181
+        1190
+        1192
+        1197
+        1198
+        1200
+        1203
+        1211
+        1240
+        1242
+        1261
+        1262
+        1263
+        1267
+        1268
+        1300
+        1305
+        1308
+        1325
+        1326
+        1330
+        1333
+        1338
+        1351
+        1358
+        1363
+        1366
+        1371
+        1377
+        1381
+        1382
+        1384
+        1385
+        1386
+        1403
+        1413
+        1418
+        1428
+        1430
+        1432
+        1435
+        1437
+        1441
+        1449
+        1452
+        1460
+        1470
+        1471
+        1514
+        1516
+        1529
+        1532
+        1540
+        1584
+        1588
+        1606
+        1612
+        1617
+        1618
+        1626
+        1627
+        1629
+        1634
+        1640
+        1647
+        1650
+        1660
+        1694
+        1711
+        1722
+        1734
+        1754
+        1758
+        1760
+        1769
+        1770
+        1774
+        1790
+        1862
+        1883
+        1888
+        1892
+        1895
+        1899
+        1902
+        1906
+        1909
+        1910
+        1924
+        1929
+        1931
+        1934
+        1936
+        1942
+        1944
+        1945
+        1954
+        1959
+        1969
+        2189
+        2243
+        2330
+        2331
+        2333
+        2456
+        2460
+        2472
+        2541
+        2546
+        2551
+        2554
+        2573
+        2576
+        2579
+        2581
+        2592
+        2600
+        2603
+        2629
+        2641
+        2643
+        2649
+        2761
+        2763
+        2765
+        2772
+        2773
+        2806
+        2813
+        2816
+        2821
+        2827
+        2830
+        2834
+        2847
+        2849
+        2855
+        2878
+        2881
+        2886
+        2903
+        2927
+        2930
+        2935
+        2942
+        2953
+        2968
+        2971
+        2973
+        2978
+        2981
+        3010
+        3011
+        3022
+        3030
+        3032
+        3050
+        3056
+        3060
+        3088
+        3089
+        3111
+        3126
+        3130
+        3135
+        3151
+        3160
+        3163
+        3192
+        3249
+        3272
+        3274
+        3289
+        3304
+        3339
+        3345
+        3355
+        3359
+        3360
+        3364
+        3366
+        3372
+        3374
+        3381
+        3388
+        3389
+        3390
+        3391
+        3392
+        3393
+        3394
+        3395
+        3396
+        3397
+        3398
+        3399
+        3400
+        3401
+        3402
+        3403
+        3404
+        3405
+        3407
+        3410
+        3413
+        3414
+        3416
+        3424
+        3426
+        3430
+        3439
+        3443
+        3451
+        3460
+        3465
+        3479
+        3496
+        3497
+        3499
+        3501
+        3506
+        3507
+        3509
+        3519
+        3526
+        3529
+        3544
+        3573
+        3590
+        3597
+        3619
+        3622
+        3624
+        3631
+        3641
+        3647
+        3659
+        3660
+        3685
+        3744
+        3764
+        3772
+        3781
+        3797
+        3798
+        3814
+        3815
+        3817
+        3821
+        3827
+        3832
+        3834
+        3841
+        3899
+        3937
+        3938
+        3950
+        3959
+        3963
+        3964
+        3965
+        3969
+        3975
+        3991
+        3994
+        4001
+        4050
+        4064
+        4090
+        4143
+        4169
+        4213
+        4220
+        4249
+        4253
+        4276
+        4279
+        4290
+        4313
+        4325
+        4351
+        4354
+        4393
+        4396
+        4419
+        4480
+        4481
+        4482
+        4483
+        4499
+        4546
+        4569
+        4634
+        4659
+        4660
+        4792
+        4860
+        4868
+        4895
+        4910
+        4915
+        4919
+        4928
+        4934
+        4936
+        4939
+        4988
+        5003
+        5033
+        5059
+        5098
+        5147
+        5159
+        5205
+        5236
+        5241
+        5244
+        5252
+        5253
+        5282
+        5294
+        5295
+        5357
+        5377
+        5389
+        5453
+        5485
+        5491
+        5518
+        5519
+        5522
+        5527
+        5530
+        5538
+        5544
+        5569
+        5577
+        5579
+        5581
+        5592
+        5613
+        5626
+        5627
+        5664
+        5670
+        5672
+        5689
+        5702
+        5710
+        5724
+        5749
+        5752
+        5777
+        5810
+        5842
+        5879
+        5885
+        5922
+        5932
+        5937
+        5968
+        5993
+        5998
+        6012
+        6064
+        6100
+        6113
+        6114
+        6148
+        6154
+        6168
+        6183
+        6211
+        6215
+        6216
+        6217
+        6222
+        6230
+        6238
+        6295
+        6304
+        6337
+        6348
+        6356
+        6357
+        6366
+        6378
+        6383
+        6392
+        6416
+        6429
+        6431
+        6441
+        6482
+        6486
+        6512
+        6513
+        6541
+        6548
+        6584
+        6586
+        6588
+        6680
+        6683
+        6692
+        6728
+        6751
+        6774
+        6782
+        6905
+        6910
+        6913
+        6936
+        6955
+        6999
+        7004
+        7046
+        7090
+        7101
+        7108
+        7117
+        7128
+        7148
+        7175
+        7183
+        7199
+        7209
+        7218
+        7220
+        7229
+        7235
+        7239
+        7252
+        7254
+
+Tue, 06/15/21, 09:20:44 PM: 
+    filtering commits...
+
+Tue, 06/15/21, 09:26:32 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 472, in filter_commits
+    commit_of_interest = cur_commit_paged_list[last_commit_position]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 10:06:33 PM: 
+    filtering commits...
+
+Tue, 06/15/21, 10:23:14 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 475, in filter_commits
+    commit_files        = commit_of_interest.files
+  File "/home/j/.local/lib/python3.9/site-packages/github/Commit.py", line 91, in files
+    self._completeIfNotSet(self._files)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/15/21, 11:06:34 PM: 
+    filtering commits...
+
+Tue, 06/15/21, 11:13:51 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:51 PM: 
+    Getting commit data...
+
+Tue, 06/15/21, 11:13:51 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:51 PM: 
+    Writing list of commit data to JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+        6846
+        7000
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Reading issue data JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Reading pull request data JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Reading commit data JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    collating lists...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Writing master list of data to JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Reading collated data JSON...
+
+Tue, 06/15/21, 11:13:52 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:52 PM: 
+    Writing "PR" type CSV...
+
+Tue, 06/15/21, 11:13:53 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:53 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/15/21, 11:13:54 PM:  Complete! 
+
+Tue, 06/15/21, 11:13:54 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

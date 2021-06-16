@@ -2820,3 +2820,301 @@ Tue, 06/15/21, 02:10:53 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Wed, 06/16/21, 08:41:46 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:41:46 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:41:46 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:46 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:41:46 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:46 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Wed, 06/16/21, 08:41:49 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:41:49 AM: 
+    Getting paginated list of issues...
+
+Wed, 06/16/21, 08:41:49 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:49 AM: 
+    Getting paginated list of pull requests...
+
+Wed, 06/16/21, 08:41:49 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:49 AM: 
+    Validating row quantity config for issue data collection...
+
+Wed, 06/16/21, 08:41:49 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:49 AM: 
+    Getting issue data...
+
+Wed, 06/16/21, 08:41:51 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:51 AM: 
+    Writing list of issue data to JSON...
+
+Wed, 06/16/21, 08:41:51 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:51 AM: 
+    Validating row quantity config for pull request data collection...
+
+Wed, 06/16/21, 08:41:51 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:51 AM: 
+    Getting pull request data...
+
+Wed, 06/16/21, 08:41:54 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:54 AM: 
+    Writing list of PR data to JSON...
+
+Wed, 06/16/21, 08:41:54 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:54 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Wed, 06/16/21, 08:41:54 AM: 
+    filtering commits...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Getting commit data...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Writing list of commit data to JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Reading issue data JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Reading pull request data JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Reading commit data JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    collating lists...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Writing master list of data to JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Writing "PR" type CSV...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 08:41:56 AM:  Complete! 
+
+Wed, 06/16/21, 08:41:56 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 08:46:22 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:46:22 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:46:22 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:22 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:46:22 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:22 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_100.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 4
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_100_log.txt        
+        - issue json file  : outputs/jabref_100/jabref_100_issue_list.json
+        - pr JSON file     : outputs/jabref_100/jabref_100_pr_list.json
+        - commit JSON file : outputs/jabref_100/jabref_100_commit_list.json
+        - master JSON file : outputs/jabref_100/jabref_100_master_list.json
+        - "pr" CSV file    : outputs/jabref_100/jabref_100_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_100/jabref_100_commit_output.csv
+
+
+Wed, 06/16/21, 08:46:25 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:46:25 AM: 
+    Getting paginated list of issues...
+
+Wed, 06/16/21, 08:46:25 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:25 AM: 
+    Getting paginated list of pull requests...
+
+Wed, 06/16/21, 08:46:25 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:25 AM: 
+    Validating row quantity config for issue data collection...
+
+Wed, 06/16/21, 08:46:26 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:26 AM: 
+    Getting issue data...
+
+Wed, 06/16/21, 08:46:28 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:28 AM: 
+    Writing list of issue data to JSON...
+
+Wed, 06/16/21, 08:46:28 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:28 AM: 
+    Validating row quantity config for pull request data collection...
+
+Wed, 06/16/21, 08:46:28 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:28 AM: 
+    Getting pull request data...
+
+Wed, 06/16/21, 08:46:31 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:31 AM: 
+    Writing list of PR data to JSON...
+
+Wed, 06/16/21, 08:46:31 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:31 AM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Wed, 06/16/21, 08:46:31 AM: 
+    filtering commits...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Getting commit data...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Writing list of commit data to JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Reading issue data JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Reading pull request data JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Reading commit data JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    collating lists...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Writing master list of data to JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Writing "PR" type CSV...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 08:46:33 AM:  Complete! 
+
+Wed, 06/16/21, 08:46:33 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

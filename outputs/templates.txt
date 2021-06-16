@@ -21,3 +21,21 @@ Commit_Date
 Commit_Message
 isPR 
 
+
+
+
+['src/java/net/sf/jabref/FileSortTab.java',     
+
+'src/java/net/sf/jabref/FileTab.java',
+
+'src/java/net/sf/jabref/JabRefPreferences.java',
+
+'src/java/net/sf/jabref/PrefsDialog3.java',
+
+'src/java/net/sf/jabref/TablePrefsTab.java',
+
+'src/java/net/sf/jabref/export/FileActions.java',
+
+'src/java/net/sf/jabref/gui/ImportInspectionDialog.java',
+
+'src/java/net/sf/jabref/gui/MainTable.java']

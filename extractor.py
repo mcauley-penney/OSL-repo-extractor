@@ -117,10 +117,11 @@ def main():
     log_filename = cfg_list[7]
     logger       = init_logger( log_filename )  
 
+    # begin logging
+    logger.info( prog_start_log ) 
+
     # determine if user wants diagnostics
     diagnostics   = cfg_list[6]
-
-    logger.info( prog_start_log )
 
     if diagnostics == "true":
         log_and_print( "R_CFG_DONE", "INFO", logger  )
@@ -141,6 +142,9 @@ def main():
         print( unspec_except_str + NL_TAB + TAB + log_filename + NL )
 
     finally:
+        repo_name = cfg_list[1]
+        print( NL + "Operations complete for " + repo_name + "!" + NL )
+
         logger.info( end_prog ) 
 
 
@@ -1797,11 +1801,6 @@ def write_csv( master_info_list, out_file_name, output_type, diagnostics, logger
                     output_row = [ issue_num, issue_author_name, issue_title,
                                    issue_body, commit_message, commit_file_list,
                                    issue_closed_date, commit_patch_text ] 
-
-                    print( "\nPR num: " + issue_num + "; issue title: " + issue_title )
-                    print( "commit message: " + commit_message )
-
-                    print( commit_file_list )
 
                     writer.writerow( output_row ) 
 
