@@ -4554,3 +4554,55 @@ Tue, 06/15/21, 02:09:00 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Wed, 06/16/21, 08:46:36 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:46:36 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:46:36 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:36 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:46:36 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:36 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/presto/presto_full_log.txt        
+        - issue json file  : outputs/presto_full/json/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/json/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/json/presto_full_commits.json
+        - master JSON file : outputs/presto_full/json/presto_full_master.json
+        - "pr" CSV file    : outputs/presto_full/presto_full_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_full_commit_output.csv
+
+
+Wed, 06/16/21, 08:46:38 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:46:39 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:46:39 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:39 PM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 08:46:39 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:39 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

@@ -3154,3 +3154,55 @@ Tue, 06/15/21, 04:28:15 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Wed, 06/16/21, 08:46:46 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:46:46 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:46:46 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:46 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:46:47 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:47 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/mockito/mockito_full.txt        
+        - issue json file  : outputs/mockito_full/json/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/json/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/json/mockito_full_commits.json
+        - master JSON file : outputs/mockito_full/json/mockito_full_master.json
+        - "pr" CSV file    : outputs/mockito_full/mockito_full_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_full_commit_output.csv
+
+
+Wed, 06/16/21, 08:46:48 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:46:48 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:46:48 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:48 PM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 08:46:48 PM:  Complete! 
+
+Wed, 06/16/21, 08:46:48 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

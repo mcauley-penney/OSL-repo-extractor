@@ -5,7 +5,7 @@ auth_file            = auths/jmp_auth.txt
 rows                 = 4
 issue_state          = closed
 pr_state             = closed
-diagnostics          = true
+diagnostics          = false
 log_file             = log_files/jabref/jabref_100_log.txt 
 
 issue_json_filename  = outputs/jabref_100/jabref_100_issue_list.json 

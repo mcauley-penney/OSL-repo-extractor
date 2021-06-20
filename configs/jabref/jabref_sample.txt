@@ -1,0 +1,17 @@
+- JabRef config file
+
+repo                 = JabRef/jabref
+auth_file            = auths/jmp_auth.txt
+rows                 = 10
+issue_state          = closed
+pr_state             = closed
+diagnostics          = false
+log_filename         = log_files/jabref/jabref_sample_log.txt 
+
+issue_json_filename  = outputs/jabref_sample/json/jabref_sample_issue_list.json 
+pr_json_filename     = outputs/jabref_sample/json/jabref_sample_pr_list.json
+commit_json_filename = outputs/jabref_sample/json/jabref_sample_commit_list.json
+master_json_filename = outputs/jabref_sample/json/jabref_sample_master_list.json
+
+pr_csv_filename      = outputs/jabref_sample/jabref_sample_pr_output.csv
+commit_csv_filename  = outputs/jabref_sample/jabref_sample_commit_output.csv 

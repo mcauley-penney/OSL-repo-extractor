@@ -1,0 +1,2988 @@
+Issue_NumAuthor_LoginFile_NamePatch_TextCommit_MessageCommit_Title
+1Olaf Lenz['src/java/net/sf/jabref/FileSortTab.java', 'src/java/net/sf/jabref/FileTab.java', 'src/java/net/sf/jabref/JabRefPreferences.java', 'src/java/net/sf/jabref/PrefsDialog3.java', 'src/java/net/sf/jabref/TablePrefsTab.java', 'src/java/net/sf/jabref/export/FileActions.java', 'src/java/net/sf/jabref/gui/ImportInspectionDialog.java', 'src/java/net/sf/jabref/gui/MainTable.java']"@@ -0,0 +1,387 @@
++/*  Copyright (C) 2013 JabRef contributors.
++ This program is free software; you can redistribute it and/or modify
++ it under the terms of the GNU General Public License as published by
++ the Free Software Foundation; either version 2 of the License, or
++ (at your option) any later version.
++
++ This program is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ GNU General Public License for more details.
++
++ You should have received a copy of the GNU General Public License along
++ with this program; if not, write to the Free Software Foundation, Inc.,
++ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
++package net.sf.jabref;
++
++import java.awt.*;
++import javax.swing.*;
++
++import com.jgoodies.forms.builder.DefaultFormBuilder;
++import com.jgoodies.forms.layout.FormLayout;
++import java.awt.event.ActionEvent;
++import java.awt.event.ActionListener;
++import java.util.Arrays;
++import java.util.Collections;
++import java.util.ArrayList;
++
++/**
++ * Preference tab for file sorting options.
++ */
++public class FileSortTab extends JPanel implements PrefsTab {
++
++    JabRefPreferences _prefs;
++    JabRefFrame _frame;
++    private JRadioButton saveInOriginalOrder, saveInTableOrder, saveInSpecifiedOrder;
++    private JCheckBox savePriDesc, saveSecDesc, saveTerDesc;
++    private JTextField savePriField, saveSecField, saveTerField;
++    private JComboBox savePriSort, saveSecSort, saveTerSort;
++    private JPanel saveSpecPanel;
++
++    private JRadioButton exportInOriginalOrder, exportInTableOrder, exportInSpecifiedOrder;
++    private JCheckBox exportPriDesc, exportSecDesc, exportTerDesc;
++    private JTextField exportPriField, exportSecField, exportTerField;
++    private JComboBox exportPriSort, exportSecSort, exportTerSort;
++    private JPanel exportSpecPanel;
++
++    public FileSortTab(JabRefFrame frame, JabRefPreferences prefs) {
++        this._prefs = prefs;
++        this._frame = frame;
++        FormLayout layout = new FormLayout(""4dlu, left:pref, 4dlu, fill:pref"", """");
++        DefaultFormBuilder builder = new DefaultFormBuilder(layout);
++        builder.setLeadingColumnOffset(1);
++
++        { // SAVE SORT ORDER
++            // create Components
++            saveInOriginalOrder = new JRadioButton(Globals.lang(""Save entries in their original order""));
++            saveInTableOrder = new JRadioButton(Globals.lang(""Save in current table sort order""));
++            saveInSpecifiedOrder = new JRadioButton(Globals.lang(""Save entries ordered as specified""));
++
++            ButtonGroup bg = new ButtonGroup();
++            bg.add(saveInOriginalOrder);
++            bg.add(saveInTableOrder);
++            bg.add(saveInSpecifiedOrder);
++
++            ActionListener listener = new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    boolean selected = e.getSource() == saveInSpecifiedOrder;
++                    savePriSort.setEnabled(selected);
++                    savePriField.setEnabled(selected);
++                    savePriDesc.setEnabled(selected);
++                    saveSecSort.setEnabled(selected);
++                    saveSecField.setEnabled(selected);
++                    saveSecDesc.setEnabled(selected);
++                    saveTerSort.setEnabled(selected);
++                    saveTerField.setEnabled(selected);
++                    saveTerDesc.setEnabled(selected);
++                }
++            };
++            saveInOriginalOrder.addActionListener(listener);
++            saveInTableOrder.addActionListener(listener);
++            saveInSpecifiedOrder.addActionListener(listener);
++
++            ArrayList<String> v = new ArrayList<String>(Arrays.asList(BibtexFields.getAllFieldNames()));
++            v.add(BibtexFields.KEY_FIELD);
++            Collections.sort(v);
++            Object[] allPlusKey = v.toArray();
++            savePriSort = new JComboBox(allPlusKey);
++            saveSecSort = new JComboBox(allPlusKey);
++            saveTerSort = new JComboBox(allPlusKey);
++
++            savePriField = new JTextField(10);
++            saveSecField = new JTextField(10);
++            saveTerField = new JTextField(10);
++
++            savePriSort.insertItemAt(Globals.lang(""<select>""), 0);
++            saveSecSort.insertItemAt(Globals.lang(""<select>""), 0);
++            saveTerSort.insertItemAt(Globals.lang(""<select>""), 0);
++
++            savePriSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (savePriSort.getSelectedIndex() > 0) {
++                        savePriField.setText(savePriSort.getSelectedItem().toString());
++                        savePriSort.setSelectedIndex(0);
++                    }
++                }
++            });
++            saveSecSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (saveSecSort.getSelectedIndex() > 0) {
++                        saveSecField.setText(saveSecSort.getSelectedItem().toString());
++                        saveSecSort.setSelectedIndex(0);
++                    }
++                }
++            });
++            saveTerSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (saveTerSort.getSelectedIndex() > 0) {
++                        saveTerField.setText(saveTerSort.getSelectedItem().toString());
++                        saveTerSort.setSelectedIndex(0);
++                    }
++                }
++            });
++
++            savePriDesc = new JCheckBox(Globals.lang(""Descending""));
++            saveSecDesc = new JCheckBox(Globals.lang(""Descending""));
++            saveTerDesc = new JCheckBox(Globals.lang(""Descending""));
++
++            // create GUI
++            JLabel lab;
++
++            builder.appendSeparator(Globals.lang(""Save sort order""));
++            builder.append(saveInOriginalOrder, 1);
++            builder.nextLine();
++            builder.append(saveInTableOrder, 1);
++            builder.nextLine();
++            builder.append(saveInSpecifiedOrder, 1);
++            builder.nextLine();
++
++            // Create a new panel with its own FormLayout for these items:
++            FormLayout layout2 = new FormLayout(
++                    ""right:pref, 8dlu, fill:pref, 4dlu, fill:60dlu, 4dlu, left:pref"", """");
++            DefaultFormBuilder builder2 = new DefaultFormBuilder(layout2);
++            lab = new JLabel(Globals.lang(""Primary sort criterion""));
++            builder2.append(lab);
++            builder2.append(savePriSort);
++            builder2.append(savePriField);
++            builder2.append(savePriDesc);
++            builder2.nextLine();
++            lab = new JLabel(Globals.lang(""Secondary sort criterion""));
++            builder2.append(lab);
++            builder2.append(saveSecSort);
++            builder2.append(saveSecField);
++            builder2.append(saveSecDesc);
++            builder2.nextLine();
++            lab = new JLabel(Globals.lang(""Tertiary sort criterion""));
++            builder2.append(lab);
++            builder2.append(saveTerSort);
++            builder2.append(saveTerField);
++            builder2.append(saveTerDesc);
++
++            saveSpecPanel = builder2.getPanel();
++            builder.append(saveSpecPanel);
++            builder.nextLine();
++        }
++
++        { // EXPORT SORT ORDER
++            // create Components
++            exportInOriginalOrder = new JRadioButton(Globals.lang(""Export entries in their original order""));
++            exportInTableOrder = new JRadioButton(Globals.lang(""Export in current table sort order""));
++            exportInSpecifiedOrder = new JRadioButton(Globals.lang(""Export entries ordered as specified""));
++
++            ButtonGroup bg = new ButtonGroup();
++            bg.add(exportInOriginalOrder);
++            bg.add(exportInTableOrder);
++            bg.add(exportInSpecifiedOrder);
++            
++            ActionListener listener = new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    boolean selected = e.getSource() == exportInSpecifiedOrder;
++                    exportPriSort.setEnabled(selected);
++                    exportPriField.setEnabled(selected);
++                    exportPriDesc.setEnabled(selected);
++                    exportSecSort.setEnabled(selected);
++                    exportSecField.setEnabled(selected);
++                    exportSecDesc.setEnabled(selected);
++                    exportTerSort.setEnabled(selected);
++                    exportTerField.setEnabled(selected);
++                    exportTerDesc.setEnabled(selected);
++                }
++            };
++            exportInOriginalOrder.addActionListener(listener);
++            exportInTableOrder.addActionListener(listener);
++            exportInSpecifiedOrder.addActionListener(listener);
++
++            ArrayList<String> v = new ArrayList<String>(Arrays.asList(BibtexFields.getAllFieldNames()));
++            v.add(BibtexFields.KEY_FIELD);
++            Collections.sort(v);
++            Object[] allPlusKey = v.toArray();
++            exportPriSort = new JComboBox(allPlusKey);
++            exportSecSort = new JComboBox(allPlusKey);
++            exportTerSort = new JComboBox(allPlusKey);
++
++            exportPriField = new JTextField(10);
++            exportSecField = new JTextField(10);
++            exportTerField = new JTextField(10);
++
++            exportPriSort.insertItemAt(Globals.lang(""<select>""), 0);
++            exportSecSort.insertItemAt(Globals.lang(""<select>""), 0);
++            exportTerSort.insertItemAt(Globals.lang(""<select>""), 0);
++
++            exportPriSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (exportPriSort.getSelectedIndex() > 0) {
++                        exportPriField.setText(exportPriSort.getSelectedItem().toString());
++                        exportPriSort.setSelectedIndex(0);
++                    }
++                }
++            });
++            exportSecSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (exportSecSort.getSelectedIndex() > 0) {
++                        exportSecField.setText(exportSecSort.getSelectedItem().toString());
++                        exportSecSort.setSelectedIndex(0);
++                    }
++                }
++            });
++            exportTerSort.addActionListener(new ActionListener() {
++                public void actionPerformed(ActionEvent e) {
++                    if (exportTerSort.getSelectedIndex() > 0) {
++                        exportTerField.setText(exportTerSort.getSelectedItem().toString());
++                        exportTerSort.setSelectedIndex(0);
++                    }
++                }
++            });
++
++            exportPriDesc = new JCheckBox(Globals.lang(""Descending""));
++            exportSecDesc = new JCheckBox(Globals.lang(""Descending""));
++            exportTerDesc = new JCheckBox(Globals.lang(""Descending""));
++
++
++            // create GUI
++            JLabel lab;
++
++            builder.appendSeparator(Globals.lang(""Export sort order""));
++            builder.append(exportInOriginalOrder, 1);
++            builder.nextLine();
++            builder.append(exportInTableOrder, 1);
++            builder.nextLine();
++            builder.append(exportInSpecifiedOrder, 1);
++            builder.nextLine();
++            
++
++            // Create a new panel with its own FormLayout for these items:
++            FormLayout layout2 = new FormLayout(
++                    ""right:pref, 8dlu, fill:pref, 4dlu, fill:60dlu, 4dlu, left:pref"", """");
++            DefaultFormBuilder builder2 = new DefaultFormBuilder(layout2);
++            lab = new JLabel(Globals.lang(""Primary sort criterion""));
++            builder2.append(lab);
++            builder2.append(exportPriSort);
++            builder2.append(exportPriField);
++            builder2.append(exportPriDesc);
++            builder2.nextLine();
++            lab = new JLabel(Globals.lang(""Secondary sort criterion""));
++            builder2.append(lab);
++            builder2.append(exportSecSort);
++            builder2.append(exportSecField);
++            builder2.append(exportSecDesc);
++            builder2.nextLine();
++            lab = new JLabel(Globals.lang(""Tertiary sort criterion""));
++            builder2.append(lab);
++            builder2.append(exportTerSort);
++            builder2.append(exportTerField);
++            builder2.append(exportTerDesc);
++
++            builder.append(builder2.getPanel());
++            builder.nextLine();
++        }
++
++        // COMBINE EVERYTHING
++        JPanel pan = builder.getPanel();
++        pan.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
++        setLayout(new BorderLayout());
++        add(pan, BorderLayout.CENTER);
++    }
++
++    public void setValues() {
++        if (_prefs.getBoolean(JabRefPreferences.SAVE_IN_ORIGINAL_ORDER)) {
++            saveInOriginalOrder.setSelected(true);
++        } else if (_prefs.getBoolean(JabRefPreferences.SAVE_IN_SPECIFIED_ORDER)) {
++            saveInSpecifiedOrder.setSelected(true);
++        } else {
++            saveInTableOrder.setSelected(true);
++        }
++
++        {
++            boolean selected = _prefs.getBoolean(JabRefPreferences.SAVE_IN_SPECIFIED_ORDER);
++            savePriSort.setEnabled(selected);
++            savePriField.setEnabled(selected);
++            savePriDesc.setEnabled(selected);
++            saveSecSort.setEnabled(selected);
++            saveSecField.setEnabled(selected);
++            saveSecDesc.setEnabled(selected);
++            saveTerSort.setEnabled(selected);
++            saveTerField.setEnabled(selected);
++            saveTerDesc.setEnabled(selected);
++        }
++
++        savePriField.setText(_prefs.get(JabRefPreferences.SAVE_PRIMARY_SORT_FIELD));
++        saveSecField.setText(_prefs.get(JabRefPreferences.SAVE_SECONDARY_SORT_FIELD));
++        saveTerField.setText(_prefs.get(JabRefPreferences.SAVE_TERTIARY_SORT_FIELD));
++
++        savePriSort.setSelectedIndex(0);
++        saveSecSort.setSelectedIndex(0);
++        saveTerSort.setSelectedIndex(0);
++
++        savePriDesc.setSelected(_prefs.getBoolean(JabRefPreferences.SAVE_PRIMARY_SORT_DESCENDING));
++        saveSecDesc.setSelected(_prefs.getBoolean(JabRefPreferences.SAVE_SECONDARY_SORT_DESCENDING));
++        saveTerDesc.setSelected(_prefs.getBoolean(JabRefPreferences.SAVE_TERTIARY_SORT_DESCENDING));
++
++        if (_prefs.getBoolean(JabRefPreferences.EXPORT_IN_ORIGINAL_ORDER)) {
++            exportInOriginalOrder.setSelected(true);
++        } else if (_prefs.getBoolean(JabRefPreferences.EXPORT_IN_SPECIFIED_ORDER)) {
++            exportInSpecifiedOrder.setSelected(true);
++        } else {
++            exportInTableOrder.setSelected(true);
++        }
++
++        {
++            boolean selected = _prefs.getBoolean(JabRefPreferences.EXPORT_IN_SPECIFIED_ORDER);
++            exportPriSort.setEnabled(selected);
++            exportPriField.setEnabled(selected);
++            exportPriDesc.setEnabled(selected);
++            exportSecSort.setEnabled(selected);
++            exportSecField.setEnabled(selected);
++            exportSecDesc.setEnabled(selected);
++            exportTerSort.setEnabled(selected);
++            exportTerField.setEnabled(selected);
++            exportTerDesc.setEnabled(selected);
++        }
++
++        exportPriField.setText(_prefs.get(JabRefPreferences.EXPORT_PRIMARY_SORT_FIELD));
++        exportSecField.setText(_prefs.get(JabRefPreferences.EXPORT_SECONDARY_SORT_FIELD));
++        exportTerField.setText(_prefs.get(JabRefPreferences.EXPORT_TERTIARY_SORT_FIELD));
++
++        exportPriSort.setSelectedIndex(0);
++        exportSecSort.setSelectedIndex(0);
++        exportTerSort.setSelectedIndex(0);
++
++        exportPriDesc.setSelected(_prefs.getBoolean(JabRefPreferences.EXPORT_PRIMARY_SORT_DESCENDING));
++        exportSecDesc.setSelected(_prefs.getBoolean(JabRefPreferences.EXPORT_SECONDARY_SORT_DESCENDING));
++        exportTerDesc.setSelected(_prefs.getBoolean(JabRefPreferences.EXPORT_TERTIARY_SORT_DESCENDING));
++    }
++
++    public void storeSettings() {
++        _prefs.putBoolean(JabRefPreferences.SAVE_IN_ORIGINAL_ORDER, saveInOriginalOrder.isSelected());
++        _prefs.putBoolean(JabRefPreferences.SAVE_IN_SPECIFIED_ORDER, saveInSpecifiedOrder.isSelected());
++
++        _prefs.putBoolean(JabRefPreferences.SAVE_PRIMARY_SORT_DESCENDING, savePriDesc.isSelected());
++        _prefs.putBoolean(JabRefPreferences.SAVE_SECONDARY_SORT_DESCENDING, saveSecDesc.isSelected());
++        _prefs.putBoolean(JabRefPreferences.SAVE_TERTIARY_SORT_DESCENDING, saveTerDesc.isSelected());
++
++        _prefs.put(JabRefPreferences.SAVE_PRIMARY_SORT_FIELD, savePriField.getText().toLowerCase().trim());
++        _prefs.put(JabRefPreferences.SAVE_SECONDARY_SORT_FIELD, saveSecField.getText().toLowerCase().trim());
++        _prefs.put(JabRefPreferences.SAVE_TERTIARY_SORT_FIELD, saveTerField.getText().toLowerCase().trim());
++
++        _prefs.putBoolean(JabRefPreferences.EXPORT_IN_ORIGINAL_ORDER, exportInOriginalOrder.isSelected());
++        _prefs.putBoolean(JabRefPreferences.EXPORT_IN_SPECIFIED_ORDER, exportInSpecifiedOrder.isSelected());
++
++        _prefs.putBoolean(JabRefPreferences.EXPORT_PRIMARY_SORT_DESCENDING, exportPriDesc.isSelected());
++        _prefs.putBoolean(JabRefPreferences.EXPORT_SECONDARY_SORT_DESCENDING, exportSecDesc.isSelected());
++        _prefs.putBoolean(JabRefPreferences.EXPORT_TERTIARY_SORT_DESCENDING, exportTerDesc.isSelected());
++
++        _prefs.put(JabRefPreferences.EXPORT_PRIMARY_SORT_FIELD, exportPriField.getText().toLowerCase().trim());
++        _prefs.put(JabRefPreferences.EXPORT_SECONDARY_SORT_FIELD, exportSecField.getText().toLowerCase().trim());
++        _prefs.put(JabRefPreferences.EXPORT_TERTIARY_SORT_FIELD, exportTerField.getText().toLowerCase().trim());
++
++    }
++
++    public boolean readyToClose() {
++        return true;
++    }
++
++    public String getTabName() {
++        return Globals.lang(""File Sorting"");
++    }
++}, @@ -39,8 +39,6 @@
+             promptBeforeUsingAutoSave, includeEmptyFields, camelCase, sameColumn;
+     private JComboBox valueDelimiter;
+     private JRadioButton
+-        saveOriginalOrder, saveAuthorOrder, saveTableOrder, saveTitleOrder,
+-        exportOriginalOrder, exportAuthorOrder, exportTableOrder, exportTitleOrder,
+         resolveStringsStandard, resolveStringsAll;
+     private JTextField bracesAroundCapitalsFields, nonWrappableFields,
+             doNotResolveStringsFor;
+@@ -56,14 +54,6 @@ public FileTab(JabRefFrame frame, JabRefPreferences prefs) {
+                 GUIGlobals.getIconUrl(""helpSmall""));
+         openLast = new JCheckBox(Globals.lang(""Open last edited databases at startup""));
+         backup = new JCheckBox(Globals.lang(""Backup old file when saving""));
+-        saveAuthorOrder = new JRadioButton(Globals.lang(""Save ordered by author/editor/year""));
+-        exportAuthorOrder = new JRadioButton(Globals.lang(""Export ordered by author/editor/year""));
+-        saveOriginalOrder = new JRadioButton(Globals.lang(""Save entries in their original order""));
+-        exportOriginalOrder = new JRadioButton(Globals.lang(""Export entries in their original order""));
+-        saveTableOrder = new JRadioButton(Globals.lang(""Save in current table sort order""));
+-        exportTableOrder = new JRadioButton(Globals.lang(""Export in current table sort order""));
+-        saveTitleOrder = new JRadioButton(Globals.lang(""Save entries ordered by title""));
+-        exportTitleOrder = new JRadioButton(Globals.lang(""Export entries ordered by title""));
+         autoSave = new JCheckBox(Globals.lang(""Autosave""));
+         promptBeforeUsingAutoSave = new JCheckBox(Globals.lang(""Prompt before recovering a database from an autosave file""));
+         autoSaveInterval = new JSpinner(new SpinnerNumberModel(1, 1, 60, 1));
+@@ -73,19 +63,9 @@ public FileTab(JabRefFrame frame, JabRefPreferences prefs) {
+         includeEmptyFields = new JCheckBox(Globals.lang(""Include empty fields""));
+         sameColumn = new JCheckBox(Globals.lang(""Start field contents in same column""));
+         camelCase = new JCheckBox(Globals.lang(""Use camel case for field names (e.g., \""HowPublished\"" instead of \""howpublished\"")""));
+-        ButtonGroup bg = new ButtonGroup();
+-        bg.add(saveAuthorOrder);
+-        bg.add(saveOriginalOrder);
+-        bg.add(saveTableOrder);
+-        bg.add(saveTitleOrder);
+-        bg = new ButtonGroup();
+-        bg.add(exportAuthorOrder);
+-        bg.add(exportOriginalOrder);
+-        bg.add(exportTableOrder);
+-        bg.add(exportTitleOrder);
+         resolveStringsAll = new JRadioButton(Globals.lang(""Resolve strings for all fields except"")+"":"");
+         resolveStringsStandard = new JRadioButton(Globals.lang(""Resolve strings for standard BibTeX fields only""));
+-        bg = new ButtonGroup();
++        ButtonGroup bg = new ButtonGroup();
+         bg.add(resolveStringsAll);
+         bg.add(resolveStringsStandard);
+ 
+@@ -144,19 +124,6 @@ public void stateChanged(ChangeEvent changeEvent) {
+         builder.nextLine();
+         builder.append(promptBeforeUsingAutoSave);
+         builder.nextLine();
+-        builder.appendSeparator(Globals.lang(""Sort order""));
+-        builder.append(saveAuthorOrder, 1);
+-        builder.append(exportAuthorOrder, 1);
+-        builder.nextLine();
+-        builder.append(saveTableOrder, 1);
+-        builder.append(exportTableOrder, 1);
+-        builder.nextLine();
+-        builder.append(saveOriginalOrder, 1);
+-        builder.append(exportOriginalOrder, 1);
+-        builder.nextLine();
+-        builder.append(saveTitleOrder, 1);
+-        builder.append(exportTitleOrder, 1);
+-        builder.nextLine();
+         builder.appendSeparator(Globals.lang(""Field saving options""));
+         builder.nextLine();
+         builder.append(camelCase);
+@@ -184,23 +151,7 @@ public void stateChanged(ChangeEvent changeEvent) {
+     public void setValues() {
+         openLast.setSelected(_prefs.getBoolean(""openLastEdited""));
+         backup.setSelected(_prefs.getBoolean(""backup""));
+-        if (_prefs.getBoolean(""saveInStandardOrder""))
+-            saveAuthorOrder.setSelected(true);
+-        else if (_prefs.getBoolean(""saveInOriginalOrder""))
+-            saveOriginalOrder.setSelected(true);
+-        else if (_prefs.getBoolean(""saveInTitleOrder""))
+-            saveTitleOrder.setSelected(true);
+-        else
+-            saveTableOrder.setSelected(true);
+-        if (_prefs.getBoolean(""exportInStandardOrder""))
+-            exportAuthorOrder.setSelected(true);
+-        else if (_prefs.getBoolean(""exportInOriginalOrder""))
+-            exportOriginalOrder.setSelected(true);
+-        else if (_prefs.getBoolean(""exportInTitleOrder""))
+-            exportTitleOrder.setSelected(true);
+-        else
+-            exportTableOrder.setSelected(true);
+-
++        
+         //preserveFormatting.setSelected(_prefs.getBoolean(""preserveFieldFormatting""));
+         autoDoubleBraces.setSelected(_prefs.getBoolean(""autoDoubleBraces""));
+         resolveStringsAll.setSelected(_prefs.getBoolean(""resolveStringsAllFields""));
+@@ -222,12 +173,6 @@ else if (_prefs.getBoolean(""exportInTitleOrder""))
+     public void storeSettings() {
+         _prefs.putBoolean(""backup"", backup.isSelected());
+         _prefs.putBoolean(""openLastEdited"", openLast.isSelected());
+-        _prefs.putBoolean(""saveInStandardOrder"", saveAuthorOrder.isSelected());
+-        _prefs.putBoolean(""saveInOriginalOrder"", saveOriginalOrder.isSelected());
+-        _prefs.putBoolean(""saveInTitleOrder"", saveTitleOrder.isSelected());
+-        _prefs.putBoolean(""exportInStandardOrder"", exportAuthorOrder.isSelected());
+-        _prefs.putBoolean(""exportInOriginalOrder"", exportOriginalOrder.isSelected());
+-        _prefs.putBoolean(""exportInTitleOrder"", exportTitleOrder.isSelected());
+         _prefs.putBoolean(""autoDoubleBraces"", autoDoubleBraces.isSelected());
+         _prefs.putBoolean(""resolveStringsAllFields"", resolveStringsAll.isSelected());
+         _prefs.put(""doNotResolveStringsFor"", doNotResolveStringsFor.getText().trim());, @@ -1,18 +1,18 @@
+ /*  Copyright (C) 2003-2012 JabRef contributors.
+-    This program is free software; you can redistribute it and/or modify
+-    it under the terms of the GNU General Public License as published by
+-    the Free Software Foundation; either version 2 of the License, or
+-    (at your option) any later version.
+-
+-    This program is distributed in the hope that it will be useful,
+-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-    GNU General Public License for more details.
+-
+-    You should have received a copy of the GNU General Public License along
+-    with this program; if not, write to the Free Software Foundation, Inc.,
+-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+-*/
++ This program is free software; you can redistribute it and/or modify
++ it under the terms of the GNU General Public License as published by
++ the Free Software Foundation; either version 2 of the License, or
++ (at your option) any later version.
++
++ This program is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ GNU General Public License for more details.
++
++ You should have received a copy of the GNU General Public License along
++ with this program; if not, write to the Free Software Foundation, Inc.,
++ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
+ package net.sf.jabref;
+ 
+ import java.awt.Color;
+@@ -54,69 +54,84 @@
+ 
+ public class JabRefPreferences {
+ 
+-    public final static String
+-        CUSTOM_TYPE_NAME = ""customTypeName_"",
+-        CUSTOM_TYPE_REQ = ""customTypeReq_"",
+-        CUSTOM_TYPE_OPT = ""customTypeOpt_"",
+-        CUSTOM_TYPE_PRIOPT = ""customTypePriOpt_"",
+-        CUSTOM_TAB_NAME = ""customTabName_"",
+-        CUSTOM_TAB_FIELDS = ""customTabFields_"",
+-        EMACS_PATH = ""emacsPath"",
+-        EMACS_ADDITIONAL_PARAMETERS = ""emacsParameters"",
+-        EMACS_23 = ""emacsUseV23InsertString"",
+-        EDIT_GROUP_MEMBERSHIP_MODE = ""groupEditGroupMembershipMode"",
+-        
+-        PDF_PREVIEW = ""pdfPreview"",
+-
+-        SHOWONELETTERHEADINGFORICONCOLUMNS = ""showOneLetterHeadingForIconColumns"",
+-
+-        EDITOR_EMACS_KEYBINDINGS = ""editorEMACSkeyBindings"",
+-        EDITOR_EMACS_KEYBINDINGS_REBIND_CA = ""editorEMACSkeyBindingsRebindCA"",
+-
+-        SHORTEST_TO_COMPLETE = ""shortestToComplete"",
+-        AUTOCOMPLETE_FIRSTNAME_MODE = ""autoCompFirstNameMode"",
+-        // here are the possible values for _MODE:
+-        AUTOCOMPLETE_FIRSTNAME_MODE_BOTH = ""both"",
+-        AUTOCOMPLETE_FIRSTNAME_MODE_ONLY_FULL = ""fullOnly"",
+-        AUTOCOMPLETE_FIRSTNAME_MODE_ONLY_ABBR = ""abbrOnly"",
+-
+-        WRITEFIELD_ADDSPACES = ""writeFieldAddSpaces"",
+-        WRITEFIELD_CAMELCASENAME = ""writeFieldCamelCase"",
+-
+-        UPDATE_TIMESTAMP = ""updateTimestamp"";
++    public final static String CUSTOM_TYPE_NAME = ""customTypeName_"",
++            CUSTOM_TYPE_REQ = ""customTypeReq_"",
++            CUSTOM_TYPE_OPT = ""customTypeOpt_"",
++            CUSTOM_TYPE_PRIOPT = ""customTypePriOpt_"",
++            CUSTOM_TAB_NAME = ""customTabName_"",
++            CUSTOM_TAB_FIELDS = ""customTabFields_"",
++            EMACS_PATH = ""emacsPath"",
++            EMACS_ADDITIONAL_PARAMETERS = ""emacsParameters"",
++            EMACS_23 = ""emacsUseV23InsertString"",
++            EDIT_GROUP_MEMBERSHIP_MODE = ""groupEditGroupMembershipMode"",
++            PDF_PREVIEW = ""pdfPreview"",
++            SHOWONELETTERHEADINGFORICONCOLUMNS = ""showOneLetterHeadingForIconColumns"",
++            EDITOR_EMACS_KEYBINDINGS = ""editorEMACSkeyBindings"",
++            EDITOR_EMACS_KEYBINDINGS_REBIND_CA = ""editorEMACSkeyBindingsRebindCA"",
++            SHORTEST_TO_COMPLETE = ""shortestToComplete"",
++            AUTOCOMPLETE_FIRSTNAME_MODE = ""autoCompFirstNameMode"",
++            // here are the possible values for _MODE:
++            AUTOCOMPLETE_FIRSTNAME_MODE_BOTH = ""both"",
++            AUTOCOMPLETE_FIRSTNAME_MODE_ONLY_FULL = ""fullOnly"",
++            AUTOCOMPLETE_FIRSTNAME_MODE_ONLY_ABBR = ""abbrOnly"",
++            WRITEFIELD_ADDSPACES = ""writeFieldAddSpaces"",
++            WRITEFIELD_CAMELCASENAME = ""writeFieldCamelCase"",
++            UPDATE_TIMESTAMP = ""updateTimestamp"",
++            PRIMARY_SORT_FIELD = ""priSort"",
++            PRIMARY_SORT_DESCENDING = ""priDescending"",
++            SECONDARY_SORT_FIELD = ""secSort"",
++            SECONDARY_SORT_DESCENDING = ""secDescending"",
++            TERTIARY_SORT_FIELD = ""terSort"",
++            TERTIARY_SORT_DESCENDING = ""terDescending"",
++            SAVE_IN_ORIGINAL_ORDER = ""saveInOriginalOrder"",
++            SAVE_IN_SPECIFIED_ORDER = ""saveInSpecifiedOrder"",
++            SAVE_PRIMARY_SORT_FIELD = ""savePriSort"",
++            SAVE_PRIMARY_SORT_DESCENDING = ""savePriDescending"",
++            SAVE_SECONDARY_SORT_FIELD = ""saveSecSort"",
++            SAVE_SECONDARY_SORT_DESCENDING = ""saveSecDescending"",
++            SAVE_TERTIARY_SORT_FIELD = ""saveTerSort"",
++            SAVE_TERTIARY_SORT_DESCENDING = ""saveTerDescending"",
++            EXPORT_IN_ORIGINAL_ORDER = ""exportInOriginalOrder"",
++            EXPORT_IN_SPECIFIED_ORDER = ""exportInSpecifiedOrder"",
++            EXPORT_PRIMARY_SORT_FIELD = ""exportPriSort"",
++            EXPORT_PRIMARY_SORT_DESCENDING = ""exportPriDescending"",
++            EXPORT_SECONDARY_SORT_FIELD = ""exportSecSort"",
++            EXPORT_SECONDARY_SORT_DESCENDING = ""exportSecDescending"",
++            EXPORT_TERTIARY_SORT_FIELD = ""exportTerSort"",
++            EXPORT_TERTIARY_SORT_DESCENDING = ""exportTerDescending"";
+ 
+     // This String is used in the encoded list in prefs of external file type
+     // modifications, in order to indicate a removed default file type:
+     public static final String FILE_TYPE_REMOVED_FLAG = ""REMOVED"";
+ 
+-    private static final char[][] VALUE_DELIMITERS =
+-            new char[][]{ {'""', '""'}, {'{', '}'} };
++    private static final char[][] VALUE_DELIMITERS
++            = new char[][]{{'""', '""'}, {'{', '}'}};
+ 
+     public String WRAPPED_USERNAME, MARKING_WITH_NUMBER_PATTERN;
+ 
+     Preferences prefs;
+     public HashMap<String, Object> defaults = new HashMap<String, Object>();
+-    public HashMap<String, String>
+-        keyBinds = new HashMap<String, String>(),
+-        defKeyBinds = new HashMap<String, String>();
++    public HashMap<String, String> keyBinds = new HashMap<String, String>(),
++            defKeyBinds = new HashMap<String, String>();
+     private HashSet<String> putBracesAroundCapitalsFields = new HashSet<String>(4);
+     private HashSet<String> nonWrappableFields = new HashSet<String>(5);
+     private static LabelPattern keyPattern;
+ 
+     // Object containing custom export formats:
+     public CustomExportList customExports;
+ 
+-    /** Set with all custom {@link net.sf.jabref.imports.ImportFormat}s */
++    /**
++     * Set with all custom {@link net.sf.jabref.imports.ImportFormat}s
++     */
+     public CustomImportList customImports;
+ 
+     // Object containing info about customized entry editor tabs.
+     private EntryEditorTabList tabList = null;
+-
+     // Map containing all registered external file types:
+     private TreeSet<ExternalFileType> externalFileTypes = new TreeSet<ExternalFileType>();
+ 
+-    public final ExternalFileType HTML_FALLBACK_TYPE =
+-            new ExternalFileType(""URL"", ""html"", ""text/html"", """", ""www"");
++    public final ExternalFileType HTML_FALLBACK_TYPE
++            = new ExternalFileType(""URL"", ""html"", ""text/html"", """", ""www"");
+ 
+     // The following field is used as a global variable during the export of a database.
+     // By setting this field to the path of the database's default file directory, formatters
+@@ -133,69 +148,120 @@
+     // The following field is used as a global variable during the export of a database.
+     // It is used to hold custom name formatters defined by a custom export filter.
+     // It is set before the export starts:
+-    public HashMap<String,String> customExportNameFormatters = null;
++    public HashMap<String, String> customExportNameFormatters = null;
+ 
+     // The only instance of this class:
+     private static JabRefPreferences singleton = null;
+ 
+     public static JabRefPreferences getInstance() {
+-		if (singleton == null)
+-			singleton = new JabRefPreferences();
+-		return singleton;
+-	}
++        if (singleton == null) {
++            singleton = new JabRefPreferences();
++        }
++        return singleton;
++    }
++
++    // Upgrade the preferences for the current version
++    // The old preference is kept in case an old version of JabRef is used with 
++    // these preferences, but it is only used when the new preference does not 
++    // exist
++    private void upgradeOldPreferences() {
++        if (prefs.get(SAVE_IN_SPECIFIED_ORDER, null) == null) {
++            if (prefs.getBoolean(""saveInStandardOrder"", false)) {
++                putBoolean(SAVE_IN_SPECIFIED_ORDER, true);
++                put(SAVE_PRIMARY_SORT_FIELD, ""author"");
++                put(SAVE_SECONDARY_SORT_FIELD, ""editor"");
++                put(SAVE_TERTIARY_SORT_FIELD, ""year"");
++                putBoolean(SAVE_PRIMARY_SORT_DESCENDING, false);
++                putBoolean(SAVE_SECONDARY_SORT_DESCENDING, false);
++                putBoolean(SAVE_TERTIARY_SORT_DESCENDING, false);
++            } else if (prefs.getBoolean(""saveInTitleOrder"", false)) {
++                // saveInTitleOrder => title, author, editor
++                putBoolean(SAVE_IN_SPECIFIED_ORDER, true);
++                put(SAVE_PRIMARY_SORT_FIELD, ""title"");
++                put(SAVE_SECONDARY_SORT_FIELD, ""author"");
++                put(SAVE_TERTIARY_SORT_FIELD, ""editor"");
++                putBoolean(SAVE_PRIMARY_SORT_DESCENDING, false);
++                putBoolean(SAVE_SECONDARY_SORT_DESCENDING, false);
++                putBoolean(SAVE_TERTIARY_SORT_DESCENDING, false);
++            }
++        }
++        
++        if (prefs.get(EXPORT_IN_SPECIFIED_ORDER, null) == null) {
++            if (prefs.getBoolean(""exportInStandardOrder"", false)) {
++                putBoolean(EXPORT_IN_SPECIFIED_ORDER, true);
++                put(EXPORT_PRIMARY_SORT_FIELD, ""author"");
++                put(EXPORT_SECONDARY_SORT_FIELD, ""editor"");
++                put(EXPORT_TERTIARY_SORT_FIELD, ""year"");
++                putBoolean(EXPORT_PRIMARY_SORT_DESCENDING, false);
++                putBoolean(EXPORT_SECONDARY_SORT_DESCENDING, false);
++                putBoolean(EXPORT_TERTIARY_SORT_DESCENDING, false);
++            } else if (prefs.getBoolean(""exportInTitleOrder"", false)) {
++                // exportInTitleOrder => title, author, editor
++                putBoolean(EXPORT_IN_SPECIFIED_ORDER, true);
++                put(EXPORT_PRIMARY_SORT_FIELD, ""title"");
++                put(EXPORT_SECONDARY_SORT_FIELD, ""author"");
++                put(EXPORT_TERTIARY_SORT_FIELD, ""editor"");
++                putBoolean(EXPORT_PRIMARY_SORT_DESCENDING, false);
++                putBoolean(EXPORT_SECONDARY_SORT_DESCENDING, false);
++                putBoolean(EXPORT_TERTIARY_SORT_DESCENDING, false);
++            }
++        }
++    }
+ 
+     // The constructor is made private to enforce this as a singleton class:
+     private JabRefPreferences() {
+ 
+         try {
+-            if (new File(""jabref.xml"").exists()){
++            if (new File(""jabref.xml"").exists()) {
+                 importPreferences(""jabref.xml"");
+             }
+         } catch (IOException e) {
+             Globals.logger(""Could not import preferences from jabref.xml:"" + e.getLocalizedMessage());
+         }
+-        
++
++        // load user preferences 
+         prefs = Preferences.userNodeForPackage(JabRef.class);
+-        
++        upgradeOldPreferences();
++
+         if (Globals.osName.equals(Globals.MAC)) {
+-			//defaults.put(""pdfviewer"", ""/Applications/Preview.app"");
+-			//defaults.put(""psviewer"", ""/Applications/Preview.app"");
+-			//defaults.put(""htmlviewer"", ""/Applications/Safari.app"");
+-        	defaults.put(EMACS_PATH, ""emacsclient"");
+-        	defaults.put(EMACS_23, true);
+-        	defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-n -e"");
++            //defaults.put(""pdfviewer"", ""/Applications/Preview.app"");
++            //defaults.put(""psviewer"", ""/Applications/Preview.app"");
++            //defaults.put(""htmlviewer"", ""/Applications/Safari.app"");
++            defaults.put(EMACS_PATH, ""emacsclient"");
++            defaults.put(EMACS_23, true);
++            defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-n -e"");
+             defaults.put(""fontFamily"", ""SansSerif"");
+ 
+-		} else if (Globals.osName.toLowerCase().startsWith(""windows"")) {
+-			//defaults.put(""pdfviewer"", ""cmd.exe /c start /b"");
+-			//defaults.put(""psviewer"", ""cmd.exe /c start /b"");
+-			//defaults.put(""htmlviewer"", ""cmd.exe /c start /b"");
+-			defaults.put(""lookAndFeel"", ""com.jgoodies.looks.windows.WindowsLookAndFeel"");
++        } else if (Globals.osName.toLowerCase().startsWith(""windows"")) {
++            //defaults.put(""pdfviewer"", ""cmd.exe /c start /b"");
++            //defaults.put(""psviewer"", ""cmd.exe /c start /b"");
++            //defaults.put(""htmlviewer"", ""cmd.exe /c start /b"");
++            defaults.put(""lookAndFeel"", ""com.jgoodies.looks.windows.WindowsLookAndFeel"");
+             defaults.put(""winEdtPath"", ""C:\\Program Files\\WinEdt Team\\WinEdt\\WinEdt.exe"");
+             defaults.put(""latexEditorPath"", ""C:\\Program Files\\LEd\\LEd.exe"");
+-        	defaults.put(EMACS_PATH, ""emacsclient.exe"");
+-        	defaults.put(EMACS_23, true);
+-        	defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-n -e"");
++            defaults.put(EMACS_PATH, ""emacsclient.exe"");
++            defaults.put(EMACS_23, true);
++            defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-n -e"");
+             defaults.put(""fontFamily"", ""Arial"");
+ 
+         } else {
+-			//defaults.put(""pdfviewer"", ""evince"");
+-			//defaults.put(""psviewer"", ""gv"");
+-			//defaults.put(""htmlviewer"", ""firefox"");
+-			defaults.put(""lookAndFeel"", ""com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"");
++            //defaults.put(""pdfviewer"", ""evince"");
++            //defaults.put(""psviewer"", ""gv"");
++            //defaults.put(""htmlviewer"", ""firefox"");
++            defaults.put(""lookAndFeel"", ""com.jgoodies.plaf.plastic.Plastic3DLookAndFeel"");
+             defaults.put(""fontFamily"", ""SansSerif"");
+-            
+-        	// linux
+-        	defaults.put(EMACS_PATH, ""gnuclient"");
+-        	defaults.put(EMACS_23, false);
+-        	defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-batch -eval"");
+-		}
+-		defaults.put(""useProxy"", Boolean.FALSE);
++
++            // linux
++            defaults.put(EMACS_PATH, ""gnuclient"");
++            defaults.put(EMACS_23, false);
++            defaults.put(EMACS_ADDITIONAL_PARAMETERS, ""-batch -eval"");
++        }
++        defaults.put(""useProxy"", Boolean.FALSE);
+         defaults.put(""proxyHostname"", ""my proxy host"");
+         defaults.put(""proxyPort"", ""my proxy port"");
+         defaults.put(PDF_PREVIEW, Boolean.FALSE);
+         defaults.put(""useDefaultLookAndFeel"", Boolean.TRUE);
+-        defaults.put(""lyxpipe"", System.getProperty(""user.home"")+File.separator+"".lyx/lyxpipe"");
++        defaults.put(""lyxpipe"", System.getProperty(""user.home"") + File.separator + "".lyx/lyxpipe"");
+         defaults.put(""vim"", ""vim"");
+         defaults.put(""vimServer"", ""vim"");
+         defaults.put(""posX"", new Integer(0));
+@@ -215,20 +281,38 @@ private JabRefPreferences() {
+         defaults.put(""namesLastOnly"", Boolean.TRUE); // ""Show last names only""
+         defaults.put(""language"", ""en"");
+         defaults.put(""showShort"", Boolean.TRUE);
+-        defaults.put(""priSort"", ""author"");
+-        defaults.put(""priDescending"", Boolean.FALSE);
+-        defaults.put(""priBinary"", Boolean.FALSE);
+-        defaults.put(""secSort"", ""year"");
+-        defaults.put(""secDescending"", Boolean.TRUE);
+-        defaults.put(""terSort"", ""author"");
+-        defaults.put(""terDescending"", Boolean.FALSE);
++
++        // Sorting preferences
++        defaults.put(PRIMARY_SORT_FIELD, ""author"");
++        defaults.put(PRIMARY_SORT_DESCENDING, Boolean.FALSE);
++        defaults.put(SECONDARY_SORT_FIELD, ""year"");
++        defaults.put(SECONDARY_SORT_DESCENDING, Boolean.TRUE);
++        defaults.put(TERTIARY_SORT_FIELD, ""author"");
++        defaults.put(TERTIARY_SORT_DESCENDING, Boolean.FALSE);
++        defaults.put(SAVE_IN_ORIGINAL_ORDER, Boolean.FALSE);
++        defaults.put(SAVE_IN_SPECIFIED_ORDER, Boolean.FALSE);
++        defaults.put(SAVE_PRIMARY_SORT_FIELD, ""bibtexkey"");
++        defaults.put(SAVE_PRIMARY_SORT_DESCENDING, Boolean.FALSE);
++        defaults.put(SAVE_SECONDARY_SORT_FIELD, ""author"");
++        defaults.put(SAVE_SECONDARY_SORT_DESCENDING, Boolean.TRUE);
++        defaults.put(SAVE_TERTIARY_SORT_FIELD, """");
++        defaults.put(SAVE_TERTIARY_SORT_DESCENDING, Boolean.TRUE);
++        defaults.put(EXPORT_IN_ORIGINAL_ORDER, Boolean.FALSE);
++        defaults.put(EXPORT_IN_SPECIFIED_ORDER, Boolean.FALSE);
++        defaults.put(EXPORT_PRIMARY_SORT_FIELD, ""bibtexkey"");
++        defaults.put(EXPORT_PRIMARY_SORT_DESCENDING, Boolean.FALSE);
++        defaults.put(EXPORT_SECONDARY_SORT_FIELD, ""author"");
++        defaults.put(EXPORT_SECONDARY_SORT_DESCENDING, Boolean.TRUE);
++        defaults.put(EXPORT_TERTIARY_SORT_FIELD, """");
++        defaults.put(EXPORT_TERTIARY_SORT_DESCENDING, Boolean.TRUE);
++
+         defaults.put(""columnNames"", ""entrytype;author;title;year;journal;owner;timestamp;bibtexkey"");
+-        defaults.put(""columnWidths"",""75;280;400;60;100;100;100;100"");
+-        defaults.put(PersistenceTableColumnListener.ACTIVATE_PREF_KEY, 
+-        		new Boolean(PersistenceTableColumnListener.DEFAULT_ENABLED));
++        defaults.put(""columnWidths"", ""75;280;400;60;100;100;100;100"");
++        defaults.put(PersistenceTableColumnListener.ACTIVATE_PREF_KEY,
++                new Boolean(PersistenceTableColumnListener.DEFAULT_ENABLED));
+         defaults.put(""xmpPrivacyFilters"", ""pdf;timestamp;keywords;owner;note;review"");
+         defaults.put(""useXmpPrivacyFilter"", Boolean.FALSE);
+-        defaults.put(""numberColWidth"",new Integer(GUIGlobals.NUMBER_COL_LENGTH));
++        defaults.put(""numberColWidth"", new Integer(GUIGlobals.NUMBER_COL_LENGTH));
+         defaults.put(""workingDirectory"", System.getProperty(""user.home""));
+         defaults.put(""exportWorkingDirectory"", System.getProperty(""user.home""));
+         defaults.put(""importWorkingDirectory"", System.getProperty(""user.home""));
+@@ -253,12 +337,7 @@ private JabRefPreferences() {
+         defaults.put(""searchAll"", Boolean.FALSE);
+         defaults.put(""incrementS"", Boolean.FALSE);
+         defaults.put(""searchAutoComplete"", Boolean.TRUE);
+-        defaults.put(""saveInStandardOrder"", Boolean.TRUE);
+-        defaults.put(""saveInOriginalOrder"", Boolean.FALSE);
+-        defaults.put(""saveInTitleOrder"", Boolean.FALSE);
+-        defaults.put(""exportInStandardOrder"", Boolean.TRUE);
+-        defaults.put(""exportInOriginalOrder"", Boolean.FALSE);
+-        defaults.put(""exportInTitleOrder"", Boolean.FALSE);
++
+         defaults.put(""selectS"", Boolean.FALSE);
+         defaults.put(""regExpSearch"", Boolean.TRUE);
+         defaults.put(""highLightWords"", Boolean.TRUE);
+@@ -284,7 +363,7 @@ private JabRefPreferences() {
+         defaults.put(""groupExpandTree"", Boolean.TRUE);
+         defaults.put(""groupAutoShow"", Boolean.TRUE);
+         defaults.put(""groupAutoHide"", Boolean.TRUE);
+-        defaults.put(JabRefPreferences.GROUP_SHOW_NUMBER_OF_ELEMENTS, Boolean.FALSE);
++        defaults.put(GROUP_SHOW_NUMBER_OF_ELEMENTS, Boolean.FALSE);
+         defaults.put(""autoAssignGroup"", Boolean.TRUE);
+         defaults.put(""groupKeywordSeparator"", "", "");
+         defaults.put(EDIT_GROUP_MEMBERSHIP_MODE, Boolean.FALSE);
+@@ -298,9 +377,9 @@ private JabRefPreferences() {
+         defaults.put(""memoryStickMode"", Boolean.FALSE);
+         defaults.put(""renameOnMoveFileToFileDir"", Boolean.TRUE);
+ 
+-    // The general fields stuff is made obsolete by the CUSTOM_TAB_... entries.
+-        defaults.put(""generalFields"", ""crossref;keywords;file;doi;url;urldate;""+
+-                     ""pdf;comment;owner"");
++        // The general fields stuff is made obsolete by the CUSTOM_TAB_... entries.
++        defaults.put(""generalFields"", ""crossref;keywords;file;doi;url;urldate;""
++                + ""pdf;comment;owner"");
+ 
+         defaults.put(""useCustomIconTheme"", Boolean.FALSE);
+         defaults.put(""customIconThemeFile"", ""/home/alver/div/crystaltheme_16/Icons.properties"");
+@@ -344,18 +423,18 @@ private JabRefPreferences() {
+         defaults.put(""preferUrlDoi"", Boolean.FALSE);
+         defaults.put(""fileColumn"", Boolean.TRUE);
+         defaults.put(""arxivColumn"", Boolean.FALSE);
+-        
++
+         defaults.put(SpecialFieldsUtils.PREF_SPECIALFIELDSENABLED, SpecialFieldsUtils.PREF_SPECIALFIELDSENABLED_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_SHOWCOLUMN_PRIORITY, SpecialFieldsUtils.PREF_SHOWCOLUMN_PRIORITY_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_SHOWCOLUMN_QUALITY, SpecialFieldsUtils.PREF_SHOWCOLUMN_QUALITY_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_SHOWCOLUMN_RANKING, SpecialFieldsUtils.PREF_SHOWCOLUMN_RANKING_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_RANKING_COMPACT, SpecialFieldsUtils.PREF_RANKING_COMPACT_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_SHOWCOLUMN_RELEVANCE, SpecialFieldsUtils.PREF_SHOWCOLUMN_RELEVANCE_DEFAULT);
+         defaults.put(SpecialFieldsUtils.PREF_AUTOSYNCSPECIALFIELDSTOKEYWORDS, SpecialFieldsUtils.PREF_AUTOSYNCSPECIALFIELDSTOKEYWORDS_DEFAULT);
+-    	defaults.put(SpecialFieldsUtils.PREF_SERIALIZESPECIALFIELDS, SpecialFieldsUtils.PREF_SERIALIZESPECIALFIELDS_DEFAULT);
+-    	
+-    	defaults.put(SHOWONELETTERHEADINGFORICONCOLUMNS, Boolean.FALSE);
+-        
++        defaults.put(SpecialFieldsUtils.PREF_SERIALIZESPECIALFIELDS, SpecialFieldsUtils.PREF_SERIALIZESPECIALFIELDS_DEFAULT);
++
++        defaults.put(SHOWONELETTERHEADINGFORICONCOLUMNS, Boolean.FALSE);
++
+         defaults.put(""useOwner"", Boolean.TRUE);
+         defaults.put(""overwriteOwner"", Boolean.FALSE);
+         defaults.put(""allowTableEditing"", Boolean.FALSE);
+@@ -373,49 +452,48 @@ private JabRefPreferences() {
+         defaults.put(""previewEnabled"", Boolean.TRUE);
+         defaults.put(""activePreview"", 0);
+         defaults.put(""preview0"", ""<font face=\""arial\"">""
+-                     +""<b><i>\\bibtextype</i><a name=\""\\bibtexkey\"">\\begin{bibtexkey} (\\bibtexkey)</a>""
+-                     +""\\end{bibtexkey}</b><br>__NEWLINE__""
+-                     +""\\begin{author} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\author}<BR>\\end{author}__NEWLINE__""
+-                     +""\\begin{editor} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\editor} ""
+-                     +""<i>(\\format[IfPlural(Eds.,Ed.)]{\\editor})</i><BR>\\end{editor}__NEWLINE__""
+-                     +""\\begin{title} \\format[HTMLChars]{\\title} \\end{title}<BR>__NEWLINE__""
+-                     +""\\begin{chapter} \\format[HTMLChars]{\\chapter}<BR>\\end{chapter}__NEWLINE__""
+-                     +""\\begin{journal} <em>\\format[HTMLChars]{\\journal}, </em>\\end{journal}__NEWLINE__""
+-                     // Include the booktitle field for @inproceedings, @proceedings, etc.
+-                     +""\\begin{booktitle} <em>\\format[HTMLChars]{\\booktitle}, </em>\\end{booktitle}__NEWLINE__""
+-                     +""\\begin{school} <em>\\format[HTMLChars]{\\school}, </em>\\end{school}__NEWLINE__""
+-                     +""\\begin{institution} <em>\\format[HTMLChars]{\\institution}, </em>\\end{institution}__NEWLINE__""
+-                     +""\\begin{publisher} <em>\\format[HTMLChars]{\\publisher}, </em>\\end{publisher}__NEWLINE__""
+-                     +""\\begin{year}<b>\\year</b>\\end{year}\\begin{volume}<i>, \\volume</i>\\end{volume}""
+-                     +""\\begin{pages}, \\format[FormatPagesForHTML]{\\pages} \\end{pages}__NEWLINE__""
+-                     +""\\begin{abstract}<BR><BR><b>Abstract: </b> \\format[HTMLChars]{\\abstract} \\end{abstract}__NEWLINE__""
+-                     +""\\begin{review}<BR><BR><b>Review: </b> \\format[HTMLChars]{\\review} \\end{review}""
+-                     +""</dd>__NEWLINE__<p></p></font>"");
++                + ""<b><i>\\bibtextype</i><a name=\""\\bibtexkey\"">\\begin{bibtexkey} (\\bibtexkey)</a>""
++                + ""\\end{bibtexkey}</b><br>__NEWLINE__""
++                + ""\\begin{author} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\author}<BR>\\end{author}__NEWLINE__""
++                + ""\\begin{editor} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\editor} ""
++                + ""<i>(\\format[IfPlural(Eds.,Ed.)]{\\editor})</i><BR>\\end{editor}__NEWLINE__""
++                + ""\\begin{title} \\format[HTMLChars]{\\title} \\end{title}<BR>__NEWLINE__""
++                + ""\\begin{chapter} \\format[HTMLChars]{\\chapter}<BR>\\end{chapter}__NEWLINE__""
++                + ""\\begin{journal} <em>\\format[HTMLChars]{\\journal}, </em>\\end{journal}__NEWLINE__""
++                // Include the booktitle field for @inproceedings, @proceedings, etc.
++                + ""\\begin{booktitle} <em>\\format[HTMLChars]{\\booktitle}, </em>\\end{booktitle}__NEWLINE__""
++                + ""\\begin{school} <em>\\format[HTMLChars]{\\school}, </em>\\end{school}__NEWLINE__""
++                + ""\\begin{institution} <em>\\format[HTMLChars]{\\institution}, </em>\\end{institution}__NEWLINE__""
++                + ""\\begin{publisher} <em>\\format[HTMLChars]{\\publisher}, </em>\\end{publisher}__NEWLINE__""
++                + ""\\begin{year}<b>\\year</b>\\end{year}\\begin{volume}<i>, \\volume</i>\\end{volume}""
++                + ""\\begin{pages}, \\format[FormatPagesForHTML]{\\pages} \\end{pages}__NEWLINE__""
++                + ""\\begin{abstract}<BR><BR><b>Abstract: </b> \\format[HTMLChars]{\\abstract} \\end{abstract}__NEWLINE__""
++                + ""\\begin{review}<BR><BR><b>Review: </b> \\format[HTMLChars]{\\review} \\end{review}""
++                + ""</dd>__NEWLINE__<p></p></font>"");
+         defaults.put(""preview1"", ""<font face=\""arial\"">""
+-                     +""<b><i>\\bibtextype</i><a name=\""\\bibtexkey\"">\\begin{bibtexkey} (\\bibtexkey)</a>""
+-                     +""\\end{bibtexkey}</b><br>__NEWLINE__""
+-                     +""\\begin{author} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\author}<BR>\\end{author}__NEWLINE__""
+-                     +""\\begin{editor} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\editor} ""
+-                     +""<i>(\\format[IfPlural(Eds.,Ed.)]{\\editor})</i><BR>\\end{editor}__NEWLINE__""
+-                     +""\\begin{title} \\format[HTMLChars]{\\title} \\end{title}<BR>__NEWLINE__""
+-                     +""\\begin{chapter} \\format[HTMLChars]{\\chapter}<BR>\\end{chapter}__NEWLINE__""
+-                     +""\\begin{journal} <em>\\format[HTMLChars]{\\journal}, </em>\\end{journal}__NEWLINE__""
+-                     // Include the booktitle field for @inproceedings, @proceedings, etc.
+-                     +""\\begin{booktitle} <em>\\format[HTMLChars]{\\booktitle}, </em>\\end{booktitle}__NEWLINE__""
+-                     +""\\begin{school} <em>\\format[HTMLChars]{\\school}, </em>\\end{school}__NEWLINE__""
+-                     +""\\begin{institution} <em>\\format[HTMLChars]{\\institution}, </em>\\end{institution}__NEWLINE__""
+-                     +""\\begin{publisher} <em>\\format[HTMLChars]{\\publisher}, </em>\\end{publisher}__NEWLINE__""
+-                     +""\\begin{year}<b>\\year</b>\\end{year}\\begin{volume}<i>, \\volume</i>\\end{volume}""
+-                     +""\\begin{pages}, \\format[FormatPagesForHTML]{\\pages} \\end{pages}""
+-                     +""</dd>__NEWLINE__<p></p></font>"");
+-
++                + ""<b><i>\\bibtextype</i><a name=\""\\bibtexkey\"">\\begin{bibtexkey} (\\bibtexkey)</a>""
++                + ""\\end{bibtexkey}</b><br>__NEWLINE__""
++                + ""\\begin{author} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\author}<BR>\\end{author}__NEWLINE__""
++                + ""\\begin{editor} \\format[Authors(LastFirst,Initials,Semicolon,Amp),HTMLChars]{\\editor} ""
++                + ""<i>(\\format[IfPlural(Eds.,Ed.)]{\\editor})</i><BR>\\end{editor}__NEWLINE__""
++                + ""\\begin{title} \\format[HTMLChars]{\\title} \\end{title}<BR>__NEWLINE__""
++                + ""\\begin{chapter} \\format[HTMLChars]{\\chapter}<BR>\\end{chapter}__NEWLINE__""
++                + ""\\begin{journal} <em>\\format[HTMLChars]{\\journal}, </em>\\end{journal}__NEWLINE__""
++                // Include the booktitle field for @inproceedings, @proceedings, etc.
++                + ""\\begin{booktitle} <em>\\format[HTMLChars]{\\booktitle}, </em>\\end{booktitle}__NEWLINE__""
++                + ""\\begin{school} <em>\\format[HTMLChars]{\\school}, </em>\\end{school}__NEWLINE__""
++                + ""\\begin{institution} <em>\\format[HTMLChars]{\\institution}, </em>\\end{institution}__NEWLINE__""
++                + ""\\begin{publisher} <em>\\format[HTMLChars]{\\publisher}, </em>\\end{publisher}__NEWLINE__""
++                + ""\\begin{year}<b>\\year</b>\\end{year}\\begin{volume}<i>, \\volume</i>\\end{volume}""
++                + ""\\begin{pages}, \\format[FormatPagesForHTML]{\\pages} \\end{pages}""
++                + ""</dd>__NEWLINE__<p></p></font>"");
+ 
+         // TODO: Currently not possible to edit this setting:
+         defaults.put(""previewPrintButton"", Boolean.FALSE);
+         defaults.put(""autoDoubleBraces"", Boolean.FALSE);
+         defaults.put(""doNotResolveStringsFor"", ""url"");
+         defaults.put(""resolveStringsAllFields"", Boolean.FALSE);
+-        defaults.put(""putBracesAroundCapitals"","""");//""title;journal;booktitle;review;abstract"");
++        defaults.put(""putBracesAroundCapitals"", """");//""title;journal;booktitle;review;abstract"");
+         defaults.put(""nonWrappableFields"", ""pdf;ps;url;doi;file"");
+         defaults.put(""useImportInspectionDialog"", Boolean.TRUE);
+         defaults.put(""useImportInspectionDialogForSingle"", Boolean.TRUE);
+@@ -486,36 +564,32 @@ private JabRefPreferences() {
+         defaults.put(""dbConnectDatabase"", ""jabref"");
+         defaults.put(""dbConnectUsername"", ""root"");
+         CleanUpAction.putDefaults(defaults);
+-        
++
+         // defaults for DroppedFileHandler UI
+-    	defaults.put(DroppedFileHandler.DFH_LEAVE, Boolean.FALSE);
+-    	defaults.put(DroppedFileHandler.DFH_COPY, Boolean.TRUE);
+-    	defaults.put(DroppedFileHandler.DFH_MOVE, Boolean.FALSE);
+-    	defaults.put(DroppedFileHandler.DFH_RENAME, Boolean.FALSE);
+-        
++        defaults.put(DroppedFileHandler.DFH_LEAVE, Boolean.FALSE);
++        defaults.put(DroppedFileHandler.DFH_COPY, Boolean.TRUE);
++        defaults.put(DroppedFileHandler.DFH_MOVE, Boolean.FALSE);
++        defaults.put(DroppedFileHandler.DFH_RENAME, Boolean.FALSE);
++
+         //defaults.put(""lastAutodetectedImport"", """");
+-        
+         //defaults.put(""autoRemoveExactDuplicates"", Boolean.FALSE);
+         //defaults.put(""confirmAutoRemoveExactDuplicates"", Boolean.TRUE);
+-        
+         //defaults.put(""tempDir"", System.getProperty(""java.io.tmpdir""));
+         //Util.pr(System.getProperty(""java.io.tempdir""));
+-
+         //defaults.put(""keyPattern"", new LabelPattern(KEY_PATTERN));
+-        
+         defaults.put(ImportSettingsTab.PREF_IMPORT_ALWAYSUSE, Boolean.FALSE);
+         defaults.put(ImportSettingsTab.PREF_IMPORT_DEFAULT_PDF_IMPORT_STYLE, ImportSettingsTab.DEFAULT_STYLE);
+         defaults.put(ImportSettingsTab.PREF_IMPORT_FILENAMEPATTERN, ImportSettingsTab.DEFAULT_FILENAMEPATTERNS[0]);
+-        
++
+         restoreKeyBindings();
+ 
+         customExports = new CustomExportList(new ExportComparator());
+         customImports = new CustomImportList(this);
+ 
+         //defaults.put(""oooWarning"", Boolean.TRUE);
+         updateSpecialFieldHandling();
+-        WRAPPED_USERNAME = ""[""+get(""defaultOwner"")+""]"";
+-        MARKING_WITH_NUMBER_PATTERN = ""\\[""+get(""defaultOwner"").replaceAll(""\\\\"",""\\\\\\\\"")+"":(\\d+)\\]"";
++        WRAPPED_USERNAME = ""["" + get(""defaultOwner"") + ""]"";
++        MARKING_WITH_NUMBER_PATTERN = ""\\["" + get(""defaultOwner"").replaceAll(""\\\\"", ""\\\\\\\\"") + "":(\\d+)\\]"";
+ 
+         String defaultExpression = ""**/.*[bibtexkey].*\\\\.[extension]"";
+         defaults.put(DEFAULT_REG_EXP_SEARCH_EXPRESSION_KEY, defaultExpression);
+@@ -526,47 +600,45 @@ private JabRefPreferences() {
+         defaults.put(""useCaseKeeperOnSearch"", Boolean.TRUE);
+         defaults.put(""useUnitFormatterOnSearch"", Boolean.TRUE);
+ 
+-	defaults.put(""userFileDir"", GUIGlobals.FILE_FIELD + ""Directory"");
+-	try {
+-	    defaults.put(""userFileDirInd_Legacy"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner"") + ""@"" + InetAddress.getLocalHost().getHostName()); // Legacy setting name - was a bug: @ not allowed inside BibTeX comment text. Retained for backward comp.
+-	    defaults.put(""userFileDirIndividual"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner"") + ""-"" + InetAddress.getLocalHost().getHostName()); // Valid setting name
+-	}
+-	catch(UnknownHostException ex) {
+-	    Globals.logger(""Hostname not found."");
+-	    defaults.put(""userFileDirInd_Legacy"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner""));
+-	    defaults.put(""userFileDirIndividual"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner""));
+-	}
++        defaults.put(""userFileDir"", GUIGlobals.FILE_FIELD + ""Directory"");
++        try {
++            defaults.put(""userFileDirInd_Legacy"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner"") + ""@"" + InetAddress.getLocalHost().getHostName()); // Legacy setting name - was a bug: @ not allowed inside BibTeX comment text. Retained for backward comp.
++            defaults.put(""userFileDirIndividual"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner"") + ""-"" + InetAddress.getLocalHost().getHostName()); // Valid setting name
++        } catch (UnknownHostException ex) {
++            Globals.logger(""Hostname not found."");
++            defaults.put(""userFileDirInd_Legacy"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner""));
++            defaults.put(""userFileDirIndividual"", GUIGlobals.FILE_FIELD + ""Directory"" + ""-"" + get(""defaultOwner""));
++        }
+     }
+ 
+     public void setLanguageDependentDefaultValues() {
+ 
+         // Entry editor tab 0:
+-        defaults.put(CUSTOM_TAB_NAME+""_def0"", Globals.lang(""General""));
+-            defaults.put(CUSTOM_TAB_FIELDS+""_def0"", ""crossref;keywords;file;doi;url;""+
+-                         ""comment;owner;timestamp"");
++        defaults.put(CUSTOM_TAB_NAME + ""_def0"", Globals.lang(""General""));
++        defaults.put(CUSTOM_TAB_FIELDS + ""_def0"", ""crossref;keywords;file;doi;url;""
++                + ""comment;owner;timestamp"");
+ 
+         // Entry editor tab 1:
+-            defaults.put(CUSTOM_TAB_FIELDS+""_def1"", ""abstract"");
+-        defaults.put(CUSTOM_TAB_NAME+""_def1"", Globals.lang(""Abstract""));
++        defaults.put(CUSTOM_TAB_FIELDS + ""_def1"", ""abstract"");
++        defaults.put(CUSTOM_TAB_NAME + ""_def1"", Globals.lang(""Abstract""));
+ 
+-      // Entry editor tab 2: Review Field - used for research comments, etc.
+-            defaults.put(CUSTOM_TAB_FIELDS+""_def2"", ""review"");
+-        defaults.put(CUSTOM_TAB_NAME+""_def2"", Globals.lang(""Review""));
++        // Entry editor tab 2: Review Field - used for research comments, etc.
++        defaults.put(CUSTOM_TAB_FIELDS + ""_def2"", ""review"");
++        defaults.put(CUSTOM_TAB_NAME + ""_def2"", Globals.lang(""Review""));
+ 
+     }
+-    
++
+     public static final String DEFAULT_REG_EXP_SEARCH_EXPRESSION_KEY = ""defaultRegExpSearchExpression"";
+     public static final String REG_EXP_SEARCH_EXPRESSION_KEY = ""regExpSearchExpression"";
+     public static final String USE_REG_EXP_SEARCH_KEY = ""useRegExpSearch"";
+     public static final String AUTOLINK_EXACT_KEY_ONLY = ""autolinkExactKeyOnly"";
+ 
+-	public static final String EMAIL_SUBJECT = ""emailSubject"";
+-	public static final String OPEN_FOLDERS_OF_ATTACHED_FILES = ""openFoldersOfAttachedFiles"";
++    public static final String EMAIL_SUBJECT = ""emailSubject"";
++    public static final String OPEN_FOLDERS_OF_ATTACHED_FILES = ""openFoldersOfAttachedFiles"";
+ 
+     public static final String GROUP_SHOW_NUMBER_OF_ELEMENTS = ""groupShowNumberOfElements"";
+ 
+-
+-	public boolean putBracesAroundCapitals(String fieldName) {
++    public boolean putBracesAroundCapitals(String fieldName) {
+         return putBracesAroundCapitalsFields.contains(fieldName);
+     }
+ 
+@@ -575,15 +647,17 @@ public void updateSpecialFieldHandling() {
+         String fieldString = get(""putBracesAroundCapitals"");
+         if (fieldString.length() > 0) {
+             String[] fields = fieldString.split("";"");
+-            for (int i=0; i<fields.length; i++)
++            for (int i = 0; i < fields.length; i++) {
+                 putBracesAroundCapitalsFields.add(fields[i].trim());
++            }
+         }
+         nonWrappableFields.clear();
+         fieldString = get(""nonWrappableFields"");
+         if (fieldString.length() > 0) {
+             String[] fields = fieldString.split("";"");
+-            for (int i=0; i<fields.length; i++)
++            for (int i = 0; i < fields.length; i++) {
+                 nonWrappableFields.add(fields[i].trim());
++            }
+         }
+ 
+     }
+@@ -599,6 +673,7 @@ public char getValueDelimiters(int index) {
+ 
+     /**
+      * Check whether a key is set (differently from null).
++     *
+      * @param key The key to check.
+      * @return true if the key is set, false otherwise.
+      */
+@@ -607,7 +682,7 @@ public boolean hasKey(String key) {
+     }
+ 
+     public String get(String key) {
+-        return prefs.get(key, (String)defaults.get(key));
++        return prefs.get(key, (String) defaults.get(key));
+     }
+ 
+     public String get(String key, String def) {
+@@ -617,35 +692,35 @@ public String get(String key, String def) {
+     public boolean getBoolean(String key) {
+         return prefs.getBoolean(key, getBooleanDefault(key));
+     }
+-    
+-    public boolean getBooleanDefault(String key){
+-        return ((Boolean)defaults.get(key)).booleanValue();
++
++    public boolean getBooleanDefault(String key) {
++        return ((Boolean) defaults.get(key)).booleanValue();
+     }
+ 
+     public double getDouble(String key) {
+         return prefs.getDouble(key, getDoubleDefault(key));
+     }
+-    
+-    public double getDoubleDefault(String key){
+-        return ((Double)defaults.get(key)).doubleValue();
++
++    public double getDoubleDefault(String key) {
++        return ((Double) defaults.get(key)).doubleValue();
+     }
+ 
+     public int getInt(String key) {
+         return prefs.getInt(key, getIntDefault(key));
+     }
+ 
+     public int getIntDefault(String key) {
+-        return ((Integer)defaults.get(key)).intValue();
++        return ((Integer) defaults.get(key)).intValue();
+     }
+-    
++
+     public byte[] getByteArray(String key) {
+         return prefs.getByteArray(key, getByteArrayDefault(key));
+     }
+ 
+-    public byte[] getByteArrayDefault(String key){
+-        return (byte[])defaults.get(key);   
++    public byte[] getByteArrayDefault(String key) {
++        return (byte[]) defaults.get(key);
+     }
+-    
++
+     public void put(String key, String value) {
+         prefs.put(key, value);
+     }
+@@ -671,9 +746,9 @@ public void remove(String key) {
+     }
+ 
+     /**
+-     * Puts a string array into the Preferences, by linking its elements
+-     * with ';' into a single string. Escape characters make the process
+-     * transparent even if strings contain ';'.
++     * Puts a string array into the Preferences, by linking its elements with
++     * ';' into a single string. Escape characters make the process transparent
++     * even if strings contain ';'.
+      */
+     public void putStringArray(String key, String[] value) {
+         if (value == null) {
+@@ -683,11 +758,11 @@ public void putStringArray(String key, String[] value) {
+ 
+         if (value.length > 0) {
+             StringBuffer linked = new StringBuffer();
+-            for (int i=0; i<value.length-1; i++) {
++            for (int i = 0; i < value.length - 1; i++) {
+                 linked.append(makeEscape(value[i]));
+                 linked.append("";"");
+             }
+-            linked.append(makeEscape(value[value.length-1]));
++            linked.append(makeEscape(value[value.length - 1]));
+             put(key, linked.toString());
+         } else {
+             put(key, """");
+@@ -699,8 +774,9 @@ public void putStringArray(String key, String[] value) {
+      */
+     public String[] getStringArray(String key) {
+         String names = get(key);
+-        if (names == null)
++        if (names == null) {
+             return null;
++        }
+ 
+         StringReader rd = new StringReader(names);
+         Vector<String> arr = new Vector<String>();
+@@ -709,16 +785,19 @@ public void putStringArray(String key, String[] value) {
+             while ((rs = getNextUnit(rd)) != null) {
+                 arr.add(rs);
+             }
+-        } catch (IOException ex) {}
++        } catch (IOException ex) {
++        }
+         String[] res = new String[arr.size()];
+-        for (int i=0; i<res.length; i++)
++        for (int i = 0; i < res.length; i++) {
+             res[i] = arr.elementAt(i);
++        }
+ 
+         return res;
+     }
+ 
+     /**
+      * Looks up a color definition in preferences, and returns the Color object.
++     *
+      * @param key The key for this setting.
+      * @return The color corresponding to the setting.
+      */
+@@ -729,14 +808,15 @@ public Color getColor(String key) {
+     }
+ 
+     public Color getDefaultColor(String key) {
+-        String value = (String)defaults.get(key);
++        String value = (String) defaults.get(key);
+         int[] rgb = getRgb(value);
+         return new Color(rgb[0], rgb[1], rgb[2]);
+     }
+ 
+     /**
+      * Set the default value for a key. This is useful for plugins that need to
+      * add default values for the prefs keys they use.
++     *
+      * @param key The preferences key.
+      * @param value The default value.
+      */
+@@ -746,6 +826,7 @@ public void putDefaultValue(String key, Object value) {
+ 
+     /**
+      * Stores a color in preferences.
++     *
+      * @param key The key for this setting.
+      * @param color The Color to store.
+      */
+@@ -760,7 +841,9 @@ public void putColor(String key, Color color) {
+     }
+ 
+     /**
+-     * Looks up a color definition in preferences, and returns an array containing the RGB values.
++     * Looks up a color definition in preferences, and returns an array
++     * containing the RGB values.
++     *
+      * @param value The key for this setting.
+      * @return The RGB values corresponding to this color setting.
+      */
+@@ -774,8 +857,8 @@ public void putColor(String key, Color color) {
+     }
+ 
+     /**
+-     * Returns the KeyStroke for this binding, as defined by the
+-     * defaults, or in the Preferences.
++     * Returns the KeyStroke for this binding, as defined by the defaults, or in
++     * the Preferences.
+      */
+     public KeyStroke getKey(String bindName) {
+ 
+@@ -792,37 +875,39 @@ public KeyStroke getKey(String bindName) {
+             keyBinds.put(bindName, s);
+         }
+         if (s == null) {
+-          Globals.logger(""Could not get key binding for \"""" + bindName + ""\"""");
++            Globals.logger(""Could not get key binding for \"""" + bindName + ""\"""");
+         }
+ 
+-        if (Globals.ON_MAC)
+-          return getKeyForMac(KeyStroke.getKeyStroke(s));
+-        else
+-          return KeyStroke.getKeyStroke(s);
++        if (Globals.ON_MAC) {
++            return getKeyForMac(KeyStroke.getKeyStroke(s));
++        } else {
++            return KeyStroke.getKeyStroke(s);
++        }
+     }
+ 
+     /**
+-     * Returns the KeyStroke for this binding, as defined by the
+-     * defaults, or in the Preferences, but adapted for Mac users,
+-     * with the Command key preferred instead of Control.
++     * Returns the KeyStroke for this binding, as defined by the defaults, or in
++     * the Preferences, but adapted for Mac users, with the Command key
++     * preferred instead of Control.
+      */
+     private KeyStroke getKeyForMac(KeyStroke ks) {
+-      if (ks == null) return null;
+-      int keyCode = ks.getKeyCode();
+-      if ((ks.getModifiers() & KeyEvent.CTRL_MASK) == 0) {
+-        return ks;
+-      }
+-      else {
+-    	int modifiers = 0;
+-        if ((ks.getModifiers() & KeyEvent.SHIFT_MASK) != 0) {
+-          modifiers = modifiers | KeyEvent.SHIFT_MASK;
++        if (ks == null) {
++            return null;
+         }
+-        if ((ks.getModifiers() & KeyEvent.ALT_MASK) != 0) {
+-            modifiers = modifiers | KeyEvent.ALT_MASK;
++        int keyCode = ks.getKeyCode();
++        if ((ks.getModifiers() & KeyEvent.CTRL_MASK) == 0) {
++            return ks;
++        } else {
++            int modifiers = 0;
++            if ((ks.getModifiers() & KeyEvent.SHIFT_MASK) != 0) {
++                modifiers = modifiers | KeyEvent.SHIFT_MASK;
++            }
++            if ((ks.getModifiers() & KeyEvent.ALT_MASK) != 0) {
++                modifiers = modifiers | KeyEvent.ALT_MASK;
++            }
++
++            return KeyStroke.getKeyStroke(keyCode, Globals.getShortcutMask() + modifiers);
+         }
+-        
+-        return KeyStroke.getKeyStroke(keyCode, Globals.getShortcutMask()+modifiers);
+-      }
+     }
+ 
+     /**
+@@ -839,9 +924,9 @@ private KeyStroke getKeyForMac(KeyStroke ks) {
+         return defKeyBinds;
+     }
+ 
+-
+     /**
+      * Clear all preferences.
++     *
+      * @throws BackingStoreException
+      */
+     public void clear() throws BackingStoreException {
+@@ -851,11 +936,12 @@ public void clear() throws BackingStoreException {
+     public void clear(String key) throws BackingStoreException {
+         prefs.remove(key);
+     }
++
+     /**
+      * Calling this method will write all preferences into the preference store.
+      */
+     public void flush() {
+-        if (getBoolean(""memoryStickMode"")){
++        if (getBoolean(""memoryStickMode"")) {
+             try {
+                 exportPreferences(""jabref.xml"");
+             } catch (IOException e) {
+@@ -870,17 +956,17 @@ public void flush() {
+     }
+ 
+     /**
+-     * Stores new key bindings into Preferences, provided they
+-     * actually differ from the old ones.
++     * Stores new key bindings into Preferences, provided they actually differ
++     * from the old ones.
+      */
+     public void setNewKeyBindings(HashMap<String, String> newBindings) {
+         if (!newBindings.equals(keyBinds)) {
+             // This confirms that the bindings have actually changed.
+             String[] bindNames = new String[newBindings.size()],
+-                bindings = new String[newBindings.size()];
++                    bindings = new String[newBindings.size()];
+             int index = 0;
+-            for (Iterator<String> i=newBindings.keySet().iterator();
+-                 i.hasNext();) {
++            for (Iterator<String> i = newBindings.keySet().iterator();
++                    i.hasNext();) {
+                 String nm = i.next();
+                 String bnd = newBindings.get(nm);
+                 bindNames[index] = nm;
+@@ -893,84 +979,85 @@ public void setNewKeyBindings(HashMap<String, String> newBindings) {
+         }
+     }
+ 
+-
+-        /**
+-         * Fetches key patterns from preferences
+-         * Not cached
+-         * 
+-         * @return LabelPattern containing all keys. Returned LabelPattern has no parent
+-         */
+-        public LabelPattern getKeyPattern(){
+-            keyPattern = new LabelPattern();
+-            Preferences pre = Preferences.userNodeForPackage
+-                (net.sf.jabref.labelPattern.LabelPattern.class);
+-            try {
+-                String[] keys = pre.keys();
+-            if (keys.length > 0) for (int i=0; i<keys.length; i++)
+-                keyPattern.addLabelPattern(keys[i], pre.get(keys[i], null));
+-            } catch (BackingStoreException ex) {
+-                Globals.logger(""BackingStoreException in JabRefPreferences.getKeyPattern"");
++    /**
++     * Fetches key patterns from preferences Not cached
++     *
++     * @return LabelPattern containing all keys. Returned LabelPattern has no
++     * parent
++     */
++    public LabelPattern getKeyPattern() {
++        keyPattern = new LabelPattern();
++        Preferences pre = Preferences.userNodeForPackage(net.sf.jabref.labelPattern.LabelPattern.class);
++        try {
++            String[] keys = pre.keys();
++            if (keys.length > 0) {
++                for (int i = 0; i < keys.length; i++) {
++                    keyPattern.addLabelPattern(keys[i], pre.get(keys[i], null));
++                }
+             }
+-            return keyPattern;
++        } catch (BackingStoreException ex) {
++            Globals.logger(""BackingStoreException in JabRefPreferences.getKeyPattern"");
+         }
++        return keyPattern;
++    }
+ 
+-        /**
+-         * Adds the given key pattern to the preferences
+-         * 
+-         * @param pattern the pattern to store
+-         */
+-        public void putKeyPattern(LabelPattern pattern){
+-            keyPattern = pattern;
+-            LabelPattern parent = pattern.getParent();
+-
+-            // Store overridden definitions to Preferences.
+-            Preferences pre = Preferences.userNodeForPackage
+-                (net.sf.jabref.labelPattern.LabelPattern.class);
+-            try {
+-                pre.clear(); // We remove all old entries.
+-            } catch (BackingStoreException ex) {
+-                Globals.logger(""BackingStoreException in JabRefPreferences.putKeyPattern"");
+-            }
++    /**
++     * Adds the given key pattern to the preferences
++     *
++     * @param pattern the pattern to store
++     */
++    public void putKeyPattern(LabelPattern pattern) {
++        keyPattern = pattern;
++        LabelPattern parent = pattern.getParent();
+ 
+-            for (String s: pattern.keySet()) {
+-                ArrayList<String> value = pattern.get(s);
+-                if (value != null) {
+-                    // no default value
+-                    // the first entry in the array is the full pattern
+-                    // see net.sf.jabref.labelPattern.LabelPatternUtil.split(String)
+-                    pre.put(s, value.get(0));
+-                }
++        // Store overridden definitions to Preferences.
++        Preferences pre = Preferences.userNodeForPackage(net.sf.jabref.labelPattern.LabelPattern.class);
++        try {
++            pre.clear(); // We remove all old entries.
++        } catch (BackingStoreException ex) {
++            Globals.logger(""BackingStoreException in JabRefPreferences.putKeyPattern"");
++        }
++
++        for (String s : pattern.keySet()) {
++            ArrayList<String> value = pattern.get(s);
++            if (value != null) {
++                // no default value
++                // the first entry in the array is the full pattern
++                // see net.sf.jabref.labelPattern.LabelPatternUtil.split(String)
++                pre.put(s, value.get(0));
+             }
+         }
++    }
+ 
+     private void restoreKeyBindings() {
+         // Define default keybindings.
+         defineDefaultKeyBindings();
+ 
+         // First read the bindings, and their names.
+         String[] bindNames = getStringArray(""bindNames""),
+-                 bindings  = getStringArray(""bindings"");
++                bindings = getStringArray(""bindings"");
+ 
+         // Then set up the key bindings HashMap.
+         if ((bindNames == null) || (bindings == null)
+-            || (bindNames.length != bindings.length)) {
++                || (bindNames.length != bindings.length)) {
+             // Nothing defined in Preferences, or something is wrong.
+             setDefaultKeyBindings();
+             return;
+         }
+ 
+-        for (int i=0; i<bindNames.length; i++)
++        for (int i = 0; i < bindNames.length; i++) {
+             keyBinds.put(bindNames[i], bindings[i]);
++        }
+     }
+ 
+     private void setDefaultKeyBindings() {
+         keyBinds = defKeyBinds;
+     }
+- 
++
+     private void defineDefaultKeyBindings() {
+-        defKeyBinds.put(""Push to application"",""ctrl L"");
+-      defKeyBinds.put(""Push to LyX"",""ctrl L"");
+-      defKeyBinds.put(""Push to WinEdt"",""ctrl shift W"");
++        defKeyBinds.put(""Push to application"", ""ctrl L"");
++        defKeyBinds.put(""Push to LyX"", ""ctrl L"");
++        defKeyBinds.put(""Push to WinEdt"", ""ctrl shift W"");
+         defKeyBinds.put(""Quit JabRef"", ""ctrl Q"");
+         defKeyBinds.put(""Open database"", ""ctrl O"");
+         defKeyBinds.put(""Save database"", ""ctrl S"");
+@@ -1084,27 +1171,28 @@ private String getNextUnit(Reader data) throws IOException {
+         StringBuffer res = new StringBuffer();
+         while (!done && ((c = data.read()) != -1)) {
+             if (c == '\\') {
+-                if (!escape)
++                if (!escape) {
+                     escape = true;
+-                else {
++                } else {
+                     escape = false;
+                     res.append('\\');
+                 }
+             } else {
+                 if (c == ';') {
+-                    if (!escape)
++                    if (!escape) {
+                         done = true;
+-                    else
++                    } else {
+                         res.append(';');
++                    }
+                 } else {
+-                    res.append((char)c);
++                    res.append((char) c);
+                 }
+                 escape = false;
+             }
+         }
+         if (res.length() > 0) {
+             return res.toString();
+-        } else if (c ==-1) {
++        } else if (c == -1) {
+             // end of stream
+             return null;
+         } else {
+@@ -1115,42 +1203,42 @@ private String getNextUnit(Reader data) throws IOException {
+     private String makeEscape(String s) {
+         StringBuffer sb = new StringBuffer();
+         int c;
+-        for (int i=0; i<s.length(); i++) {
++        for (int i = 0; i < s.length(); i++) {
+             c = s.charAt(i);
+-            if ((c == '\\') || (c == ';'))
++            if ((c == '\\') || (c == ';')) {
+                 sb.append('\\');
+-            sb.append((char)c);
++            }
++            sb.append((char) c);
+         }
+         return sb.toString();
+     }
+ 
+     /**
+-     * Stores all information about the entry type in preferences, with
+-     * the tag given by number.
++     * Stores all information about the entry type in preferences, with the tag
++     * given by number.
+      */
+     public void storeCustomEntryType(CustomEntryType tp, int number) {
+-        String nr = """"+number;
+-        put(CUSTOM_TYPE_NAME+nr, tp.getName());
+-        put(CUSTOM_TYPE_REQ+nr, tp.getRequiredFieldsString());//tp.getRequiredFields());
+-        putStringArray(CUSTOM_TYPE_OPT+nr, tp.getOptionalFields());
+-        putStringArray(CUSTOM_TYPE_PRIOPT+nr, tp.getPrimaryOptionalFields());
++        String nr = """" + number;
++        put(CUSTOM_TYPE_NAME + nr, tp.getName());
++        put(CUSTOM_TYPE_REQ + nr, tp.getRequiredFieldsString());//tp.getRequiredFields());
++        putStringArray(CUSTOM_TYPE_OPT + nr, tp.getOptionalFields());
++        putStringArray(CUSTOM_TYPE_PRIOPT + nr, tp.getPrimaryOptionalFields());
+ 
+     }
+ 
+     /**
+-     * Retrieves all information about the entry type in preferences,
+-     * with the tag given by number.
++     * Retrieves all information about the entry type in preferences, with the
++     * tag given by number.
+      */
+     public CustomEntryType getCustomEntryType(int number) {
+-        String nr = """"+number;
+-        String
+-            name = get(CUSTOM_TYPE_NAME+nr);
+-        String[]
+-            req = getStringArray(CUSTOM_TYPE_REQ+nr),
+-            opt = getStringArray(CUSTOM_TYPE_OPT+nr),
+-            priOpt = getStringArray(CUSTOM_TYPE_PRIOPT+nr);
+-        if (name == null)
++        String nr = """" + number;
++        String name = get(CUSTOM_TYPE_NAME + nr);
++        String[] req = getStringArray(CUSTOM_TYPE_REQ + nr),
++                opt = getStringArray(CUSTOM_TYPE_OPT + nr),
++                priOpt = getStringArray(CUSTOM_TYPE_PRIOPT + nr);
++        if (name == null) {
+             return null;
++        }
+         if (priOpt == null) {
+             return new CustomEntryType(Util.nCase(name), req, opt);
+         }
+@@ -1164,11 +1252,8 @@ public CustomEntryType getCustomEntryType(int number) {
+         return new CustomEntryType(Util.nCase(name), req, priOpt,
+                 secOpt.toArray(new String[secOpt.size()]));
+ 
+-
+     }
+ 
+-
+-
+     public List<ExternalFileType> getDefaultExternalFileTypes() {
+         List<ExternalFileType> list = new ArrayList<ExternalFileType>();
+         list.add(new ExternalFileType(""PDF"", ""pdf"", ""application/pdf"", ""evince"", ""pdfSmall""));
+@@ -1201,47 +1286,50 @@ public CustomEntryType getCustomEntryType(int number) {
+             ExternalFileType type = iterator.next();
+             type.setOpenWith("""");
+         }
+-        
+ 
+         return list;
+     }
+ 
+     public ExternalFileType[] getExternalFileTypeSelection() {
+-        return externalFileTypes.toArray
+-                (new ExternalFileType[externalFileTypes.size()]);
++        return externalFileTypes.toArray(new ExternalFileType[externalFileTypes.size()]);
+     }
+ 
+     /**
+      * Look up the external file type registered with this name, if any.
++     *
+      * @param name The file type name.
+      * @return The ExternalFileType registered, or null if none.
+      */
+     public ExternalFileType getExternalFileTypeByName(String name) {
+         for (Iterator<ExternalFileType> iterator = externalFileTypes.iterator(); iterator.hasNext();) {
+             ExternalFileType type = iterator.next();
+-            if (type.getName().equals(name))
++            if (type.getName().equals(name)) {
+                 return type;
++            }
+         }
+         // Return an instance that signifies an unknown file type:
+         return new UnknownExternalFileType(name);
+     }
+ 
+     /**
+      * Look up the external file type registered for this extension, if any.
++     *
+      * @param extension The file extension.
+      * @return The ExternalFileType registered, or null if none.
+      */
+     public ExternalFileType getExternalFileTypeByExt(String extension) {
+         for (Iterator<ExternalFileType> iterator = externalFileTypes.iterator(); iterator.hasNext();) {
+             ExternalFileType type = iterator.next();
+-            if ((type.getExtension() != null) && type.getExtension().equalsIgnoreCase(extension))
++            if ((type.getExtension() != null) && type.getExtension().equalsIgnoreCase(extension)) {
+                 return type;
++            }
+         }
+         return null;
+     }
+ 
+     /**
+      * Look up the external file type registered for this filename, if any.
++     *
+      * @param filename The name of the file whose type to look up.
+      * @return The ExternalFileType registered, or null if none.
+      */
+@@ -1263,26 +1351,30 @@ public ExternalFileType getExternalFileTypeForName(String filename) {
+ 
+     /**
+      * Look up the external file type registered for this MIME type, if any.
++     *
+      * @param mimeType The MIME type.
+-     * @return The ExternalFileType registered, or null if none. For the mime type ""text/html"",
+-     *   a valid file type is guaranteed to be returned.
++     * @return The ExternalFileType registered, or null if none. For the mime
++     * type ""text/html"", a valid file type is guaranteed to be returned.
+      */
+     public ExternalFileType getExternalFileTypeByMimeType(String mimeType) {
+         for (Iterator<ExternalFileType> iterator = externalFileTypes.iterator(); iterator.hasNext();) {
+             ExternalFileType type = iterator.next();
+-            if ((type.getMimeType() != null) && type.getMimeType().equals(mimeType))
++            if ((type.getMimeType() != null) && type.getMimeType().equals(mimeType)) {
+                 return type;
++            }
+         }
+-        if (mimeType.equals(""text/html""))
++        if (mimeType.equals(""text/html"")) {
+             return HTML_FALLBACK_TYPE;
+-        else
++        } else {
+             return null;
++        }
+     }
+ 
+     /**
+      * Reset the List of external file types after user customization.
+-     * @param types The new List of external file types. This is the complete list, not
+-     *  just new entries.
++     *
++     * @param types The new List of external file types. This is the complete
++     * list, not just new entries.
+      */
+     public void setExternalFileTypes(List<ExternalFileType> types) {
+ 
+@@ -1306,9 +1398,9 @@ public void setExternalFileTypes(List<ExternalFileType> types) {
+             }
+             if (found != null) {
+                 // Found it! Check if it is an exact match, or if it has been customized:
+-                if (found.equals(type))
++                if (found.equals(type)) {
+                     unchanged.add(type);
+-                else {
++                } else {
+                     // It was modified. Remove its entry from the defaults list, since
+                     // the type hasn't been removed:
+                     defTypes.remove(found);
+@@ -1325,24 +1417,23 @@ public void setExternalFileTypes(List<ExternalFileType> types) {
+ 
+         // Now set up the array to write to prefs, containing all new types, all modified
+         // types, and a flag denoting each default type that has been removed:
+-        String[][] array = new String[types.size()+defTypes.size()][];
+-        int i=0;
++        String[][] array = new String[types.size() + defTypes.size()][];
++        int i = 0;
+         for (ExternalFileType type : types) {
+             array[i] = type.getStringArrayRepresentation();
+             i++;
+         }
+         for (ExternalFileType type : defTypes) {
+-            array[i] = new String[] {type.getName(), FILE_TYPE_REMOVED_FLAG};
++            array[i] = new String[]{type.getName(), FILE_TYPE_REMOVED_FLAG};
+             i++;
+         }
+         //System.out.println(""Encoded: '""+Util.encodeStringArray(array)+""'"");
+         put(""externalFileTypes"", Util.encodeStringArray(array));
+     }
+ 
+-    
+     /**
+-     * Set up the list of external file types, either from default values, or from values
+-     * recorded in Preferences.
++     * Set up the list of external file types, either from default values, or
++     * from values recorded in Preferences.
+      */
+     public void updateExternalFileTypes() {
+         // First get a list of the default file types as a starting point:
+@@ -1366,10 +1457,10 @@ public void updateExternalFileTypes() {
+                     }
+                 }
+                 // If we found it, remove it from the type list:
+-                if (toRemove != null)
++                if (toRemove != null) {
+                     types.remove(toRemove);
+-            }
+-            else {
++                }
++            } else {
+                 // A new or modified entry type. Construct it from the string array:
+                 ExternalFileType type = new ExternalFileType(vals[i]);
+                 // Check if there is a default type with the same name. If so, this is a
+@@ -1385,7 +1476,7 @@ public void updateExternalFileTypes() {
+                 if (toRemove != null) {
+                     types.remove(toRemove);
+                 }
+-                
++
+                 // Then add the new one:
+                 types.add(type);
+             }
+@@ -1397,9 +1488,9 @@ public void updateExternalFileTypes() {
+         }
+     }
+ 
+-
+     /**
+      * Removes all information about custom entry types with tags of
++     *
+      * @param number or higher.
+      */
+     public void purgeCustomEntryTypes(int number) {
+@@ -1410,25 +1501,27 @@ public void purgeCustomEntryTypes(int number) {
+     }
+ 
+     /**
+-     * Removes all entries keyed by prefix+number, where number
+-     * is equal to or higher than the given number.
++     * Removes all entries keyed by prefix+number, where number is equal to or
++     * higher than the given number.
++     *
+      * @param number or higher.
+      */
+     public void purgeSeries(String prefix, int number) {
+-        while (get(prefix+number) != null) {
+-            remove(prefix+number);
++        while (get(prefix + number) != null) {
++            remove(prefix + number);
+             number++;
+         }
+     }
+ 
+     public EntryEditorTabList getEntryEditorTabList() {
+-    if (tabList == null)
+-        updateEntryEditorTabList();
+-    return tabList;
++        if (tabList == null) {
++            updateEntryEditorTabList();
++        }
++        return tabList;
+     }
+ 
+     public void updateEntryEditorTabList() {
+-    tabList = new EntryEditorTabList();
++        tabList = new EntryEditorTabList();
+     }
+ 
+     /**
+@@ -1437,32 +1530,34 @@ public void updateEntryEditorTabList() {
+      * @param filename String File to export to
+      */
+     public void exportPreferences(String filename) throws IOException {
+-      File f = new File(filename);
+-      OutputStream os = new FileOutputStream(f);
+-      try {
+-        prefs.exportSubtree(os);
+-      } catch (BackingStoreException ex) {
+-        throw new IOException(ex.getMessage());
+-      }
+-    }
+-
+-      /**
+-       * Imports Preferences from an XML file.
+-       *
+-       * @param filename String File to import from
+-       */
+-      public void importPreferences(String filename) throws IOException {
++        File f = new File(filename);
++        OutputStream os = new FileOutputStream(f);
++        try {
++            prefs.exportSubtree(os);
++        } catch (BackingStoreException ex) {
++            throw new IOException(ex.getMessage());
++        }
++    }
++
++    /**
++     * Imports Preferences from an XML file.
++     *
++     * @param filename String File to import from
++     */
++    public void importPreferences(String filename) throws IOException {
+         File f = new File(filename);
+         InputStream is = new FileInputStream(f);
+         try {
+-          Preferences.importPreferences(is);
++            Preferences.importPreferences(is);
+         } catch (InvalidPreferencesFormatException ex) {
+-          throw new IOException(ex.getMessage());
++            throw new IOException(ex.getMessage());
+         }
+-      }
++    }
+ 
+     /**
+-     * Determines whether the given field should be written without any sort of wrapping.
++     * Determines whether the given field should be written without any sort of
++     * wrapping.
++     *
+      * @param fieldName The field name.
+      * @return true if the field should not be wrapped.
+      */, @@ -79,6 +79,7 @@ public PrefsDialog3(JabRefFrame parent) {
+ 		tabs.add(new GeneralTab(frame, prefs));
+ 		tabs.add(new NetworkTab(frame, prefs));
+         tabs.add(new FileTab(frame, prefs));
++        tabs.add(new FileSortTab(frame, prefs));
+         tabs.add(new EntryEditorPrefsTab(frame, prefs));
+         tabs.add(new GroupsPrefsTab(prefs));
+ 		tabs.add(new AppearancePrefsTab(prefs));, @@ -214,9 +214,9 @@ public void setValues() {
+ 		autoResizeMode
+ 			.setSelected((_prefs.getInt(""autoResizeMode"") == JTable.AUTO_RESIZE_ALL_COLUMNS));
+ 
+-		priField.setText(_prefs.get(""priSort""));
+-		secField.setText(_prefs.get(""secSort""));
+-		terField.setText(_prefs.get(""terSort""));
++		priField.setText(_prefs.get(JabRefPreferences.PRIMARY_SORT_FIELD));
++		secField.setText(_prefs.get(JabRefPreferences.SECONDARY_SORT_FIELD));
++		terField.setText(_prefs.get(JabRefPreferences.TERTIARY_SORT_FIELD));
+ 		priSort.setSelectedIndex(0);
+ 		secSort.setSelectedIndex(0);
+ 		terSort.setSelectedIndex(0);
+@@ -235,9 +235,9 @@ else if (_prefs.getBoolean(""namesLastOnly""))
+ 			lastNamesOnly.setSelected(true);
+ 		else
+ 			noAbbrNames.setSelected(true);
+-		priDesc.setSelected(_prefs.getBoolean(""priDescending""));
+-		secDesc.setSelected(_prefs.getBoolean(""secDescending""));
+-		terDesc.setSelected(_prefs.getBoolean(""terDescending""));
++		priDesc.setSelected(_prefs.getBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING));
++		secDesc.setSelected(_prefs.getBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING));
++		terDesc.setSelected(_prefs.getBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING));
+ 
+ 		floatMarked.setSelected(_prefs.getBoolean(""floatMarkedEntries""));
+ 
+@@ -268,16 +268,16 @@ public void storeSettings() {
+ 
+ 		_prefs.putInt(""autoResizeMode"",
+ 			autoResizeMode.isSelected() ? JTable.AUTO_RESIZE_ALL_COLUMNS : JTable.AUTO_RESIZE_OFF);
+-		_prefs.putBoolean(""priDescending"", priDesc.isSelected());
+-		_prefs.putBoolean(""secDescending"", secDesc.isSelected());
+-		_prefs.putBoolean(""terDescending"", terDesc.isSelected());
+-		// _prefs.put(""secSort"",
++		_prefs.putBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING, priDesc.isSelected());
++		_prefs.putBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING, secDesc.isSelected());
++		_prefs.putBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING, terDesc.isSelected());
++		// _prefs.put(JabRefPreferences.SECONDARY_SORT_FIELD,
+ 		// GUIGlobals.ALL_FIELDS[secSort.getSelectedIndex()]);
+-		// _prefs.put(""terSort"",
++		// _prefs.put(JabRefPreferences.TERTIARY_SORT_FIELD,
+ 		// GUIGlobals.ALL_FIELDS[terSort.getSelectedIndex()]);
+-		_prefs.put(""priSort"", priField.getText().toLowerCase().trim());
+-		_prefs.put(""secSort"", secField.getText().toLowerCase().trim());
+-		_prefs.put(""terSort"", terField.getText().toLowerCase().trim());
++		_prefs.put(JabRefPreferences.PRIMARY_SORT_FIELD, priField.getText().toLowerCase().trim());
++		_prefs.put(JabRefPreferences.SECONDARY_SORT_FIELD, secField.getText().toLowerCase().trim());
++		_prefs.put(JabRefPreferences.TERTIARY_SORT_FIELD, terField.getText().toLowerCase().trim());
+ 
+ 		_prefs.putBoolean(""floatMarkedEntries"", floatMarked.isSelected());
+ 		// updatefont, @@ -1,18 +1,18 @@
+ /*  Copyright (C) 2003-2011 JabRef contributors.
+-    This program is free software; you can redistribute it and/or modify
+-    it under the terms of the GNU General Public License as published by
+-    the Free Software Foundation; either version 2 of the License, or
+-    (at your option) any later version.
+-
+-    This program is distributed in the hope that it will be useful,
+-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-    GNU General Public License for more details.
+-
+-    You should have received a copy of the GNU General Public License along
+-    with this program; if not, write to the Free Software Foundation, Inc.,
+-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+-*/
++ This program is free software; you can redistribute it and/or modify
++ it under the terms of the GNU General Public License as published by
++ the Free Software Foundation; either version 2 of the License, or
++ (at your option) any later version.
++
++ This program is distributed in the hope that it will be useful,
++ but WITHOUT ANY WARRANTY; without even the implied warranty of
++ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ GNU General Public License for more details.
++
++ You should have received a copy of the GNU General Public License along
++ with this program; if not, write to the Free Software Foundation, Inc.,
++ 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
++ */
+ package net.sf.jabref.export;
+ 
+ import java.io.File;
+@@ -52,23 +52,23 @@
+ import ca.odell.glazedlists.BasicEventList;
+ import ca.odell.glazedlists.SortedList;
+ 
+-public class FileActions
+-{
++public class FileActions {
+ 
+     private static Pattern refPat = Pattern.compile(""(#[A-Za-z]+#)""); // Used to detect string references in strings
+     private static BibtexString.Type previousStringType;
+ 
+     private static void writePreamble(Writer fw, String preamble) throws IOException {
+-    if (preamble != null) {
+-        fw.write(""@PREAMBLE{"");
+-        fw.write(preamble);
+-        fw.write(""}""+Globals.NEWLINE +Globals.NEWLINE);
+-    }
++        if (preamble != null) {
++            fw.write(""@PREAMBLE{"");
++            fw.write(preamble);
++            fw.write(""}"" + Globals.NEWLINE + Globals.NEWLINE);
++        }
+     }
+ 
+     /**
+-     * Write all strings in alphabetical order, modified to produce a safe (for BibTeX) order of the strings
+-     * if they reference each other.
++     * Write all strings in alphabetical order, modified to produce a safe (for
++     * BibTeX) order of the strings if they reference each other.
++     *
+      * @param fw The Writer to send the output to.
+      * @param database The database whose strings we should write.
+      * @throws IOException If anthing goes wrong in writing.
+@@ -83,17 +83,18 @@ private static void writeStrings(Writer fw, BibtexDatabase database) throws IOEx
+         // First, make a Map of all entries:
+         HashMap<String, BibtexString> remaining = new HashMap<String, BibtexString>();
+         int maxKeyLength = 0;
+-        for (Iterator<BibtexString> i=strings.iterator(); i.hasNext();) {
++        for (Iterator<BibtexString> i = strings.iterator(); i.hasNext();) {
+             BibtexString string = i.next();
+             remaining.put(string.getName(), string);
+             maxKeyLength = Math.max(maxKeyLength, string.getName().length());
+         }
+ 
+-        for(BibtexString.Type t : BibtexString.Type.values()) {
++        for (BibtexString.Type t : BibtexString.Type.values()) {
+             for (Iterator<BibtexString> i = strings.iterator(); i.hasNext();) {
+                 BibtexString bs = i.next();
+-                if (remaining.containsKey(bs.getName()) && bs.getType() == t)
++                if (remaining.containsKey(bs.getName()) && bs.getType() == t) {
+                     writeString(fw, bs, remaining, maxKeyLength);
++                }
+             }
+         }
+         fw.write(Globals.NEWLINE);
+@@ -110,12 +111,13 @@ private static void writeString(Writer fw, BibtexString bs, HashMap<String, Bibt
+         Matcher m;
+         while ((m = refPat.matcher(content)).find()) {
+             String foundLabel = m.group(1);
+-            int restIndex = content.indexOf(foundLabel)+foundLabel.length();
++            int restIndex = content.indexOf(foundLabel) + foundLabel.length();
+             content = content.substring(restIndex);
+-            Object referred = remaining.get(foundLabel.substring(1, foundLabel.length()-1));
++            Object referred = remaining.get(foundLabel.substring(1, foundLabel.length() - 1));
+             // If the label we found exists as a key in the ""remaining"" Map, we go on and write it now:
+-            if (referred != null)
+-                writeString(fw, (BibtexString)referred, remaining, maxKeyLength);
++            if (referred != null) {
++                writeString(fw, (BibtexString) referred, remaining, maxKeyLength);
++            }
+         }
+ 
+         if (previousStringType != bs.getType()) {
+@@ -124,8 +126,9 @@ private static void writeString(Writer fw, BibtexString bs, HashMap<String, Bibt
+         }
+ 
+         String suffix = """";
+-        for(int i = maxKeyLength - bs.getName().length(); i > 0; i--) 
++        for (int i = maxKeyLength - bs.getName().length(); i > 0; i--) {
+             suffix += "" "";
++        }
+ 
+         fw.write(""@String { "" + bs.getName() + suffix + "" = "");
+         if (!bs.getContent().equals("""")) {
+@@ -134,249 +137,229 @@ private static void writeString(Writer fw, BibtexString bs, HashMap<String, Bibt
+                 fw.write(formatted);
+             } catch (IllegalArgumentException ex) {
+                 throw new IllegalArgumentException(
+-                        Globals.lang(""The # character is not allowed in BibTeX strings unless escaped as in '\\#'."") + ""\n"" +
+-                        Globals.lang(""Before saving, please edit any strings containing the # character.""));
++                        Globals.lang(""The # character is not allowed in BibTeX strings unless escaped as in '\\#'."") + ""\n""
++                        + Globals.lang(""Before saving, please edit any strings containing the # character.""));
+             }
+ 
+-        }
+-        else
++        } else {
+             fw.write(""{}"");
++        }
+ 
+         fw.write("" }"" + Globals.NEWLINE);// + Globals.NEWLINE);
+     }
+ 
+     /**
+      * Writes the JabRef signature and the encoding.
+      *
+-     * @param encoding String the name of the encoding, which is part of the header.
++     * @param encoding String the name of the encoding, which is part of the
++     * header.
+      */
+     private static void writeBibFileHeader(Writer out, String encoding) throws IOException {
+         out.write(""% "");
+-      out.write(GUIGlobals.SIGNATURE);
+-      out.write("" ""+GUIGlobals.version+"".""+Globals.NEWLINE + ""% "" + 
+-              GUIGlobals.encPrefix+encoding+Globals.NEWLINE +Globals.NEWLINE);
++        out.write(GUIGlobals.SIGNATURE);
++        out.write("" "" + GUIGlobals.version + ""."" + Globals.NEWLINE + ""% ""
++                + GUIGlobals.encPrefix + encoding + Globals.NEWLINE + Globals.NEWLINE);
+     }
+ 
+     /**
+-     * Saves the database to file. Two boolean values indicate whether
+-     * only entries with a nonzero Globals.SEARCH value and only
+-     * entries with a nonzero Globals.GROUPSEARCH value should be
+-     * saved. This can be used to let the user save only the results of
+-     * a search. False and false means all entries are saved.
++     * Saves the database to file. Two boolean values indicate whether only
++     * entries with a nonzero Globals.SEARCH value and only entries with a
++     * nonzero Globals.GROUPSEARCH value should be saved. This can be used to
++     * let the user save only the results of a search. False and false means all
++     * entries are saved.
+      */
+     public static SaveSession saveDatabase(BibtexDatabase database,
+-		MetaData metaData, File file, JabRefPreferences prefs,
+-		boolean checkSearch, boolean checkGroup, String encoding, boolean suppressBackup)
+-		throws SaveException {
+-    	
+-		TreeMap<String, BibtexEntryType> types = new TreeMap<String, BibtexEntryType>();
+-		
+-		boolean backup = prefs.getBoolean(""backup"");
+-        if (suppressBackup)
++            MetaData metaData, File file, JabRefPreferences prefs,
++            boolean checkSearch, boolean checkGroup, String encoding, boolean suppressBackup)
++            throws SaveException {
++
++        TreeMap<String, BibtexEntryType> types = new TreeMap<String, BibtexEntryType>();
++
++        boolean backup = prefs.getBoolean(""backup"");
++        if (suppressBackup) {
+             backup = false;
++        }
+ 
+-		SaveSession session;
+-		BibtexEntry exceptionCause = null;
+-		try {
+-			session = new SaveSession(file, encoding, backup);
+-		} catch (Throwable e) {
+-			if (encoding != null) {
+-				System.err.println(""Error from encoding: '"" + encoding + ""' Len: "" + encoding.length());
+-			}
++        SaveSession session;
++        BibtexEntry exceptionCause = null;
++        try {
++            session = new SaveSession(file, encoding, backup);
++        } catch (Throwable e) {
++            if (encoding != null) {
++                System.err.println(""Error from encoding: '"" + encoding + ""' Len: "" + encoding.length());
++            }
+ 			// we must catch all exceptions to be able notify users that
+-			// saving failed, no matter what the reason was
+-			// (and they won't just quit JabRef thinking
+-			// everyting worked and loosing data)
+-			e.printStackTrace();
+-			throw new SaveException(e.getMessage());
+-		}
++            // saving failed, no matter what the reason was
++            // (and they won't just quit JabRef thinking
++            // everyting worked and loosing data)
++            e.printStackTrace();
++            throw new SaveException(e.getMessage());
++        }
+ 
+-		try {
++        try {
+ 
+ 			// Get our data stream. This stream writes only to a temporary file,
+-			// until committed.
+-			VerifyingWriter fw = session.getWriter();
++            // until committed.
++            VerifyingWriter fw = session.getWriter();
+ 
+-			// Write signature.
+-			writeBibFileHeader(fw, encoding);
++            // Write signature.
++            writeBibFileHeader(fw, encoding);
+ 
+-			// Write preamble if there is one.
+-			writePreamble(fw, database.getPreamble());
++            // Write preamble if there is one.
++            writePreamble(fw, database.getPreamble());
+ 
+-			// Write strings if there are any.
+-			writeStrings(fw, database);
++            // Write strings if there are any.
++            writeStrings(fw, database);
+ 
+ 			// Write database entries. Take care, using CrossRefEntry-
+-			// Comparator, that referred entries occur after referring
+-			// ones. Apart from crossref requirements, entries will be
+-			// sorted as they appear on the screen.
+-			List<BibtexEntry> sorter = getSortedEntries(database, null, true);
++            // Comparator, that referred entries occur after referring
++            // ones. Apart from crossref requirements, entries will be
++            // sorted as they appear on the screen.
++            List<BibtexEntry> sorter = getSortedEntries(database, null, true);
+ 
+-			FieldFormatter ff = new LatexFieldFormatter();
++            FieldFormatter ff = new LatexFieldFormatter();
+ 
+-			for (BibtexEntry be : sorter) {
+-				exceptionCause = be;
++            for (BibtexEntry be : sorter) {
++                exceptionCause = be;
+ 
+ 				// Check if we must write the type definition for this
+-				// entry, as well. Our criterion is that all non-standard
+-				// types (*not* customized standard types) must be written.
+-				BibtexEntryType tp = be.getType();
+-
+-				if (BibtexEntryType.getStandardType(tp.getName()) == null) {
+-					types.put(tp.getName(), tp);
+-				}
+-
+-				// Check if the entry should be written.
+-				boolean write = true;
+-
+-				if (checkSearch && !nonZeroField(be, BibtexFields.SEARCH)) {
+-					write = false;
+-				}
+-
+-				if (checkGroup && !nonZeroField(be, BibtexFields.GROUPSEARCH)) {
+-					write = false;
+-				}
+-
+-				if (write) {
+-					be.write(fw, ff, true);
+-					fw.write(Globals.NEWLINE);
+-				}
+-			}
+-
+-			// Write meta data.
+-			if (metaData != null) {
+-				metaData.writeMetaData(fw);
+-			}
+-
+-			// Write type definitions, if any:
+-			if (types.size() > 0) {
+-				for (Iterator<String> i = types.keySet().iterator(); i
+-					.hasNext();) {
++                // entry, as well. Our criterion is that all non-standard
++                // types (*not* customized standard types) must be written.
++                BibtexEntryType tp = be.getType();
++
++                if (BibtexEntryType.getStandardType(tp.getName()) == null) {
++                    types.put(tp.getName(), tp);
++                }
++
++                // Check if the entry should be written.
++                boolean write = true;
++
++                if (checkSearch && !nonZeroField(be, BibtexFields.SEARCH)) {
++                    write = false;
++                }
++
++                if (checkGroup && !nonZeroField(be, BibtexFields.GROUPSEARCH)) {
++                    write = false;
++                }
++
++                if (write) {
++                    be.write(fw, ff, true);
++                    fw.write(Globals.NEWLINE);
++                }
++            }
++
++            // Write meta data.
++            if (metaData != null) {
++                metaData.writeMetaData(fw);
++            }
++
++            // Write type definitions, if any:
++            if (types.size() > 0) {
++                for (Iterator<String> i = types.keySet().iterator(); i
++                        .hasNext();) {
+                     BibtexEntryType type = types.get(i.next());
+                     if (type instanceof CustomEntryType) {
+-                        CustomEntryType tp = (CustomEntryType)type;
++                        CustomEntryType tp = (CustomEntryType) type;
+                         tp.save(fw);
+                         fw.write(Globals.NEWLINE);
+                     }
+-				}
+-
+-			}
+-
+-			fw.close();
+-		} catch (Throwable ex) {
+-			ex.printStackTrace();
+-			try {
+-				session.cancel();
+-				// repairAfterError(file, backup, INIT_OK);
+-			} catch (IOException e) {
+-				// Argh, another error? Can we do anything?
+-				e.printStackTrace();
+-                throw new SaveException(ex.getMessage()+""\n""+
+-                        Globals.lang(""Warning: could not complete file repair; your file may ""
+-                        +""have been corrupted. Error message"")+"": ""+e.getMessage());
++                }
+ 
+-			}
+-			throw new SaveException(ex.getMessage(), exceptionCause);
+-		}
++            }
+ 
+-		return session;
++            fw.close();
++        } catch (Throwable ex) {
++            ex.printStackTrace();
++            try {
++                session.cancel();
++                // repairAfterError(file, backup, INIT_OK);
++            } catch (IOException e) {
++                // Argh, another error? Can we do anything?
++                e.printStackTrace();
++                throw new SaveException(ex.getMessage() + ""\n""
++                        + Globals.lang(""Warning: could not complete file repair; your file may ""
++                                + ""have been corrupted. Error message"") + "": "" + e.getMessage());
+ 
++            }
++            throw new SaveException(ex.getMessage(), exceptionCause);
++        }
+ 
+-	}
++        return session;
+ 
+-    private enum SaveOrder {
+-    	Standard, Original, Title, TableSort
+     }
+-    
++
+     private static class SaveSettings {
+         public final String pri, sec, ter;
+         public final boolean priD, secD, terD;
+-        
++
+         public SaveSettings(boolean isSaveOperation) {
+-        	/* four options:
+-        	 * 1. ordered by author/editor/year (saveInStandardOrder)
+-        	 * 2. original order (saveInOriginalOrder) -- not hit here as SaveSettings is not called in that case
+-        	 * 3. current table sort order (*everything else*)
+-        	 * 4. ordered by title (saveInTitleOrder)
+-        	 */
+-        	SaveOrder saveOrder;
+-        	String prefix = isSaveOperation ? ""save"" :  ""export"";
+-        	if (Globals.prefs.getBoolean(prefix + ""InStandardOrder"")) {
+-        		saveOrder = SaveOrder.Standard;
+-        	} else if (Globals.prefs.getBoolean(prefix + ""InTitleOrder"")) {
+-        		saveOrder = SaveOrder.Title;
+-//        	} else if (Globals.prefs.getBoolean(prefix + ""InOriginalOrder"")) {
+-        		// this case is never hit as SaveSettings() is never called if InOriginalOrder is true
+-//        		saveOrder = SaveOrder.Original;
+-        	} else {
+-        		saveOrder = SaveOrder.TableSort;
+-        	}
+-
+-        	switch (saveOrder) {
+-        	case TableSort:
++            /* three options:
++             * 1. original order (saveInOriginalOrder) -- not hit here as SaveSettings is not called in that case
++             * 2. current table sort order
++             * 3. ordered by specified order
++             */
++            // This case should never behit as SaveSettings() is never called if InOriginalOrder is true
++            assert isSaveOperation && !Globals.prefs.getBoolean(JabRefPreferences.SAVE_IN_ORIGINAL_ORDER);
++            assert !isSaveOperation && !Globals.prefs.getBoolean(JabRefPreferences.EXPORT_IN_ORIGINAL_ORDER);
++
++            if (isSaveOperation && Globals.prefs.getBoolean(JabRefPreferences.SAVE_IN_SPECIFIED_ORDER)) {
++                pri = Globals.prefs.get(JabRefPreferences.SAVE_PRIMARY_SORT_FIELD);
++                sec = Globals.prefs.get(JabRefPreferences.SAVE_SECONDARY_SORT_FIELD);
++                ter = Globals.prefs.get(JabRefPreferences.SAVE_TERTIARY_SORT_FIELD);
++                priD = Globals.prefs.getBoolean(JabRefPreferences.SAVE_PRIMARY_SORT_DESCENDING);
++                secD = Globals.prefs.getBoolean(JabRefPreferences.SAVE_SECONDARY_SORT_DESCENDING);
++                terD = Globals.prefs.getBoolean(JabRefPreferences.SAVE_TERTIARY_SORT_DESCENDING);
++            } else if (!isSaveOperation && Globals.prefs.getBoolean(JabRefPreferences.EXPORT_IN_SPECIFIED_ORDER)) {
++                pri = Globals.prefs.get(JabRefPreferences.EXPORT_PRIMARY_SORT_FIELD);
++                sec = Globals.prefs.get(JabRefPreferences.EXPORT_SECONDARY_SORT_FIELD);
++                ter = Globals.prefs.get(JabRefPreferences.EXPORT_TERTIARY_SORT_FIELD);
++                priD = Globals.prefs.getBoolean(JabRefPreferences.EXPORT_PRIMARY_SORT_DESCENDING);
++                secD = Globals.prefs.getBoolean(JabRefPreferences.EXPORT_SECONDARY_SORT_DESCENDING);
++                terD = Globals.prefs.getBoolean(JabRefPreferences.EXPORT_TERTIARY_SORT_DESCENDING);
++            } else {
+                 // The setting is to save according to the current table order.
+-                pri = Globals.prefs.get(""priSort"");
+-                sec = Globals.prefs.get(""secSort"");
+-                // sorted as they appear on the screen.
+-                ter = Globals.prefs.get(""terSort"");
+-                priD = Globals.prefs.getBoolean(""priDescending"");
+-                secD = Globals.prefs.getBoolean(""secDescending"");
+-                terD = Globals.prefs.getBoolean(""terDescending"");
+-                break;
+-        	case Title:
+-        		// The setting is to not save in standard order, but in title order: title, author, editor
+-        		pri = ""title"";
+-                sec = ""author"";
+-                ter = ""editor"";
+-                priD = false;
+-                secD = false;
+-                terD = false;
+-                break;
+-        	case Standard:
+-        	default: // required to get rid of Java compile errors
+-                pri = ""author"";
+-                sec = ""editor"";
+-                ter = ""year"";
+-                priD = false;
+-                secD = false;
+-                terD = true;
+-        		break;
+-        	}
++                pri = Globals.prefs.get(JabRefPreferences.PRIMARY_SORT_FIELD);
++                sec = Globals.prefs.get(JabRefPreferences.SECONDARY_SORT_FIELD);
++                ter = Globals.prefs.get(JabRefPreferences.TERTIARY_SORT_FIELD);
++                priD = Globals.prefs.getBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING);
++                secD = Globals.prefs.getBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING);
++                terD = Globals.prefs.getBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING);
++            }
+         }
+     }
+-    
++
+     private static List<Comparator<BibtexEntry>> getSaveComparators(boolean isSaveOperation) {
+         SaveSettings saveSettings = new SaveSettings(isSaveOperation);
+ 
+         List<Comparator<BibtexEntry>> comparators = new ArrayList<Comparator<BibtexEntry>>();
+-        if (isSaveOperation)
++        if (isSaveOperation) {
+             comparators.add(new CrossRefEntryComparator());
++        }
+         comparators.add(new FieldComparator(saveSettings.pri, saveSettings.priD));
+         comparators.add(new FieldComparator(saveSettings.sec, saveSettings.secD));
+         comparators.add(new FieldComparator(saveSettings.ter, saveSettings.terD));
+         comparators.add(new FieldComparator(BibtexFields.KEY_FIELD));
+-        
++
+         return comparators;
+     }
+-    
++
+     /**
+-	 * Saves the database to file, including only the entries included in the
+-	 * supplied input array bes.
+-	 * 
+-	 * @return A List containing warnings, if any.
+-	 */
++     * Saves the database to file, including only the entries included in the
++     * supplied input array bes.
++     *
++     * @return A List containing warnings, if any.
++     */
+     @SuppressWarnings(""unchecked"")
+-	public static SaveSession savePartOfDatabase(BibtexDatabase database, MetaData metaData,
+-                                                 File file, JabRefPreferences prefs, BibtexEntry[] bes, String encoding) throws SaveException
+-    {
+-
+-    TreeMap<String, BibtexEntryType> types = new TreeMap<String, BibtexEntryType>(); // Map
+-																						// to
+-																						// collect
+-																						// entry
+-																						// type
+-																						// definitions
+-    // that we must save along with entries using them.
++    public static SaveSession savePartOfDatabase(BibtexDatabase database, MetaData metaData,
++            File file, JabRefPreferences prefs, BibtexEntry[] bes, String encoding) throws SaveException {
++
++        TreeMap<String, BibtexEntryType> types = new TreeMap<String, BibtexEntryType>(); // Map
++        // to
++        // collect
++        // entry
++        // type
++        // definitions
++        // that we must save along with entries using them.
+ 
+         BibtexEntry be = null;
+         boolean backup = prefs.getBoolean(""backup"");
+@@ -388,8 +371,7 @@ public static SaveSession savePartOfDatabase(BibtexDatabase database, MetaData m
+             throw new SaveException(e.getMessage());
+         }
+ 
+-        try
+-        {
++        try {
+ 
+             // Define our data stream.
+             VerifyingWriter fw = session.getWriter();
+@@ -401,119 +383,114 @@ public static SaveSession savePartOfDatabase(BibtexDatabase database, MetaData m
+             writePreamble(fw, database.getPreamble());
+ 
+             // Write strings if there are any.
+-        writeStrings(fw, database);
++            writeStrings(fw, database);
+ 
+             // Write database entries. Take care, using CrossRefEntry-
+             // Comparator, that referred entries occur after referring
+             // ones. Apart from crossref requirements, entries will be
+             // sorted as they appear on the screen.
++            List<Comparator<BibtexEntry>> comparators = getSaveComparators(true);
+ 
+-        List<Comparator<BibtexEntry>> comparators = getSaveComparators(true);
+-
+-        // Use glazed lists to get a sorted view of the entries:
+-        BasicEventList entryList = new BasicEventList();
+-        SortedList sorter = new SortedList(entryList, new FieldComparatorStack<BibtexEntry>(comparators));
++            // Use glazed lists to get a sorted view of the entries:
++            BasicEventList entryList = new BasicEventList();
++            SortedList sorter = new SortedList(entryList, new FieldComparatorStack<BibtexEntry>(comparators));
+ 
+-        if ((bes != null) && (bes.length > 0))
+-        for (int i=0; i<bes.length; i++) {
+-            sorter.add(bes[i]);
+-        }
++            if ((bes != null) && (bes.length > 0)) {
++                for (int i = 0; i < bes.length; i++) {
++                    sorter.add(bes[i]);
++                }
++            }
+ 
+             FieldFormatter ff = new LatexFieldFormatter();
+ 
+-            for (Iterator<BibtexEntry> i = sorter.iterator(); i.hasNext();)
+-            {
++            for (Iterator<BibtexEntry> i = sorter.iterator(); i.hasNext();) {
+                 be = (i.next());
+ 
+         // Check if we must write the type definition for this
+-        // entry, as well. Our criterion is that all non-standard
+-        // types (*not* customized standard types) must be written.
+-        BibtexEntryType tp = be.getType();
+-        if (BibtexEntryType.getStandardType(tp.getName()) == null) {
+-            types.put(tp.getName(), tp);
+-        }
+-
+-        be.write(fw, ff, true);
+-        fw.write(Globals.NEWLINE);
+-        }
++                // entry, as well. Our criterion is that all non-standard
++                // types (*not* customized standard types) must be written.
++                BibtexEntryType tp = be.getType();
++                if (BibtexEntryType.getStandardType(tp.getName()) == null) {
++                    types.put(tp.getName(), tp);
++                }
++
++                be.write(fw, ff, true);
++                fw.write(Globals.NEWLINE);
++            }
+ 
+             // Write meta data.
+-            if (metaData != null)
+-            {
++            if (metaData != null) {
+                 metaData.writeMetaData(fw);
+             }
+ 
+-        // Write type definitions, if any:
+-        if (types.size() > 0) {
+-        for (Iterator<String> i=types.keySet().iterator(); i.hasNext();) {
+-            CustomEntryType tp = (CustomEntryType)types.get(i.next());
+-            tp.save(fw);
+-            fw.write(Globals.NEWLINE);
+-        }
++            // Write type definitions, if any:
++            if (types.size() > 0) {
++                for (Iterator<String> i = types.keySet().iterator(); i.hasNext();) {
++                    CustomEntryType tp = (CustomEntryType) types.get(i.next());
++                    tp.save(fw);
++                    fw.write(Globals.NEWLINE);
++                }
+ 
+-        }
++            }
+ 
+             fw.close();
+-        }
+-         catch (Throwable ex)
+-        {
++        } catch (Throwable ex) {
+             try {
+                 session.cancel();
+                 //repairAfterError(file, backup, status);
+             } catch (IOException e) {
+                 // Argh, another error? Can we do anything?
+                 e.printStackTrace();
+-                throw new SaveException(ex.getMessage()+""\n""+
+-                        Globals.lang(""Warning: could not complete file repair; your file may ""
+-                        +""have been corrupted. Error message"")+"": ""+e.getMessage());
++                throw new SaveException(ex.getMessage() + ""\n""
++                        + Globals.lang(""Warning: could not complete file repair; your file may ""
++                                + ""have been corrupted. Error message"") + "": "" + e.getMessage());
+             }
+             throw new SaveException(ex.getMessage(), be);
+-    }
++        }
+ 
+         return session;
+ 
+     }
+ 
+-
+     /**
+      * This method attempts to get a Reader for the file path given, either by
+-     * loading it as a resource (from within jar), or as a normal file.
+-     * If unsuccessful (e.g. file not found), an IOException is thrown.
++     * loading it as a resource (from within jar), or as a normal file. If
++     * unsuccessful (e.g. file not found), an IOException is thrown.
+      */
+     public static Reader getReader(String name) throws IOException {
+-      Reader reader = null;
+-      // Try loading as a resource first. This works for files inside the jar:
+-      URL reso = Globals.class.getResource(name);
++        Reader reader = null;
++        // Try loading as a resource first. This works for files inside the jar:
++        URL reso = Globals.class.getResource(name);
+ 
+-      // If that didn't work, try loading as a normal file URL:
+-      if (reso != null) {
+-        try {
+-          reader = new InputStreamReader(reso.openStream());
+-        } catch (FileNotFoundException ex) {
+-          throw new IOException(Globals.lang(""Could not find layout file"")+"": '""+name+""'."");
+-        }
+-      } else {
+-        File f = new File(name);
+-        try {
+-          reader = new FileReader(f);
+-        } catch (FileNotFoundException ex) {
+-          throw new IOException(Globals.lang(""Could not find layout file"")+"": '""+name+""'."");
++        // If that didn't work, try loading as a normal file URL:
++        if (reso != null) {
++            try {
++                reader = new InputStreamReader(reso.openStream());
++            } catch (FileNotFoundException ex) {
++                throw new IOException(Globals.lang(""Could not find layout file"") + "": '"" + name + ""'."");
++            }
++        } else {
++            File f = new File(name);
++            try {
++                reader = new FileReader(f);
++            } catch (FileNotFoundException ex) {
++                throw new IOException(Globals.lang(""Could not find layout file"") + "": '"" + name + ""'."");
++            }
+         }
+-      }
+ 
+-      return reader;
++        return reader;
+     }
+ 
+     /*
+-    * We have begun to use getSortedEntries() for both database save operations
+-    * and non-database save operations.  In a non-database save operation
+-    * (such as the exportDatabase call), we do not wish to use the
+-    * global preference of saving in standard order.
+-    */
++     * We have begun to use getSortedEntries() for both database save operations
++     * and non-database save operations.  In a non-database save operation
++     * (such as the exportDatabase call), we do not wish to use the
++     * global preference of saving in standard order.
++     */
+     @SuppressWarnings(""unchecked"")
+-	public static List<BibtexEntry> getSortedEntries(BibtexDatabase database, Set<String> keySet, boolean isSaveOperation) {
+-        boolean inOriginalOrder = isSaveOperation ? Globals.prefs.getBoolean(""saveInOriginalOrder"") :
+-            Globals.prefs.getBoolean(""exportInOriginalOrder"");
++    public static List<BibtexEntry> getSortedEntries(BibtexDatabase database, Set<String> keySet, boolean isSaveOperation) {
++        boolean inOriginalOrder = isSaveOperation ? Globals.prefs.getBoolean(""saveInOriginalOrder"")
++                : Globals.prefs.getBoolean(""exportInOriginalOrder"");
+         List<Comparator<BibtexEntry>> comparators;
+         if (inOriginalOrder) {
+             // Sort entries based on their creation order, utilizing the fact
+@@ -524,14 +501,15 @@ public static Reader getReader(String name) throws IOException {
+         } else {
+             comparators = getSaveComparators(isSaveOperation);
+         }
+-        
++
+         // Use glazed lists to get a sorted view of the entries:
+         FieldComparatorStack<BibtexEntry> comparatorStack = new FieldComparatorStack<BibtexEntry>(comparators);
+         BasicEventList entryList = new BasicEventList();
+         SortedList sorter = new SortedList(entryList, comparatorStack);
+ 
+-        if (keySet == null)
++        if (keySet == null) {
+             keySet = database.getKeySet();
++        }
+ 
+         if (keySet != null) {
+             Iterator<String> i = keySet.iterator();
+@@ -543,19 +521,16 @@ public static Reader getReader(String name) throws IOException {
+         return sorter;
+     }
+ 
+-    /** 
++    /**
+      * @return true iff the entry has a nonzero value in its field.
+      */
+-    private static boolean nonZeroField(BibtexEntry be, String field)
+-    {
++    private static boolean nonZeroField(BibtexEntry be, String field) {
+         String o = (be.getField(field));
+ 
+         return ((o != null) && !o.equals(""0""));
+     }
+ }
+ 
+-
+-
+ ///////////////////////////////////////////////////////////////////////////////
+ //  END OF FILE.
+ ///////////////////////////////////////////////////////////////////////////////, @@ -1352,11 +1352,11 @@ else if (i == URL_COL)
+ 
+         /*
+          * // Default sort order: String[] sortFields = new String[]
+-         * {Globals.prefs.get(""priSort""), Globals.prefs.get(""secSort""),
+-         * Globals.prefs.get(""terSort"")}; boolean[] sortDirections = new
+-         * boolean[] {Globals.prefs.getBoolean(""priDescending""),
+-         * Globals.prefs.getBoolean(""secDescending""),
+-         * Globals.prefs.getBoolean(""terDescending"")}; // descending
++         * {Globals.prefs.get(JabRefPreferences.PRIMARY_SORT_FIELD), Globals.prefs.get(JabRefPreferences.SECONDARY_SORT_FIELD),
++         * Globals.prefs.get(JabRefPreferences.TERTIARY_SORT_FIELD)}; boolean[] sortDirections = new
++         * boolean[] {Globals.prefs.getBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING),
++         * Globals.prefs.getBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING),
++         * Globals.prefs.getBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING)}; // descending
+          */
+         sortedList.getReadWriteLock().writeLock().lock();
+         comparatorChooser.appendComparator(PAD, 0, false);, @@ -377,14 +377,19 @@ private void setupComparatorChooser() {
+             comparators.add(new FieldComparator(tableFormat.getColumnName(i).toLowerCase()));
+         }
+ 
+-
+         // Set initial sort columns:
+ 
+         // Default sort order:
+-        String[] sortFields = new String[] {Globals.prefs.get(""priSort""), Globals.prefs.get(""secSort""),
+-            Globals.prefs.get(""terSort"")};
+-        boolean[] sortDirections = new boolean[] {Globals.prefs.getBoolean(""priDescending""),
+-            Globals.prefs.getBoolean(""secDescending""), Globals.prefs.getBoolean(""terDescending"")}; // descending
++        String[] sortFields = new String[] {
++            Globals.prefs.get(JabRefPreferences.PRIMARY_SORT_FIELD), 
++            Globals.prefs.get(JabRefPreferences.SECONDARY_SORT_FIELD),
++            Globals.prefs.get(JabRefPreferences.TERTIARY_SORT_FIELD)
++        };
++        boolean[] sortDirections = new boolean[]{
++            Globals.prefs.getBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING),
++            Globals.prefs.getBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING),
++            Globals.prefs.getBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING)
++        }; // descending
+ 
+         sortedForTable.getReadWriteLock().writeLock().lock();
+         for (int i=0; i<sortFields.length; i++) {
+@@ -414,24 +419,24 @@ public void actionPerformed(ActionEvent actionEvent) {
+                 // Update preferences:
+                 int count = Math.min(fields.size(), order.size());
+                 if (count >= 1) {
+-                    Globals.prefs.put(""priSort"", fields.get(0));
+-                    Globals.prefs.putBoolean(""priDescending"", order.get(0));
++                    Globals.prefs.put(JabRefPreferences.PRIMARY_SORT_FIELD, fields.get(0));
++                    Globals.prefs.putBoolean(JabRefPreferences.PRIMARY_SORT_DESCENDING, order.get(0));
+                 }
+                 if (count >= 2) {
+-                    Globals.prefs.put(""secSort"", fields.get(1));
+-                    Globals.prefs.putBoolean(""secDescending"", order.get(1));
++                    Globals.prefs.put(JabRefPreferences.SECONDARY_SORT_FIELD, fields.get(1));
++                    Globals.prefs.putBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING, order.get(1));
+                 }
+                 else {
+-                    Globals.prefs.put(""secSort"", """");
+-                    Globals.prefs.putBoolean(""secDescending"", false);
++                    Globals.prefs.put(JabRefPreferences.SECONDARY_SORT_FIELD, """");
++                    Globals.prefs.putBoolean(JabRefPreferences.SECONDARY_SORT_DESCENDING, false);
+                 }
+                 if (count >= 3) {
+-                    Globals.prefs.put(""terSort"", fields.get(2));
+-                    Globals.prefs.putBoolean(""terDescending"", order.get(2));
++                    Globals.prefs.put(JabRefPreferences.TERTIARY_SORT_FIELD, fields.get(2));
++                    Globals.prefs.putBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING, order.get(2));
+                 }
+                 else {
+-                    Globals.prefs.put(""terSort"", """");
+-                    Globals.prefs.putBoolean(""terDescending"", false);
++                    Globals.prefs.put(JabRefPreferences.TERTIARY_SORT_FIELD, """");
++                    Globals.prefs.putBoolean(JabRefPreferences.TERTIARY_SORT_DESCENDING, false);
+                 }
+             }
+ , ""This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."New Sorting/Export preferences
+2Simon Harrer['build-wrapper.xml', 'build.gradle', 'src/extensions/SimpleCsvImporter.java']"@@ -0,0 +1,3 @@
++<project default=""test"">
++    <include file=""build.xml"" as=""antTargets""/>
++</project>
+\ No newline at end of file, @@ -0,0 +1,61 @@
++apply plugin: ""java""
++apply plugin: ""eclipse""
++apply plugin: ""idea""
++apply plugin: ""application""
++
++repositories {
++    mavenCentral()
++}
++
++sourceSets {
++    main {
++        java {
++            srcDir ""src/java""
++        }
++        resources {
++            srcDirs = [""src""]
++        }
++    }
++}
++
++dependencies {
++
++    // jgoodies
++    compile 'com.jgoodies:jgoodies-common:1.4.0'
++    compile 'com.jgoodies:jgoodies-forms:1.6.0'
++    compile 'com.jgoodies:jgoodies-looks:2.5.2'
++
++    compile 'org.apache.pdfbox:pdfbox:1.7.1'
++    compile 'org.apache.pdfbox:fontbox:1.7.1'
++    compile 'org.apache.pdfbox:jempbox:1.7.1'
++
++
++    compile 'org.openoffice:juh:3.2.1'
++    compile 'org.openoffice:jurt:3.2.1'
++    compile 'org.openoffice:ridl:3.2.1'
++    compile 'org.openoffice:unoil:3.2.1'
++
++    compile 'org.antlr:antlr:3.4'
++
++    compile 'mysql:mysql-connector-java:5.0.7'
++    compile 'org.postgresql:postgresql:9.2-1002-jdbc4'
++
++    compile fileTree(dir: 'lib', includes: ['glazedlists-1.8.0_java15.jar', 'jayatana-1.2.4.jar', 'microba.jar', 'spin.jar'])
++
++    // not available in maven repository
++    compile fileTree(dir: 'lib/plugin', includes: ['jpf.jar', 'jpf-boot.jar', 'commons-logging.jar', 'JPFCodeGenerator-rt.jar'])
++
++    compile fileTree(dir: 'lib/spl/jersey', includes: ['*.jar'])
++    compile fileTree(dir: 'lib/spl/sciplore', includes: ['*.jar'])
++
++    compile 'junit:junit:3.8.2'
++}
++
++// use ant targets with prefix antTargets.XXXXX
++ant.importBuild ""build-wrapper.xml""
++
++compileJava.dependsOn ""antTargets.generate""
++
++task wrapper(type: Wrapper) {
++    gradleVersion = '1.11'
++}
+\ No newline at end of file, @@ -13,8 +13,14 @@ public String getFormatName() {
+   public boolean isRecognizedFormat(InputStream stream) throws IOException {
+     return true; // this is discouraged except for demonstration purposes
+   }
+-  
+-  public List importEntries(InputStream stream) throws IOException {    
++
++    @Override
++    public List<BibtexEntry> importEntries(InputStream in, OutputPrinter status) throws IOException {
++        // MUST BE IMPLEMENTED
++        return null;
++    }
++
++    public List importEntries(InputStream stream) throws IOException {
+     ArrayList bibitems = new ArrayList();
+     BufferedReader in = new BufferedReader(ImportFormatReader.getReaderDefaultEncoding(stream));
+       , "This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. Basic gradle integration
+3Egon Willighagen['src/resource/JabRef_nl.properties']"@@ -34,7 +34,7 @@ Abbreviate_journal_names_of_the_selected_entries_(ISO_abbreviation)=Kort_tijdsch
+ Abbreviate_journal_names_of_the_selected_entries_(MEDLINE_abbreviation)=Kort_tijdschriftennamen_met_de_geselecteerde_entries_af_(MEDLINE_afkorting)
+ 
+ Abbreviate_names=Namen_afkorten
+-Abbreviated_%0_journal_names.=
++Abbreviated_%0_journal_names.=Afgekorte_tijdschrift_namen
+ 
+ Abbreviation=Afkorting
+ 
+@@ -112,7 +112,7 @@ Append_contents_from_a_BibTeX_database_into_the_currently_viewed_database=Voeg_d
+ Append_database=Database_invoegen
+ 
+ append_the_selected_text_to_bibtex_key=voeg_de_geselecteerde_tekst_toe_aan_BibTeX-sleutel
+-Application=
++Application=Programma
+ 
+ Apply=Toepassen
+ 
+@@ -159,7 +159,7 @@ Automatically_created_groups=Automatisch_aangemaakte_groepen
+ 
+ Automatically_hide_groups_interface_when_switching_to_a_database_that_contains_no_groups=Verberg_automatisch_het_groepenvenster_bij_overgang_naar_een_database_die_geen_groepen_bevat
+ 
+-Automatically_remove_exact_duplicates=
++Automatically_remove_exact_duplicates=Automatisch_exacte_kopie\u00ebn_verwijderen
+ 
+ Automatically_show_groups_interface_when_switching_to_a_database_that_contains_groups=Toon_automatisch_het_groepenvenster_bij_overgang_naar_een_database_die_groepen_bevat
+ 
+@@ -186,7 +186,7 @@ Background_color_for_optional_fields=Achtergrondkleur_voor_optionele_velden
+ Background_color_for_required_fields=Achtergrondkleur_voor_vereiste_velden
+ 
+ Backup_old_file_when_saving=Maak_reservekopie_van_oud_bestand_bij_het_opslaan
+-Beta_version=
++Beta_version=Beta_versie
+ 
+ BibTeX_key=BibTeX-sleutel
+ 
+@@ -233,7 +233,7 @@ Change_case=Verander_geval
+ 
+ Change_entry_type=Wijzig_entry_type
+ 
+-Change_file_type=
++Change_file_type=Wijzig_bestandstype
+ 
+ change_key=wijzig_sleutel
+ 
+@@ -305,8 +305,8 @@ Command_line_id=Commandoregel_id
+ 
+ Complete_record=Vervolledig_record
+ 
+-Connect=
+-Connect_to_SQL_database=
++Connect=Verbinden
++Connect_to_SQL_database=Verbind_met_een_SQL_database
+ Connection_to_IEEEXplore_failed=
+ 
+ Contained_in=bevat_in
+@@ -2320,7 +2320,7 @@ Run_HTML_converter_on_title=
+ Searching...=
+ You_have_selected_more_than_%0_entries_for_download._Some_web_sites_might_block_you_if_you_make_too_many_rapid_downloads._Do_you_want_to_continue?=
+ Confirm_selection=
+-Unknown_DOI\:_'%0'.=
++Unknown_DOI\:_'%0'.=Unbekende_DOI\:_'%0'.
+ Get_BibTeX_entry_from_DOI=
+ Prefer_converting_subscripts_and_superscripts_to_equations_rather_than_text=
+ Add_{}_to_specified_title_words_on_search_to_keep_the_correct_case=
+@@ -2337,7 +2337,7 @@ Unknown_DiVA_entry\:_'%0'.=
+ Get_BibTeX_entry_from_DiVA=
+ Log=
+ 
+-ISO_690=
++ISO_690=ISO_690
+ 
+ Add_brackets_and_replace_separators_with_their_non-breaking_version_for_units=
+ Add_new_entry_and_keep_both_old_entries=
+@@ -2381,9 +2381,9 @@ Run_Unicode_converter_on_title,_author(s),_and_abstract=
+ Database_has_changed._Do_you_want_to_save_before_closing?=
+ Host=
+ Invalid_setting=
+-Network=
++Network=Netwerk
+ Please_specify_both_hostname_and_port=
+-Port=
++Port=Poort
+ Start_field_contents_in_same_column=
+ Use_camel_case_for_field_names_(e.g.,_""HowPublished""_instead_of_""howpublished"")=
+ Use_custom_proxy_configuration=
+@@ -2393,7 +2393,7 @@ Rebind_C-a,_too=
+ 
+ Show_number_of_elements_contained_in_each_group=
+ 
+-Open_folder=
+-Opened_%0_folder(s).=
++Open_folder=Open_map
++Opened_%0_folder(s).=%0_map(pen)_geopend.
+ 
+ Searches_for_unlinked_PDF_files_on_the_file_system=, "NaNSome example new Dutch translations via the GitHub web page.

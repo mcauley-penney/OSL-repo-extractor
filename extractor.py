@@ -4,7 +4,6 @@
 #          https://pygithub.readthedocs.io/en/latest/index.html
 # --------------------------------------------------------------------------- 
 
-
 # DOC IDEAS
 #   - discuss branches and how they can determine data grabbed
 #       - how master and main may be available even though not shown
@@ -24,23 +23,32 @@ import time
 
 
 # constants
-DASHES     = "-----------------------------------------------------------"
-BKBLU      = "\033[1;38;5;15;48;2;0;111;184m"  
-BKGRN      = "\033[1;38;5;0;48;2;16;185;129m"  
-BKRED      = "\033[1;38;5;0;48;2;240;71;71m"  
-BKYEL      = "\033[1;38;5;0;48;2;251;191;36m"  
-NAN        = "NaN"
-NL         = '\n'
-TXTRST     = "\033[0;0m" 
-TAB        = "    "
-TIME_FRMT  = "%D, %I:%M:%S %p"
+DASHES      = "-----------------------------------------------------------"
+BKBLU       = "\033[1;38;5;15;48;2;0;111;184m"  
+BKGRN       = "\033[1;38;5;0;48;2;16;185;129m"  
+BKRED       = "\033[1;38;5;0;48;2;240;71;71m"  
+BKYEL       = "\033[1;38;5;0;48;2;251;191;36m"  
+NAN         = "NaN"
+NL          = '\n'
+TXTRST      = "\033[0;0m" 
+TAB         = "    "
+TIME_FRMT   = "%D, %I:%M:%S %p"
 
-LOG_BAR    = DASHES + DASHES
-DIAG_MSG   = TAB + BKYEL +" [Diagnostics]: " + TXTRST + ' ' 
-NL_TAB     = NL + TAB
-INFO_MSG   = NL_TAB + BKBLU + " Info: " + TXTRST
-ERR_MSG    = NL_TAB + BKRED + " Error: " + TXTRST
-EXCEPT_MSG = NL_TAB + BKRED + " Exception: " + TXTRST
+LOG_BAR     = DASHES + DASHES
+DIAG_MSG    = TAB + BKYEL +" [Diagnostics]: " + TXTRST + ' ' 
+NL_TAB      = NL + TAB
+SUCCESS_MSG = BKGRN + "%s" + TXTRST
+ERR_MSG     = BKRED + " Error: " + TXTRST
+INFO_MSG    = NL_TAB + BKBLU + " Info: " + TXTRST
+EXCEPT_MSG  = NL_TAB + BKRED + " Exception: " + TXTRST
+
+CONF_ERR = """Incorrect configuration!
+
+Below is the list of configurations passed to the program. 
+This error transpired before logging capabilities could be
+established. No log has been produced for this run and the 
+traceback below will not be documented.
+""" 
 
 CSV_PROMPT = """
 Please choose type of CSV:                                      
@@ -141,10 +149,14 @@ def main():
         print( NL + EXCEPT_MSG )
         print( unspec_except_str + NL_TAB + TAB + log_filename + NL )
 
-    finally:
+    else:
         repo_name = cfg_list[1]
-        print( NL + "Operations complete for " + repo_name + "!" + NL )
 
+        log_and_print( "SUCCESS", "INFO", logger )
+        print( "Operations complete for repo \"" + repo_name + "\"." ) 
+        print( "See " + log_filename + " for operation notes!" + NL )
+
+    finally:
         logger.info( end_prog ) 
 
 
@@ -421,13 +433,11 @@ def exe_menu( conf_list, session, logger ):
         master_info_list = read_json( master_json_filename, "R_JSON_ALL", logger )
 
         if csv_choice in { "1", "3" }:
-            write_csv( master_info_list, pr_csv_filename, "pr",
-                       diagnostics_flag, logger )
+            write_csv( master_info_list, pr_csv_filename, "pr", logger )
 
 
         if csv_choice in { "2", "3" }:
-            write_csv( master_info_list, commit_csv_filename, "commit", 
-                       diagnostics_flag, logger )
+            write_csv( master_info_list, commit_csv_filename, "commit", logger )
 
 
 
@@ -579,8 +589,7 @@ def get_CLI_args():
 def get_commit_info( session, commit_py_metalist, logger ):
 
     # init other vars
-    index      = 0
-
+    index                  = 0
     commit_file_list       = [] 
     commit_metalist        = []
 
@@ -1222,7 +1231,7 @@ def json_io( file_path, mode, output_py_metalist ):
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
 def log_and_print( msg_format, log_type, logger ):
-
+  
     getter = NL_TAB + "Getting "
     reader = NL_TAB + "Reading "
     writer = NL_TAB + "Writing "
@@ -1260,6 +1269,7 @@ def log_and_print( msg_format, log_type, logger ):
             "R_JSON_ISSUE"  : reader + "issue data JSON...",
             "R_JSON_PR"     : reader + "pull request data JSON...",
             "SLEEP"         : NL_TAB + "Rate Limit imposed. Sleeping...",
+            "SUCCESS"       : " Success! ", 
             "V_AUTH"        : NL_TAB + "Validating user authentification...",
             "V_ROW_#_ISSUE" : NL_TAB + "Validating row quantity config for issue data collection...",
             "V_ROW_#_PR"    : NL_TAB + "Validating row quantity config for pull request data collection...",
@@ -1269,7 +1279,7 @@ def log_and_print( msg_format, log_type, logger ):
             "W_JSON_COMMIT" : writer + "list of commit data to JSON...",
             "W_JSON_ISSUE"  : writer + "list of issue data to JSON...",
             "W_JSON_PR"     : writer + "list of PR data to JSON...",
-            "PROG_START"    : "\nAttempting program start...",
+            "PROG_START"    : "\n Attempting program start... ",
             }
 
 
@@ -1278,15 +1288,22 @@ def log_and_print( msg_format, log_type, logger ):
     if log_type == "INFO":
         logger.info( out_msg )
 
-        if msg_format != "COMPLETE" and msg_format != "PROG_START":
+        if msg_format not in { "COMPLETE", "PROG_START", "SUCCESS" } :
             out_msg = INFO_MSG + out_msg
 
-        elif msg_format == "COMPLETE":
-            out_msg = NL_TAB + TAB + BKGRN + out_msg + TXTRST + '\n' 
+        else:
+            out_msg = SUCCESS_MSG %( out_msg ) 
+
+            if msg_format == "COMPLETE":
+                out_msg = NL_TAB + TAB + out_msg + NL
+
+            elif msg_format == "SUCCESS":
+                out_msg = NL + NL + out_msg
+
 
     elif log_type == "ERROR":
         logger.error( out_msg )
-        out_msg = ERR_MSG + out_msg 
+        out_msg = NL_TAB +  ERR_MSG + out_msg 
 
     elif log_type == "EXCEPT":
         logger.exception( out_msg )
@@ -1448,14 +1465,21 @@ def read_config( config_file_name ):
         diagnostics_flag = conf_list[6] = str.lower( conf_list[6] )
 
         if diagnostics_flag == "true":
-            print( NL + BKYEL + "[Diagnostics enabled]" + TXTRST )
+            print( NL + BKYEL + " [Diagnostics enabled] " + TXTRST )
             print( NL + DIAG_MSG + NL_TAB + "Configuration is correct length!" )
 
 
         return conf_list
 
     else:
-        print( "\nIncorrect configuration! Please update your settings!\n" )
+        print( NL + ERR_MSG )
+        print( CONF_ERR )
+
+        for item in conf_list:
+            print( TAB + item )
+
+
+        print( '\n' )
 
 
 
@@ -1637,7 +1661,7 @@ def verify_dirs( file_path ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_csv( master_info_list, out_file_name, output_type, diagnostics, logger ):
+def write_csv( master_info_list, out_filename, output_type, logger ):
     
     # init other vars
     list_index      = 0
@@ -1653,21 +1677,20 @@ def write_csv( master_info_list, out_file_name, output_type, diagnostics, logger
     log_msg = "W_CSV_PR"
 
     if output_type == "commit":
-        col_names = ["Author_Login", "Committer_Login", "PR_Number",
-                     "SHA", "Commit_Message", "file_Name",
-                     "Patch_Text", "Additions", "Deletions",
-                     "Status", "Changes"] 
+        col_names = ["Issue_Num", "Author_Login", "File_Name",
+                      "Patch_Text", "Commit_Message", "Commit_Title" ] 
 
         log_msg = "W_CSV_COMMIT"
 
 
     log_and_print( log_msg, "INFO", logger )
 
+    verify_dirs( out_filename )
     
-    with open( out_file_name, 'w', newline='', encoding="utf-8" ) as csvfile:
+    with open( out_filename, 'w', newline='', encoding="utf-8" ) as csvfile:
 
         # create writer object
-        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter='\a',
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter=',',
                              quotechar='\"', escapechar='\\' )
           
         # write column labels
@@ -1692,6 +1715,7 @@ def write_csv( master_info_list, out_file_name, output_type, diagnostics, logger
 
             # master JSON row order
             # ---------------------
+            # Use this list to choose what data to include in your output
             #
             #   issue info : 0-6
             #       issue_num         : 0
@@ -1788,21 +1812,27 @@ def write_csv( master_info_list, out_file_name, output_type, diagnostics, logger
             elif output_type == "commit":
                 if isPR == 1 and len( commit_file_list ) > 0:
 
-                # order:  Author_Login, Committer_login, PR_Number,     
-                #         SHA, Commit_Message, File_name,               
-                #         Patch_text, Additions, Deletions,             
-                #         Status, Changes                               
+                # order 1: Issue_Num, Author_Login, Committer_login, 
+                #          PR_Number, SHA, Commit_Message, 
+                #          File_Name Patch_Text, Additions, 
+                #          Deletions, Status, Changes
                 # ------------------------------------------------------------
                 # output_row = [commit_author_name, commit_committer, issue_num,
                 #               commit_SHA, commit_message, commit_file_list,
                 #               commit_patch_text, commit_adds, commit_rms,
                 #               commit_status, commit_changes] 
 
+                # Order 2 : Issue_Num, Author_Login, File_Name,
+                #           Patch_Text, Commit_Message, Commit_Title  
+
                     output_row = [ issue_num, issue_author_name, issue_title,
                                    issue_body, commit_message, commit_file_list,
-                                   issue_closed_date, commit_patch_text ] 
+                                   issue_closed_date, commit_patch_text] 
 
-                    writer.writerow( output_row ) 
+                    test_row = [issue_num, issue_author_name, commit_file_list,
+                                commit_patch_text, pr_body, issue_title]
+
+                    writer.writerow( test_row ) 
 
 
             list_index += 1

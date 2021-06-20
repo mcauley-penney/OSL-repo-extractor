@@ -1,0 +1,224 @@
+
+    New
+    ----------------------
+    Issue_Number
+    Issue_Title
+    Issue_Author
+    Issue_Login
+    Issue_Closed_Date 
+    Issue_Body
+    Issue_Comments 
+    PR_Title
+    PR_Author
+    PR_Login
+    PR_Closed_Date
+    PR_Body
+    PR_Comments
+    Commit_Author
+    Commit_Login
+    Commit_Date
+    Commit_Message
+    isPR
+
+
+     Old
+    ----------------------
+    PR_Number
+    Issue_Closed_Date 
+    Issue_Author
+    Issue_Title
+    PR_Closed_Date
+    PR_Title
+    PR_Comments
+    Issue_Comments
+    PR_Author
+    Commit_Author
+    Commit_Date
+    Commit_Message
+    isPR 
+
+
+12014-03-12, 11:38:01olenzNew Sorting/Export preferences"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.   
+"2014-03-12T11:38:01ZolenzNew Sorting/Export preferences"This will add a new ""File Sorting"" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date. 
+"Olaf Lenz2014-03-12T09:16:45ZMerge branch 'sorting'1                                                                                                                                                                                                                
+
+
+23/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
+"3/12/2014 6:29:22 PMBasic gradle integration"This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors. 
+"" =||= "" =||= "simonharrerSimon Harrer3/12/2014 5:20:08 PMGradle build works basically. Reuses existing folder structure.
+
+
+33/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page.3/15/2014 12:55:32 PMSome example new Dutch translations via the GitHub web page." =||= "" =||= "egonwEgon Willighagen3/15/2014 9:33:10 AMSome example new Dutch translations via the GitHub web page.
+
+
+43/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
+"3/17/2014 10:20:50 PMSpanish translation update"Three new strings translated.
+"" =||= "" =||= Even though the other translation files have been updated, I accept this pull request.
+For next time, please try to commit only the ""really"" changed file and revert the changes of the other one. You can also use the edit button at https://github.com/JabRef/jabref/blob/master/src/resource/JabRef_es.properties
+ =||= "jtornerojtornero3/17/2014 9:28:26 PMSpanish translation update
+
+
+53/18/2014 5:12:53 AMUpdate JabRef_in.properties"Indonesian translation added
+"3/18/2014 5:12:53 AMUpdate JabRef_in.properties"Indonesian translation added
+"" =||= "" =||= "was123was1233/18/2014 12:01:58 AM"Update JabRef_in.properties
+
+Indonesian translation added"
+
+63/19/2014 7:46:25 PMFixed splash-dev.svg3/19/2014 7:46:25 PMFixed splash-dev.svg" =||= "" =||= "olenzOlaf Lenz3/19/2014 7:41:29 PMFixed splash-dev.svg
+
+73/23/2014 4:03:12 PM" I have implemented 2 features requested in Ticket #841.""```
+The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
+
+For each file-link column whenever there are multiple files, the letter ""m"" is displayed at the bottom right corner of the icon.
+```
+
+ Committer: noravanq
+
+ On branch master
+ Changes to be committed:
+   (use ""git reset HEAD <file>..."" to unstage)
+
+```
+modified:   src/main/java/net/sf/jabref/GUIGlobals.java
+modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
+modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
+modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
+modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
+modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java
+```
+"3/23/2014 4:03:12 PM" I have implemented 2 features requested in Ticket #841.""```
+The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
+
+For each file-link column whenever there are multiple files, the letter ""m"" is displayed at the bottom right corner of the icon.
+```
+
+ Committer: noravanq
+
+ On branch master
+ Changes to be committed:
+   (use ""git reset HEAD <file>..."" to unstage)
+
+```
+modified:   src/main/java/net/sf/jabref/GUIGlobals.java
+modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
+modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
+modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
+modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
+modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java
+```
+"" =||= "" =||= "noravanqnoravanq3/23/2014 4:48:49 AM" I have implemented 2 features requested in Ticket #841.
+
+    The user can now specify an arbitrary number of file-link columns in te ""Entry table columns"" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.
+
+    For each file-link column whenever there are multiple files, the letter ""m"" is displayed at the bottom right corner of the icon.
+
+ Committer: noravanq
+
+ On branch master
+ Changes to be committed:
+   (use ""git reset HEAD <file>..."" to unstage)
+
+	modified:   src/main/java/net/sf/jabref/GUIGlobals.java
+	modified:   src/main/java/net/sf/jabref/JabRefPreferences.java
+	modified:   src/main/java/net/sf/jabref/TableColumnsTab.java
+	modified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java
+	modified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java
+	modified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java"
+84/23/2014 9:23:03 PMPDF-file metadata: Privacy Filtering all metadata"This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry ""Write XMP metadata to PDFs"" in the ""Tools"" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.
+
+Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. 
+
+The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by ""jabref/""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.
+
+If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: 
+https://sourceforge.net/p/jabref/bugs/869/
+can be closed.
+"4/23/2014 9:23:03 PMPDF-file metadata: Privacy Filtering all metadata"This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry ""Write XMP metadata to PDFs"" in the ""Tools"" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.
+
+Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. 
+
+The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by ""jabref/""), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.
+
+If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: 
+https://sourceforge.net/p/jabref/bugs/869/
+can be closed.
+"" =||= "" =||= thx!
+ =||= "adaerrAdrian Daerr4/22/2014 6:19:15 PMErase fields listed in XMP Privacy Settings from PDF DocumentInformation when XMP-tagging
+95/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs"Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
+"5/20/2014 12:53:43 PMSupport FindFullText with ACS DOIs"Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.
+"" =||= "" =||= "ansellPeter Ansell5/7/2014 1:02:09 AMadd CSIRO copyright 2014
+
+1. 10
+2. 5/20/2014 12:55:20 PM
+3. 
+4.try to fix some obvious bugs about `groups`
+
+5."Hi All,
+I just upgraded to 2.10 and I found some bugs immediately.
+1. in the right-click-menu there is no `move-to-group` but 2 `remove
+from group` instead.
+2. I like the new add/remove/move panel, but the scrolling is not
+working, which is a big problem. Because I have lots of groups which
+cannot even fit into the full screen height after expansion.
+3. no way to expand or collapse all nodes
+
+I tried the dev version, all problems still exist. Here is my fixation.
+
+Cheers,
+
+W.L."
+
+6. 5/20/2014 12:55:20 PM
+7. try to fix some obvious bugs about `groups`
+
+8."Hi All,
+I just upgraded to 2.10 and I found some bugs immediately.
+1. in the right-click-menu there is no `move-to-group` but 2 `remove
+from group` instead.
+2. I like the new add/remove/move panel, but the scrolling is not
+working, which is a big problem. Because I have lots of groups which
+cannot even fit into the full screen height after expansion.
+3. no way to expand or collapse all nodes
+
+I tried the dev version, all problems still exist. Here is my fixation.
+
+Cheers,
+
+W.L."
+
+9." =||= "
+10." =||= After 2.10 the BibtexEntryType.java is changed a lot. The optional fields and required fields are very different. If one need the field order is exactly the same as the 2.9.2, one should manually define the order. 2.10 also fixes some bugs in entry sorting. Some entries will be always different from 2.9.2. So I think backward-compatibility does not make sense any more. If one really want the bib file arranged in the same way as 2.9.2, he should just use 2.9.2. Upgrade all client to 2.10 makes more sense here.
+=||= "
+
+11.braindevices
+12.Ling Wang
+13.5/20/2014 2:56:41 AM
+14.fix bug causing double entries.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

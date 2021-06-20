@@ -1443,3 +1443,864 @@ Mon, 06/14/21, 12:14:26 PM:  Complete!
 Mon, 06/14/21, 12:14:26 PM: 
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
+
+Wed, 06/16/21, 10:14:41 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:14:41 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:14:41 AM:  Complete! 
+
+Wed, 06/16/21, 10:14:41 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:14:41 AM:  Complete! 
+
+Wed, 06/16/21, 10:14:41 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:14:44 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:14:45 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:14:45 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 136, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 423, in exe_menu
+    master_info_list = read_json( master_json_filename, "R_JSON_ALL", logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1476, in read_json
+    info_list = json_io( file_name, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1194, in json_io
+    with open( file_path, mode ) as json_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/jabref_full/jabref_master_list.json'
+
+Wed, 06/16/21, 10:14:45 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:15:11 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:15:11 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:15:11 AM:  Complete! 
+
+Wed, 06/16/21, 10:15:11 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:15:11 AM:  Complete! 
+
+Wed, 06/16/21, 10:15:11 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:15:14 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:15:15 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:15:15 AM:  Complete! 
+
+Wed, 06/16/21, 10:15:15 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:15:16 AM:  Complete! 
+
+Wed, 06/16/21, 10:15:16 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:16:18 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:16:18 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:16:18 AM:  Complete! 
+
+Wed, 06/16/21, 10:16:18 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:16:18 AM:  Complete! 
+
+Wed, 06/16/21, 10:16:18 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:16:19 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:16:20 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:16:21 AM:  Complete! 
+
+Wed, 06/16/21, 10:16:21 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:16:22 AM:  Complete! 
+
+Wed, 06/16/21, 10:16:22 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:18:52 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:18:52 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:18:52 AM:  Complete! 
+
+Wed, 06/16/21, 10:18:52 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:18:52 AM:  Complete! 
+
+Wed, 06/16/21, 10:18:52 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:18:55 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:18:55 AM: 
+    Getting paginated list of pull requests...
+
+Wed, 06/16/21, 10:18:55 AM:  Complete! 
+
+Wed, 06/16/21, 10:18:55 AM: 
+    Validating row quantity config for pull request data collection...
+
+Wed, 06/16/21, 10:18:56 AM:  Complete! 
+
+Wed, 06/16/21, 10:18:56 AM: 
+    Getting pull request data...
+
+Wed, 06/16/21, 10:18:56 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 137, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 374, in exe_menu
+    list_tuple = get_PR_info( session, pr_paged_list, row_quant,
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1055, in get_PR_info
+    cur_pr         = pr_paged_list[index]
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 48, in __getitem__
+    self.__fetchToIndex(index)
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 64, in __fetchToIndex
+    self._grow()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 67, in _grow
+    newElements = self._fetchNextPage()
+  File "/home/j/.local/lib/python3.9/site-packages/github/PaginatedList.py", line 199, in _fetchNextPage
+    headers, data = self.__requester.requestJsonAndCheck(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 354, in requestJsonAndCheck
+    *self.requestJson(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 454, in requestJson
+    return self.__requestEncode(cnx, verb, url, parameters, headers, input, encode)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 528, in __requestEncode
+    status, responseHeaders, output = self.__requestRaw(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 555, in __requestRaw
+    response = cnx.getresponse()
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 127, in getresponse
+    r = verb(
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 555, in get
+    return self.request('GET', url, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3.9/site-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.9/http/client.py", line 1345, in getresponse
+    response.begin()
+  File "/usr/lib/python3.9/http/client.py", line 307, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.9/http/client.py", line 268, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.9/socket.py", line 704, in readinto
+    return self._sock.recv_into(b)
+  File "/usr/lib/python3.9/ssl.py", line 1241, in recv_into
+    return self.read(nbytes, buffer)
+  File "/usr/lib/python3.9/ssl.py", line 1099, in read
+    return self._sslobj.read(len, buffer)
+KeyboardInterrupt
+
+Wed, 06/16/21, 10:18:56 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:19:42 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:19:42 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:19:42 AM:  Complete! 
+
+Wed, 06/16/21, 10:19:42 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:19:42 AM:  Complete! 
+
+Wed, 06/16/21, 10:19:42 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:19:44 AM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 137, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 349, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Wed, 06/16/21, 10:19:44 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:20:00 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:20:00 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:20:00 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:00 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:20:00 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:00 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:20:02 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:20:03 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:20:03 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:03 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:20:04 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:04 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:20:55 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:20:55 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:20:55 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:55 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:20:55 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:55 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:20:57 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:20:58 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:20:58 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:58 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:20:59 AM:  Complete! 
+
+Wed, 06/16/21, 10:20:59 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:21:24 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:21:24 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:21:24 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:24 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:21:25 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:25 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:21:26 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:21:26 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:21:27 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:27 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:21:28 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:28 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:21:46 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:21:46 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:21:46 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:46 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:21:47 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:47 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:21:48 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:21:48 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:21:49 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:49 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:21:50 AM:  Complete! 
+
+Wed, 06/16/21, 10:21:50 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 10:22:10 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 10:22:10 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 10:22:10 AM:  Complete! 
+
+Wed, 06/16/21, 10:22:10 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 10:22:11 AM:  Complete! 
+
+Wed, 06/16/21, 10:22:11 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 10:22:11 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 10:22:12 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 10:22:13 AM:  Complete! 
+
+Wed, 06/16/21, 10:22:13 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 10:22:14 AM:  Complete! 
+
+Wed, 06/16/21, 10:22:14 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 11:39:34 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 11:39:34 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 11:39:34 AM:  Complete! 
+
+Wed, 06/16/21, 11:39:34 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 11:39:34 AM:  Complete! 
+
+Wed, 06/16/21, 11:39:34 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 11:39:37 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 11:39:38 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 11:39:38 AM:  Complete! 
+
+Wed, 06/16/21, 11:39:38 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 11:39:40 AM:  Complete! 
+
+Wed, 06/16/21, 11:39:40 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 11:43:25 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 11:43:25 AM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 11:43:25 AM:  Complete! 
+
+Wed, 06/16/21, 11:43:25 AM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 11:43:25 AM:  Complete! 
+
+Wed, 06/16/21, 11:43:25 AM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 11:43:26 AM: 
+Attempting program start...
+
+Wed, 06/16/21, 11:43:27 AM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 11:43:27 AM:  Complete! 
+
+Wed, 06/16/21, 11:43:27 AM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 11:43:28 AM:  Complete! 
+
+Wed, 06/16/21, 11:43:28 AM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 01:05:07 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 01:05:07 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 01:05:07 PM:  Complete! 
+
+Wed, 06/16/21, 01:05:07 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 01:05:07 PM:  Complete! 
+
+Wed, 06/16/21, 01:05:07 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 01:05:12 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 01:05:14 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 01:05:15 PM:  Complete! 
+
+Wed, 06/16/21, 01:05:15 PM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 01:05:16 PM:  Complete! 
+
+Wed, 06/16/21, 01:05:16 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 01:12:55 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 01:12:55 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 01:12:55 PM:  Complete! 
+
+Wed, 06/16/21, 01:12:55 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 01:12:55 PM:  Complete! 
+
+Wed, 06/16/21, 01:12:55 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/test_jabref_commit_output.csv
+
+
+Wed, 06/16/21, 01:12:57 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 01:12:58 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 01:12:58 PM:  Complete! 
+
+Wed, 06/16/21, 01:12:58 PM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 01:13:00 PM:  Complete! 
+
+Wed, 06/16/21, 01:13:00 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Thu, 06/17/21, 11:20:04 AM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Thu, 06/17/21, 11:20:04 AM: 
+    Read configuration and initialize logging...
+
+Thu, 06/17/21, 11:20:04 AM:  Complete! 
+
+Thu, 06/17/21, 11:20:04 AM: 
+    Validating user authentification...
+
+Thu, 06/17/21, 12:21:13 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Thu, 06/17/21, 12:21:13 PM: 
+    Read configuration and initialize logging...
+
+Thu, 06/17/21, 12:21:13 PM:  Complete! 
+
+Thu, 06/17/21, 12:21:13 PM: 
+    Validating user authentification...
+
+Thu, 06/17/21, 12:21:13 PM:  Complete! 
+
+Thu, 06/17/21, 12:21:13 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_full.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/jabref/jabref_full_log.txt        
+        - issue json file  : outputs/jabref_full/json/jabref_issue_list.json
+        - pr JSON file     : outputs/jabref_full/json/jabref_pr_list.json
+        - commit JSON file : outputs/jabref_full/json/jabref_commit_list.json
+        - master JSON file : outputs/jabref_full/json/jabref_master_list.json
+        - "pr" CSV file    : outputs/jabref_full/jabref_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_full/jabref_commit_output.csv
+
+
+Thu, 06/17/21, 12:21:15 PM: 
+Attempting program start...
+
+Thu, 06/17/21, 12:21:15 PM: 
+    Reading collated data JSON...
+
+Thu, 06/17/21, 12:21:16 PM:  Complete! 
+
+Thu, 06/17/21, 12:21:16 PM: 
+    Writing "PR" type CSV...
+
+Thu, 06/17/21, 12:21:16 PM:  Complete! 
+
+Thu, 06/17/21, 12:21:16 PM: 
+    Writing "commit" type CSV...
+
+Thu, 06/17/21, 12:21:17 PM:  Complete! 
+
+Thu, 06/17/21, 12:21:17 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

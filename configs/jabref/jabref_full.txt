@@ -8,10 +8,10 @@ pr_state             = closed
 diagnostics          = true
 log_file             = log_files/jabref/jabref_full_log.txt 
 
-issue_json_filename  = outputs/jabref_full/jabref_issue_list.json 
-pr_json_filename     = outputs/jabref_full/jabref_pr_list.json
-commit_json_filename = outputs/jabref_full/jabref_commit_list.json 
-master_json_filename = outputs/jabref_full/jabref_master_list.json
+issue_json_filename  = outputs/jabref_full/json/jabref_issue_list.json 
+pr_json_filename     = outputs/jabref_full/json/jabref_pr_list.json
+commit_json_filename = outputs/jabref_full/json/jabref_commit_list.json 
+master_json_filename = outputs/jabref_full/json/jabref_master_list.json
 
 pr_csv_filename      = outputs/jabref_full/jabref_pr_output.csv
 commit_csv_filename  = outputs/jabref_full/jabref_commit_output.csv 

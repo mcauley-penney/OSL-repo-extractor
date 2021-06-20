@@ -1043,3 +1043,114 @@ KeyboardInterrupt
 Mon, 06/14/21, 06:46:03 PM: 
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
+
+Wed, 06/16/21, 08:47:10 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:47:10 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:47:10 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:10 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:47:10 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:10 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/guava_full_commit.json
+        - master JSON file : outputs/guava_full/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Wed, 06/16/21, 08:47:11 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:47:11 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:47:11 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 137, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 427, in exe_menu
+    master_info_list = read_json( master_json_filename, "R_JSON_ALL", logger )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1480, in read_json
+    info_list = json_io( file_name, 'r', None )
+  File "/home/j/git/GitHub-Repo-Extractor/extractor.py", line 1198, in json_io
+    with open( file_path, mode ) as json_file:
+FileNotFoundError: [Errno 2] No such file or directory: 'outputs/guava_full/guava_full_master.json'
+
+Wed, 06/16/21, 08:47:11 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 06/16/21, 08:47:38 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 06/16/21, 08:47:38 PM: 
+    Read configuration and initialize logging...
+
+Wed, 06/16/21, 08:47:38 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:38 PM: 
+    Validating user authentification...
+
+Wed, 06/16/21, 08:47:38 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:38 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Wed, 06/16/21, 08:47:39 PM: 
+Attempting program start...
+
+Wed, 06/16/21, 08:47:41 PM: 
+    Reading collated data JSON...
+
+Wed, 06/16/21, 08:47:41 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:41 PM: 
+    Writing "commit" type CSV...
+
+Wed, 06/16/21, 08:47:41 PM:  Complete! 
+
+Wed, 06/16/21, 08:47:41 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
