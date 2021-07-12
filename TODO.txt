@@ -1,3 +1,0 @@
-- update/create function documentation
-- create program documentation/instruction manual
-   - create readme based on documentation

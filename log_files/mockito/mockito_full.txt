@@ -3206,3 +3206,121 @@ Wed, 06/16/21, 08:46:48 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Wed, 07/07/21, 09:25:00 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 09:25:00 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 09:25:00 PM:  Complete! 
+
+Wed, 07/07/21, 09:25:00 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 09:25:00 PM:  Complete! 
+
+Wed, 07/07/21, 09:25:00 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/mockito/mockito_full.txt        
+        - issue json file  : outputs/mockito_full/json/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/json/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/json/mockito_full_commits.json
+        - master JSON file : outputs/mockito_full/json/mockito_full_master.json
+        - "pr" CSV file    : outputs/mockito_full/mockito_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_commit_output.csv
+
+
+Wed, 07/07/21, 09:25:04 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 09:25:07 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 09:25:07 PM:  Complete! 
+
+Wed, 07/07/21, 09:25:07 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 09:25:07 PM:  Complete! 
+
+Wed, 07/07/21, 09:25:07 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 09:25:07 PM:  Complete! 
+
+Wed, 07/07/21, 09:25:07 PM:  Success! 
+
+Wed, 07/07/21, 09:25:07 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 07/07/21, 11:03:50 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 11:03:50 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 11:03:50 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:50 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 11:03:50 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:50 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/mockito/mockito_full.txt
+        - repo             : mockito/mockito
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/mockito/mockito_full.txt        
+        - issue json file  : outputs/mockito_full/json/mockito_full_issues.json
+        - pr JSON file     : outputs/mockito_full/json/mockito_full_prs.json
+        - commit JSON file : outputs/mockito_full/json/mockito_full_commits.json
+        - master JSON file : outputs/mockito_full/json/mockito_full_master.json
+        - "pr" CSV file    : outputs/mockito_full/mockito_pr_output.csv       
+        - "commit" CSV file: outputs/mockito_full/mockito_commit_output.csv
+
+
+Wed, 07/07/21, 11:03:51 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 11:03:52 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 11:03:52 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:52 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 11:03:52 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:52 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 11:03:52 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:52 PM:  Success! 
+
+Wed, 07/07/21, 11:03:52 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

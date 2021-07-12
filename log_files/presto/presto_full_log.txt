@@ -4606,3 +4606,121 @@ Wed, 06/16/21, 08:46:39 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Wed, 07/07/21, 09:24:51 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 09:24:51 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 09:24:51 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:51 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 09:24:52 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:52 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/presto/presto_full_log.txt        
+        - issue json file  : outputs/presto_full/json/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/json/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/json/presto_full_commits.json
+        - master JSON file : outputs/presto_full/json/presto_full_master.json
+        - "pr" CSV file    : outputs/presto_full/presto_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_commit_output.csv
+
+
+Wed, 07/07/21, 09:24:53 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 09:24:54 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 09:24:54 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:54 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 09:24:54 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:54 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 09:24:54 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:54 PM:  Success! 
+
+Wed, 07/07/21, 09:24:54 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 07/07/21, 11:03:58 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 11:03:58 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 11:03:58 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:58 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 11:03:58 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:58 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/presto/presto_full.txt
+        - repo             : prestodb/presto
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/presto/presto_full_log.txt        
+        - issue json file  : outputs/presto_full/json/presto_full_issues.json
+        - pr JSON file     : outputs/presto_full/json/presto_full_prs.json
+        - commit JSON file : outputs/presto_full/json/presto_full_commits.json
+        - master JSON file : outputs/presto_full/json/presto_full_master.json
+        - "pr" CSV file    : outputs/presto_full/presto_pr_output.csv       
+        - "commit" CSV file: outputs/presto_full/presto_commit_output.csv
+
+
+Wed, 07/07/21, 11:03:59 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 11:04:00 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 11:04:00 PM:  Complete! 
+
+Wed, 07/07/21, 11:04:00 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 11:04:00 PM:  Complete! 
+
+Wed, 07/07/21, 11:04:00 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 11:04:01 PM:  Complete! 
+
+Wed, 07/07/21, 11:04:01 PM:  Success! 
+
+Wed, 07/07/21, 11:04:01 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

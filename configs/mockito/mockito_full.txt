@@ -14,5 +14,5 @@ pr_json_filename     = outputs/mockito_full/json/mockito_full_prs.json
 commit_json_filename = outputs/mockito_full/json/mockito_full_commits.json 
 master_json_filename = outputs/mockito_full/json/mockito_full_master.json 
 
-pr_csv_filename      = outputs/mockito_full/mockito_full_pr_output.csv
-commit_csv_filename  = outputs/mockito_full/mockito_full_commit_output.csv  
+pr_csv_filename      = outputs/mockito_full/mockito_pr_output.csv
+commit_csv_filename  = outputs/mockito_full/mockito_commit_output.csv  

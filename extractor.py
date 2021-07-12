@@ -4,12 +4,19 @@
 #          https://pygithub.readthedocs.io/en/latest/index.html
 # --------------------------------------------------------------------------- 
 
+# TODO:
+# 1. create instruction manual
+# 2. Include delimiter config option
+# 
 # DOC IDEAS
+#   - see create_master_json context annotation
 #   - discuss branches and how they can determine data grabbed
 #       - how master and main may be available even though not shown
 #   - With how this is coded now, your sleep functions WILL NOT count if your
 #     OS or internal clock is off. Check your UEFI menu if sleep will not work
 #   - If PR list len is less than total, it was reduced by check for merged
+
+
 
 
 # imports
@@ -62,20 +69,22 @@ HEADER = """
     PROGRAM START
     -------------
     Config used: 
-        - config file name : %s
-        - repo             : %s
-        - auth file        : %s
-        - rows             : %s
-        - issue state      : %s        
-        - pr state         : %s          
-        - diagnostics      : %s          
-        - log file         : %s        
-        - issue json file  : %s
-        - pr JSON file     : %s
-        - commit JSON file : %s
-        - master JSON file : %s
-        - "pr" CSV file    : %s       
-        - "commit" CSV file: %s
+        - config file name  : %s
+        - repo              : %s
+        - auth file         : %s
+        - rows              : %s
+        - issue state       : %s        
+        - pr state          : %s          
+        - diagnostics       : %s          
+        - log file          : %s        
+        - issue json file   : %s
+        - pr JSON file      : %s
+        - commit JSON file  : %s
+        - master JSON file  : %s
+        - "pr" CSV file     : %s       
+        - "commit" CSV file : %s
+        - "pr" separator    : %s
+        - "commit" separator: %s
 """
 
 PROG_INTRO = """
@@ -89,23 +98,28 @@ Please choose type of operation:
     [5] Execute all functionality
 
     Execute """ 
-
-
+  
 
 
 
 #--------------------------------------------------------------------------- 
-# Function name : driver
-# Process       : gathers args from commandline, reads user info out of file,
-#                 authenticates the user with GitHub, retrieves paginated
-#                 lists of relevant info for mining, and sends those lists to
-#                 be mined and the mined info written
-# Parameters    : none
-# Postconditions: CSV files with relevant info are produced in the current
-#                 directory
-# Notes         : none
+# Name          : driver
+# Process       : 1) get config file path from CLI
+#                 2) read settings out of cfg file, 
+#                 3) init logging
+#                 4) authenticate user and establishes connection to GitHub
+#                 5) begin program using exe_menu function
+#            
+# Parameters    : none, but info retrieved from commandline
+# Postconditions: program is started
+# Notes         : The try-except block that contains the call to exe_menu
+#                 acts as a top-level catch for any exception that is
+#                 unspecified at other parts in the tree of processes that
+#                 connect to exe_menu. If the program succeeds, it prints
+#                 a success message and, in any outcome, it prints an end
+#                 message to the log
 # Other Docs    :
-#                 - topic: github class: 
+#                 - topic: github class, e.g. "session" variable 
 #                   -link: https://pygithub.readthedocs.io/en/latest/github.html
 #--------------------------------------------------------------------------- 
 def main():
@@ -115,13 +129,14 @@ def main():
     prog_start_log    = NL + LOG_BAR + NL + "START OF PROGRAM RUN"
     unspec_except_str = TAB  + "Unspecified exception! Please see log file:"
 
-    # retrieve config file positional argument
+
+    # subprocess 1 
     config_file_name = get_CLI_args()
 
-    # get settings from configuration file
+    # subprocess 2
     cfg_list = read_config( config_file_name ) 
 
-    # establish logging capabilities
+    # subprocess 3
     log_filename = cfg_list[7]
     logger       = init_logger( log_filename )  
 
@@ -136,10 +151,11 @@ def main():
         complete( logger )
 
 
-    # authenticate the user with GitHub and insert session into list
+    # subprocess 4
     authfile_name = cfg_list[2]
     session       = verify_auth( authfile_name, diagnostics, logger )
 
+    # subprocess 5
     try:
         exe_menu( cfg_list, session, logger )
 
@@ -163,12 +179,62 @@ def main():
 
 
 #--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
+# Name   : check_row_quant_safety
+# Context: This function is implemented inside of getter functions to
+#          provide a means of determining if the amount of rows asked for
+#          in the configuration file is acceptable. The row quant has to be
+#          checked for different types of data, e.g. asking for 1,000 rows
+#          for a repo with 1,001 issues is okay, but if that same repo only
+#          has 999 PRs, we have to dial that value back to match.
+#          Normalizing our config info this way allows us to avoid asking 
+#          the user for different values for issues and PRs
+# 
+# Process: 1) use conditionals to determine appropriate amount of rows
+#             to act upon in parent getter function:
+#
+#             a) if the cfg row setting asks for "all" or is an integer value
+#                that is equal to or greater than the amount of rows that 
+#                actually exist for a given paginated list, return the maximum
+#                number of datum that can be gathered using the totalCount
+#                attribute of the paginated list
+#             b) if the cfg row setting asks for less datum than exists,
+#                return that value as an integer ( must cast it from str )
+#             c) else, return that the cfg row setting is invalid
+# 
+# Params : 1) paged_list: 
+#           - type: paginated list
+#           - desc: a paginated list of data, from GitHub, that we
+#                   want to check the length of, e.g. paginated list
+#                   of issues of PRs
+#           
+#          2) config_quant
+#           - type: string 
+#           - desc: the amount of rows of data to retrieve from the repo,
+#                   as specified by the user in the config file
+#
+#          3) log_msg
+#           - type: string
+#           - desc: a message to send to log_and_print. It describes that
+#                   the row quant is being validated and which set of data
+#                   it is being validated for
+#
+#          4) diagnostics
+#           - type: string
+#           - desc: a string that acts as a boolean flag. Tells the
+#                   program that we want diagnostic information printed to
+#                   the console
+#
+#          5) logger
+#           - type: Python Logger object
+#           - desc: Used for logging operations
+#           - docs: https://docs.python.org/3/howto/logging.html#loggers
+#
+# Output : returns an integer to be used as the amount of rows of data to
+#          gather  
+# Notes  : None
+# Docs   : 1) totalCount attribute
+#           - https://github.com/PyGithub/PyGithub/issues/415
+#           - https://github.com/PyGithub/PyGithub/pull/820
 #--------------------------------------------------------------------------- 
 def check_row_quant_safety( paged_list, config_quant, log_msg, diagnostics, logger ):
 
@@ -176,23 +242,28 @@ def check_row_quant_safety( paged_list, config_quant, log_msg, diagnostics, logg
     output_quant    = 0
     stripped_quant  = config_quant.strip()
     str_param_quant = str.lower( stripped_quant )
+
     
+    # log and print message about which set of data we are checking rows for
+    # e.g. "Checking row quant safety for issue data" 
     log_and_print( log_msg, "INFO", logger )
 
-    if diagnostics == "true":
-        print( NL_TAB + DIAG_MSG )
-
-    # if all rows are desired or the desired amount is more than exists, adjust
+    # Subprocess 1a
     if str_param_quant == "all" or int( config_quant ) > paged_list.totalCount:
         output_quant = int( paged_list.totalCount )
 
+    # Subprocess 1b
     elif int( config_quant ) <= paged_list.totalCount:
         output_quant = int( config_quant ) 
 
+    # Subprocess 1c
     else:
         log_and_print( "INVAL_ROW", "ERROR", logger )
 
+    
+    # print output quant for diagnostics
     if diagnostics == "true":
+        print( NL_TAB + DIAG_MSG )
         print( TAB + TAB + "Rows of data to be retrieved: " + str( output_quant ))
 
 
@@ -204,12 +275,37 @@ def check_row_quant_safety( paged_list, config_quant, log_msg, diagnostics, logg
 
 
 #--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
+# Name   : collate_py_lists
+# Context: After collecting all the relevant data using the issue, PR, and
+#          commit getter methods, we have three separate JSON files that
+#          contain that respective data. It is useful for the CSV writing
+#          stage for us to have all of that data in one place. This function
+#          takes all of that data and writes it into one file, making sure
+#          that the data is associated correctly ( such as appending PR and
+#          commit info to appropriate, complementary issue info ). 
+#
+# Process: 1) iterate through the metalist ( list of lists ) of issue info.
+#             When the issue number of a given issue matches that of a given 
+#             PR: 
+# 
+#             a) switch isPR to 1, indicating that this issue is also a PR.
+#               - Note: Concerning GitHub, all PRs are issues but not all
+#                       issues are PRs
+#             b) append the associated PR and commit list to that row of 
+#                issue info. 
+#               - Note: The consequence of this is that the index that contains
+#                       an issue's associated PR or commit info has an entire
+#                       list in it.
+# 
+# Params : 1) Info_metalist
+#           - type: tuple
+#           - desc: contains Python lists of lists of relevant repo
+#                   information. These groups of info are collatable
+#                   because they discuss the same objects of inquiry
+#
+# Output : one Python list, with nested lists, containing collated repo info 
+# Notes  : none
+# Docs   : none
 #--------------------------------------------------------------------------- 
 def collate_py_lists( info_metalist ): 
     
@@ -225,6 +321,7 @@ def collate_py_lists( info_metalist ):
     pr_list_len    = len( pr_metalist )
 
 
+    # Subprocess 1:
     while issue_index < issue_list_len:
 
         # reset vars
@@ -236,12 +333,11 @@ def collate_py_lists( info_metalist ):
 
         if issue_num == pr_num:
 
+            # Suprocess 1a:
             isPR = 1
 
-            # append entire lists to issue list:
-            #   this forces all PR and commit info into singular indices in the
-            #   issue list, accessible like this:
-            #   [index_of_entire_pr_list][index_of_specific_pr_data_item]
+            # Suprocess 1b:
+            #   append entire lists to issue list:
             issue_metalist[issue_index].append( pr_metalist[pr_index] )
             issue_metalist[issue_index].append( commit_metalist[pr_index] )
 
@@ -260,12 +356,23 @@ def collate_py_lists( info_metalist ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
+# Name   : complete
+# Context: This program uses a good deal of logging and console printing to
+#          inform the user about events inside of its operation. A common item
+#          that this program logs and prints is a completion message. So as to
+#          make the code look and read cleaner, this wrapper function provides
+#          a means of logging and printing those completion messages in an
+#          abbreviated format
+# 
+# Process: call log_and_print with fixed input parameters
+# Params : 1) logger
+#           - type: Python Logger object
+#           - desc: Used for logging operations
+#           - docs: https://docs.python.org/3/howto/logging.html#loggers 
+# 
+# Output : logs and prints preconfigured completion messages
+# Notes  : none
+# Docs   : none
 #--------------------------------------------------------------------------- 
 def complete( logger ):
 
@@ -275,68 +382,66 @@ def complete( logger ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
-#--------------------------------------------------------------------------- 
-def create_master_json( json_file_list, logger ):
-
-    # unpack list of JSON file names to read
-    issue_json_filename  = json_file_list[0]
-    pr_json_filename     = json_file_list[1]
-    commit_json_filename = json_file_list[2]
-    master_json_filename = json_file_list[3]
-
-
-    # read metalists out of JSON storage
-    issue_info_list  = read_json( issue_json_filename, "R_JSON_ISSUE", logger )
-    pr_info_list     = read_json( pr_json_filename, "R_JSON_PR", logger )
-    commit_info_list = read_json( commit_json_filename, "R_JSON_COMMIT", logger )
-
-
-    # get list of python lists
-    info_metalist = [issue_info_list, pr_info_list, commit_info_list] 
-    
-
-    # put all data content into one list
-    log_and_print( "COLLATE", "INFO", logger )
-    collated_list = collate_py_lists( info_metalist )
-    complete( logger )
-
-
-    # write that list to JSON 
-    write_json( collated_list, master_json_filename, "W_JSON_ALL", logger )
-
-
-
-
-#--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
+# Name   : exe_menu 
+# Context: This method is executed in the driver, after the configuration
+#          information has been collected from the cfg file provided at the
+#          commandline. Its purpose is to act as entrypoint for the user,
+#          where they can choose what operation to perform. 
+# 
+# Process: There are several paths that this function can take, depending on
+#          the user's choice:
+#          
+#          1) gather user choice for program operation
+#          2) if user chose 1, 2, or 5, gather paginated lists of data and
+#             execute:
+#             a) choice 1: get issue data JSON
+#             b) choice 2: get PR and commit data JSON
+#             c) choice 5: get both
+# 
+#          3) if user chose 3 or 5, create cumulative JSON from three prior
+#             JSON lists
+#
+#          4) if user chose 4 or 5, prompt user for choice of CSV output
+#             creation
+#
+#             a) if user chooses 1 or 3, create "PR" csv output
+#             b) if user chooses 2 or 3, create "Commit" csv output 
+# 
+# Params : 1) conf_list
+#           - type: Python list
+#           - desc: contains list of settings from the configuration file arg
+#
+#          2) session
+#           - type: GitHub object
+#           - desc: acts as the user's connection to GitHub REST API
+#           - docs: https://pygithub.readthedocs.io/en/latest/github.html
+#
+#          3) logger
+#           - type: Python Logger object
+#           - desc: Used for logging operations
+#           - docs: https://docs.python.org/3/howto/logging.html#loggers   
+#
+# Output : various, see Process section above
+# Notes  : none
+# Docs   : 1) Python sets used for str parity conditionals, e.g. 
+# 
+#               "if op_choice in { '1', '2', '5' }:"
+# 
+#           - https://www.w3schools.com/python/python_sets.asp
 #--------------------------------------------------------------------------- 
 def exe_menu( conf_list, session, logger ):
 
     # gather config values
     repo_str             = conf_list[1]
-    row_quant            = conf_list[3]
-    issue_state          = conf_list[4]
-    pr_state             = conf_list[5] 
     diagnostics_flag     = conf_list[6]
 
-    issue_json_filename  = conf_list[8]
-    pr_json_filename     = conf_list[9]
-    commit_json_filename = conf_list[10]
     master_json_filename = conf_list[11]
 
     pr_csv_filename      = conf_list[12]
     commit_csv_filename  = conf_list[13]
+
+    pr_separator         = conf_list[14]
+    commit_separator     = conf_list[15]
     
     # init other vars
     conf_tuple = tuple( conf_list )
@@ -349,12 +454,13 @@ def exe_menu( conf_list, session, logger ):
     if diagnostics_flag == "true":
         print( NL + DIAG_MSG + NL + log_header )
 
+
     logger.info( log_header )
 
-    # get operation choice
+    # subprocess 1
     op_choice = input( PROG_INTRO )
 
-    # enact choice
+    # subprocess 2
     if op_choice in { '1', '2', '5' }:
 
         log_and_print( "PROG_START", "INFO", logger )
@@ -363,65 +469,27 @@ def exe_menu( conf_list, session, logger ):
 
         issue_paged_list, pr_paged_list = paged_metalist 
 
-
+        # subprocess 2a
         if op_choice in { '1', '5' }: 
-            issue_metalist = get_issue_info( session, issue_paged_list, 
-                                             row_quant, diagnostics_flag,
-                                             logger )
+            get_list_json( conf_list, session, logger, "ISSUE", issue_paged_list )
 
-            write_json( issue_metalist, issue_json_filename, 
-                        "W_JSON_ISSUE", logger ) 
-         
 
+        # subprocess 2b
         if op_choice in { '2', '5' }: 
-
-            # get metalist of pr information and commit info paginated list
-            #   We get the commit paginated lists here because it allows us
-            #   to segment each group of commits into their own lists. It 
-            #   is possible to retrieve a monolithic list of commits from 
-            #   the github object but they would not be broken up by PR
-            list_tuple = get_PR_info( session, pr_paged_list, row_quant,  
-                                      diagnostics_flag, logger ) 
-
-            pr_metalist, commit_py_metalist, unmerged_pr_str = list_tuple
-
-            write_json( pr_metalist, pr_json_filename, "W_JSON_PR", 
-                        logger )
-
-            # log issue diagnostic information
-            logger.info( NL + "[Diagnostics]:" + NL + unmerged_pr_str )
+            get_list_json( conf_list, session, logger, "PR", pr_paged_list )
 
 
-            # get commit information
-            commit_metalist, diag_strs = get_commit_info( session, 
-                                                          commit_py_metalist,
-                                                          logger )
-
-            write_json( commit_metalist, commit_json_filename, 
-                        "W_JSON_COMMIT", logger ) 
-
-            # log commit diagnostic information
-            diag_strs = NL + diag_strs[0] + NL + diag_strs[1]
-
-            logger.info( NL + "[Diagnostics]:" + diag_strs )
-
-
+    # subprocess 3
     if op_choice in { '3', '5' }: 
 
         if op_choice == '3': 
             log_and_print( "PROG_START", "INFO", logger )
 
-        json_file_list = [
-                issue_json_filename, 
-                pr_json_filename, 
-                commit_json_filename,
-                master_json_filename
-                ]
+        
+        get_list_json( conf_list, session, logger, "ALL", None )
+        
 
-        # turn py lists into one list and write to JSON
-        create_master_json( json_file_list, logger )
-
-
+    # subprocess 4
     if op_choice in { '4', '5' }: 
 
         if op_choice == '4':
@@ -430,26 +498,76 @@ def exe_menu( conf_list, session, logger ):
             csv_choice = input( CSV_PROMPT )
 
 
+        # read master JSON list content out of file
         master_info_list = read_json( master_json_filename, "R_JSON_ALL", logger )
 
+        # subprocess 4a
         if csv_choice in { "1", "3" }:
-            write_csv( master_info_list, pr_csv_filename, "pr", logger )
+            write_csv( master_info_list, pr_csv_filename, 
+                       pr_separator, "pr", logger )
 
 
+        # subprocess 4b
         if csv_choice in { "2", "3" }:
-            write_csv( master_info_list, commit_csv_filename, "commit", logger )
+            write_csv( master_info_list, commit_csv_filename,
+                       commit_separator, "commit", logger )
 
 
 
 
 #--------------------------------------------------------------------------- 
-# Function name: 
-# Process      : 
-# Parameters   : 
-# Output       : 
-# Notes        : 
-# Other Docs   : 
-#---------------------------------------------------------------------------  
+# Name   : filter_commits
+# Context: After collecting PR and commit info ( after selecting choice 2 or 3 
+#          at the menu ), the program will need to filter the commits before
+#          the commit info is useful to the pipeline. The pipeline, as of
+#          right now, requires commits that are a part of a merged PR and have
+#          changed files attached to them. If a PR is not merged, it is
+#          excluded from the PR data list. If a PR has no commits, there is no
+#          data for commits associated with that PR. If the commits have no
+#          files changed, they are also not appended to the list of commit
+#          data. This function is responsible for creating the list of commits
+#          that the parent function, get_commit_info, will derive specific
+#          data from, such as the files that were changed in that commit. It
+#          also creates a set of strings, later printed to the log, that
+#          detail all of the files that were excluded from the commit list and
+#          why they were ommitted.
+#
+# Process: 1) loop through metalist of PR nums and associated paged lists of
+#             commits. These items are stored as lists in a list ( metalist ).
+#
+#             A) attempt to retrieve data from paged list of commits.
+#
+#                1) retrieve the two pieces of data that are stored in the
+#                   lists stored in every index of the in list ( being the PR
+#                   number of the PR associated with the paginated list of
+#                   commits and the paginated list of commits itself ).
+#
+#                2) retrieve the length of the paginated list of commits.
+#                   len() does not work as of the time of writing, we must use
+#                   the totalCount attribute
+#
+#                3) test if this PR has commits. If not, we do not want to
+#                   include it in the out list of commit objects and will 
+#                   instead put it in a list to be displayed in the log that
+#                   is created for this operation.
+#
+#                   a) As of writing, the project is interested in the last
+#                      commit in the set of commits for a PR. We get this by
+#                      subtracting one from the total length of the list.
+#
+#                   b) TODO:
+#
+#             B) In the case that we are rate limited, we sleep until we can 
+#                make calls again ( see the user-defined sleep function for 
+#                more info ).  
+#
+#             C) otherwise, append the useful gathered data to an out list and
+#                increment the index.
+# Params : 
+# Output : 
+# Notes  : 
+# Docs   : 
+#--------------------------------------------------------------------------- 
 def filter_commits( session, commit_py_metalist, logger ):
 
     index = 0
@@ -463,23 +581,25 @@ def filter_commits( session, commit_py_metalist, logger ):
 
     log_and_print( "F_COMMIT", "INFO", logger )
 
+    # subprocess 1
     while index < commit_py_metalist_len:
 
         # reset vars
         most_recent_commit = NAN
 
+        # subprocess 1A
         try:
+            # subprocess 1A1
             cur_commit_pr_num     = commit_py_metalist[index][0]
             cur_commit_paged_list = commit_py_metalist[index][1]
 
+            # subprocess 1A2
             num_of_commits = cur_commit_paged_list.totalCount
 
-            # test if this PR has commits          
-            # if not, we do not want to include it and will instead put it on
-            # a list for diagnostics
+            # subprocess 1A3
             if num_of_commits > 0:
 
-                # get index of last commit                
+                # subprocess 1A3a
                 last_commit_position = num_of_commits - 1 
 
                 # store most recent\last commit                           
@@ -499,11 +619,12 @@ def filter_commits( session, commit_py_metalist, logger ):
             else:
                 no_commit_str += NL_TAB + TAB + cur_commit_pr_num
 
-
+        # subprocess b
         except github.RateLimitExceededException:
             print()
             sleep( session, "F_MORE_COMMIT", logger ) 
 
+        # subprocess c
         else:
             commit_info_list.append( most_recent_commit )
 
@@ -523,20 +644,24 @@ def filter_commits( session, commit_py_metalist, logger ):
 
 
 #--------------------------------------------------------------------------- 
-# Function name: get_CLI_args 
-# Process      : adds the ability to process commandline args and a grouping
-#                of mutually exclusive args, collects and processes the args,
-#                and returns them to the user
-# Parameters   : none
-# Output       : 
-#                - name  : config_file
-#                  - type: str
-#                  - desc: str containing name of config file
-#                  - docs: none
-# Notes        : none
-# Docs         : 
-#                - topic: argparse (library)
-#                  - link: https://docs.python.org/3/library/argparse.html
+# Name   : get_CLI_args 
+# Context: This program receives a group of settings from a text file in the
+#          filesystem. This function is responsible for reading in the name of
+#          that file and returning it to the driver function, from which this
+#          function is called.
+#
+# Process: adds the ability to process commandline args and a grouping
+#          of mutually exclusive args, collects and processes the args,
+#          and returns them to the user
+#
+# Params : none
+# Output : 1) config_filename
+#             - type: str
+#             - desc: name of config file
+#
+# Notes  : none
+# Docs   : 1) argparse (library)
+#             - link: https://docs.python.org/3/library/argparse.html
 #--------------------------------------------------------------------------- 
 def get_CLI_args():
 
@@ -547,10 +672,10 @@ def get_CLI_args():
     arg_parser.add_argument( 'config_file', type=str, help="config file name" ) 
 
     # retrieve positional arguments
-    config_file_name = arg_parser.parse_args().config_file
+    config_filename = arg_parser.parse_args().config_file
 
 
-    return config_file_name
+    return config_filename
 
 
 
@@ -639,6 +764,7 @@ def get_commit_info( session, commit_py_metalist, logger ):
 
                 # retrieve each modified file and place in list
                 for file in commit_files:
+
                     commit_file_list.append( file.filename )
                     commit_adds       += int( file.additions )
                     commit_changes    += int( file.changes )
@@ -888,6 +1014,119 @@ def get_limit_info( session, type_flag ):
 
 
 
+# TODO:
+# Merge this annotation into get_list_json below
+#--------------------------------------------------------------------------- 
+# Name   : create_master_json
+# Context: After gathering data from whatever repo is passed into the program
+#          and storing that data in Python lists, the data will be written to
+#          three separate JSON files for storage ( for more info on that and
+#          why that route was taken, please see the instruction txt file ).
+#          Those lists are very useful for a few reasons but, for writing CSV
+#          outputs ( the purpose of this program ), they are more useful
+#          collated into one list. This function bundles the functionality
+#          needed to accomplish that into one place.
+# 
+# Process: 1) read repo info from the three files which store them into lists
+#          2) send list of those lists into collation function
+#          3) write collated list of repo info to CSV
+#
+# Params : 1) json_file_list
+#           - type: Python list 
+#           - desc: contains filepaths to JSON lists of repo info 
+#
+#          2) logger
+#           - type: Python Logger object
+#           - desc: Used for logging operations
+#           - docs: https://docs.python.org/3/howto/logging.html#loggers  
+#
+# Output : CSV output is written into file
+# Notes  : none
+# Docs   : none
+#---------------------------------------------------------------------------  
+#--------------------------------------------------------------------------- 
+# Name   : 
+# Context: 
+# Process: 
+# Params : 
+# Output : 
+# Notes  : 
+# Docs   : 
+#--------------------------------------------------------------------------- 
+def get_list_json( cfg_list, session, logger, list_type, data_list ):
+
+    # gather ecumenical config values
+    row_quant        = cfg_list[3]
+    diag_flag        = cfg_list[6]
+    issue_json_file  = cfg_list[8]
+    pr_json_file     = cfg_list[9]
+    commit_json_file = cfg_list[10]
+                           
+                           
+    if list_type == "ISSUE":
+        issue_metalist = get_issue_info( session, data_list, row_quant, 
+                                         diag_flag, logger )
+
+        write_json( issue_metalist, issue_json_file, "W_JSON_ISSUE", logger )
+
+
+    elif list_type == "PR":
+        # get metalist of pr information and commit info paginated list
+        #  TODO: put this VV in Context 
+        #   We get the commit paginated lists here because it allows us
+        #   to segment each group of commits into their own lists. It 
+        #   is possible to retrieve a monolithic list of commits from 
+        #   the github object but they would not be broken up by PR
+        list_tuple = get_PR_info( session, data_list, row_quant, diag_flag, 
+                                  logger ) 
+
+        pr_metalist, commit_metalist, unmerged_pr_str = list_tuple
+
+        write_json( pr_metalist, pr_json_file, "W_JSON_PR", logger )
+
+        # log issue diagnostic information
+        logger.info( NL + "[Diagnostics]:" + NL + unmerged_pr_str )
+
+        # PR and commit lists must be created together
+        get_list_json( cfg_list, session, logger, "COMMIT", commit_metalist )
+
+
+    elif list_type == "COMMIT":
+
+        # get commit information
+        commit_metalist, diag_strs = get_commit_info( session, data_list, logger )
+
+        write_json( commit_metalist, commit_json_file, "W_JSON_COMMIT", logger )
+
+        # log commit diagnostic information
+        diag_strs = NL + diag_strs[0] + NL + diag_strs[1]
+
+        logger.info( NL + "[Diagnostics]:" + diag_strs )  
+
+
+    # subprocess 4
+    elif list_type == "ALL":
+        master_json_filename = cfg_list[11]
+
+        # Subprocess 4a:
+        issue_info_list  = read_json( issue_json_file, "R_JSON_ISSUE", logger )
+        pr_info_list     = read_json( pr_json_file, "R_JSON_PR", logger )
+        commit_info_list = read_json( commit_json_file, "R_JSON_COMMIT", logger )
+
+        # create list of python lists for collation function
+        info_metalist = [issue_info_list, pr_info_list, commit_info_list] 
+
+        # Subprocess 4b:
+        log_and_print( "COLLATE", "INFO", logger )
+        collated_list = collate_py_lists( info_metalist )
+        complete( logger )
+
+        # Subprocess 4c:
+        write_json( collated_list, master_json_filename, "W_JSON_ALL", logger ) 
+
+
+
+
 #--------------------------------------------------------------------------- 
 # Function name: get_paginated_lists
 # Process      : uses CLI str arg of repo name during call to GitHub to 
@@ -1083,6 +1322,8 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
 
                     else:
                         pr_body_str = pr_body_str.strip( '\n' )
+                        pr_body_str = pr_body_str.replace( '\r', '' )
+                        pr_body_str = pr_body_str.replace( '\n\r', '' ) 
 
 
                     if cur_pr.closed_at is not None:
@@ -1099,7 +1340,7 @@ def get_PR_info( session, pr_paged_list, row_quant, diagnostics, logger ):
                             pr_comment_str
                             ]
 
-                    # get paginated list of commits for each merged PR
+                    # create tuple of the cur pr number and commits
                     cur_pr_commits = pr_num_str, cur_pr.get_commits() 
 
 
@@ -1427,6 +1668,8 @@ def read_config( config_file_name ):
         # read contents out of file object
         confinfo_list = conffile_obj.readlines()
 
+        # if a line is not an empty line or does not begin with a '-', we want
+        # to strip the line of newline chars and update the prior list
         confinfo_list = [line.strip( '\n' ) for line in confinfo_list
                          if line[0] != '-' if line != '\n']
 
@@ -1443,12 +1686,15 @@ def read_config( config_file_name ):
 
                 conf_list.append( conf_line ) 
 
+
         conffile_obj.close()
 
-    # Total config length    : 15
+
+    # Total config length    : 16
     # list of config values ------
     #   config file name     : 0 
     #   repo name str        : 1
+    #   auth file name       : 2
     #   row quant            : 3
     #   issue state          : 4
     #   pr state             : 5 
@@ -1459,8 +1705,10 @@ def read_config( config_file_name ):
     #   master json filename : 11
     #   pr csv filename      : 12
     #   commit csv filename  : 13
+    #   pr_separator         : 14
+    #   commit_separator     : 15 
 
-    if len( conf_list ) == 14:
+    if len( conf_list ) == 16:
 
         diagnostics_flag = conf_list[6] = str.lower( conf_list[6] )
 
@@ -1659,10 +1907,12 @@ def verify_dirs( file_path ):
 # Parameters   : 
 # Output       : 
 # Notes        : 
-# Other Docs   : 
+# Other Docs   :
+#                1) topic: converting str of esc chars to esc chars
+#                   - link: https://stackoverflow.com/questions/4020539/process-escape-sequences-in-a-string-in-python/4020824#4020824
 #--------------------------------------------------------------------------- 
-def write_csv( master_info_list, out_filename, output_type, logger ):
-    
+def write_csv( master_info_list, out_filename, separator, output_type, logger ):
+
     # init other vars
     list_index      = 0
     master_list_len = len( master_info_list ) 
@@ -1674,7 +1924,7 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
                    "PR_Comments", "Commit_Author_Name",                     
                    "Commit_Date", "Commit_Message", "isPR"]                  
 
-    log_msg = "W_CSV_PR"
+    log_msg     = "W_CSV_PR"
 
     if output_type == "commit":
         col_names = ["Issue_Num", "Author_Login", "File_Name",
@@ -1686,12 +1936,20 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
     log_and_print( log_msg, "INFO", logger )
 
     verify_dirs( out_filename )
+
+    if '\\' in separator:
+
+        # see "Other Docs" topic 1) 
+        str_bytes_obj = bytes( separator, "utf-8" )
+        separator     = str_bytes_obj.decode( "unicode_escape" )
+
     
     with open( out_filename, 'w', newline='', encoding="utf-8" ) as csvfile:
 
         # create writer object
-        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, delimiter=',',
-                             quotechar='\"', escapechar='\\' )
+        writer = csv.writer( csvfile, quoting=csv.QUOTE_MINIMAL, 
+                             delimiter=separator, quotechar='\"', 
+                             escapechar='\\' )
           
         # write column labels
         writer.writerow( col_names ) 
@@ -1776,7 +2034,6 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
                 commit_file_list   = cur_issue[8][5]
                 commit_patch_text  = cur_issue[8][6]  
 
-           
             if output_type == "pr":
                 
                 # Output orders
@@ -1804,6 +2061,7 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
 
                 writer.writerow( output_row ) 
 
+
             # as the loop moves through the data, we want to exclude from this
             # specific output type any issues that are not PRs. During the
             # filtering process, we make sure that the PRs in the list of data
@@ -1812,27 +2070,14 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
             elif output_type == "commit":
                 if isPR == 1 and len( commit_file_list ) > 0:
 
-                # order 1: Issue_Num, Author_Login, Committer_login, 
-                #          PR_Number, SHA, Commit_Message, 
-                #          File_Name Patch_Text, Additions, 
-                #          Deletions, Status, Changes
-                # ------------------------------------------------------------
-                # output_row = [commit_author_name, commit_committer, issue_num,
-                #               commit_SHA, commit_message, commit_file_list,
-                #               commit_patch_text, commit_adds, commit_rms,
-                #               commit_status, commit_changes] 
+                    # Order: Issue_Num, Author_Login, File_Name,
+                    #        Patch_Text, Commit_Message, Commit_Title  
 
-                # Order 2 : Issue_Num, Author_Login, File_Name,
-                #           Patch_Text, Commit_Message, Commit_Title  
+                    output_row = [issue_num, issue_author_name,
+                                  commit_file_list, commit_patch_text, 
+                                  pr_body, issue_title]
 
-                    output_row = [ issue_num, issue_author_name, issue_title,
-                                   issue_body, commit_message, commit_file_list,
-                                   issue_closed_date, commit_patch_text] 
-
-                    test_row = [issue_num, issue_author_name, commit_file_list,
-                                commit_patch_text, pr_body, issue_title]
-
-                    writer.writerow( test_row ) 
+                    writer.writerow( output_row ) 
 
 
             list_index += 1
@@ -1851,7 +2096,7 @@ def write_csv( master_info_list, out_filename, output_type, logger ):
 # Notes        : 
 # Other Docs   : 
 #--------------------------------------------------------------------------- 
-def write_json( info_metalist, json_filename, msg_format, logger, ):
+def write_json( info_metalist, json_filename, msg_format, logger ):
 
     log_and_print( msg_format, "INFO", logger )
 

@@ -1831,3 +1831,261 @@ Sat, 06/19/21, 07:49:27 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Sun, 06/20/21, 04:49:47 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Sun, 06/20/21, 04:49:47 PM: 
+    Validating user authentification...
+
+Sun, 06/20/21, 04:49:47 PM:  Complete! 
+
+Sun, 06/20/21, 04:49:47 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_sample.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 10
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/jabref/jabref_sample_log.txt        
+        - issue json file  : outputs/jabref_sample/json/jabref_sample_issue_list.json
+        - pr JSON file     : outputs/jabref_sample/json/jabref_sample_pr_list.json
+        - commit JSON file : outputs/jabref_sample/json/jabref_sample_commit_list.json
+        - master JSON file : outputs/jabref_sample/json/jabref_sample_master_list.json
+        - "pr" CSV file    : outputs/jabref_sample/jabref_sample_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_sample/jabref_sample_commit_output.csv
+
+
+Sun, 06/20/21, 04:49:49 PM: 
+ Attempting program start... 
+
+Sun, 06/20/21, 04:49:49 PM: 
+    Getting paginated list of pull requests...
+
+Sun, 06/20/21, 04:49:49 PM:  Complete! 
+
+Sun, 06/20/21, 04:49:49 PM: 
+    Validating row quantity config for pull request data collection...
+
+Sun, 06/20/21, 04:49:51 PM:  Complete! 
+
+Sun, 06/20/21, 04:49:51 PM: 
+    Getting pull request data...
+
+Sun, 06/20/21, 04:49:57 PM:  Complete! 
+
+Sun, 06/20/21, 04:49:57 PM: 
+    Writing list of PR data to JSON...
+
+Sun, 06/20/21, 04:49:57 PM:  Complete! 
+
+Sun, 06/20/21, 04:49:57 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Sun, 06/20/21, 04:49:57 PM: 
+    filtering commits...
+
+Sun, 06/20/21, 04:50:03 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:03 PM: 
+    Getting commit data...
+
+Sun, 06/20/21, 04:50:03 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:03 PM: 
+    Writing list of commit data to JSON...
+
+Sun, 06/20/21, 04:50:03 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:03 PM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Sun, 06/20/21, 04:50:03 PM:  Success! 
+
+Sun, 06/20/21, 04:50:03 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Sun, 06/20/21, 04:50:24 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Sun, 06/20/21, 04:50:24 PM: 
+    Validating user authentification...
+
+Sun, 06/20/21, 04:50:24 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:24 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_sample.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 10
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/jabref/jabref_sample_log.txt        
+        - issue json file  : outputs/jabref_sample/json/jabref_sample_issue_list.json
+        - pr JSON file     : outputs/jabref_sample/json/jabref_sample_pr_list.json
+        - commit JSON file : outputs/jabref_sample/json/jabref_sample_commit_list.json
+        - master JSON file : outputs/jabref_sample/json/jabref_sample_master_list.json
+        - "pr" CSV file    : outputs/jabref_sample/jabref_sample_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_sample/jabref_sample_commit_output.csv
+
+
+Sun, 06/20/21, 04:50:25 PM: 
+ Attempting program start... 
+
+Sun, 06/20/21, 04:50:25 PM: 
+    Getting paginated list of pull requests...
+
+Sun, 06/20/21, 04:50:25 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:25 PM: 
+    Validating row quantity config for pull request data collection...
+
+Sun, 06/20/21, 04:50:25 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:25 PM: 
+    Getting pull request data...
+
+Sun, 06/20/21, 04:50:30 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:30 PM: 
+    Writing list of PR data to JSON...
+
+Sun, 06/20/21, 04:50:30 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:30 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Sun, 06/20/21, 04:50:30 PM: 
+    filtering commits...
+
+Sun, 06/20/21, 04:50:34 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:34 PM: 
+    Getting commit data...
+
+Sun, 06/20/21, 04:50:34 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:34 PM: 
+    Writing list of commit data to JSON...
+
+Sun, 06/20/21, 04:50:34 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:34 PM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Sun, 06/20/21, 04:50:34 PM:  Success! 
+
+Sun, 06/20/21, 04:50:34 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Sun, 06/20/21, 04:50:53 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Sun, 06/20/21, 04:50:53 PM: 
+    Validating user authentification...
+
+Sun, 06/20/21, 04:50:53 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:53 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/jabref/jabref_sample.txt
+        - repo             : JabRef/jabref
+        - auth file        : auths/jmp_auth.txt
+        - rows             : 10
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : false          
+        - log file         : log_files/jabref/jabref_sample_log.txt        
+        - issue json file  : outputs/jabref_sample/json/jabref_sample_issue_list.json
+        - pr JSON file     : outputs/jabref_sample/json/jabref_sample_pr_list.json
+        - commit JSON file : outputs/jabref_sample/json/jabref_sample_commit_list.json
+        - master JSON file : outputs/jabref_sample/json/jabref_sample_master_list.json
+        - "pr" CSV file    : outputs/jabref_sample/jabref_sample_pr_output.csv       
+        - "commit" CSV file: outputs/jabref_sample/jabref_sample_commit_output.csv
+
+
+Sun, 06/20/21, 04:50:54 PM: 
+ Attempting program start... 
+
+Sun, 06/20/21, 04:50:54 PM: 
+    Getting paginated list of pull requests...
+
+Sun, 06/20/21, 04:50:54 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:54 PM: 
+    Validating row quantity config for pull request data collection...
+
+Sun, 06/20/21, 04:50:56 PM:  Complete! 
+
+Sun, 06/20/21, 04:50:56 PM: 
+    Getting pull request data...
+
+Sun, 06/20/21, 04:51:02 PM:  Complete! 
+
+Sun, 06/20/21, 04:51:02 PM: 
+    Writing list of PR data to JSON...
+
+Sun, 06/20/21, 04:51:02 PM:  Complete! 
+
+Sun, 06/20/21, 04:51:02 PM: 
+[Diagnostics]:
+
+    Non-merged pull requests:
+
+Sun, 06/20/21, 04:51:02 PM: 
+    filtering commits...
+
+Sun, 06/20/21, 04:51:08 PM:  Complete! 
+
+Sun, 06/20/21, 04:51:08 PM: 
+    Getting commit data...
+
+Sun, 06/20/21, 04:51:08 PM:  Complete! 
+
+Sun, 06/20/21, 04:51:08 PM: 
+    Writing list of commit data to JSON...
+
+Sun, 06/20/21, 04:51:08 PM:  Complete! 
+
+Sun, 06/20/21, 04:51:08 PM: 
+[Diagnostics]:
+
+    Pull requsts with no commits:
+
+    Commits with no changed files:
+
+Sun, 06/20/21, 04:51:08 PM:  Success! 
+
+Sun, 06/20/21, 04:51:08 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

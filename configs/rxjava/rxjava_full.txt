@@ -13,5 +13,5 @@ pr_json_filename     = outputs/rxjava_full/json/rxjava_full_pr_list.json
 commit_json_filename = outputs/rxjava_full/json/rxjava_full_commit_list.json 
 master_json_filename = outputs/rxjava_full/json/rxjava_full_commit_list.json 
 
-pr_csv_filename      = outputs/rxjava_full/rxjava_full_pr_output.csv  
-commit_csv_filename  = outputs/rxjava_full/rxjava_full_commit_output.csv  
+pr_csv_filename      = outputs/rxjava_full/rxjava_pr_output.csv  
+commit_csv_filename  = outputs/rxjava_full/rxjava_commit_output.csv  

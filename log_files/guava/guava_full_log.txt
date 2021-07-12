@@ -1154,3 +1154,850 @@ Wed, 06/16/21, 08:47:41 PM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Tue, 06/29/21, 04:38:04 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:38:04 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:38:04 PM:  Complete! 
+
+Tue, 06/29/21, 04:38:04 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:38:04 PM:  Complete! 
+
+Tue, 06/29/21, 04:38:04 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:38:05 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:38:09 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:38:09 PM:  Complete! 
+
+Tue, 06/29/21, 04:38:09 PM: 
+    Writing "PR" type CSV...
+
+Tue, 06/29/21, 04:38:09 PM:  Complete! 
+
+Tue, 06/29/21, 04:38:09 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:38:09 PM:  Complete! 
+
+Tue, 06/29/21, 04:38:09 PM:  Success! 
+
+Tue, 06/29/21, 04:38:09 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:39:12 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:39:12 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:39:12 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:12 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:39:12 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:12 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:39:13 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:39:15 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:39:15 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:15 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:39:15 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:15 PM:  Success! 
+
+Tue, 06/29/21, 04:39:15 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:39:38 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:39:38 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:39:38 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:38 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:39:38 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:38 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:39:40 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:39:41 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:39:41 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:41 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:39:41 PM:  Complete! 
+
+Tue, 06/29/21, 04:39:41 PM:  Success! 
+
+Tue, 06/29/21, 04:39:41 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:44:28 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:44:28 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:44:28 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:28 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:44:28 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:28 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:44:29 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:44:30 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:44:30 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:30 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:44:30 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:30 PM:  Success! 
+
+Tue, 06/29/21, 04:44:30 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:44:56 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:44:56 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:44:56 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:56 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:44:56 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:56 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:44:57 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:44:58 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:44:58 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:58 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:44:58 PM:  Complete! 
+
+Tue, 06/29/21, 04:44:58 PM:  Success! 
+
+Tue, 06/29/21, 04:44:58 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:53:41 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:53:41 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:53:41 PM:  Complete! 
+
+Tue, 06/29/21, 04:53:41 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:53:41 PM: 
+    Rate Limit imposed. Sleeping...
+Traceback (most recent call last):
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 1832, in verify_auth
+    session.get_user().name
+  File "/home/j/.local/lib/python3.9/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/home/j/.local/lib/python3.9/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/home/j/.local/lib/python3.9/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.RateLimitExceededException: 403 {"message": "API rate limit exceeded for user ID 59481467.", "documentation_url": "https://docs.github.com/rest/overview/resources-in-the-rest-api#rate-limiting"}
+
+Tue, 06/29/21, 04:53:41 PM:  Complete! 
+
+Tue, 06/29/21, 04:53:41 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/mcauley_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:53:45 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 158, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 456, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Tue, 06/29/21, 04:53:45 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:54:04 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:54:04 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:54:04 PM:  Complete! 
+
+Tue, 06/29/21, 04:54:04 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:54:05 PM:  Complete! 
+
+Tue, 06/29/21, 04:54:05 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:54:06 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:54:07 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:54:07 PM:  Complete! 
+
+Tue, 06/29/21, 04:54:07 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:54:07 PM:  Complete! 
+
+Tue, 06/29/21, 04:54:07 PM:  Success! 
+
+Tue, 06/29/21, 04:54:07 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:55:22 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:55:22 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:55:22 PM:  Complete! 
+
+Tue, 06/29/21, 04:55:22 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:55:22 PM:  Complete! 
+
+Tue, 06/29/21, 04:55:22 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:55:23 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:55:25 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:55:25 PM:  Complete! 
+
+Tue, 06/29/21, 04:55:25 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:55:25 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 158, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 506, in exe_menu
+    write_csv( master_info_list, commit_csv_filename, "commit", logger )
+  File "/home/j/git/OSL/GitHub-Repo-Extractor/extractor.py", line 2007, in write_csv
+    commit_file_list   = cur_issue[8][5].strip( "\'" )
+AttributeError: 'list' object has no attribute 'strip'
+
+Tue, 06/29/21, 04:55:25 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 04:56:33 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 04:56:33 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 04:56:33 PM:  Complete! 
+
+Tue, 06/29/21, 04:56:33 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 04:56:33 PM:  Complete! 
+
+Tue, 06/29/21, 04:56:33 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 04:56:33 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 04:56:34 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 04:56:34 PM:  Complete! 
+
+Tue, 06/29/21, 04:56:34 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 04:56:34 PM:  Complete! 
+
+Tue, 06/29/21, 04:56:34 PM:  Success! 
+
+Tue, 06/29/21, 04:56:34 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 05:13:06 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 05:13:06 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 05:13:06 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:06 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 05:13:07 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:07 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 05:13:08 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 05:13:08 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 05:13:08 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:08 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 05:13:09 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:09 PM:  Success! 
+
+Tue, 06/29/21, 05:13:09 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 05:13:52 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 05:13:52 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 05:13:52 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:52 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 05:13:53 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:53 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 05:13:53 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 05:13:54 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 05:13:54 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:54 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 05:13:54 PM:  Complete! 
+
+Tue, 06/29/21, 05:13:54 PM:  Success! 
+
+Tue, 06/29/21, 05:13:54 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 05:15:47 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 05:15:47 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 05:15:47 PM:  Complete! 
+
+Tue, 06/29/21, 05:15:47 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 05:15:47 PM:  Complete! 
+
+Tue, 06/29/21, 05:15:47 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 05:15:48 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 05:15:48 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 05:15:48 PM:  Complete! 
+
+Tue, 06/29/21, 05:15:48 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 05:15:49 PM:  Complete! 
+
+Tue, 06/29/21, 05:15:49 PM:  Success! 
+
+Tue, 06/29/21, 05:15:49 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Tue, 06/29/21, 05:16:27 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Tue, 06/29/21, 05:16:27 PM: 
+    Read configuration and initialize logging...
+
+Tue, 06/29/21, 05:16:27 PM:  Complete! 
+
+Tue, 06/29/21, 05:16:27 PM: 
+    Validating user authentification...
+
+Tue, 06/29/21, 05:16:27 PM:  Complete! 
+
+Tue, 06/29/21, 05:16:27 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_full_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_full_commit_output.csv
+
+
+Tue, 06/29/21, 05:16:28 PM: 
+ Attempting program start... 
+
+Tue, 06/29/21, 05:16:29 PM: 
+    Reading collated data JSON...
+
+Tue, 06/29/21, 05:16:29 PM:  Complete! 
+
+Tue, 06/29/21, 05:16:29 PM: 
+    Writing "commit" type CSV...
+
+Tue, 06/29/21, 05:16:29 PM:  Complete! 
+
+Tue, 06/29/21, 05:16:29 PM:  Success! 
+
+Tue, 06/29/21, 05:16:29 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 07/07/21, 09:24:43 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 09:24:43 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 09:24:43 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:43 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 09:24:43 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:43 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_commit_output.csv
+
+
+Wed, 07/07/21, 09:24:44 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 09:24:45 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 09:24:45 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:45 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 09:24:46 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:46 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 09:24:46 PM:  Complete! 
+
+Wed, 07/07/21, 09:24:46 PM:  Success! 
+
+Wed, 07/07/21, 09:24:46 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
+
+Wed, 07/07/21, 11:03:39 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Wed, 07/07/21, 11:03:39 PM: 
+    Read configuration and initialize logging...
+
+Wed, 07/07/21, 11:03:39 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:39 PM: 
+    Validating user authentification...
+
+Wed, 07/07/21, 11:03:39 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:39 PM:  
+    PROGRAM START
+    -------------
+    Config used: 
+        - config file name : configs/guava/guava_full.txt
+        - repo             : google/guava
+        - auth file        : auths/jmp_auth.txt
+        - rows             : all
+        - issue state      : closed        
+        - pr state         : closed          
+        - diagnostics      : true          
+        - log file         : log_files/guava/guava_full_log.txt        
+        - issue json file  : outputs/guava_full/json/guava_full_issues.json
+        - pr JSON file     : outputs/guava_full/json/guava_full_pr.json
+        - commit JSON file : outputs/guava_full/json/guava_full_commit.json
+        - master JSON file : outputs/guava_full/json/guava_full_master.json
+        - "pr" CSV file    : outputs/guava_full/guava_pr_output.csv       
+        - "commit" CSV file: outputs/guava_full/guava_commit_output.csv
+
+
+Wed, 07/07/21, 11:03:41 PM: 
+ Attempting program start... 
+
+Wed, 07/07/21, 11:03:42 PM: 
+    Reading collated data JSON...
+
+Wed, 07/07/21, 11:03:42 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:42 PM: 
+    Writing "PR" type CSV...
+
+Wed, 07/07/21, 11:03:42 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:42 PM: 
+    Writing "commit" type CSV...
+
+Wed, 07/07/21, 11:03:42 PM:  Complete! 
+
+Wed, 07/07/21, 11:03:42 PM:  Success! 
+
+Wed, 07/07/21, 11:03:42 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+

@@ -3,8 +3,11 @@
 repo                 = JabRef/jabref
 auth_file            = auths/mcauley_auth.txt
 rows                 = all
+
+- the issue and PR state vars are not used at the moment 
 issue_state          = closed
 pr_state             = closed
+
 diagnostics          = true
 log_file             = log_files/jabref/jabref_full_log.txt 
 
@@ -15,3 +18,6 @@ master_json_filename = outputs/jabref_full/json/jabref_master_list.json
 
 pr_csv_filename      = outputs/jabref_full/jabref_pr_output.csv
 commit_csv_filename  = outputs/jabref_full/jabref_commit_output.csv 
+
+pr_separator         = \a
+commit_separator     = , 
