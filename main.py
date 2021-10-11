@@ -9,7 +9,6 @@ def main():
 
     # init cfg
     cfg = conf.cfg()
-    cfg.extract_cfg()
 
     print( cfg.auth )
 

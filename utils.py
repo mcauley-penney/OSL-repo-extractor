@@ -1,25 +1,11 @@
 # Author: MP
 
 
-import argparse
 import os
+
 
 # constants
 TIME_FRMT   = "%D, %I:%M:%S %p"
-
-
-def get_CLI_args():
-
-    # establish positional argument capability
-    arg_parser = argparse.ArgumentParser( description="OSL Repo mining script" )
-
-    # add repo input CLI arg
-    arg_parser.add_argument( 'config_file', type=str, help="config file name" )
-
-    # retrieve positional arguments
-    config_filename = arg_parser.parse_args().config_file
-
-    return config_filename
 
 
 def verify_dirs( file_path ):
