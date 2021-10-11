@@ -1,0 +1,18 @@
+- Presto
+- Link: https://github.com/prestodb/presto
+
+repo                 = prestodb/presto 
+auth_file            = auths/mcauley_auth.txt 
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = True
+log_file             = log_files/presto/presto_full_log.txt
+
+issue_json_filename  = outputs/presto_full/json/presto_full_issues.json 
+pr_json_filename     = outputs/presto_full/json/presto_full_prs.json 
+commit_json_filename = outputs/presto_full/json/presto_full_commits.json 
+master_json_filename = outputs/presto_full/json/presto_full_master.json 
+
+pr_csv_filename      = outputs/presto_full/presto_pr_output.csv  
+commit_csv_filename  = outputs/presto_full/presto_commit_output.csv

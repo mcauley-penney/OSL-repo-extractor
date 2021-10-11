@@ -1,0 +1,20 @@
+- CONFIG TEMPLATE
+
+repo                 =
+rows                 =
+issue_state          = closed
+pr_state             = closed
+pr_delimiter         =
+commit_delimiter     =
+diagnostics          = True
+
+auth_filename        = auths/mcauley_auth.txt 
+log_filename         =  
+
+issue_json_filename  = outputs/ /json 
+pr_json_filename     = outputs/ /json
+commit_json_filename = outputs/ /json
+master_json_filename = outputs/ /json
+
+pr_csv_filename      = outputs/  
+commit_csv_filename  = outputs/  

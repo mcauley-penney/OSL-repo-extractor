@@ -1,0 +1,18 @@
+- Mockito
+- Link: https://github.com/mockito/mockito
+
+repo                 = mockito/mockito
+auth_file            = auths/mcauley_auth.txt 
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = True
+log_file             = log_files/mockito/mockito_full.txt 
+
+issue_json_filename  = outputs/mockito_full/json/mockito_full_issues.json
+pr_json_filename     = outputs/mockito_full/json/mockito_full_prs.json 
+commit_json_filename = outputs/mockito_full/json/mockito_full_commits.json 
+master_json_filename = outputs/mockito_full/json/mockito_full_master.json 
+
+pr_csv_filename      = outputs/mockito_full/mockito_pr_output.csv
+commit_csv_filename  = outputs/mockito_full/mockito_commit_output.csv  

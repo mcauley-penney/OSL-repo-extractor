@@ -1,0 +1,18 @@
+- Guava
+- link: https://github.com/google/guava
+
+repo                 = google/guava
+auth_file            = auths/jmp_auth.txt
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = true
+log_file             = log_files/guava/guava_full_log.txt 
+
+issue_json_filename  = outputs/guava_full/json/guava_full_issues.json 
+pr_json_filename     = outputs/guava_full/json/guava_full_pr.json
+commit_json_filename = outputs/guava_full/json/guava_full_commit.json 
+master_json_filename = outputs/guava_full/json/guava_full_master.json
+
+pr_csv_filename      = outputs/guava_full/guava_pr_output.csv
+commit_csv_filename  = outputs/guava_full/guava_commit_output.csv  
