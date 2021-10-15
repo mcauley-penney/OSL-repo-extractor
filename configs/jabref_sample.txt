@@ -1,12 +1,12 @@
 - JabRef config file
 
+functionality   = pr
 repo            = JabRef/jabref
 auth_file       = auths/mcauley.txt
-rows            = 10
+rows            =
 issue_state     = closed
 pr_state        = closed
-diagnostics     = false
-log             = log_files/jabref/jabref_sample_log.txt
+diagnostics     = true
 
 issue_json      = outputs/jabref_sample/json/jabref_sample_issue_list.json
 pr_json         = outputs/jabref_sample/json/jabref_sample_pr_list.json

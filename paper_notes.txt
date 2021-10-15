@@ -1,0 +1,18 @@
+Characterizing and Predicting Good First Issues
+-----------------------------------------------
+
+Purpose:
+    - providing a thorough understanding of the characteristics of "Good First Issues" (GFIs) and an
+      automatic approach in GFIs prediction to reduce the burden of project members and help newcomers
+      easily onboard
+
+    - This paper aims at providing an automatic labeling approach for GFIs to reduce the burden of
+      developers and in the meanwhile help newcomers easily onboard
+
+
+GFIs tend to be described with certain words, in better readability, with shorter and clear
+descriptions, and with more code snippets
+
+
+
+
