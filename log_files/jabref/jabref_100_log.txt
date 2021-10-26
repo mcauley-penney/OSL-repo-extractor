@@ -425,3 +425,54 @@ Mon, 07/12/21, 10:18:12 AM:
 END OF PROGRAM RUN
 ----------------------------------------------------------------------------------------------------------------------
 
+
+Mon, 10/25/21, 12:41:43 PM: 
+----------------------------------------------------------------------------------------------------------------------
+START OF PROGRAM RUN
+
+Mon, 10/25/21, 12:41:43 PM: 
+    Validating user authentification...
+
+Mon, 10/25/21, 12:41:43 PM: 
+    Non-fatal:
+        Authorization file not found!
+        Continuing without authentification...
+
+Mon, 10/25/21, 12:41:43 PM:  Complete! 
+
+Mon, 10/25/21, 12:41:43 PM: 
+    PROGRAM START
+    -------------
+    Config used:
+        - config file name  : configs/jabref/jabref_100.txt
+        - repo              : JabRef/jabref
+        - auth file         : auths/jmp_auth.txt
+        - rows              : 100
+        - issue state       : closed
+        - pr state          : closed
+        - diagnostics       : false
+        - log file          : log_files/jabref/jabref_100_log.txt
+        - issue json file   : outputs/jabref_100/json/jabref_100_issue_list.json
+        - pr JSON file      : outputs/jabref_100/json/jabref_100_pr_list.json
+        - commit JSON file  : outputs/jabref_100/json/jabref_100_commit_list.json
+        - master JSON file  : outputs/jabref_100/json/jabref_100_master_list.json
+        - "pr" CSV file     : outputs/jabref_100/jabref_100_pr_output.csv
+        - "commit" CSV file : outputs/jabref_100/jabref_100_commit_output.csv
+        - "pr" separator    : 
+        - "commit" separator: ,
+
+
+Mon, 10/25/21, 12:41:46 PM: 
+    Unspecified exception:
+
+Traceback (most recent call last):
+  File "/home/j/catalog/osl/GitHub-Repo-Extractor/extractor.py", line 161, in main
+    exe_menu( cfg_list, session, logger )
+  File "/home/j/catalog/osl/GitHub-Repo-Extractor/extractor.py", line 462, in exe_menu
+    op_choice = input( PROG_INTRO )
+KeyboardInterrupt
+
+Mon, 10/25/21, 12:41:46 PM: 
+END OF PROGRAM RUN
+----------------------------------------------------------------------------------------------------------------------
+
