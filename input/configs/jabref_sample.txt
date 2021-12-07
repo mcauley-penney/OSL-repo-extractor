@@ -1,0 +1,18 @@
+- JabRef config file
+
+functionality   = pr
+repo            = JabRef/jabref
+auth_file       = /home/m/files/work/GitHub-Repo-Extractor-2/input/auths/two.txt
+rows            = 100
+issue_state     = closed
+pr_state        = closed
+diagnostics     = true
+
+issue_json      = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/json/jabref_sample_issue_list.json
+pr_json         = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/json/jabref_sample_pr_list.json
+commit_json     = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/json/jabref_sample_commit_list.json
+
+master_json     = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/json/jabref_sample_master_list.json
+
+pr_csv          = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/jabref_sample_pr.csv
+commit_csv      = /home/m/files/work/GitHub-Repo-Extractor-2/output/jabref_sample/jabref_sample_commit.csv
