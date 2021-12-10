@@ -90,5 +90,14 @@ def get_cli_args() -> tuple[str, str]:
     return (cfg_file, log_dest)
 
 
+# for emailing
+# https://gist.github.com/alexle/1294495/39d13f2d4a004a4620c8630d1412738022a4058f
+# import smtplib
+# SERVER = smtplib.SMTP("smtp.gmail.com", 587)
+# SERVER.starttls()
+# SERVER.login(<login.user>, <login.pswd>)
+# SERVER.sendmail(<from>, <to>, <msg>)
+
+
 if __name__ == "__main__":
     main()

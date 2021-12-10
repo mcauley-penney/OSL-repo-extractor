@@ -12,9 +12,25 @@ CFG_SCHEMA = {
     "functionality": {"type": "string"},
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},
-    "rows": {"type": "integer", "min": 0},
-    "issues_fields": {"type": "list", "allowed": [*utils.ISSUE_CMD_DICT]},
-    "pr_fields": {"type": "list", "allowed": [*utils.PR_CMD_DICT]},
+    "range": {
+        "min": [0, 0],
+        "schema": {"type": "integer"},
+        "type": "list",
+    },
+    "issues_fields": {
+        "allowed": [*utils.ISSUE_CMD_DICT],
+        "minlength": 1,
+        "purge_unknown": True,
+        "schema": {"type": "string"},
+        "type": "list",
+    },
+    "pr_fields": {
+        "allowed": [*utils.PR_CMD_DICT],
+        "minlength": 1,
+        "purge_unknown": True,
+        "schema": {"type": "string"},
+        "type": "list",
+    },
 }
 
 

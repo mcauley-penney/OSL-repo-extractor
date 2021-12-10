@@ -10,8 +10,7 @@ class Extractor:
 
     """
     # TODO:
-    #   1. data extraction methods
-    #   2. data writing methods
+    #   1. data writing methods
 
     TODO: update
     The extractor class contains and executes GitHub REST API
@@ -19,7 +18,6 @@ class Extractor:
     holds onto the connection to GitHub, asks for information from GitHub and
     stores it in a dataset object, and has the ability to write that dataeset
     to JSON or a database.
-
     """
 
     def __init__(self, cfg_path) -> None:
@@ -36,19 +34,8 @@ class Extractor:
         self.cfg = conf.Cfg(cfg_path)
         self.gh_sesh = sessions.GithubSession(self.cfg.get_cfg_val("auth_file"))
 
-        self.cur_pr = None
-
-        # self.get_paged_list("issues")
         self.get_paged_list("pr")
-
-    def __check_row_quant_safety(self, paged_list) -> int:
-
-        row_quant = self.cfg.get_cfg_val("rows")
-
-        if row_quant < 1 or paged_list.totalCount < row_quant:
-            row_quant = paged_list.totalCount
-
-        return row_quant
+        # self.get_paged_list("issues")
 
     def get_paged_list(self, list_type):
         """
@@ -93,10 +80,8 @@ class Extractor:
 
         TODO:
             - add more data to choose from
-            - ability to preempt collection if merged is false?
             - get commits
             - add messaging functionality, e.g. email or text
-            - IMPORTANT: add ability to save data and RETURN TO SAME POSITION
         """
 
         def __get_pr_data_pts(field_list):
@@ -145,16 +130,17 @@ class Extractor:
 
         self.__logger.info(utils.LOG_DICT["G_DATA_PR"])
 
-        i = 0
         pr_data = []
-
-        # get user-chosen PR fields to procure
+        val_range = self.cfg.get_cfg_val("range")
         desired_field_list = self.cfg.get_cfg_val("pr_fields")
 
-        # adjust amount of rows to get if unsafe
-        safe_row_quant = self.__check_row_quant_safety(self.pr_paged_list)
+        # must begin at first item of range
+        i = val_range[0]
 
-        while i < safe_row_quant:
+        # adjust amount of rows to get if unsafe
+        safe_row = utils.check_row_quant_safety(self.pr_paged_list, i, val_range[1])
+
+        while i < safe_row:
             try:
                 cur_pr = self.pr_paged_list[i]
                 cur_pr_data = __get_pr_data_pts(desired_field_list)
@@ -168,5 +154,3 @@ class Extractor:
                 self.gh_sesh.print_rem_calls()
 
                 i = i + 1
-
-        # TODO: Add messaging functionality here
