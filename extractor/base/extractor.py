@@ -1,22 +1,20 @@
-""""""
-# import time
-# import github
+"""TODO:"""
 
-# from base.utils import LOG_DICT
 
 import logging
-import time
+import sys
 import github
 from base import auth, conf, utils
 
 
 class Extractor:
+
     """
     # TODO:
     #   1. data extraction methods
     #   2. data writing methods
 
-
+    TODO: update
     The extractor class contains and executes GitHub REST API
     functionality. It holds onto a configuration object, initiates and
     holds onto the connection to GitHub, asks for information from GitHub and
@@ -29,81 +27,169 @@ class Extractor:
         """
         TODO: Description
 
-        TODO:
-            - determine how we want to hold onto data
-                - see "dataset member"
-            - need a means of holding current session and cycling them
-                - use a method to get next session and cycle
-
-
         :rtype None: initializes extractor object
         """
-        self.logger = logging.getLogger(__name__)
+        self.__logger = logging.getLogger(__name__)
 
-        self.logger.info("Beginning extractor init, instantiating cfg...\n")
+        self.__logger.info("Beginning extractor init, instantiating cfg...\n")
 
-        # initialize configuration object
+        # initialize tools
         self.cfg = conf.Cfg(cfg_path)
+        self.auth_obj = auth.Auth(self.cfg.get_cfg_val("auth_file"))
 
-        auth_path = self.cfg.get_cfg_val("auth_file")
+        self.cur_pr = None
 
-        # initialize auths object
-        self.auth_obj = auth.Auth(auth_path)
+        # self.get_paged_list("issues")
+        self.get_paged_list("pr")
 
-        # self.dataset = None
-        # self.issues_paged_list = None
-        # self.pr_paged_list = None
+    def __check_row_quant_safety(self, paged_list) -> int:
 
-        # Extraction functionality
+        # init vars
+        output_quant = 0
+        row_quant = int(self.cfg.get_cfg_val("rows"))
 
-    def get_paged_list(self, list_type) -> None:
+        if row_quant == -1:
+            output_quant = int(paged_list.totalCount)
+
+        elif -1 < row_quant <= paged_list.totalCount:
+            output_quant = row_quant
+
+        else:
+            self.__logger.critical(utils.LOG_DICT["INVAL_ROW"])
+            sys.exit(1)
+
+        # print output quant for diagnostics?
+
+        return output_quant
+
+    def get_paged_list(self, list_type):
         """
         retrieve and store a paginated list from GitHub
 
         :param list_type str: type of paginated list to retrieve
         :rtype None: sets object member to paginated list object
         """
-        pages_received = False
-        session_index = 0
+
+        job_repo = self.cfg.get_cfg_val("repo")
 
         try:
             # retrieve GitHub repo object
-            repo_obj = self.session_list[session_index].get_repo(self.cfg.repo)
+            repo_obj = self.auth_obj.session.get_repo(job_repo)
 
             if list_type == "issues":
-                self.logger.info(utils.LOG_DICT["G_PAGED_ISSUES"])
+                self.__logger.info(utils.LOG_DICT["G_PAGED_ISSUES"])
 
                 self.issues_paged_list = repo_obj.get_issues(
                     direction="asc", sort="created", state="closed"
                 )
 
             if list_type == "pr":
-                self.logger.info(utils.LOG_DICT["G_PAGED_PR"])
+                self.__logger.info(utils.LOG_DICT["G_PAGED_PR"])
 
                 self.pr_paged_list = repo_obj.get_pulls(
                     direction="asc", sort="created", state="closed"
                 )
 
-            self.__print_rem_calls()
+            self.auth_obj.print_rem_calls()
 
-            self.logger.info("COMPLETE!")
+            self.__logger.info("COMPLETE!")
 
         except github.RateLimitExceededException:
             print()
-            self.__sleep(utils.LOG_DICT["G_MORE_PAGES"])
+            self.auth_obj.sleep(utils.LOG_DICT["G_MORE_PAGES"])
 
-        # # Display functionality
-        # def export_conf(self) -> None:
-        #     """
-        #     print the configuration provided in conf CLI arg
+    def get_pr_info(self):
+        """
+        Retrieves PR data points from the selected repository. Which PR data is
+        retrieved is defined in the "pr_fields" line in the configuration file
 
-        #     :rtype None: logs configuration
-        #     """
-        #     log_str = "\nProvided configuration:\n"
+        TODO:
+            - add more data to choose from
+            - ability to preempt collection if merged is false?
+            - get commits
+            - add messaging functionality, e.g. email or text
+            - IMPORTANT: add ability to save data and RETURN TO SAME POSITION
+        """
 
-        #     for key, val in self.cfg.full_cfg_text.items():
-        #         log_str += f"\t{key}: {val}\n"
+        def __get_pr_data_pts(field_list: str, cur_pr):
+            """
+            Takes a list of desired data items as strings and, for each string, gets
+            the corresponding piece of data from a dictionary that matches that string
+            to the data. Aggregrates the resulting data as a list, executes any function
+            calls in that list, and returns the list.
 
-        #     self.logger.log_obj.info(log_str)
+            As mentioned above, the val in the dictionary may be a function call. These
+            function calls are used to either allow the desired piece of data to be
+            modified before being returned, e.g. having newlines removed from a string,
+            or to stop the API call to GitHub servers from being executed upon
+            assignment to the dictionary. Some items, such as nested data (e.g.
+            current_pr.user.login/name) require a call to get the next level/submodule
+            of data (user, in this case) and that call will be executed when it is
+            assigned as a val to a key in the dictionary. To preempt this, we store the
+            call in a function, maybe a lambda, and execute the call after it has been
+            placed in the outgoing list of data.
 
-        # # GitHub connection management functionality
+            :param field_list list[str]: list of strings that indicate what fields are
+            desired from the current pull request
+
+            :param cur_pr github.PullRequest.PullRequest: current pull request,
+            retrieved from paginated list of pull requests
+            """
+
+            pr_cmd_dict = {
+                "body": utils.clean_str(cur_pr.body),
+                "closed": cur_pr.closed_at.strftime("%D, %I:%M:%S %p"),
+                "title": utils.clean_str(cur_pr.title),
+                "userlogin": lambda cur_pr: cur_pr.user.login,
+                "username": lambda cur_pr: cur_pr.user.name,
+            }
+
+            merged = cur_pr.merged
+            output_list = [cur_pr.number, merged]
+
+            # assumes that we only want data from a PR that has been merged
+            if merged:
+                # - assumes that the pr number and merged status will not be asked
+                #   for in cfg
+                # - filters out invalid key requests
+                whole_list = [pr_cmd_dict[field] for field in field_list]
+
+                # loop through list of retrieved dict vals and, if any are
+                # executable, execute them and append their output to the
+                # list of data to return
+                for item in whole_list:
+                    if callable(item):
+                        output_list.append(item(cur_pr))
+
+                    else:
+                        output_list.append(item)
+
+            return output_list
+
+        self.__logger.info(utils.LOG_DICT["G_DATA_PR"])
+
+        i = 0
+        pr_data = []
+
+        # get user-chosen PR fields to procure
+        desired_field_list = self.cfg.get_cfg_val("pr_fields")
+
+        # adjust amount of rows to get if unsafe
+        safe_row_quant = self.__check_row_quant_safety(self.pr_paged_list)
+
+        while i < safe_row_quant:
+            try:
+                cur_pr = self.pr_paged_list[i]
+                cur_pr_data = __get_pr_data_pts(desired_field_list, cur_pr)
+                print(cur_pr_data)
+
+            except github.RateLimitExceededException:
+                self.auth_obj.sleep(utils.LOG_DICT["G_MORE_PR"])
+
+            else:
+                pr_data.append(cur_pr_data)
+                self.auth_obj.print_rem_calls()
+
+                i = i + 1
+
+        # TODO: Add messaging functionality here

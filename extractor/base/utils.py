@@ -3,56 +3,49 @@
 import os
 
 
-# constants
-TIME_FRMT = "%D, %I:%M:%S %p"
+# logging str dict
+# TODO remove unneeded strs
+GET = "\nGetting "
+READ = "\nReading "
+WRITE = "\nWriting "
 
-# constants
-NL = "\n"
-
-ERR_MSG = " Error: "
-EXCEPT_MSG = NL + " Exception: "
-
-GETTER = NL + "Getting "
-READER = NL + "Reading "
-WRITER = NL + "Writing "
 
 LOG_DICT = {
-    "COLLATE": NL + "collating lists...",
+    "COLLATE": "\nCollating lists...",
     "COMPLETE": "Complete!",
-    "F_COMMIT": NL + "filtering commits...",
-    "F_MORE_COMMIT": NL + "filtering commits...",
-    "G_DATA_COMMIT": GETTER + "commit data...",
-    "G_DATA_ISSUE": GETTER + "issue data...",
-    "G_DATA_PR": GETTER + "pull request data...",
-    "G_MORE_COMMIT": GETTER + "more commit data...",
-    "G_MORE_ISSUE": GETTER + "more issue data...",
-    "G_MORE_PAGES": GETTER + "more paginated lists...",
-    "G_MORE_PR": GETTER + "more pull request data...",
-    "G_PAGED_ISSUES": GETTER + "paginated list of issues...",
-    "G_PAGED_PR": GETTER + "paginated list of pull requests...",
-    "INVAL_TOKEN": """Invalid personal access token found!""",
-    "INVAL_ROW": NL + "row_quant config value is invalid!",
+    "F_COMMIT": "\nFiltering commits...",
+    "F_MORE_COMMIT": "\nFiltering more commits...",
+    "G_DATA_COMMIT": f"{GET} commit data...",
+    "G_DATA_ISSUE": f"{GET} issue data...",
+    "G_DATA_PR": f"{GET} pull request data...",
+    "G_MORE_COMMIT": f"{GET} more commit data...",
+    "G_MORE_ISSUE": f"{GET} more issue data...",
+    "G_MORE_PAGES": f"{GET} more paginated lists...",
+    "G_MORE_PR": f"{GET} more pull request data...",
+    "G_PAGED_ISSUES": f"{GET} paginated list of issues...",
+    "G_PAGED_PR": f"{GET} paginated list of pull requests...",
+    "INVAL_TOKEN": "Invalid personal access token found!",
+    "INVAL_ROW": "\nrow_quant config value is invalid!",
     "NO_AUTH": """
     Authorization file not found!
     Please provide a valid file. Exiting...""",
-    "R_CFG_DONE": NL + "Configuration read and logging initialized",
-    "R_JSON_ALL": READER + "collated data JSON...",
-    "R_JSON_COMMIT": READER + "commit data JSON...",
-    "R_JSON_ISSUE": READER + "issue data JSON...",
-    "R_JSON_PR": READER + "pull request data JSON...",
-    "SLEEP": NL + "Rate Limit imposed. Sleeping...",
+    "R_CFG_DONE": "\nConfiguration read and logging initialized",
+    "R_JSON_ALL": f"{READ} collated data JSON...",
+    "R_JSON_COMMIT": f"{READ} commit data JSON...",
+    "R_JSON_ISSUE": f"{READ} issue data JSON...",
+    "R_JSON_PR": f"{READ} pull request data JSON...",
+    "SLEEP": "\nRate Limit imposed. Sleeping...",
     "SUCCESS": " Success! ",
-    "V_AUTH": NL + "Validating user authentification...",
-    "V_ROW_#_ISSUE": NL + "Validating row quantity config for issue data collection...",
-    "V_ROW_#_PR": NL
-    + "Validating row quantity config for pull request data collection...",
-    "W_CSV_COMMIT": WRITER + '"commit" type CSV...',
-    "W_CSV_PR": WRITER + '"PR" type CSV...',
-    "W_JSON_ALL": WRITER + "master list of data to JSON...",
-    "W_JSON_COMMIT": WRITER + "list of commit data to JSON...",
-    "W_JSON_ISSUE": WRITER + "list of issue data to JSON...",
-    "W_JSON_PR": WRITER + "list of PR data to JSON...",
-    "PROG_START": "\n Attempting program start... ",
+    "V_AUTH": "\nValidating user authentification...",
+    "V_ROW_#_ISSUE": "\nValidating row quantity config for issue data collection...",
+    "V_ROW_#_PR": "\nValidating row quantity config for pull request data collection...",
+    "W_CSV_COMMIT": f'{WRITE} "commit" type CSV...',
+    "W_CSV_PR": f'{WRITE} "PR" type CSV...',
+    "W_JSON_ALL": f"{WRITE} master list of data to JSON...",
+    "W_JSON_COMMIT": f"{WRITE} list of commit data to JSON...",
+    "W_JSON_ISSUE": f"{WRITE} list of issue data to JSON...",
+    "W_JSON_PR": f"{WRITE} list of PR data to JSON...",
+    "PROG_START": "\nAttempting program start... ",
 }
 
 
@@ -77,3 +70,21 @@ def verify_dirs(file_path):
         path = stripped_path_list[0]
 
         os.makedirs(path, exist_ok=True)
+
+
+def clean_str(str_to_clean):
+    """
+    If a string is empty, returns NaN. Otherwise,
+    strip the string of any carriage returns and
+    newlines
+
+    :param str_to_clean str: string to clean and return
+    """
+
+    if str_to_clean is None or str_to_clean == "":
+        return "Nan"
+
+    output_str = str_to_clean.replace("\r", "")
+    output_str = output_str.replace("\n", "")
+
+    return output_str

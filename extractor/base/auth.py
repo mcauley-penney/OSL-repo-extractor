@@ -9,13 +9,6 @@ import github
 from base import utils
 
 
-# TODO
-#   consider making this class more general to encompass sessions. As is, this class is
-#   specific and sessions have functionality that don't really belong in the
-#   extractor class, e.g. sleep and print_rem_calls. We already store sessions here,
-#   bring those methods over?
-
-
 class Auth:
     """
     Auth objects hold a queue of authorizations and provide iterator functionality
@@ -31,11 +24,10 @@ class Auth:
         :param auth_path str: path to file containing personal access token
         """
 
-        self.logger = logging.getLogger(__name__)
+        self.__logger = logging.getLogger(__name__)
 
         self.session = self.__verify_auth(auth_path)
 
-    # Authentication functionality
     def __verify_auth(self, auth_path) -> github.Github:
         """
         retrieves PAT from auth file and checks whether it is valid
@@ -72,11 +64,11 @@ class Auth:
                     "Authorization file not found! "
                     + "Please provide a valid file. Exiting...\n"
                 )
-                self.logger.exception(no_auth_msg)
+                self.__logger.exception(no_auth_msg)
                 sys.exit(1)
 
             else:
-                self.logger.info("Auth file found...\n")
+                self.__logger.info("Auth file found...\n")
 
                 # read contents out of auth file object
                 auth_text = authfile_obj.readline()
@@ -89,7 +81,7 @@ class Auth:
         token = __read_auth_file(auth_path)
 
         if token == "":
-            self.logger.critical("No valid PATs found! Exiting...\n")
+            self.__logger.critical("No valid PATs found! Exiting...\n")
             sys.exit(1)
 
         # establish a session with token
@@ -103,11 +95,11 @@ class Auth:
         except github.BadCredentialsException:
             # log that token is invalid
             inval_token_msg = "Invalid personal access token found!\n"
-            self.logger.exception(inval_token_msg)
+            self.__logger.exception(inval_token_msg)
             sys.exit(1)
 
         except github.RateLimitExceededException:
-            # TODO test
+            # TODO test after we set up data extracting functionality
             # if a rate limit is imposed upon a token
             # it is valid, so we can keep it
             return session
@@ -138,8 +130,8 @@ class Auth:
     def sleep(self, msg_format=None):
         """
         TODO:
-            - can we parallelize so that we can do work while this is happening?
-            - if we manage to use multiple tokens, we will use this far less
+            - can we either parallelize or drop connection so that we can do work
+              while this is happening?
 
         sleep the program until we can make calls again
 
@@ -175,7 +167,7 @@ class Auth:
                 countdown_time -= 1
 
         # # print that we are sleeping
-        self.logger.exception(utils.LOG_DICT["SLEEP"])
+        self.__logger.exception(utils.LOG_DICT["SLEEP"])
 
         # # sleep for the amount of time until our call amount is reset
         __timer()
@@ -184,4 +176,4 @@ class Auth:
 
         # # this allows us to choose to print a message after sleeping
         if msg_format is not None:
-            self.logger.info(msg_format)
+            self.__logger.info(msg_format)

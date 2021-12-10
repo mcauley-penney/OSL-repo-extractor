@@ -18,6 +18,8 @@ def main():
     # init extractor object
     gh_ext = extractor.Extractor(cfg_path)
 
+    gh_ext.get_pr_info()
+
     root_logger.info("Extractor instantiated...\n")
 
 
@@ -31,7 +33,7 @@ def init_root_logger(log_dest):
     :param log_dest str: [TODO:description]
     """
 
-    log_msg_format = "%(name)s: %(asctime)s\n%(levelname)s:\n%(message)s\n"
+    log_msg_format = "[%(name)s]: %(asctime)s\n%(levelname)s:\n%(message)s\n"
     log_time_format = "%Y-%m-%d %H:%M:%S %a"
 
     # providing no params to getLogger() instantiates this
