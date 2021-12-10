@@ -9,7 +9,7 @@ import github
 from base import utils
 
 
-class Auth:
+class GithubSession:
     """
     Auth objects hold a queue of authorizations and provide iterator functionality
     to external actors, such as the top-level Extractor class
@@ -77,12 +77,8 @@ class Auth:
 
                 return auth_text.strip().strip("\n")
 
-        # retrieve list of tokens from auth file
+        # retrieve token from auth file
         token = __read_auth_file(auth_path)
-
-        if token == "":
-            self.__logger.critical("No valid PATs found! Exiting...\n")
-            sys.exit(1)
 
         # establish a session with token
         session = github.Github(token, timeout=100, retry=100)
@@ -177,3 +173,7 @@ class Auth:
         # # this allows us to choose to print a message after sleeping
         if msg_format is not None:
             self.__logger.info(msg_format)
+
+
+class DatabaseSession:
+    pass

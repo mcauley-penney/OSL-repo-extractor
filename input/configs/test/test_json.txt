@@ -1,0 +1,8 @@
+{
+    "functionality": "pr",
+    "repo": "JabRef/jabref",
+    "auth_file": "/home/m/files/work/GitHub-Repo-Extractor-2/input/auths/auth.txt",
+    "rows": 100,
+    "issues_fields": ["testing"],
+    "pr_fields": [ "body", "title" ]
+}

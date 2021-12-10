@@ -3,6 +3,7 @@
 functionality   = pr
 repo            = JabRef/jabref
 auth_file       = /home/m/files/work/GitHub-Repo-Extractor-2/input/auths/auth.txt
+db_connection   = mongodb+srv://jacob:formatted_db@nau-osl-extract.qqjr5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 rows            = 100
 issue_state     = closed
 pr_state        = closed

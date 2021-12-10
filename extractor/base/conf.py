@@ -1,12 +1,24 @@
-"""TODO:"""
+""" The Conf package provides classes related to configurations for the extractor"""
 
+import json
 import logging
 import sys
+import cerberus
 
 
-# XXX this works but will be annoying to maintain. Filter the user inputs some other way
+# TODO create issue field keys
+ISSUES_KEYS = ["testing"]
 PR_KEYS = ["body", "closed", "title", "userlogin", "username"]
-ISSUES_KEYS = []
+
+# see cerberus documentation for schema rules
+CFG_SCHEMA = {
+    "functionality": {"type": "string"},
+    "repo": {"type": "string"},
+    "auth_file": {"type": "string"},
+    "rows": {"type": "integer", "min": 0},
+    "issues_fields": {"type": "list", "allowed": ISSUES_KEYS},
+    "pr_fields": {"type": "list", "allowed": PR_KEYS},
+}
 
 
 class Cfg:
@@ -20,103 +32,50 @@ class Cfg:
         initialize an object to hold configuration values for the extractor
 
         :param cfg_file str: path name to a configuration file
-        :param logger obj: logger obj from ExtractorLogger class
-        :raises KeyError: if a val in cfg dict is left empty
         :rtype None: initializes Cfg obj
         """
+
         self.__logger = logging.getLogger(__name__)
         self.__logger.info("initializing cfg...\n")
 
-        try:
-            # attempt to extract data from the cfg file
-            self.cfg_dict = self.__extract_cfg(cfg_path)
+        # get dictionary of configuration values from file w/ JSON
+        self.cfg_dict = self.__extract_cfg(cfg_path)
 
-        # if the cfg file is missing any fields
-        except KeyError as key:
-            # send an error message to the log
-            missing_key_msg = f"\nMissing configuration for {key}\n"
-            self.__logger.exception(missing_key_msg)
+        # init schema for validation
+        validator = cerberus.Validator(CFG_SCHEMA, require_all=True)
 
-        else:
-            # loop through all configuration object members and check if any is empty
-            for key, val in vars(self).items():
-                if val == "":
-                    # if any item is empty, report it
-                    missing_val_msg = (
-                        f"\nERROR: cfg key {key} has no associated value. "
-                        + "Please check your configuartion."
-                    )
-
-                    self.__logger.critical(missing_val_msg)
+        # if dictionary from JSON does not follow rules in schema
+        if not validator.validate(document=self.cfg_dict):
+            self.__logger.exception(f"Validation error!\n {validator.errors}")
+            sys.exit(1)
 
     def __extract_cfg(self, cfg_path: str) -> dict[str, str]:
         """
-        open the provided configuartion file and read its contents out into a
-        dictionary
+        open the provided configuartion file, which comes in JSON format, and read
+        its contents out into a dictionary
 
-        :param cfg_file str: path name to a configuration file
+        :param cfg_file str: path name to a JSON configuration file
         :rtype None: initializes object members
         """
 
-        def __clean_data_pt_fields(dict_to_clean: dict) -> dict:
-            """
-            TODO: description
-
-            :param dict_to_clean dict: [TODO:description]
-            :rtype dict: [TODO:description]
-            """
-
-            # for "fields" cfgs, split and turn into list
-            for key, val in dict_to_clean.items():
-                if "fields" in key:
-                    if "," in val:
-                        dict_to_clean[key] = val.split(",")
-
-                    else:
-                        dict_to_clean[key] = [val]
-
-            # filter lists to remove anything not in the list of data pt keys
-            dict_to_clean["pr_fields"] = [
-                val for val in dict_to_clean["pr_fields"] if val in PR_KEYS
-            ]
-
-            dict_to_clean["issues_fields"] = [
-                val for val in dict_to_clean["issues_fields"] if val in ISSUES_KEYS
-            ]
-
-            return dict_to_clean
-
         try:
-            conffile_obj = open(cfg_path, encoding="UTF-8")
+            with open(cfg_path, encoding="UTF-8") as conffile_obj:
+
+                confinfo_json = conffile_obj.read()
+
+            cfg_dict = json.loads(confinfo_json)
+
+            return cfg_dict
 
         except FileNotFoundError:
             self.__logger.exception("\nConfiguration file not found!")
             sys.exit(1)
 
-        else:
-            # read contents out of file object
-            confinfo_list = conffile_obj.readlines()
-
-            conffile_obj.close()
-
-            # if line does not start with a dash, strip of whitespace and newline chars
-            strip_list = [
-                line.replace(" ", "").strip()
-                for line in confinfo_list
-                if not line.startswith("-")
-            ]
-
-            # if line is not empty, split it at assignment operator
-            cfg_dict = dict([line.split("=") for line in strip_list if line])
-
-            cfg_dict = __clean_data_pt_fields(cfg_dict)
-
-        return cfg_dict
-
     def get_cfg_val(self, key: str) -> str:
         """
         print the associated value of key param
 
+        # TODO: update
         Possible args:
             "auth_file", "commit_json", "diagnostics", "issue_fields",
             "issue_json", "functionality", "master_json", "pr_json",

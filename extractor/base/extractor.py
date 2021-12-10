@@ -4,7 +4,7 @@
 import logging
 import sys
 import github
-from base import auth, conf, utils
+from base import conf, sessions, utils
 
 
 class Extractor:
@@ -35,7 +35,7 @@ class Extractor:
 
         # initialize tools
         self.cfg = conf.Cfg(cfg_path)
-        self.auth_obj = auth.Auth(self.cfg.get_cfg_val("auth_file"))
+        self.gh_sesh = sessions.GithubSession(self.cfg.get_cfg_val("auth_file"))
 
         self.cur_pr = None
 
@@ -74,7 +74,7 @@ class Extractor:
 
         try:
             # retrieve GitHub repo object
-            repo_obj = self.auth_obj.session.get_repo(job_repo)
+            repo_obj = self.gh_sesh.session.get_repo(job_repo)
 
             if list_type == "issues":
                 self.__logger.info(utils.LOG_DICT["G_PAGED_ISSUES"])
@@ -90,13 +90,13 @@ class Extractor:
                     direction="asc", sort="created", state="closed"
                 )
 
-            self.auth_obj.print_rem_calls()
+            self.gh_sesh.print_rem_calls()
 
             self.__logger.info("COMPLETE!")
 
         except github.RateLimitExceededException:
             print()
-            self.auth_obj.sleep(utils.LOG_DICT["G_MORE_PAGES"])
+            self.gh_sesh.sleep(utils.LOG_DICT["G_MORE_PAGES"])
 
     def get_pr_info(self):
         """
@@ -184,11 +184,11 @@ class Extractor:
                 print(cur_pr_data)
 
             except github.RateLimitExceededException:
-                self.auth_obj.sleep(utils.LOG_DICT["G_MORE_PR"])
+                self.gh_sesh.sleep(utils.LOG_DICT["G_MORE_PR"])
 
             else:
                 pr_data.append(cur_pr_data)
-                self.auth_obj.print_rem_calls()
+                self.gh_sesh.print_rem_calls()
 
                 i = i + 1
 
