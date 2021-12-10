@@ -2,7 +2,6 @@
 
 
 import logging
-import sys
 import github
 from base import conf, sessions, utils
 
@@ -44,23 +43,12 @@ class Extractor:
 
     def __check_row_quant_safety(self, paged_list) -> int:
 
-        # init vars
-        output_quant = 0
-        row_quant = int(self.cfg.get_cfg_val("rows"))
+        row_quant = self.cfg.get_cfg_val("rows")
 
-        if row_quant == -1:
-            output_quant = int(paged_list.totalCount)
+        if row_quant < 1 or paged_list.totalCount < row_quant:
+            row_quant = paged_list.totalCount
 
-        elif -1 < row_quant <= paged_list.totalCount:
-            output_quant = row_quant
-
-        else:
-            self.__logger.critical(utils.LOG_DICT["INVAL_ROW"])
-            sys.exit(1)
-
-        # print output quant for diagnostics?
-
-        return output_quant
+        return row_quant
 
     def get_paged_list(self, list_type):
         """
@@ -111,7 +99,7 @@ class Extractor:
             - IMPORTANT: add ability to save data and RETURN TO SAME POSITION
         """
 
-        def __get_pr_data_pts(field_list: str, cur_pr):
+        def __get_pr_data_pts(field_list):
             """
             Takes a list of desired data items as strings and, for each string, gets
             the corresponding piece of data from a dictionary that matches that string
@@ -136,14 +124,6 @@ class Extractor:
             retrieved from paginated list of pull requests
             """
 
-            pr_cmd_dict = {
-                "body": utils.clean_str(cur_pr.body),
-                "closed": cur_pr.closed_at.strftime("%D, %I:%M:%S %p"),
-                "title": utils.clean_str(cur_pr.title),
-                "userlogin": lambda cur_pr: cur_pr.user.login,
-                "username": lambda cur_pr: cur_pr.user.name,
-            }
-
             merged = cur_pr.merged
             output_list = [cur_pr.number, merged]
 
@@ -152,17 +132,14 @@ class Extractor:
                 # - assumes that the pr number and merged status will not be asked
                 #   for in cfg
                 # - filters out invalid key requests
-                whole_list = [pr_cmd_dict[field] for field in field_list]
+                whole_list = [utils.PR_CMD_DICT[field] for field in field_list]
 
-                # loop through list of retrieved dict vals and, if any are
+                # iterate through list of retrieved dict vals and, if any are
                 # executable, execute them and append their output to the
                 # list of data to return
-                for item in whole_list:
-                    if callable(item):
-                        output_list.append(item(cur_pr))
-
-                    else:
-                        output_list.append(item)
+                output_list += [
+                    item(cur_pr) if callable(item) else item for item in whole_list
+                ]
 
             return output_list
 
@@ -180,7 +157,7 @@ class Extractor:
         while i < safe_row_quant:
             try:
                 cur_pr = self.pr_paged_list[i]
-                cur_pr_data = __get_pr_data_pts(desired_field_list, cur_pr)
+                cur_pr_data = __get_pr_data_pts(desired_field_list)
                 print(cur_pr_data)
 
             except github.RateLimitExceededException:

@@ -1,14 +1,11 @@
-""" The Conf package provides classes related to configurations for the extractor"""
+""" The conf package provides classes related to configurations for the extractor"""
 
 import json
 import logging
 import sys
+from base import utils
 import cerberus
 
-
-# TODO create issue field keys
-ISSUES_KEYS = ["testing"]
-PR_KEYS = ["body", "closed", "title", "userlogin", "username"]
 
 # see cerberus documentation for schema rules
 CFG_SCHEMA = {
@@ -16,8 +13,8 @@ CFG_SCHEMA = {
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},
     "rows": {"type": "integer", "min": 0},
-    "issues_fields": {"type": "list", "allowed": ISSUES_KEYS},
-    "pr_fields": {"type": "list", "allowed": PR_KEYS},
+    "issues_fields": {"type": "list", "allowed": [*utils.ISSUE_CMD_DICT]},
+    "pr_fields": {"type": "list", "allowed": [*utils.PR_CMD_DICT]},
 }
 
 
@@ -49,7 +46,7 @@ class Cfg:
             self.__logger.exception(f"Validation error!\n {validator.errors}")
             sys.exit(1)
 
-    def __extract_cfg(self, cfg_path: str) -> dict[str, str]:
+    def __extract_cfg(self, cfg_path: str):
         """
         open the provided configuartion file, which comes in JSON format, and read
         its contents out into a dictionary
@@ -60,18 +57,16 @@ class Cfg:
 
         try:
             with open(cfg_path, encoding="UTF-8") as conffile_obj:
-
                 confinfo_json = conffile_obj.read()
-
-            cfg_dict = json.loads(confinfo_json)
-
-            return cfg_dict
 
         except FileNotFoundError:
             self.__logger.exception("\nConfiguration file not found!")
             sys.exit(1)
 
-    def get_cfg_val(self, key: str) -> str:
+        else:
+            return json.loads(confinfo_json)
+
+    def get_cfg_val(self, key: str):
         """
         print the associated value of key param
 

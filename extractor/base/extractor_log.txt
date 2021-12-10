@@ -1,0 +1,434 @@
+[root]: 2021-12-10 09:30:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:30:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:30:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.conf]: 2021-12-10 09:30:10 Fri
+ERROR:
+
+Configuration file not found!
+Traceback (most recent call last):
+  File "/home/m/files/work/GitHub-Repo-Extractor-2/extractor/base/conf.py", line 59, in __extract_cfg
+    with open(cfg_path, encoding="UTF-8") as conffile_obj:
+FileNotFoundError: [Errno 2] No such file or directory: '../../input/configs/test/test_json.txt'
+[root]: 2021-12-10 09:30:20 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:30:20 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:30:20 Fri
+INFO:
+initializing cfg...
+
+
+[root]: 2021-12-10 09:31:25 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:31:25 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:31:25 Fri
+INFO:
+initializing cfg...
+
+
+[root]: 2021-12-10 09:31:43 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:31:43 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:31:43 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:31:43 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:31:44 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:31:44 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:31:44 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:31:52 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:31:52 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:31:52 Fri
+INFO:
+initializing cfg...
+
+
+[root]: 2021-12-10 09:36:51 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:36:51 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:36:51 Fri
+INFO:
+initializing cfg...
+
+
+[base.conf]: 2021-12-10 09:36:51 Fri
+ERROR:
+Validation error!
+ {'issues_fields': ["unallowed values ('tes',)"]}
+NoneType: None
+[root]: 2021-12-10 09:37:23 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:37:23 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:37:23 Fri
+INFO:
+initializing cfg...
+
+
+[base.conf]: 2021-12-10 09:37:23 Fri
+ERROR:
+Validation error!
+ {'issues_fields': ["unallowed values ('tes',)"]}
+NoneType: None
+[root]: 2021-12-10 09:37:50 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:37:50 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:37:50 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:37:50 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:37:51 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:37:51 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:37:51 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:38:29 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:38:29 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:38:29 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:38:29 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:38:30 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:38:30 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:38:30 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:41:12 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:41:12 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:41:12 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:41:12 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:41:13 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:41:13 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:41:13 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:41:39 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:41:39 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:41:39 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:41:39 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:41:40 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:41:40 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:41:40 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:42:49 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:42:49 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:42:49 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:42:49 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:42:49 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:42:49 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:42:49 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:44:57 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:44:57 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:44:57 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:44:57 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:44:58 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:44:58 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:44:58 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 09:52:59 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:52:59 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:52:59 Fri
+INFO:
+initializing cfg...
+
+
+[root]: 2021-12-10 09:53:07 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 09:53:07 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 09:53:07 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 09:53:07 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 09:53:08 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 09:53:08 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 09:53:08 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 10:06:57 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-10 10:06:57 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-10 10:06:57 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-10 10:06:57 Fri
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-10 10:06:58 Fri
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-10 10:06:58 Fri
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-10 10:06:58 Fri
+INFO:
+
+Getting  pull request data...
+
+[root]: 2021-12-10 10:07:00 Fri
+INFO:
+Extractor instantiated...
+
+
