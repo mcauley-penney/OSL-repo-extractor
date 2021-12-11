@@ -1,10 +1,16 @@
 """TODO:"""
 
+# import json
 import os
 
 
 ISSUE_CMD_DICT = {
-    "test": "test",
+    "body": lambda cur_issue: clean_str(cur_issue.body),
+    "closed": lambda cur_issue: cur_issue.closed_at,
+    "userlogin": lambda cur_issue: clean_str(cur_issue.user.login),
+    "username": lambda cur_issue: clean_str(cur_issue.user.name),
+    "num": lambda cur_issue: cur_issue.number,
+    "title": lambda cur_issue: cur_issue.title,
 }
 
 
@@ -119,3 +125,34 @@ def verify_dirs(file_path):
         path = stripped_path_list[0]
 
         os.makedirs(path, exist_ok=True)
+
+
+# def read_json(json_in_file):
+#     """
+#     [TODO:description]
+#
+#     :param json_in_file [TODO:type]: [TODO:description]
+#     """
+#     with open(json_in_file, "r", encoding="UTF-8") as json_file:
+#         return json.load(json_file)
+#
+#
+# def update_json(json_file, new_content):
+#
+#     verify_dirs(json_file)
+#
+#     json_to_update = read_json(json_file)
+#
+#     json_to_update.update(new_content)
+#
+#
+# def write_json(json_out_file, list_to_write):
+#     """
+#     TODO: description
+#
+#     :param json_out_file [TODO:type]: [TODO:description]
+#     :param list_to_write [TODO:type]: [TODO:description]
+#     """
+#
+#     with open(json_out_file, "w", encoding="UTF-8") as json_file:
+#         json_file.write(json.dump(list_to_write))

@@ -18,7 +18,8 @@ def main():
     # init extractor object
     gh_ext = extractor.Extractor(cfg_path)
 
-    gh_ext.get_pr_info()
+    gh_ext.get_issue_data()
+    # gh_ext.get_pr_data()
 
     root_logger.info("Extractor instantiated...\n")
 

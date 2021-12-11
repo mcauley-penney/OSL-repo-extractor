@@ -31,6 +31,7 @@ CFG_SCHEMA = {
         "schema": {"type": "string"},
         "type": "list",
     },
+    "pr_json": {"type": "string"},
 }
 
 

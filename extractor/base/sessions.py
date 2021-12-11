@@ -175,5 +175,5 @@ class GithubSession:
             self.__logger.info(msg_format)
 
 
-class DatabaseSession:
-    pass
+# class DatabaseSession:
+#     pass
