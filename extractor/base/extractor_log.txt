@@ -1,0 +1,70 @@
+[root]: 2021-12-14 16:25:14 Tue
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-14 16:25:14 Tue
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-14 16:25:14 Tue
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-14 16:25:14 Tue
+INFO:
+Auth file found...
+
+
+[base.sessions]: 2021-12-14 16:25:14 Tue
+ERROR:
+Invalid personal access token found!
+
+Traceback (most recent call last):
+  File "/home/m/files/work/GitHub-Repo-Extractor-2/extractor/base/sessions.py", line 88, in __verify_auth
+    session.get_user().name
+  File "/usr/lib/python3.10/site-packages/github/AuthenticatedUser.py", line 239, in name
+    self._completeIfNotSet(self._name)
+  File "/usr/lib/python3.10/site-packages/github/GithubObject.py", line 297, in _completeIfNotSet
+    self._completeIfNeeded()
+  File "/usr/lib/python3.10/site-packages/github/GithubObject.py", line 301, in _completeIfNeeded
+    self.__complete()
+  File "/usr/lib/python3.10/site-packages/github/GithubObject.py", line 308, in __complete
+    headers, data = self._requester.requestJsonAndCheck("GET", self._url.value)
+  File "/usr/lib/python3.10/site-packages/github/Requester.py", line 353, in requestJsonAndCheck
+    return self.__check(
+  File "/usr/lib/python3.10/site-packages/github/Requester.py", line 378, in __check
+    raise self.__createException(status, responseHeaders, output)
+github.GithubException.BadCredentialsException: 401 {"message": "Bad credentials", "documentation_url": "https://docs.github.com/rest"}
+[root]: 2021-12-14 16:29:48 Tue
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-14 16:29:48 Tue
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-14 16:29:48 Tue
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-14 16:29:48 Tue
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-14 16:29:49 Tue
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-14 16:29:49 Tue
+INFO:
+Getting issue data...
+
+

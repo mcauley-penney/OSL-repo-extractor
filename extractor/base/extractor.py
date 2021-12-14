@@ -171,6 +171,15 @@ class Extractor:
     """
     # TODO:
     #   1. data writing methods
+    #   2. consider consolidating dispatch dicts into one. For it to work in the list
+    #   generators, would need to pass all relevant api objects into functions, e.g. to
+    #   get the PR num and then commit data in the list generator in get_commit_data,
+    #   the getter functions would need to be passed the correct items in the function
+    #   call, e.g. cur_item_data += [
+                            cmd_dict[field](relevant_commit) for field in field_list
+                        ]
+
+        would require both the PR and "relevant_commit" in that call
 
     TODO: update
     The extractor class contains and executes GitHub REST API
@@ -212,8 +221,6 @@ class Extractor:
             repo_obj = self.gh_sesh.session.get_repo(job_repo)
 
             if list_type == "issues":
-                self.__logger.info(utils.LOG_DICT["G_PAGED_ISSUES"])
-
                 issues_paged_list = repo_obj.get_issues(
                     direction="asc", sort="created", state="closed"
                 )
@@ -221,8 +228,6 @@ class Extractor:
                 out_list = issues_paged_list
 
             else:
-                self.__logger.info(utils.LOG_DICT["G_PAGED_PR"])
-
                 pr_paged_list = repo_obj.get_pulls(
                     direction="asc", sort="created", state="closed"
                 )
@@ -230,7 +235,6 @@ class Extractor:
                 out_list = pr_paged_list
 
             self.gh_sesh.print_rem_calls()
-            self.__logger.info("COMPLETE!")
 
             return out_list
 
