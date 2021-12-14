@@ -1,5 +1,8 @@
-TODO:
+## OSL Repo Extractor
 
-    - purpose
+The initial stage of [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
+See [the changelog](./CHANGELOG.md) for updates.
 
-    - requirements
+
+#### Requirements
+- Written in Python 3.9.9

@@ -3,36 +3,7 @@
 import json
 import logging
 import sys
-from base import utils
 import cerberus
-
-
-# see cerberus documentation for schema rules
-CFG_SCHEMA = {
-    "functionality": {"type": "string"},
-    "repo": {"type": "string"},
-    "auth_file": {"type": "string"},
-    "range": {
-        "min": [0, 0],
-        "schema": {"type": "integer"},
-        "type": "list",
-    },
-    "issues_fields": {
-        "allowed": [*utils.ISSUE_CMD_DICT],
-        "minlength": 1,
-        "purge_unknown": True,
-        "schema": {"type": "string"},
-        "type": "list",
-    },
-    "pr_fields": {
-        "allowed": [*utils.PR_CMD_DICT],
-        "minlength": 1,
-        "purge_unknown": True,
-        "schema": {"type": "string"},
-        "type": "list",
-    },
-    "pr_json": {"type": "string"},
-}
 
 
 class Cfg:
@@ -41,7 +12,7 @@ class Cfg:
     for the extractor class
     """
 
-    def __init__(self, cfg_path: str) -> None:
+    def __init__(self, cfg_path: str, cfg_schema) -> None:
         """
         initialize an object to hold configuration values for the extractor
 
@@ -56,7 +27,7 @@ class Cfg:
         self.cfg_dict = self.__extract_cfg(cfg_path)
 
         # init schema for validation
-        validator = cerberus.Validator(CFG_SCHEMA, require_all=True)
+        validator = cerberus.Validator(cfg_schema, require_all=True)
 
         # if dictionary from JSON does not follow rules in schema
         if not validator.validate(document=self.cfg_dict):

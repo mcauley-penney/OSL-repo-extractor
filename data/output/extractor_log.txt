@@ -1,0 +1,48 @@
+[root]: 2021-12-12 14:35:11 Sun
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-12 14:35:11 Sun
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-12 14:35:11 Sun
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-12 14:35:11 Sun
+INFO:
+Auth file found...
+
+
+[base.extractor]: 2021-12-12 14:35:12 Sun
+INFO:
+
+Getting  paginated list of pull requests...
+
+[base.extractor]: 2021-12-12 14:35:12 Sun
+INFO:
+COMPLETE!
+
+[base.extractor]: 2021-12-12 14:35:12 Sun
+INFO:
+
+Getting  paginated list of issues...
+
+[base.extractor]: 2021-12-12 14:35:12 Sun
+INFO:
+COMPLETE!
+
+[root]: 2021-12-12 14:35:12 Sun
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-12 14:35:12 Sun
+INFO:
+Getting issue data...
+
+

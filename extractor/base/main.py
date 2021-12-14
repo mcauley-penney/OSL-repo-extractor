@@ -1,27 +1,29 @@
-# Author: MP
+"""TODO:"""
 
 import argparse
-import logging
 import sys
+import logging
 from base import extractor
 
 
 def main():
+    """
+    [TODO:description]
+
+    """
 
     (cfg_path, log_dest) = get_cli_args()
 
     # create root logger
     root_logger = init_root_logger(log_dest)
 
-    root_logger.info("Instantiating extractor...\n")
-
     # init extractor object
+    root_logger.info("Instantiating extractor...\n")
     gh_ext = extractor.Extractor(cfg_path)
-
-    gh_ext.get_issue_data()
-    # gh_ext.get_pr_data()
-
     root_logger.info("Extractor instantiated...\n")
+
+    root_logger.info("Getting issue data...\n")
+    gh_ext.get_commit_data()
 
 
 def init_root_logger(log_dest):

@@ -4,70 +4,6 @@
 import os
 
 
-ISSUE_CMD_DICT = {
-    "body": lambda cur_issue: clean_str(cur_issue.body),
-    "closed": lambda cur_issue: cur_issue.closed_at,
-    "userlogin": lambda cur_issue: clean_str(cur_issue.user.login),
-    "username": lambda cur_issue: clean_str(cur_issue.user.name),
-    "num": lambda cur_issue: cur_issue.number,
-    "title": lambda cur_issue: cur_issue.title,
-}
-
-
-PR_CMD_DICT = {
-    "body": lambda cur_pr: clean_str(cur_pr.body),
-    "closed": lambda cur_pr: cur_pr.closed_at.strftime("%D, %I:%M:%S %p"),
-    "title": lambda cur_pr: clean_str(cur_pr.title),
-    "userlogin": lambda cur_pr: cur_pr.user.login,
-    "username": lambda cur_pr: cur_pr.user.name,
-}
-
-
-# logging str dict
-GET = "\nGetting "
-READ = "\nReading "
-WRITE = "\nWriting "
-
-# TODO remove unneeded strs
-LOG_DICT = {
-    "COLLATE": "\nCollating lists...",
-    "COMPLETE": "Complete!",
-    "F_COMMIT": "\nFiltering commits...",
-    "F_MORE_COMMIT": "\nFiltering more commits...",
-    "G_DATA_COMMIT": f"{GET} commit data...",
-    "G_DATA_ISSUE": f"{GET} issue data...",
-    "G_DATA_PR": f"{GET} pull request data...",
-    "G_MORE_COMMIT": f"{GET} more commit data...",
-    "G_MORE_ISSUE": f"{GET} more issue data...",
-    "G_MORE_PAGES": f"{GET} more paginated lists...",
-    "G_MORE_PR": f"{GET} more pull request data...",
-    "G_PAGED_ISSUES": f"{GET} paginated list of issues...",
-    "G_PAGED_PR": f"{GET} paginated list of pull requests...",
-    "INVAL_TOKEN": "Invalid personal access token found!",
-    "INVAL_ROW": "\nrow_quant config value is invalid!",
-    "NO_AUTH": """
-    Authorization file not found!
-    Please provide a valid file. Exiting...""",
-    "R_CFG_DONE": "\nConfiguration read and logging initialized",
-    "R_JSON_ALL": f"{READ} collated data JSON...",
-    "R_JSON_COMMIT": f"{READ} commit data JSON...",
-    "R_JSON_ISSUE": f"{READ} issue data JSON...",
-    "R_JSON_PR": f"{READ} pull request data JSON...",
-    "SLEEP": "\nRate Limit imposed. Sleeping...",
-    "SUCCESS": " Success! ",
-    "V_AUTH": "\nValidating user authentification...",
-    "V_ROW_#_ISSUE": "\nValidating row quantity config for issue data collection...",
-    "V_ROW_#_PR": "\nValidating row quantity config for pull request data collection...",
-    "W_CSV_COMMIT": f'{WRITE} "commit" type CSV...',
-    "W_CSV_PR": f'{WRITE} "PR" type CSV...',
-    "W_JSON_ALL": f"{WRITE} master list of data to JSON...",
-    "W_JSON_COMMIT": f"{WRITE} list of commit data to JSON...",
-    "W_JSON_ISSUE": f"{WRITE} list of issue data to JSON...",
-    "W_JSON_PR": f"{WRITE} list of PR data to JSON...",
-    "PROG_START": "\nAttempting program start... ",
-}
-
-
 def check_row_quant_safety(paged_list, range_start, range_end) -> int:
     """
     validates second val of row range (end of data to collect) provided in cfg
@@ -96,10 +32,11 @@ def clean_str(str_to_clean):
     """
 
     if str_to_clean is None or str_to_clean == "":
-        return "Nan"
+        output_str = "Nan"
 
-    output_str = str_to_clean.replace("\r", "")
-    output_str = output_str.replace("\n", "")
+    else:
+        output_str = str_to_clean.replace("\r", "")
+        output_str = output_str.replace("\n", "")
 
     return output_str.strip()
 
@@ -125,34 +62,3 @@ def verify_dirs(file_path):
         path = stripped_path_list[0]
 
         os.makedirs(path, exist_ok=True)
-
-
-# def read_json(json_in_file):
-#     """
-#     [TODO:description]
-#
-#     :param json_in_file [TODO:type]: [TODO:description]
-#     """
-#     with open(json_in_file, "r", encoding="UTF-8") as json_file:
-#         return json.load(json_file)
-#
-#
-# def update_json(json_file, new_content):
-#
-#     verify_dirs(json_file)
-#
-#     json_to_update = read_json(json_file)
-#
-#     json_to_update.update(new_content)
-#
-#
-# def write_json(json_out_file, list_to_write):
-#     """
-#     TODO: description
-#
-#     :param json_out_file [TODO:type]: [TODO:description]
-#     :param list_to_write [TODO:type]: [TODO:description]
-#     """
-#
-#     with open(json_out_file, "w", encoding="UTF-8") as json_file:
-#         json_file.write(json.dump(list_to_write))
