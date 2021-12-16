@@ -6,6 +6,9 @@ import sys
 import cerberus
 
 
+# TODO: make class private?
+
+
 class Cfg:
     """
     The Cfg class provides an object which holds all of the configuration

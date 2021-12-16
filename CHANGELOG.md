@@ -25,3 +25,11 @@
     - remove all lambdas from commit dispatch dict
     - create top-level commit info getter, `get_commit_data()`
         - create getters for commit info, e.g. `get_commit_files()`
+
+<br>
+2021-12-15
+
+- init JSON writing functionality
+    - See `Writer` class
+    - ability to recursively update nested dictionaries in JSON output
+        - further testing is needed but works as of right now

@@ -1,23 +1,22 @@
 {
     "repo": "JabRef/jabref",
     "auth_file": "/home/m/files/work/GitHub-Repo-Extractor-2/data/input/auths/auth.txt",
+    "output_dir": "/home/m/files/work/GitHub-Repo-Extractor-2/data/output",
     "range": [
         0,
-        10
+        5
     ],
     "commit_fields": [
-        "author_name",
-        "committer"
+        "files"
     ],
     "issues_fields": [
         "num",
-        "issue_comments"
+        "username"
     ],
     "pr_fields": [
         "num",
         "pr_merged",
         "body",
         "title"
-    ],
-    "pr_json": "/home/m/files/work/GitHub-Repo-Extractor-2/data/output/sample/pr_json.json"
+    ]
 }

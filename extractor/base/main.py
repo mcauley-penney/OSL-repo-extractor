@@ -23,7 +23,8 @@ def main():
     root_logger.info("Extractor instantiated...\n")
 
     root_logger.info("Getting issue data...\n")
-    gh_ext.get_commit_data()
+    # gh_ext.get_commit_data()
+    gh_ext.get_issues_data()
 
 
 def init_root_logger(log_dest):

@@ -1,9 +1,0 @@
-Instantiating extractor...
-
-Beginning extractor init, instantiating cfg...
-
-initializing cfg...
-
-Validation error!
- {'test': ['unknown field']}
-NoneType: None
