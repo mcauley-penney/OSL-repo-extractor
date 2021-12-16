@@ -6,7 +6,6 @@ import logging
 import sys
 import time
 import github
-from base import utils
 
 
 class GithubSession:
@@ -162,8 +161,9 @@ class GithubSession:
                 time.sleep(1)
                 countdown_time -= 1
 
-        # # print that we are sleeping
-        self.__logger.exception(utils.LOG_DICT["SLEEP"])
+        # print that we are sleeping
+        # TODO: fix
+        # self.__logger.exception(utils.LOG_DICT["SLEEP"])
 
         # # sleep for the amount of time until our call amount is reset
         __timer()
@@ -173,7 +173,3 @@ class GithubSession:
         # # this allows us to choose to print a message after sleeping
         if msg_format is not None:
             self.__logger.info(msg_format)
-
-
-# class DatabaseSession:
-#     pass

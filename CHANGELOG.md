@@ -33,3 +33,12 @@
     - See `Writer` class
     - ability to recursively update nested dictionaries in JSON output
         - further testing is needed but works as of right now
+
+<br>
+2021-12-16
+
+- move API getters, dispatch tables, and `CFG_SCHEMA` into `Extractor`
+    - requires adding `self` param to all dict comprehension dispatch function calls
+- remove all functions from utils and rightfully place in `Extractor`
+- init docs dir and begin documentation
+- add documentation in `Extractor

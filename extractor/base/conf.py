@@ -6,9 +6,6 @@ import sys
 import cerberus
 
 
-# TODO: make class private?
-
-
 class Cfg:
     """
     The Cfg class provides an object which holds all of the configuration
@@ -34,6 +31,7 @@ class Cfg:
 
         # if dictionary from JSON does not follow rules in schema
         if not validator.validate(document=self.cfg_dict):
+            # log an exception and print errors
             self.__logger.exception(f"Validation error!\n {validator.errors}")
             sys.exit(1)
 
