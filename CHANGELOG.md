@@ -41,4 +41,14 @@
     - requires adding `self` param to all dict comprehension dispatch function calls
 - remove all functions from utils and rightfully place in `Extractor`
 - init docs dir and begin documentation
-- add documentation in `Extractor
+- add documentation in `Extractor`
+
+<br>
+2021-12-17
+
+- combine PR and commit getters, for now
+    - can still get only commit info by simply not providing fields to "pr_fields" cfg
+- remove option to send output to different places
+    - default to same location
+- init using range to find API object numbers instead of using it as indices for paginated lists
+    - allows user to target specific API object in paginated list of arbitrary length and get its data

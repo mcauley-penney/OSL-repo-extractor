@@ -1,0 +1,3744 @@
+[root]: 2021-12-17 11:41:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:41:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:41:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.conf]: 2021-12-17 11:41:22 Fri
+ERROR:
+Validation error!
+ {'commit_output': ['required field'], 'output_dir': ['unknown field'], 'pr_fields': ["unallowed values ('pr_merged',)"]}
+NoneType: None
+[root]: 2021-12-17 11:42:01 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:42:01 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:42:01 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:42:01 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:42:01 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:42:01 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:43:58 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:43:58 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:43:58 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:43:58 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:43:59 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:43:59 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:44:55 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:44:55 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:44:55 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:44:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:44:55 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:44:55 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:46:16 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:46:16 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:46:16 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:46:16 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:46:16 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:46:16 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:46:34 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:46:34 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:46:34 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:46:34 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:46:34 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:46:34 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:49:09 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:49:09 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:49:09 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:49:09 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:49:10 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:49:10 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:49:44 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:49:44 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:49:44 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:49:44 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:49:45 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:49:45 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:58:03 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:58:03 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:58:03 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:58:03 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:58:03 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:58:03 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:58:30 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:58:30 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:58:30 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:58:30 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:58:30 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:58:30 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 11:59:40 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 11:59:40 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 11:59:40 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 11:59:40 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 11:59:41 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 11:59:41 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 12:00:17 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 12:00:17 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 12:00:17 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 12:00:17 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 12:00:18 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 12:00:18 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 12:02:37 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 12:02:37 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 12:02:37 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 12:02:37 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 12:02:38 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 12:02:38 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 12:02:46 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 12:02:46 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 12:02:46 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 12:02:46 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 12:02:46 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 12:02:46 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 12:06:06 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 12:06:06 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 12:06:06 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 12:06:06 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 12:06:07 Fri
+INFO:
+Extractor instantiated...
+
+
+[root]: 2021-12-17 12:06:07 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 13:06:47 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:06:47 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:06:47 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:06:47 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:07:30 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:07:30 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:07:30 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:07:30 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:39:16 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:39:16 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:39:16 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:39:16 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:42:03 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:42:03 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:42:43 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:42:43 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:42:43 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:42:43 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:42:43 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:42:43 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:42:47 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:43:54 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:43:54 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:43:54 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:43:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:43:55 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:43:55 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:43:58 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:44:31 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:44:31 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:44:31 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:44:31 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:44:32 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:44:32 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:44:35 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:44:42 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:44:42 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:44:42 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:44:42 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:44:43 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:44:43 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:51:29 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:51:29 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:51:29 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:51:29 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:51:30 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:51:30 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:51:33 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:51:55 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:51:55 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:51:55 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:51:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:51:55 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:51:55 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:51:58 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:54:55 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:54:55 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:54:55 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:54:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:54:55 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:54:55 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:54:59 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:55:48 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 13:55:48 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 13:55:48 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 13:55:48 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 13:55:48 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 13:55:48 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 13:55:51 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:01:05 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:01:05 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:01:05 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:01:05 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:01:06 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:01:06 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:01:25 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:01:25 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:01:25 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:01:25 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:01:26 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:01:26 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:01:51 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:01:51 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:01:51 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:01:51 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:01:51 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:01:51 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:04:21 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:04:21 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:04:21 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:04:21 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:04:21 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:04:21 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:04:24 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:04:45 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:04:45 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:04:45 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:04:45 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:04:45 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:04:45 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:04:49 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:06:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:06:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:06:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:06:10 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:06:11 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:06:11 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:06:50 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:06:50 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:06:50 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:06:50 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:06:51 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:06:51 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:06:59 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:06:59 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:06:59 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:06:59 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:07:00 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:07:00 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:08:07 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:08:07 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:08:07 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:08:07 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:08:08 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:08:08 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:08:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:08:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:08:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:08:22 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:08:23 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:08:23 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:08:26 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:08:31 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:08:31 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:08:31 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:08:31 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:08:32 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:08:32 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:08:42 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:08:42 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:08:42 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:08:42 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:08:42 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:08:42 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:08:45 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:15:07 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:15:07 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:15:07 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:15:07 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:15:07 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:15:07 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:15:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:15:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:15:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:15:22 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:15:22 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:15:22 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:15:36 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:15:36 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:15:36 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:15:36 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:15:37 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:15:37 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:15:56 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:15:56 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:15:56 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:15:56 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:15:56 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:15:56 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:17:09 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:17:09 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:17:09 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:17:09 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:17:09 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:17:09 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:17:13 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:19:38 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:19:38 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:19:38 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:19:38 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:19:38 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:19:38 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:19:41 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:23:43 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:23:43 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:23:43 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:23:43 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:23:44 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:23:44 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:23:46 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:24:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:24:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:24:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:24:22 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:24:22 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:24:22 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:25:20 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:25:20 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:25:20 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:25:20 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:25:21 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:25:21 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:25:33 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:25:33 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:25:33 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:25:33 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:25:33 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:25:33 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:26:23 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:26:23 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:26:23 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:26:23 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:26:24 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:26:24 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:26:25 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:28:38 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:28:38 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:28:38 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:28:38 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:28:39 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:28:39 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:28:40 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:30:48 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:30:48 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:30:48 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:30:48 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:30:48 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:30:48 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:30:49 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:31:37 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:31:37 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:31:37 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:31:37 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:31:38 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:31:38 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:31:39 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:33:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:33:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:33:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:33:10 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:33:11 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:33:11 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:34:35 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:34:35 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:34:35 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:34:35 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:34:35 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:34:35 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:35:07 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:35:07 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:35:07 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:35:07 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:35:07 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:35:07 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:35:26 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:35:26 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:35:26 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:35:26 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:35:27 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:35:27 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 14:38:47 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:45:31 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 14:45:31 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 14:45:31 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 14:45:31 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 14:45:32 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 14:45:32 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 15:54:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 15:54:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 15:54:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 15:54:10 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 15:54:11 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 15:54:11 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 15:55:18 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 15:55:18 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 15:55:18 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 15:55:18 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 15:55:19 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 15:55:19 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 15:56:03 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 15:56:03 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 15:56:03 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 15:56:03 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 15:56:04 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 15:56:04 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 15:57:58 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 15:57:58 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 15:57:58 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 15:57:58 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 15:57:58 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 15:57:58 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 16:00:38 Fri
+INFO:
+Iterating to starting item number 19...
+
+
+[base.extractor]: 2021-12-17 16:00:38 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 16:00:40 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:45:54 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 16:45:54 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 16:45:54 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 16:45:54 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 16:45:55 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:45:55 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 16:48:16 Fri
+INFO:
+Iterating to starting item number 19...
+
+
+[base.extractor]: 2021-12-17 16:48:16 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 16:48:18 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:48:28 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 16:48:28 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 16:48:28 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 16:48:28 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 16:48:29 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:48:29 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 16:50:45 Fri
+INFO:
+Iterating to starting item number 19...
+
+
+[base.extractor]: 2021-12-17 16:50:45 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 16:50:47 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:54:17 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 16:54:17 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 16:54:17 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 16:54:17 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 16:54:17 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:54:17 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 16:56:44 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 16:56:44 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 16:56:46 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:57:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 16:57:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 16:57:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 16:57:22 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 16:57:23 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 16:57:23 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 16:59:54 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 16:59:54 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 16:59:56 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:02:43 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:02:43 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:02:43 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:02:43 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:02:44 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:02:44 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 17:05:04 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 17:05:04 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 17:05:06 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:07:24 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:07:24 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:07:24 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:07:24 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:07:25 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:07:25 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 17:09:41 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 17:09:41 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 17:09:43 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:11:01 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:11:01 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:11:01 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:11:01 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:11:01 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:11:01 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 17:13:16 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 17:13:16 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 17:13:19 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:25:04 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:25:04 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:25:04 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:25:04 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:25:05 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:25:05 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 17:27:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:27:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:27:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:27:10 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:27:11 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:27:11 Fri
+INFO:
+Getting PR and commit data...
+
+
+[base.extractor]: 2021-12-17 17:29:27 Fri
+INFO:
+Iterating to starting item number 19...
+
+[base.extractor]: 2021-12-17 17:29:27 Fri
+INFO:
+This may take a moment. The program is not frozen.
+
+
+[root]: 2021-12-17 17:32:25 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:32:25 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:32:25 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:32:25 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:32:26 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:32:26 Fri
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-17 17:34:51 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:48:35 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:48:35 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:48:35 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:48:35 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:49:23 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:49:23 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:49:23 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:49:23 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:49:24 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:49:24 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 17:52:02 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:52:02 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:52:02 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:52:02 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:52:03 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:52:03 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 17:54:10 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:56:20 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 17:56:20 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 17:56:20 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 17:56:20 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 17:56:20 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 17:56:20 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 17:58:40 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:10:55 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:10:55 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:10:55 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:10:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:10:56 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:10:56 Fri
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-17 18:12:59 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:14:49 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:14:49 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:14:49 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:14:49 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:14:50 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:14:50 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:14:50 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:16:58 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:16:59 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:32:04 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:32:04 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:32:04 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:32:04 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:32:05 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:32:05 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:32:05 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:32:17 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:32:17 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:32:17 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:32:17 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:32:18 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:32:18 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:32:18 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:33:07 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:33:07 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:33:07 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:33:07 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:33:08 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:33:08 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:33:08 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:33:17 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:33:17 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:33:17 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:33:17 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:33:18 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:33:18 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:33:18 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:34:16 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:34:16 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:34:16 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:34:16 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:34:17 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:34:17 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:34:17 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:34:31 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:34:31 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:34:31 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:34:31 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:34:32 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:34:32 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:34:32 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:34:32 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:34:34 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:35:30 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:35:30 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:35:30 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:35:30 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:35:31 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:35:31 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:35:31 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:35:32 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:35:34 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:36:38 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:36:38 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:36:38 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:36:38 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:36:39 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:36:39 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:36:39 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:39:17 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:39:17 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:39:17 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:39:17 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:39:18 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:39:18 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:39:18 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:39:42 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:39:42 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:39:42 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:39:42 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:39:42 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:39:42 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:39:42 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:40:31 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:40:31 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:40:31 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:40:31 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:40:32 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:40:32 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:40:32 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:42:18 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:42:18 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:42:18 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:42:18 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:42:19 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:42:19 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:42:19 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:43:01 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:43:01 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:43:01 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:43:01 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:43:02 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:43:02 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:43:02 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:43:03 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:43:22 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:43:22 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:43:22 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:43:22 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:43:23 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:43:23 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:43:23 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:43:39 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:43:39 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:43:39 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:43:39 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:43:40 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:43:40 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:43:40 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:47:13 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:47:13 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:47:13 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:47:13 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:47:14 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:47:14 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:47:14 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:47:23 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:47:23 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:47:23 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:47:23 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:47:24 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:47:24 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:47:24 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:47:25 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:47:26 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:48:02 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:48:02 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:48:02 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:48:02 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:48:03 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:48:03 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:48:03 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:50:55 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:50:55 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:50:55 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:50:55 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:50:56 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:50:56 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:50:56 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:53:38 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:53:38 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:53:38 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:53:38 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:53:39 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:53:39 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:53:39 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:54:01 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:54:01 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:54:01 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:54:01 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:54:01 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:54:01 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:54:01 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:54:10 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:54:10 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:54:10 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:54:10 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:54:11 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:54:11 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:54:11 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:54:18 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:54:18 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:54:18 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:54:18 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:54:18 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:54:18 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:54:18 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:54:43 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:54:43 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:54:43 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:54:43 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:54:44 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:54:44 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:54:44 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:54:53 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:54:53 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:54:53 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:54:53 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:54:54 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:54:54 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:54:54 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:55:28 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:55:28 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:55:28 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:55:28 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:55:29 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:55:29 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:55:29 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:56:48 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:56:48 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:56:48 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:56:48 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:56:49 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:56:49 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:56:49 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:57:02 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:57:02 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:57:02 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:57:02 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:57:03 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:57:03 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:57:03 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:58:01 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:58:01 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:58:01 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:58:01 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:58:02 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:58:02 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:58:02 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:58:24 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:58:24 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:58:24 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:58:24 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:58:24 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:58:24 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:58:24 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:58:34 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 18:58:34 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 18:58:34 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 18:58:34 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 18:58:35 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 18:58:35 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 18:58:35 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 18:58:35 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 18:58:36 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 19:04:03 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 19:04:03 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 19:04:03 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 19:04:03 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 19:04:04 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 19:04:04 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 19:04:04 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 19:04:05 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 19:04:06 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 19:08:49 Fri
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-17 19:08:49 Fri
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-17 19:08:49 Fri
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-17 19:08:49 Fri
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-17 19:08:50 Fri
+INFO:
+Complete!
+
+
+[root]: 2021-12-17 19:08:50 Fri
+INFO:
+Getting issue data...
+
+
+[base.extractor]: 2021-12-17 19:08:50 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[base.extractor]: 2021-12-17 19:08:51 Fri
+INFO:
+Sanitizing range values. This may take a moment.
+
+
+[root]: 2021-12-17 19:08:52 Fri
+INFO:
+Complete!
+
+

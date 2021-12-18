@@ -1,5 +1,6 @@
 """
-TODO:
+The Sessions module contains classes that expose functionality to the Extractor that
+allow it to interact with external sources that require connections
 """
 
 import logging
@@ -10,15 +11,13 @@ import github
 
 class GithubSession:
     """
-    Auth objects hold a queue of authorizations and provide iterator functionality
-    to external actors, such as the top-level Extractor class
+    The GithubSession class initializes and holds a verified connection to the GitHub
+    API and exposes functionality for that connection up to the Extractor class
     """
 
     def __init__(self, auth_path):
         """
-        initialize authorization object
-
-        TODO: if this does not grow, consider moving functionality into conf
+        initialize GitHub session object
 
         :param auth_path str: path to file containing personal access token
         """
@@ -30,24 +29,19 @@ class GithubSession:
     def __verify_auth(self, auth_path) -> github.Github:
         """
         retrieves PAT from auth file and checks whether it is valid
+        :raises github.BadCredentialsException: if given item is not a valid Personal
+        Access Token
 
-        TODO:
-            - fix BadCredentialsException
-                 - quiet traceback
-                 - continue cycling or, if none are left, exit
+        :raises github.RateLimitExceededException: if rate limited by the GitHub REST
+        API, return the authorized session. If rate limited, it means that the given
+        PAT is valid and a usable connection has been made
 
-        :raises
-        :raises
-        :rtype None: [TODO:description]
+        :rtype None:
         """
 
         def __read_auth_file(auth_file_path) -> str:
             """
             read personal access tokens (PATs) out of auth file
-
-            TODO:
-                - teach to decrypt GPG
-                - clean up for using just one PAT again
 
             :raises FileNotFoundError: file does not exist at path
             :param auth_file_path str: path to auth file
@@ -94,9 +88,6 @@ class GithubSession:
             sys.exit(1)
 
         except github.RateLimitExceededException:
-            # TODO test after we set up data extracting functionality
-            # if a rate limit is imposed upon a token
-            # it is valid, so we can keep it
             return session
 
         else:
@@ -108,7 +99,6 @@ class GithubSession:
 
         :rtype None: prints remaining calls
         """
-
         # get remaining calls before reset
         remaining_calls = self.session.rate_limiting[0]
 
@@ -120,56 +110,49 @@ class GithubSession:
 
         # print output in place
         print(f"{' ' * 4}Calls left until sleep: {rem_calls_str}", end="\r")
-        print("\n")
 
     def sleep(self, msg_format=None):
         """
-        TODO:
-            - can we either parallelize or drop connection so that we can do work
-              while this is happening?
-
         sleep the program until we can make calls again
 
         :param msg_format str: optional message to print after sleeping
         """
 
-        def __timer():
+        def __get_countdown_str():
+            # modulo function returns time tuple
+            minutes, seconds = divmod(countdown_time, 60)
 
+            # format the time string before printing
+            return f"{minutes:02d}:{seconds:02d}"
+
+        def __get_countdown_time():
             # get time until reset
             reset_time_secs = self.session.rate_limiting_resettime
 
             # time to wait is the amount of seconds
             # until reset minus the current time
-            countdown_time = reset_time_secs - int(time.time())
+            return reset_time_secs - int(time.time())
 
-            while countdown_time > 0:
+        def __print_time_str():
+            # clear line to erase any errors in console, such as
+            # typing while the counter runs
+            print("", end="\r")
 
-                # modulo function returns time tuple
-                minutes, seconds = divmod(countdown_time, 60)
+            # print time string on the same line each decrement
+            print(f"{' ' * 4}time until limit reset: {countdown_str}", end="\r")
 
-                # format the time string before printing
-                countdown_str = f"{minutes:02d}:{seconds:02d}"
+        countdown_time = __get_countdown_time()
 
-                # clear line to erase any errors in console, such as
-                # typing while the counter runs
-                print("", end="\r")
+        while countdown_time > 0:
 
-                # print time string on the same line each decrement
-                print(f"{' ' * 4}time until limit reset: {countdown_str}", end="\r")
+            countdown_str = __get_countdown_str()
 
-                # sleep for a while
-                time.sleep(1)
-                countdown_time -= 1
+            __print_time_str()
 
-        # print that we are sleeping
-        # TODO: fix
-        # self.__logger.exception(utils.LOG_DICT["SLEEP"])
+            # sleep for a while
+            time.sleep(1)
+            countdown_time -= 1
 
-        # # sleep for the amount of time until our call amount is reset
-        __timer()
-
-        print()
-
-        # # this allows us to choose to print a message after sleeping
+        # this allows us to choose to print a message after sleeping
         if msg_format is not None:
             self.__logger.info(msg_format)

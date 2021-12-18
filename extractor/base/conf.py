@@ -59,12 +59,6 @@ class Cfg:
         """
         print the associated value of key param
 
-        # TODO: update
-        Possible args:
-            "auth_file", "commit_json", "diagnostics", "issue_fields",
-            "issue_json", "functionality", "master_json", "pr_json",
-            "repo", "rows"
-
         :param key str: associated key for desired val; defaults
         to returning the path to the config file
         """

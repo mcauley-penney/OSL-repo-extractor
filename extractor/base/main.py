@@ -1,4 +1,7 @@
-"""TODO:"""
+"""
+This module provides driver functionality for running the GitHub extractor via the
+Extractor class from the extractor module
+"""
 
 import argparse
 import sys
@@ -7,10 +10,7 @@ from base import extractor
 
 
 def main():
-    """
-    [TODO:description]
-
-    """
+    """driver function for GitHub Extractor"""
 
     (cfg_path, log_dest) = get_cli_args()
 
@@ -20,11 +20,15 @@ def main():
     # init extractor object
     root_logger.info("Instantiating extractor...\n")
     gh_ext = extractor.Extractor(cfg_path)
-    root_logger.info("Extractor instantiated...\n")
+    root_logger.info("Complete!\n")
 
     root_logger.info("Getting issue data...\n")
-    # gh_ext.get_commit_data()
     gh_ext.get_issues_data()
+    root_logger.info("Complete!\n")
+
+    # root_logger.info("Getting PR and commit data...\n")
+    # gh_ext.get_pr_data()
+    # root_logger.info("Complete!\n")
 
 
 def init_root_logger(log_dest):
@@ -34,7 +38,7 @@ def init_root_logger(log_dest):
 
     see https://stackoverflow.com/a/50755200
 
-    :param log_dest str: [TODO:description]
+    :param log_dest str: file path to write logging to
     """
 
     log_msg_format = "[%(name)s]: %(asctime)s\n%(levelname)s:\n%(message)s\n"
@@ -83,7 +87,7 @@ def get_cli_args() -> tuple[str, str]:
     arg_parser.add_argument(
         "logging_destination",
         nargs="?",
-        default="extractor_log.txt",
+        default="../../data/output/extractor_log.txt",
         help="Path to log messages to",
     )
 
@@ -92,15 +96,6 @@ def get_cli_args() -> tuple[str, str]:
 
     # retrieve positional arguments
     return (cfg_file, log_dest)
-
-
-# for emailing
-# https://gist.github.com/alexle/1294495/39d13f2d4a004a4620c8630d1412738022a4058f
-# import smtplib
-# SERVER = smtplib.SMTP("smtp.gmail.com", 587)
-# SERVER.starttls()
-# SERVER.login(<login.user>, <login.pswd>)
-# SERVER.sendmail(<from>, <to>, <msg>)
 
 
 if __name__ == "__main__":

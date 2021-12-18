@@ -64,7 +64,7 @@ Below is a list of the accepted attributes and their accepted values.
             "committer": str; Commit.committer
             "date": str; Commit.commit.author.date.strftime (formatted to str)
             "files": Commit.file.{
-                filenames, list[str];
+                .filename, list[str];
                 .additions, int;
                 .changes, int;
                 .patch, str;
@@ -110,3 +110,32 @@ Below is a list of the accepted attributes and their accepted values.
             "title":
             "userlogin":
             "username":
+
+
+
+DISPATCH TABLES
+The expression below does several things:
+1. the curly brackets indicate that this is a dictionary
+comprehension, so it creates a dict from the iterating expression
+inside
+
+2. cmd_dict[field](cur_pr) uses the current "field" item in the
+field list, which the dict comprehension loops through, as the key
+to the cmd_dict, meaning that it grabs the val from the cmd_dict
+at that key. That val will be a function. It then sends cur_pr as
+a parameter to that function and stores the result.
+
+3. field: cmd_dict[field](cur_pr) creates a key value pair, where
+the field, e.g. "num", is the key and the output found in point #2
+above is the key
+
+In sum, this takes the current PR and gets every field of
+information from the configuration file about this PR. For
+example, If the user asks for "num" and "author_name" in the
+"PR fields" field of the # config, this expression creates a dict
+containing those values for every PR. This same concept is used
+in the issues and commits getters
+
+cur_item_pr_data = {
+    field: pr_dict[field](self, cur_pr) for field in pr_fields
+}

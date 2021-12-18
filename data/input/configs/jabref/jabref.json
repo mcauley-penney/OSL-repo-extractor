@@ -3,20 +3,20 @@
     "auth_file": "/home/m/files/work/GitHub-Repo-Extractor-2/data/input/auths/auth.txt",
     "output_dir": "/home/m/files/work/GitHub-Repo-Extractor-2/data/output",
     "range": [
-        19,
-        21
+        0,
+        0
     ],
     "commit_fields": [
-        "commit_author_name",
-        "commit_date",
-        "commit_message"
+        "files"
     ],
     "issues_fields": [
-        "issue_username"
+        "num",
+        "username"
     ],
     "pr_fields": [
+        "num",
         "pr_merged",
-        "pr_body",
-        "pr_title"
+        "body",
+        "title"
     ]
 }
