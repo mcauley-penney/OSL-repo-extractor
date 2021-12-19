@@ -22,13 +22,13 @@ def main():
     gh_ext = extractor.Extractor(cfg_path)
     root_logger.info("Complete!\n")
 
-    root_logger.info("Getting issue data...\n")
-    gh_ext.get_issues_data()
-    root_logger.info("Complete!\n")
-
-    # root_logger.info("Getting PR and commit data...\n")
-    # gh_ext.get_pr_data()
+    # root_logger.info("Getting issue data...\n")
+    # gh_ext.get_issues_data()
     # root_logger.info("Complete!\n")
+
+    root_logger.info("Getting PR and commit data...\n")
+    gh_ext.get_pr_data()
+    root_logger.info("Complete!\n")
 
 
 def init_root_logger(log_dest):

@@ -52,3 +52,15 @@
     - default to same location
 - init using range to find API object numbers instead of using it as indices for paginated lists
     - allows user to target specific API object in paginated list of arbitrary length and get its data
+
+
+<br>
+2021-12-18
+
+- refactor using range to find API object numbers
+    - the way that I created yesterday was inefficient and messy. I'm now using a modified iterative binary search
+        (submethod `__bin_search` of method `_get_api_item_index`) to complete the same task
+- refactor user-facing pr and issue getter methods for Pylint compliance, brevity, and cleanliness
+- avoid anti-patterns by moving private API getters that are used in command dispatch dicts which do not reference the
+    Extractor (self) out of the Extractor class
+    - tighten their scopes to module private

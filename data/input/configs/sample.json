@@ -3,8 +3,8 @@
     "auth_file": "/home/m/files/work/GitHub-Repo-Extractor-2/data/input/auths/auth.txt",
     "output_dir": "/home/m/files/work/GitHub-Repo-Extractor-2/data/output",
     "range": [
-        19,
-        21
+        270,
+        280
     ],
     "commit_fields": [
         "commit_author_name",

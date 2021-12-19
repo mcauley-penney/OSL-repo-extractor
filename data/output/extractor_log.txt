@@ -3742,3 +3742,1608 @@ INFO:
 Complete!
 
 
+[root]: 2021-12-18 20:38:21 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:38:21 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:38:21 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:38:21 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:38:21 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:38:21 Sat
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-18 20:38:23 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:39:27 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:39:27 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:39:27 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:39:27 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:39:28 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:39:28 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:39:43 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:41:53 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:41:53 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:41:53 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:41:53 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:41:54 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:41:54 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:43:23 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:43:23 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:43:23 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:43:23 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:43:24 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:43:24 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:43:45 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:43:45 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:43:45 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:43:45 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:43:46 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:43:46 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:44:48 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:44:48 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:44:48 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:44:48 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:44:48 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:44:48 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:44:54 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:45:22 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:45:22 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:45:22 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:45:22 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:45:23 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:45:23 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:45:28 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:46:25 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:46:25 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:46:25 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:46:25 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:46:26 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:46:26 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:46:33 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:47:28 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:47:28 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:47:28 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:47:28 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:47:29 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:47:29 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:47:34 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:47:46 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:47:46 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:47:46 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:47:46 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:47:47 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:47:47 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:47:52 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:49:44 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:49:44 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:49:44 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:49:44 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:49:45 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:49:45 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:49:48 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:50:01 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:50:01 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:50:01 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:50:01 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:50:01 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:50:01 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:50:05 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:55:22 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 20:55:22 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 20:55:22 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 20:55:22 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 20:55:23 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 20:55:23 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 20:55:28 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:00:35 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:00:35 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:00:35 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:00:35 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:00:35 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:00:35 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:01:50 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:01:50 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:01:50 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:01:50 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:01:51 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:01:51 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:01:56 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:03:25 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:03:25 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:03:25 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:03:25 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:03:26 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:03:26 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:03:31 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:21:34 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:21:34 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:21:34 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:21:34 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:21:35 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:21:35 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:22:14 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:22:14 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:22:14 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:22:14 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:22:15 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:22:15 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:22:19 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:23:23 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:23:23 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:23:23 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:23:23 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:23:24 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:23:24 Sat
+INFO:
+Getting issue data...
+
+
+[root]: 2021-12-18 21:23:25 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:23:31 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:23:31 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:23:31 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:23:31 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:23:32 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:23:32 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:23:38 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:40:13 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:40:13 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:40:13 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:40:13 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:40:14 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:40:14 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:40:18 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:53:51 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 21:53:51 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 21:53:51 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 21:53:51 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 21:53:52 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 21:53:52 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 21:53:56 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 22:12:42 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 22:12:42 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 22:12:42 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 22:12:42 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 22:12:43 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 22:12:43 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:11:08 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:11:08 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:11:08 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:11:08 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:11:09 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:11:09 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:12:28 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:12:28 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:12:28 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:12:28 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:12:29 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:12:29 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:12:34 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:15:09 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:15:09 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:15:09 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:15:09 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:15:10 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:15:10 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:15:31 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:15:31 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:15:31 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:15:31 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:15:32 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:15:32 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:15:38 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:16:41 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:16:41 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:16:41 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:16:41 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:16:42 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:16:42 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:16:50 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:17:55 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:17:55 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:17:55 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:17:55 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:17:55 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:17:55 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:18:02 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:18:56 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:18:56 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:18:56 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:18:56 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:18:57 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:18:57 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:19:02 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:19:12 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:19:12 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:19:12 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:19:12 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:19:13 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:19:13 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:19:18 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:20:15 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:20:15 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:20:15 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:20:15 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:20:16 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:20:16 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:20:20 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:20:20 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:20:20 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:20:20 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:20:21 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:20:21 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:20:24 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:21:29 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:21:29 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:21:29 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:21:29 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:21:30 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:21:30 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:21:34 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:21:59 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:21:59 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:21:59 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:21:59 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:22:00 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:22:00 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:22:04 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:22:21 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:22:21 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:22:21 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:22:21 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:22:22 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:22:22 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:22:26 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:22:43 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:22:43 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:22:43 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:22:43 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:22:44 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:22:44 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:22:51 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:23:40 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:23:40 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:23:40 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:23:40 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:23:41 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:23:41 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:23:46 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:26:03 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:26:03 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:26:03 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:26:03 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:26:04 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:26:04 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:26:55 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:26:55 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:26:55 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:26:55 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:26:55 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:26:55 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:27:05 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:33:21 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:33:21 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:33:21 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:33:21 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:33:22 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:33:22 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:35:09 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:35:09 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:35:09 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:35:09 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:35:10 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:35:10 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:35:47 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:35:47 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:35:47 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:35:47 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:35:47 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:35:47 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:37:12 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:37:12 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:37:12 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:37:12 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:37:13 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:37:13 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:39:41 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:39:41 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:39:41 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:39:41 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:39:42 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:39:42 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:40:02 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:40:50 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:40:50 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:40:50 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:40:50 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:40:50 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:40:50 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:41:20 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:41:20 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:41:20 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:41:20 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:41:20 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:41:20 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:41:41 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:42:28 Sat
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-18 23:42:28 Sat
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-18 23:42:28 Sat
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-18 23:42:28 Sat
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-18 23:42:28 Sat
+INFO:
+Complete!
+
+
+[root]: 2021-12-18 23:42:28 Sat
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-18 23:42:49 Sat
+INFO:
+Complete!
+
+

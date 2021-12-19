@@ -1,0 +1,40 @@
+{
+    "270": {
+        "pr_merged": false
+    },
+    "272": {
+        "pr_merged": false
+    },
+    "273": {
+        "pr_merged": true,
+        "pr_body": "Replace pages field by num--num or keep existing field if Regex is not matching.Pages field should only allow page range, i.e. `num--num` or page set `1,23,35`.Algorithm:``` java     * Format page numbers, separated either by commas or double-hyphens.     * Converts the range number format of the <code>pages</code> field to page_number--page_number.     * Removes all literals except [0-9,-].     * Keeps the existing String if the resulting field does not match the expected Regex.     *     * <example>     *     1-2 -> 1--2     *     1,2,3 -> 1,2,3     *     {1}-{2} -> 1--2     *     Invalid -> Invalid     * </example>```",
+        "pr_title": "Pagenumbers CleanupAction",
+        "commit_author_name": "Stefan Kolb",
+        "commit_date": "10/29/15, 08:50:28 AM",
+        "commit_message": "Only create the undo action if value was changed"
+    },
+    "274": {
+        "pr_merged": true,
+        "pr_body": "As per @koppor s request (sort of), the `MergeEntry*` dialogs now save and restore their size and position (same for both).",
+        "pr_title": "Save size of MergeEntryDialog and MergeEntryDOIDialog",
+        "commit_author_name": "Oscar Gustafsson",
+        "commit_date": "11/13/15, 10:09:52 PM",
+        "commit_message": "Used ComponentAdaptor to always store movements and size changes"
+    },
+    "276": {
+        "pr_merged": true,
+        "pr_body": "- Renames getAllFields() to getFieldNames() - add getFields() methodOften the workflow in our code is:``` javafor(String name: entry.getFieldnames()) {  entry.getField(name);  // do something}```We can directly use `entry.getFields()` for this now.Are there any concurrency Problems behind the old rationale or was it just dumb?",
+        "pr_title": "Refactor BibTex model (a bit)",
+        "commit_author_name": "Stefan Kolb",
+        "commit_date": "10/29/15, 11:44:06 AM",
+        "commit_message": "Move convertToBiblatex back to CleanupAction as it has GUI dependencies"
+    },
+    "277": {
+        "pr_merged": true,
+        "pr_body": "Nan",
+        "pr_title": "Refactor CaseChangers",
+        "commit_author_name": "Stefan Kolb",
+        "commit_date": "10/29/15, 02:05:42 PM",
+        "commit_message": "Extract and refactor CaseChangers"
+    }
+}

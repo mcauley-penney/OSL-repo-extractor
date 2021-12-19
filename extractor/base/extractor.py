@@ -13,6 +13,276 @@ from base import conf, sessions
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
+def _get_api_item_index(paged_list, num_to_find) -> int:
+    """
+    return the paginated list index of the item with the number the user wishes to find
+
+    :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
+    list of API objects
+
+    :param num_to_find int: the item number that we wish to return the index of
+
+    :rtype int: index of item with desired number
+    """
+
+    def __bin_search(paged_list_page, val) -> int:
+        """
+        iterative binary search modified to return either the exact index of the item
+        with the number the user desires or the index of the item beneath that value in
+        the case that the value does not exist in the list. An example might be that a
+        paginated list of issues does not have #'s 9, 10, or 11, but the user wants to
+        begin looking for data at #10. This binary search should return the index of the
+        API object with the number 8.
+
+        :param paged_list_page Github.PaginatedList of Github.Issues or
+        Github.PullRequests: list of API objects
+
+        :param val int: the value that we wish to find the index of, e.g. the index of
+        PR #10
+
+        :rtype int: index of the object we are looking for
+        """
+
+        low = 0
+        high = 30
+
+        while low < high and low < high - 1:
+            mid = (low + high) // 2
+
+            cur_val = paged_list_page[mid].number
+
+            if val == cur_val:
+                return mid
+
+            if val < cur_val:
+                high = mid - 1
+
+            elif val > cur_val:
+                low = mid + 1
+
+        print(paged_list_page[low].number)
+        return low
+
+    item_index = 0
+    page_index = 0
+
+    while paged_list.get_page(page_index)[-1].number < num_to_find:
+        page_index += 1
+
+    # use iterative binary search to find item in page of linked list
+    item_index = __bin_search(paged_list.get_page(page_index), num_to_find)
+
+    return (page_index * 30) + item_index
+
+
+def _clean_str(str_to_clean):
+    """
+    If a string is empty or None, returns NaN. Otherwise, strip the string of any
+    carriage returns, newlines, and leading or trailing whitespace.
+
+    :param str_to_clean str: string to clean and return
+    """
+    if str_to_clean is None or str_to_clean == "":
+        return "Nan"
+
+    output_str = str_to_clean.replace("\r", "")
+    output_str = output_str.replace("\n", "")
+
+    return output_str.strip()
+
+
+def _get_body(api_obj):
+    """
+    return issue or PR text body
+
+    :param api_obj github.PullRequest/github.Issue: API object to get body text of
+    """
+    return _clean_str(api_obj.body)
+
+
+def _get_closed_time(api_obj):
+    """
+    if the API object has been closed, i.e. closed PR or issue, return the formatted
+    datetime that it was closed at
+
+    :param api_obj github.PullRequest/github.Issue: API object to get datetime of
+    closing of
+    """
+    if api_obj.closed_at is not None:
+        return api_obj.closed_at.strftime(TIME_FMT)
+
+    return "NaN"
+
+
+def _get_issue_comments(issue_obj):
+    """
+    if a given issue has comments, collect them all into one string separated by a
+    special delimeter, format the str, and return it
+
+    :param api_obj github.Issue: Issue object to comments of
+    """
+    comments_paged_list = issue_obj.get_comments()
+
+    if comments_paged_list.totalCount != 0:
+        sep_str = " =||= "
+
+        # get body from each comment, strip of whitespace, and join w/ special char
+        comment_str = sep_str.join(
+            comment.body.strip() for comment in comments_paged_list
+        )
+
+        # strip comment string of \n, \r, and whitespace again
+        return _clean_str(comment_str)
+
+    return "NaN"
+
+
+def _get_num(api_obj):
+    """
+    Casts PR/Issue num received from GitHub API to a str and returns it
+
+    The Python JSON module will cast all items to str. If we want to use the
+    PR/issue num as a key inside of our JSON/output dicts, we must also cast to
+    str. This will allow our JSON writing methods to recognize that the key of data
+    that has already been written to JSON (and is thus a str) is the same as the
+    key written during our latest round of API calls. For example, if we have
+    Issue #1 in our JSON output already, the key (#1) has been casted to a str.
+    In a hypothetical situation, we want to update #1 to have more info. If we get
+    that new info for #1 in a round of API calls and attempt to update #1 in the
+    already-existing JSON (which would happen in concat_json()) without casting
+    this val to a str, the function will not recognize that the two keys are the
+    same and will yield N separate entries for the same key, where N is the amount
+    of times data is retrieved for that key
+
+    :param api_obj github.PullRequest/github.Issue: PR or Issue to get num of
+    """
+    return str(api_obj.number)
+
+
+def _get_pr_merged(pr_obj):
+    return pr_obj.merged
+
+
+def _get_title(api_obj):
+    return api_obj.title
+
+
+def _get_username(api_obj):
+    return _clean_str(api_obj.user.name)
+
+
+def _get_userlogin(api_obj):
+    return _clean_str(api_obj.user.login)
+
+
+def _get_commit_auth_date(api_obj):
+    return api_obj.commit.author.date.strftime(TIME_FMT)
+
+
+def _get_commit_auth_name(api_obj):
+    return api_obj.commit.author.name
+
+
+def _get_commit_committer(api_obj):
+    return api_obj.commit.committer.name
+
+
+def _get_commit_files(api_obj):
+    """
+    For the list of files modified by a commit on a PR, return a list of qualities
+
+    :param api_obj PaginatedList: paginated list of commits
+
+    NOTE: If a list of files is too large, it will be returned as a paginatied
+    list. See note about the list length constraints at
+    https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
+    now, this situation is not handled here.
+
+    :rtype dict[unknown]: dictionary of fields discussing file attributes of a
+    commit
+    """
+    file_list = api_obj.files
+
+    commit_file_list = []
+    commit_adds = 0
+    commit_changes = 0
+    commit_patch_text = ""
+    commit_removes = 0
+    commit_status_str = ""
+
+    for file in file_list:
+        commit_file_list.append(file.filename)
+        commit_adds += int(file.additions)
+        commit_changes += int(file.changes)
+        commit_patch_text += str(file.patch) + ", "
+        commit_removes += int(file.deletions)
+        commit_status_str += str(file.status) + ", "
+
+    quoted_commit_status_str = '"' + commit_status_str + '"'
+
+    return {
+        "file_list": commit_file_list,
+        "additions": commit_adds,
+        "changes": commit_changes,
+        "patch_text": _clean_str(commit_patch_text),
+        "removals": commit_removes,
+        "status": _clean_str(quoted_commit_status_str),
+    }
+
+
+def _get_commit_msg(api_obj):
+    return _clean_str(api_obj.commit.message)
+
+
+def _get_commit_sha(api_obj):
+    return api_obj.sha
+
+
+def _sanitize_range(paged_list, range_list):
+    """
+    Compares the given values in the "range" cfg field and lowers them if they are
+    larger than the largest item number present at the end of the paged list param
+
+    :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
+    list of API objects
+
+    :param val_to_check int: value in range cfg to check against paginated list
+
+    :rtype int: sanitized value; lower than the maximimum item number in the
+    paginated list
+    """
+
+    def __get_last_item_num(paged_list) -> int:
+        """
+        Finds the number, e.g. issue number, of the last item in a given
+        paginated list
+
+        Simply slicing is INCREDIBLY slow, e.g.
+            last_index = paged_list.totalCount - 1
+            last_item_num = paged_list[last_index].number
+
+        :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
+        list of API objects
+
+        :rtype int: the number of the last item in the paginated list
+        """
+        # get the total amount of items in the list
+        last_index = paged_list.totalCount - 1
+
+        # divide that value by the quantity of items per page to find the last page
+        last_page = last_index // 30
+
+        # get the last item from the last page
+        last_item = paged_list.get_page(last_page)[-1]
+
+        # return its number
+        return last_item.number
+
+    highest_num = __get_last_item_num(paged_list)
+
+    return (min(val, highest_num) for val in (range_list[0], range_list[1]))
+
+
 class Extractor:
     """
     The Extractor class contains and executes GitHub REST API functionality. It
@@ -21,184 +291,35 @@ class Extractor:
     an object that writes content to JSON files.
     """
 
-    def __clean_str(self, str_to_clean):
-        """
-        If a string is empty or None, returns NaN. Otherwise, strip the string of any
-        carriage returns, newlines, and leading or trailing whitespace.
-
-        :param str_to_clean str: string to clean and return
-        """
-        if str_to_clean is None or str_to_clean == "":
-            output_str = "Nan"
-
-        else:
-            output_str = str_to_clean.replace("\r", "")
-            output_str = output_str.replace("\n", "")
-
-        return output_str.strip()
-
-    def __get_body(self, api_obj):
-        """
-        return issue or PR text body
-
-        :param api_obj github.PullRequest/github.Issue: API object to get body text of
-        """
-        return self.__clean_str(api_obj.body)
-
-    def __get_closed_time(self, api_obj):
-        """
-        if the API object has been closed, i.e. closed PR or issue, return the formatted
-        datetime that it was closed at
-
-        :param api_obj github.PullRequest/github.Issue: API object to get datetime of
-        closing of
-        """
-        if api_obj.closed_at is not None:
-            return api_obj.closed_at.strftime(TIME_FMT)
-
-        return "NaN"
-
-    def __get_issue_comments(self, issue_obj):
-        """
-        if a given issue has comments, collect them all into one string separated by a
-        special delimeter, format the str, and return it
-
-        :param api_obj github.Issue: Issue object to comments of
-        """
-        comments_paged_list = issue_obj.get_comments()
-
-        if comments_paged_list.totalCount != 0:
-            sep_str = " =||= "
-
-            # get body from each comment, strip of whitespace, and join w/ special char
-            comment_str = sep_str.join(
-                comment.body.strip() for comment in comments_paged_list
-            )
-
-            # strip comment string of \n, \r, and whitespace again
-            return self.__clean_str(comment_str)
-
-        return "NaN"
-
-    def __get_num(self, api_obj):
-        """
-        Casts PR/Issue num received from GitHub API to a str and returns it
-
-        The Python JSON module will cast all items to str. If we want to use the
-        PR/issue num as a key inside of our JSON/output dicts, we must also cast to
-        str. This will allow our JSON writing methods to recognize that the key of data
-        that has already been written to JSON (and is thus a str) is the same as the
-        key written during our latest round of API calls. For example, if we have
-        Issue #1 in our JSON output already, the key (#1) has been casted to a str.
-        In a hypothetical situation, we want to update #1 to have more info. If we get
-        that new info for #1 in a round of API calls and attempt to update #1 in the
-        already-existing JSON (which would happen in concat_json()) without casting
-        this val to a str, the function will not recognize that the two keys are the
-        same and will yield N separate entries for the same key, where N is the amount
-        of times data is retrieved for that key
-
-        :param api_obj github.PullRequest/github.Issue: PR or Issue to get num of
-        """
-        return str(api_obj.number)
-
-    def __get_pr_merged(self, pr_obj):
-        return pr_obj.merged
-
-    def __get_title(self, api_obj):
-        return api_obj.title
-
-    def __get_username(self, api_obj):
-        return self.__clean_str(api_obj.user.name)
-
-    def __get_userlogin(self, api_obj):
-        return self.__clean_str(api_obj.user.login)
-
-    def __get_commit_auth_date(self, api_obj):
-        return api_obj.commit.author.date.strftime(TIME_FMT)
-
-    def __get_commit_auth_name(self, api_obj):
-        return api_obj.commit.author.name
-
-    def __get_commit_committer(self, api_obj):
-        return api_obj.commit.committer.name
-
-    def __get_commit_files(self, api_obj):
-        """
-        For the list of files modified by a commit on a PR, return a list of qualities
-
-        :param api_obj PaginatedList: paginated list of commits
-
-        NOTE: If a list of files is too large, it will be returned as a paginatied
-        list. See note about the list length constraints at
-        https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
-        now, this situation is not handled here.
-
-        :rtype dict[unknown]: dictionary of fields discussing file attributes of a
-        commit
-        """
-        file_list = api_obj.files
-
-        commit_file_list = []
-        commit_adds = 0
-        commit_changes = 0
-        commit_patch_text = ""
-        commit_removes = 0
-        commit_status_str = ""
-
-        for file in file_list:
-            commit_file_list.append(file.filename)
-            commit_adds += int(file.additions)
-            commit_changes += int(file.changes)
-            commit_patch_text += str(file.patch) + ", "
-            commit_removes += int(file.deletions)
-            commit_status_str += str(file.status) + ", "
-
-        quoted_commit_status_str = '"' + commit_status_str + '"'
-
-        return {
-            "file_list": commit_file_list,
-            "additions": commit_adds,
-            "changes": commit_changes,
-            "patch_text": self.__clean_str(commit_patch_text),
-            "removals": commit_removes,
-            "status": self.__clean_str(quoted_commit_status_str),
-        }
-
-    def __get_commit_msg(self, api_obj):
-        return self.__clean_str(api_obj.commit.message)
-
-    def __get_commit_sha(self, api_obj):
-        return api_obj.sha
-
     # init dispatch tables that allow us to use strings to access functions
     # intro: https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
-    COMMIT_CMD_DISPATCH = {
-        "commit_author_name": __get_commit_auth_name,
-        "committer": __get_commit_committer,
-        "commit_date": __get_commit_auth_date,
-        "commit_files": __get_commit_files,
-        "commit_message": __get_commit_msg,
-        "commit_sha": __get_commit_sha,
+    __COMMIT_CMD_DISPATCH = {
+        "commit_author_name": _get_commit_auth_name,
+        "committer": _get_commit_committer,
+        "commit_date": _get_commit_auth_date,
+        "commit_files": _get_commit_files,
+        "commit_message": _get_commit_msg,
+        "commit_sha": _get_commit_sha,
     }
 
-    ISSUE_CMD_DISPATCH = {
-        "issue_body": __get_body,
-        "issue_closed": __get_closed_time,
-        "issue_comments": __get_issue_comments,
-        "__issue_num": __get_num,
-        "issue_title": __get_title,
-        "issue_userlogin": __get_userlogin,
-        "issue_username": __get_username,
+    __ISSUE_CMD_DISPATCH = {
+        "issue_body": _get_body,
+        "issue_closed": _get_closed_time,
+        "issue_comments": _get_issue_comments,
+        "__issue_num": _get_num,
+        "issue_title": _get_title,
+        "issue_userlogin": _get_userlogin,
+        "issue_username": _get_username,
     }
 
-    PR_CMD_DISPATCH = {
-        "pr_body": __get_body,
-        "pr_closed": __get_closed_time,
-        "__pr_num": __get_num,
-        "pr_merged": __get_pr_merged,
-        "pr_title": __get_title,
-        "pr_userlogin": __get_userlogin,
-        "pr_username": __get_username,
+    __PR_CMD_DISPATCH = {
+        "pr_body": _get_body,
+        "pr_closed": _get_closed_time,
+        "__pr_num": _get_num,
+        "pr_merged": _get_pr_merged,
+        "pr_title": _get_title,
+        "pr_userlogin": _get_userlogin,
+        "pr_username": _get_username,
     }
 
     # see cerberus documentation for schema rules
@@ -233,17 +354,17 @@ class Extractor:
             "type": "list",
         },
         "commit_fields": {
-            "allowed": [*COMMIT_CMD_DISPATCH],
+            "allowed": [*__COMMIT_CMD_DISPATCH],
             "schema": {"type": "string"},
             "type": "list",
         },
         "issues_fields": {
-            "allowed": [*ISSUE_CMD_DISPATCH],
+            "allowed": [*__ISSUE_CMD_DISPATCH],
             "schema": {"type": "string"},
             "type": "list",
         },
         "pr_fields": {
-            "allowed": [*PR_CMD_DISPATCH],
+            "allowed": [*__PR_CMD_DISPATCH],
             "schema": {"type": "string"},
             "type": "list",
         },
@@ -271,47 +392,8 @@ class Extractor:
             self.cfg.get_cfg_val("output_dir"), self.cfg.get_cfg_val("repo")
         )
 
-        self.pr_paged_list = self.get_paged_list("pr")
-        self.issues_paged_list = self.get_paged_list("issues")
-
-    def __sanitize_range_val(self, paged_list, val_to_check) -> int:
-        """
-        Compares the given values in the "range" cfg field and lowers them if they are
-        larger than the largest item number present at the end of the paged list param
-
-        :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
-        list of API objects
-        :param val_to_check int: value in range cfg to check against paginated list
-        :rtype int: sanitized value; lower than the maximimum item number in the
-        paginated list
-        """
-
-        def __get_last_item_num() -> int:
-            """
-            Finds the number, e.g. issue number, of the last item in a given
-            paginated list
-
-            Simply slicing is INCREDIBLY slow, e.g.
-                last_index = paged_list.totalCount - 1
-                last_item_num = paged_list[last_index].number
-
-            :rtype int: the number of the last item in the paginated list
-            """
-            # get the total amount of items in the list
-            last_index = paged_list.totalCount - 1
-
-            # divide that value by the quantity of items per page to find the last page
-            last_page = last_index // 30
-
-            # get the number of the last item from the last page
-            return paged_list.get_page(last_page)[-1].number
-
-        last_item_num = __get_last_item_num()
-
-        if val_to_check > last_item_num:
-            return last_item_num
-
-        return val_to_check
+        self.pr_paged_list = self.__get_paged_list("pr")
+        self.issues_paged_list = self.__get_paged_list("issues")
 
     def get_issues_data(self):
         """
@@ -326,43 +408,41 @@ class Extractor:
         """
 
         data_dict = {}
-        val_range = self.cfg.get_cfg_val("range")
-        paged_list = self.issues_paged_list
 
-        cmd_dict = self.ISSUE_CMD_DISPATCH
-        field_list = self.cfg.get_cfg_val("issues_fields")
+        # sanitize and return range
+        start_val, end_val = _sanitize_range(
+            self.issues_paged_list, self.cfg.get_cfg_val("range")
+        )
 
-        # adjust amount of rows to get if unsafe
-        safe_start_val = self.__sanitize_range_val(paged_list, val_range[0])
-        safe_end_val = self.__sanitize_range_val(paged_list, val_range[1])
+        start_val = _get_api_item_index(self.issues_paged_list, start_val)
+        end_val = _get_api_item_index(self.issues_paged_list, end_val)
 
-        while safe_start_val < safe_end_val:
+        while start_val < end_val:
             try:
-                cur_issue = paged_list[safe_start_val]
-                cur_issue_num = self.ISSUE_CMD_DISPATCH["__issue_num"](self, cur_issue)
-                cur_entry = {}
+                cur_issue = self.issues_paged_list[start_val]
+                cur_issue_num = self.__ISSUE_CMD_DISPATCH["__issue_num"](cur_issue)
 
-                if int(cur_issue_num) >= safe_start_val:
-                    cur_item_data = {
-                        field: cmd_dict[field](self, cur_issue) for field in field_list
-                    }
+                cur_item_data = {
+                    field: self.__ISSUE_CMD_DISPATCH[field](cur_issue)
+                    for field in self.cfg.get_cfg_val("issues_fields")
+                }
 
-                    cur_entry = {cur_issue_num: cur_item_data}
+                cur_entry = {cur_issue_num: cur_item_data}
 
             except github.RateLimitExceededException:
                 self.writer.concat_json(data_dict)
-                data_dict = {}
+                data_dict.clear()
                 self.gh_sesh.sleep()
 
             else:
-                data_dict.update(cur_entry)
+                data_dict |= cur_entry
                 self.gh_sesh.print_rem_calls()
 
-                safe_start_val = safe_start_val + 1
+                start_val = start_val + 1
 
         self.writer.concat_json(data_dict)
 
-    def get_paged_list(self, list_type):
+    def __get_paged_list(self, list_type):
         """
         retrieve and store a paginated list from GitHub
 
@@ -386,18 +466,17 @@ class Extractor:
                         direction="asc", sort="created", state="closed"
                     )
 
-                else:
-                    return repo_obj.get_pulls(
-                        direction="asc", sort="created", state="closed"
-                    )
+                return repo_obj.get_pulls(
+                    direction="asc", sort="created", state="closed"
+                )
 
             except github.RateLimitExceededException:
                 self.gh_sesh.sleep()
 
-    def get_pr_data(self, get_commits=True):
+    def get_pr_data(self):
         """
-        By default, retrieves both PR and commit data from the GitHub API; uses the
-        "range" configuration value to determine what indices of the PR paged list to
+        Retrieves both PR and commit data from the GitHub API; uses the "range"
+        configuration value to determine what indices of the PR paged list to
         look at and the "pr_fields" and "commit_fields" configurationfields to
         determine what information it should retrieve from each PR of interest.
 
@@ -405,7 +484,7 @@ class Extractor:
         descends from and is retrievable via PRs, i.e. we are not intereseted in
         commits that
             1. are not from a closed and merged PR
-            2. has no files changed by the commit
+            2. have no files changed by the commit
 
         :raises github.RateLimitExceededException: if rate limited by the GitHub REST
         API, dump collected data to output file and sleep the program until calls can
@@ -433,71 +512,66 @@ class Extractor:
             return cur_commit_list[last_commit_index]
 
         data_dict = {}
-        index = 0
-        val_range = self.cfg.get_cfg_val("range")
-        pr_list = self.pr_paged_list
 
-        pr_dict = self.PR_CMD_DISPATCH
+        # sanitize and return range
+        start_val, end_val = _sanitize_range(
+            self.pr_paged_list, self.cfg.get_cfg_val("range")
+        )
+
+        start_val = _get_api_item_index(self.pr_paged_list, start_val)
+        end_val = _get_api_item_index(self.pr_paged_list, end_val)
+
+        # get fields of values desired from API
         pr_fields = self.cfg.get_cfg_val("pr_fields")
-
-        commit_dict = self.COMMIT_CMD_DISPATCH
         commit_fields = self.cfg.get_cfg_val("commit_fields")
 
-        # lower any errant rows down to max value
-        safe_start_val = self.__sanitize_range_val(pr_list, val_range[0])
-        safe_end_val = self.__sanitize_range_val(pr_list, val_range[1])
-
-        while index < safe_end_val:
+        while start_val < end_val:
             try:
                 # get current PR to begin information gathering
-                cur_pr = pr_list[index]
+                cur_pr = self.pr_paged_list[start_val]
 
-                # get the current PR number as a string
-                cur_pr_num = self.PR_CMD_DISPATCH["__pr_num"](self, cur_pr)
-
-                # determine whether the current pr is merged so that we can decide if we
-                # want the rest of its data
                 is_merged = cur_pr.merged
 
-                cur_entry = {cur_pr_num: {"pr_merged": is_merged}}
+                # create dict to build upon. This variable will later become the val of
+                # a dict entry, making it a subdictionary
+                cur_entry = {"pr_merged": is_merged}
 
                 # if the current PR number is greater than or equal to the first
                 # number provided in the "range" cfg val and the PR is merged
-                if is_merged and int(cur_pr_num) >= safe_start_val:
-                    cur_item_pr_data = {
-                        field: pr_dict[field](self, cur_pr) for field in pr_fields
+                if is_merged:
+                    cur_entry |= {
+                        field: self.__PR_CMD_DISPATCH[field](cur_pr)
+                        for field in pr_fields
                     }
 
-                    if get_commits:
-                        last_commit = __get_last_commit(cur_pr)
+                    last_commit = __get_last_commit(cur_pr)
 
-                        # if there are files changed for this commit
-                        if len(last_commit.files) > 0:
+                    # if there are files changed for this commit
+                    if len(last_commit.files) > 0:
 
-                            # get all data from that commit
-                            cur_item_commit_data = {
-                                field: commit_dict[field](self, last_commit)
-                                for field in commit_fields
-                            }
+                        # get all data from that commit
+                        cur_entry |= {
+                            field: self.__COMMIT_CMD_DISPATCH[field](last_commit)
+                            for field in commit_fields
+                        }
 
-                            # merge the current PR data and the current commit data
-                            # into one dictionary
-                            cur_item_pr_data |= cur_item_commit_data
+                # get the current PR number as a string
+                cur_pr_num = self.__PR_CMD_DISPATCH["__pr_num"](cur_pr)
 
-                    # create dict entry using the issue num associated with the commit
-                    # as the key
-                    cur_entry = {cur_pr_num: cur_item_pr_data}
+                # use all gathered entry data as the val for the PR num key
+                cur_entry = {cur_pr_num: cur_entry}
 
             except github.RateLimitExceededException:
+                # concatenate gathered data, clear the dict, and sleep
                 self.writer.concat_json(data_dict)
-                data_dict = {}
+                data_dict.clear()
                 self.gh_sesh.sleep()
 
             else:
-                data_dict.update(cur_entry)
+                data_dict |= cur_entry
                 self.gh_sesh.print_rem_calls()
 
-                index += 1
+                start_val += 1
 
         self.writer.concat_json(data_dict)
 
@@ -527,8 +601,6 @@ class Writer:
         # create output directory only if it does not exist
         os.makedirs(repo_subdir, exist_ok=True)
 
-        # self.commit_output = f"{repo_subdir}/commit_output.JSON"
-        # self.issues_output = f"{repo_subdir}/commit_output.JSON"
         self.output_file = f"{repo_subdir}/{repo_name}_output.JSON"
 
         # for each file above, create it if it does not exist
@@ -587,7 +659,7 @@ class Writer:
 
         # attempt to read JSON out of output file
         try:
-            with open(self.output_file, "r") as json_outfile:
+            with open(self.output_file, "r", encoding="UTF-8") as json_outfile:
                 json_dict = json.load(json_outfile)
 
         # if no JSON content exists there, ignore
@@ -600,5 +672,5 @@ class Writer:
             __merge_dicts(out_dict, json_dict)
 
             # write JSON content back to file
-            with open(path, "w") as json_outfile:
+            with open(path, "w", encoding="UTF-8") as json_outfile:
                 json.dump(json_dict, json_outfile, ensure_ascii=False, indent=4)
