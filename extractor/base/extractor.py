@@ -98,6 +98,8 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
     page_index = 0
     out_list = []
 
+    print(f"{' ' * 4}Sanitizing range configuration values...")
+
     # get the highest item num in the paginated list of items, e.g. PR #8339 for
     # JabRef
     highest_num = __get_last_item_num(paged_list)
@@ -105,6 +107,8 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
     # get sanitized range. This will correct any vals given in the range cfg so that
     # they are within the values that are in the paged list
     sani_range_tuple = (min(val, highest_num) for val in (range_list[0], range_list[1]))
+
+    print(f"{' ' * 4}finding starting and ending indices of range values...\n")
 
     # for the two boundaries in the sanitized range
     for val in sani_range_tuple:
@@ -119,8 +123,8 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
         # use iterative binary search to find item in correct page of linked list
         item_index = __bin_search(paged_list.get_page(page_index), val)
 
-        # the index of the item we need is the amount of items per page that was skipped
-        # added to the index of the item in the page that it is in
+        # the index of the item we need is the amount of items per page that were
+        # skipped plus the index of the item in it's page
         out_list.append((page_index * PAGE_LEN) + item_index)
 
     return out_list

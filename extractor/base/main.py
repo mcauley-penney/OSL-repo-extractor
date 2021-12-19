@@ -28,7 +28,7 @@ def main():
 
     root_logger.info("Getting PR and commit data...\n")
     gh_ext.get_pr_data()
-    root_logger.info("Complete!\n")
+    root_logger.info("\nComplete!\n")
 
 
 def init_root_logger(log_dest):

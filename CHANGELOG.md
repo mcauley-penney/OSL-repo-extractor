@@ -68,6 +68,6 @@
 <br>
 2021-12-19
 
-- refactor `_sanitize_range` and incorporate into `_get_api_item_index`
+- refactor `_sanitize_range` and incorporate into `_get_api_item_indices`
 - remove redundant while condition in `__bin_search`
-- add type hints to most items in `Extractor` class as well as some in `Cfg` and `GithubSessions`
+- add type hints to most methods in `Extractor` class as well as some in `Cfg` and `GithubSessions`
