@@ -35,7 +35,7 @@ class Cfg:
             self.__logger.exception(f"Validation error!\n {validator.errors}")
             sys.exit(1)
 
-    def __extract_cfg(self, cfg_path: str):
+    def __extract_cfg(self, cfg_path: str) -> dict:
         """
         open the provided configuartion file, which comes in JSON format, and read
         its contents out into a dictionary

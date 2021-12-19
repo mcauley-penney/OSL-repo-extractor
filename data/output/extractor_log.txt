@@ -5447,3 +5447,123 @@ INFO:
 Complete!
 
 
+[root]: 2021-12-19 10:49:32 Sun
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-19 10:49:32 Sun
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-19 10:49:32 Sun
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-19 10:49:32 Sun
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-19 10:49:33 Sun
+INFO:
+Complete!
+
+
+[root]: 2021-12-19 10:49:33 Sun
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-19 10:50:23 Sun
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-19 10:50:23 Sun
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-19 10:50:23 Sun
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-19 10:50:23 Sun
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-19 10:50:24 Sun
+INFO:
+Complete!
+
+
+[root]: 2021-12-19 10:50:24 Sun
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-19 10:51:31 Sun
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-19 10:51:31 Sun
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-19 10:51:31 Sun
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-19 10:51:31 Sun
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-19 10:51:31 Sun
+INFO:
+Complete!
+
+
+[root]: 2021-12-19 10:51:31 Sun
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-19 11:26:27 Sun
+INFO:
+Instantiating extractor...
+
+
+[base.extractor]: 2021-12-19 11:26:27 Sun
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[base.conf]: 2021-12-19 11:26:27 Sun
+INFO:
+initializing cfg...
+
+
+[base.sessions]: 2021-12-19 11:26:27 Sun
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-19 11:26:27 Sun
+INFO:
+Complete!
+
+
+[root]: 2021-12-19 11:26:27 Sun
+INFO:
+Getting PR and commit data...
+
+

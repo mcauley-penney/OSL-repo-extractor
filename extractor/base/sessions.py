@@ -15,7 +15,7 @@ class GithubSession:
     API and exposes functionality for that connection up to the Extractor class
     """
 
-    def __init__(self, auth_path, page_len):
+    def __init__(self, auth_path, page_len) -> None:
         """
         initialize GitHub session object
 
@@ -111,7 +111,7 @@ class GithubSession:
         # print output in place
         print(f"{' ' * 4}Calls left until sleep: {rem_calls_str}", end="\r")
 
-    def sleep(self, msg_format=None):
+    def sleep(self, msg_format=None) -> None:
         """
         sleep the program until we can make calls again
 

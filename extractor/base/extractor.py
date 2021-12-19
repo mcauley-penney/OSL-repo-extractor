@@ -13,16 +13,18 @@ PAGE_LEN = 35
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
-def _get_api_item_index(paged_list, num_to_find) -> int:
+def _get_api_item_indices(paged_list, range_list) -> list[int]:
     """
-    return the paginated list index of the item with the number the user wishes to find
+    sanitize our range values so that they are guaranteed to be safe, find the indices
+    of those values inside of the paginated list, and return
 
     :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
     list of API objects
 
-    :param num_to_find int: the item number that we wish to return the index of
+    :param range_list list[int]: list of range beginning and end values that we wish to
+    find in the given paginated list
 
-    :rtype int: index of item with desired number
+    :rtype int: list of indices to the paginated list of items that we wish to find
     """
 
     def __bin_search(paged_list_page, val) -> int:
@@ -50,7 +52,7 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
         # missing, we want to be able to return the index of the nearest item before the
         # item we are looking for. Therefore, we stop when low is one less than high.
         # This allows us to take the lower value when a value does not exist in the
-        # list, yielding the value right before it.
+        # list.
         while low < high - 1:
             mid = (low + high) // 2
 
@@ -67,20 +69,64 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
 
         return low
 
+    def __get_last_item_num(paged_list) -> int:
+        """
+        Finds the number, e.g. issue number, of the last item in a given
+        paginated list
+
+        Simply slicing is INCREDIBLY slow, e.g.
+            last_index = paged_list.totalCount - 1
+            last_item_num = paged_list[last_index].number
+
+        :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
+        list of API objects
+
+        :rtype int: the number of the last item in the paginated list
+        """
+        # get the total amount of items in the list
+        last_index = paged_list.totalCount - 1
+
+        # divide that value by the quantity of items per page to find the last page
+        last_page = last_index // PAGE_LEN
+
+        # get the last item from the last page
+        last_item = paged_list.get_page(last_page)[-1]
+
+        # return its number
+        return last_item.number
+
     page_index = 0
+    out_list = []
 
-    while paged_list.get_page(page_index)[-1].number < num_to_find:
-        page_index += 1
+    # get the highest item num in the paginated list of items, e.g. PR #8339 for
+    # JabRef
+    highest_num = __get_last_item_num(paged_list)
 
-    # use iterative binary search to find item in page of linked list
-    item_index = __bin_search(paged_list.get_page(page_index), num_to_find)
+    # get sanitized range. This will correct any vals given in the range cfg so that
+    # they are within the values that are in the paged list
+    sani_range_tuple = (min(val, highest_num) for val in (range_list[0], range_list[1]))
 
-    # the index of the item we need is the amount of items per page that was skipped
-    # added to the index of the item in the page that it is in
-    return (page_index * PAGE_LEN) + item_index
+    # for the two boundaries in the sanitized range
+    for val in sani_range_tuple:
+
+        # while the last item on the page is less than the val we are looking for, go to
+        # the next page. When this fails, we know that the value we are looking for is
+        # on the page we are on. This will yield the correct page to search in the
+        # binary search in the next step
+        while paged_list.get_page(page_index)[-1].number < val:
+            page_index += 1
+
+        # use iterative binary search to find item in correct page of linked list
+        item_index = __bin_search(paged_list.get_page(page_index), val)
+
+        # the index of the item we need is the amount of items per page that was skipped
+        # added to the index of the item in the page that it is in
+        out_list.append((page_index * PAGE_LEN) + item_index)
+
+    return out_list
 
 
-def _clean_str(str_to_clean):
+def _clean_str(str_to_clean) -> str:
     """
     If a string is empty or None, returns NaN. Otherwise, strip the string of any
     carriage returns, newlines, and leading or trailing whitespace.
@@ -96,7 +142,7 @@ def _clean_str(str_to_clean):
     return output_str.strip()
 
 
-def _get_body(api_obj):
+def _get_body(api_obj) -> str:
     """
     return issue or PR text body
 
@@ -105,7 +151,7 @@ def _get_body(api_obj):
     return _clean_str(api_obj.body)
 
 
-def _get_closed_time(api_obj):
+def _get_closed_time(api_obj) -> str:
     """
     if the API object has been closed, i.e. closed PR or issue, return the formatted
     datetime that it was closed at
@@ -119,7 +165,7 @@ def _get_closed_time(api_obj):
     return "NaN"
 
 
-def _get_issue_comments(issue_obj):
+def _get_issue_comments(issue_obj) -> str:
     """
     if a given issue has comments, collect them all into one string separated by a
     special delimeter, format the str, and return it
@@ -142,7 +188,7 @@ def _get_issue_comments(issue_obj):
     return "NaN"
 
 
-def _get_num(api_obj):
+def _get_num(api_obj) -> str:
     """
     Casts PR/Issue num received from GitHub API to a str and returns it
 
@@ -164,35 +210,35 @@ def _get_num(api_obj):
     return str(api_obj.number)
 
 
-def _get_pr_merged(pr_obj):
+def _get_pr_merged(pr_obj) -> bool:
     return pr_obj.merged
 
 
-def _get_title(api_obj):
+def _get_title(api_obj) -> str:
     return api_obj.title
 
 
-def _get_username(api_obj):
+def _get_username(api_obj) -> str:
     return _clean_str(api_obj.user.name)
 
 
-def _get_userlogin(api_obj):
+def _get_userlogin(api_obj) -> str:
     return _clean_str(api_obj.user.login)
 
 
-def _get_commit_auth_date(api_obj):
+def _get_commit_auth_date(api_obj) -> str:
     return api_obj.commit.author.date.strftime(TIME_FMT)
 
 
-def _get_commit_auth_name(api_obj):
+def _get_commit_auth_name(api_obj) -> str:
     return api_obj.commit.author.name
 
 
-def _get_commit_committer(api_obj):
+def _get_commit_committer(api_obj) -> str:
     return api_obj.commit.committer.name
 
 
-def _get_commit_files(api_obj):
+def _get_commit_files(api_obj) -> dict[str, int | str | list]:
     """
     For the list of files modified by a commit on a PR, return a list of qualities
 
@@ -235,57 +281,12 @@ def _get_commit_files(api_obj):
     }
 
 
-def _get_commit_msg(api_obj):
+def _get_commit_msg(api_obj) -> str:
     return _clean_str(api_obj.commit.message)
 
 
-def _get_commit_sha(api_obj):
+def _get_commit_sha(api_obj) -> str:
     return api_obj.sha
-
-
-def _sanitize_range(paged_list, range_list):
-    """
-    Compares the given values in the "range" cfg field and lowers them if they are
-    larger than the largest item number present at the end of the paged list param
-
-    :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
-    list of API objects
-
-    :param val_to_check int: value in range cfg to check against paginated list
-
-    :rtype int: sanitized value; lower than the maximimum item number in the
-    paginated list
-    """
-
-    def __get_last_item_num(paged_list) -> int:
-        """
-        Finds the number, e.g. issue number, of the last item in a given
-        paginated list
-
-        Simply slicing is INCREDIBLY slow, e.g.
-            last_index = paged_list.totalCount - 1
-            last_item_num = paged_list[last_index].number
-
-        :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
-        list of API objects
-
-        :rtype int: the number of the last item in the paginated list
-        """
-        # get the total amount of items in the list
-        last_index = paged_list.totalCount - 1
-
-        # divide that value by the quantity of items per page to find the last page
-        last_page = last_index // PAGE_LEN
-
-        # get the last item from the last page
-        last_item = paged_list.get_page(last_page)[-1]
-
-        # return its number
-        return last_item.number
-
-    highest_num = __get_last_item_num(paged_list)
-
-    return (min(val, highest_num) for val in (range_list[0], range_list[1]))
 
 
 class Extractor:
@@ -402,7 +403,7 @@ class Extractor:
         self.pr_paged_list = self.__get_paged_list("pr")
         self.issues_paged_list = self.__get_paged_list("issues")
 
-    def get_issues_data(self):
+    def get_issues_data(self) -> None:
         """
         Retrieves issue data from the GitHub API; uses the "range" configuration value
         to determine what indices of the issue paged list to look at and the
@@ -415,14 +416,14 @@ class Extractor:
         """
 
         data_dict = {}
+        val_range = self.cfg.get_cfg_val("range")
 
-        # sanitize and return range
-        start_val, end_val = _sanitize_range(
-            self.issues_paged_list, self.cfg.get_cfg_val("range")
-        )
+        # get indices of sanitized range values
+        range_list = _get_api_item_indices(self.issues_paged_list, val_range)
 
-        start_val = _get_api_item_index(self.issues_paged_list, start_val)
-        end_val = _get_api_item_index(self.issues_paged_list, end_val)
+        # unpack vals
+        start_val = range_list[0]
+        end_val = range_list[1]
 
         while start_val < end_val:
             try:
@@ -480,7 +481,7 @@ class Extractor:
             except github.RateLimitExceededException:
                 self.gh_sesh.sleep()
 
-    def get_pr_data(self):
+    def get_pr_data(self) -> None:
         """
         Retrieves both PR and commit data from the GitHub API; uses the "range"
         configuration value to determine what indices of the PR paged list to
@@ -520,18 +521,19 @@ class Extractor:
 
         data_dict = {}
 
-        # sanitize and return range
-        start_val, end_val = _sanitize_range(
-            self.pr_paged_list, self.cfg.get_cfg_val("range")
-        )
-
-        # get the indices of the items that bound our range from the paginated list
-        start_val = _get_api_item_index(self.pr_paged_list, start_val)
-        end_val = _get_api_item_index(self.pr_paged_list, end_val)
-
         # get fields of values desired from API
-        pr_fields = self.cfg.get_cfg_val("pr_fields")
         commit_fields = self.cfg.get_cfg_val("commit_fields")
+        pr_fields = self.cfg.get_cfg_val("pr_fields")
+
+        # get range cfg value
+        val_range = self.cfg.get_cfg_val("range")
+
+        # get indices of sanitized range values
+        range_list = _get_api_item_indices(self.pr_paged_list, val_range)
+
+        # unpack vals
+        start_val = range_list[0]
+        end_val = range_list[1]
 
         while start_val < end_val:
             try:
@@ -615,7 +617,7 @@ class Writer:
         if not os.path.exists(self.output_file):
             os.mknod(self.output_file)
 
-    def concat_json(self, out_dict):
+    def concat_json(self, out_dict) -> None:
         """
         gets the desired output path, opens and reads any JSON data that may already be
         there, and recursively merges in param data from the most recent round of API
@@ -629,7 +631,7 @@ class Writer:
         :rtype None: writes output to file, nothing returned
         """
 
-        def __merge_dicts(add_dict, base_dict):
+        def __merge_dicts(add_dict, base_dict) -> None:
             """
             loops through keys in dictionary of data from round of API calls to merge
             their data into existing JSON data

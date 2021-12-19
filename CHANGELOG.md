@@ -64,3 +64,10 @@
 - avoid anti-patterns by moving private API getters that are used in command dispatch dicts which do not reference the
     Extractor (self) out of the Extractor class
     - loosen their scopes from class private to module private
+
+<br>
+2021-12-19
+
+- refactor `_sanitize_range` and incorporate into `_get_api_item_index`
+- remove redundant while condition in `__bin_search`
+- add type hints to most items in `Extractor` class as well as some in `Cfg` and `GithubSessions`
