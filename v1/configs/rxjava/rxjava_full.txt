@@ -1,0 +1,17 @@
+- RxJava full
+
+repo                 = ReactiveX/RxJava 
+auth_file            = auths/mcauley_auth.txt
+rows                 = all
+issue_state          = closed
+pr_state             = closed
+diagnostics          = True
+log_file             = log_files/rxjava/rxjava_full_log.txt 
+
+issue_json_filename  = outputs/rxjava_full/json/rxjava_full_issue_list.json
+pr_json_filename     = outputs/rxjava_full/json/rxjava_full_pr_list.json 
+commit_json_filename = outputs/rxjava_full/json/rxjava_full_commit_list.json 
+master_json_filename = outputs/rxjava_full/json/rxjava_full_commit_list.json 
+
+pr_csv_filename      = outputs/rxjava_full/rxjava_pr_output.csv  
+commit_csv_filename  = outputs/rxjava_full/rxjava_commit_output.csv  
