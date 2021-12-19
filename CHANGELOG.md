@@ -63,4 +63,4 @@
 - refactor user-facing pr and issue getter methods for Pylint compliance, brevity, and cleanliness
 - avoid anti-patterns by moving private API getters that are used in command dispatch dicts which do not reference the
     Extractor (self) out of the Extractor class
-    - tighten their scopes to module private
+    - loosen their scopes from class private to module private

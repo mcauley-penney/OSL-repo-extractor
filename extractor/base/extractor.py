@@ -9,7 +9,7 @@ import os
 import github
 from base import conf, sessions
 
-
+PAGE_LEN = 35
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
@@ -27,7 +27,7 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
 
     def __bin_search(paged_list_page, val) -> int:
         """
-        iterative binary search modified to return either the exact index of the item
+        Iterative binary search modified to return either the exact index of the item
         with the number the user desires or the index of the item beneath that value in
         the case that the value does not exist in the list. An example might be that a
         paginated list of issues does not have #'s 9, 10, or 11, but the user wants to
@@ -44,9 +44,14 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
         """
 
         low = 0
-        high = 30
+        high = PAGE_LEN
 
-        while low < high and low < high - 1:
+        # because this binary search is looking through lists that may have items
+        # missing, we want to be able to return the index of the nearest item before the
+        # item we are looking for. Therefore, we stop when low is one less than high.
+        # This allows us to take the lower value when a value does not exist in the
+        # list, yielding the value right before it.
+        while low < high - 1:
             mid = (low + high) // 2
 
             cur_val = paged_list_page[mid].number
@@ -60,10 +65,8 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
             elif val > cur_val:
                 low = mid + 1
 
-        print(paged_list_page[low].number)
         return low
 
-    item_index = 0
     page_index = 0
 
     while paged_list.get_page(page_index)[-1].number < num_to_find:
@@ -72,7 +75,9 @@ def _get_api_item_index(paged_list, num_to_find) -> int:
     # use iterative binary search to find item in page of linked list
     item_index = __bin_search(paged_list.get_page(page_index), num_to_find)
 
-    return (page_index * 30) + item_index
+    # the index of the item we need is the amount of items per page that was skipped
+    # added to the index of the item in the page that it is in
+    return (page_index * PAGE_LEN) + item_index
 
 
 def _clean_str(str_to_clean):
@@ -270,7 +275,7 @@ def _sanitize_range(paged_list, range_list):
         last_index = paged_list.totalCount - 1
 
         # divide that value by the quantity of items per page to find the last page
-        last_page = last_index // 30
+        last_page = last_index // PAGE_LEN
 
         # get the last item from the last page
         last_item = paged_list.get_page(last_page)[-1]
@@ -384,13 +389,15 @@ class Extractor:
         # initialize configuration object
         self.cfg = conf.Cfg(cfg_path, self.CFG_SCHEMA)
 
+        auth_path = self.cfg.get_cfg_val("auth_file")
+        out_dir = self.cfg.get_cfg_val("output_dir")
+        repo = self.cfg.get_cfg_val("repo")
+
         # initialize authenticated GitHub session
-        self.gh_sesh = sessions.GithubSession(self.cfg.get_cfg_val("auth_file"))
+        self.gh_sesh = sessions.GithubSession(auth_path, PAGE_LEN)
 
         # initialize writer object
-        self.writer = Writer(
-            self.cfg.get_cfg_val("output_dir"), self.cfg.get_cfg_val("repo")
-        )
+        self.writer = Writer(out_dir, repo)
 
         self.pr_paged_list = self.__get_paged_list("pr")
         self.issues_paged_list = self.__get_paged_list("issues")
@@ -518,6 +525,7 @@ class Extractor:
             self.pr_paged_list, self.cfg.get_cfg_val("range")
         )
 
+        # get the indices of the items that bound our range from the paginated list
         start_val = _get_api_item_index(self.pr_paged_list, start_val)
         end_val = _get_api_item_index(self.pr_paged_list, end_val)
 

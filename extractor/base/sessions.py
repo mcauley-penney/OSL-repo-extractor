@@ -15,7 +15,7 @@ class GithubSession:
     API and exposes functionality for that connection up to the Extractor class
     """
 
-    def __init__(self, auth_path):
+    def __init__(self, auth_path, page_len):
         """
         initialize GitHub session object
 
@@ -24,9 +24,9 @@ class GithubSession:
 
         self.__logger = logging.getLogger(__name__)
 
-        self.session = self.__verify_auth(auth_path)
+        self.session = self.__verify_auth(auth_path, page_len)
 
-    def __verify_auth(self, auth_path) -> github.Github:
+    def __verify_auth(self, auth_path, page_len) -> github.Github:
         """
         retrieves PAT from auth file and checks whether it is valid
         :raises github.BadCredentialsException: if given item is not a valid Personal
@@ -74,7 +74,7 @@ class GithubSession:
         token = __read_auth_file(auth_path)
 
         # establish a session with token
-        session = github.Github(token, timeout=100, retry=100)
+        session = github.Github(token, per_page=page_len, retry=100, timeout=100)
 
         try:
             # if name can be gathered from token, properly authenticated
