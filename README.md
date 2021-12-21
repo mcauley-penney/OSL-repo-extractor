@@ -5,7 +5,7 @@ See the [changelog](./CHANGELOG.md) for updates.
 
 ## Usage
 
-#### arguments
+### arguments
 
 ```shell
 ~/files/work/repo-extractor/extractor/v2
@@ -20,7 +20,8 @@ extractor will report to you what keys are missing, if any, and whether the valu
 correct.
 
 If no logging path is provided, the extractor will use `./extractor_logs`. In any case, the log file name will be created as
-`extractor_log.txt`.
+`extractor_log.txt`, e.g. if you provide `/home/<user>/.cache/extractor_log/`, any parent dirs will be made and the log will be
+created at `/home/<user>/.cache/extractor_log/extractor_log.txt`.
 
 Note: if you are having an issue running the extractor, such as Python indicating that the `v2` package does not exists,
       you may need to update your `PYTHONPATH` environment variable. In the command below, you would substitute the path in
@@ -33,7 +34,7 @@ $ echo 'export PYTHONPATH="<path_to_extractor>"' >> <shell_rcfile_location>
 ```
 
 
-#### configuration
+### configuration
 
 ```shell
 ~/files/work/repo-extractor/data/input/configs
@@ -55,7 +56,6 @@ $ echo 'export PYTHONPATH="<path_to_extractor>"' >> <shell_rcfile_location>
         "issue_username"
     ],
     "pr_fields": [
-        "pr_merged",
         "pr_body",
         "pr_title"
     ]
@@ -71,7 +71,7 @@ Some key points about the configuration:
   a name to an output file nor do you need to create the output directory by hand; it will be created for you if it does not
   exist.  After an execution, the output directory structure will look like:
 
-        <output_dir>/<repo>/<repo_output.JSON>
+        <output_dir>/<repo>/<repo>_output.JSON
 
                         e.g.
 
@@ -89,8 +89,13 @@ Some key points about the configuration:
       will always be collected, and the commands to access them are private.
 
 
+### output
+
+See the example output at `data/output/jabref/jabref_output.JSON`
+
+
 ## Contributing
-Using default settings, please:
+Using default settings for each, please:
 - format all contributions with [black](https://pypi.org/project/black/)
     - `pip install black`
 - lint all contributions with [pylint](https://pypi.org/project/pylint/)
@@ -98,7 +103,7 @@ Using default settings, please:
 
 
 ## Requirements
-- Written in Python 3.9.9 and 3.10.1
+- Written in `Python 3.9.9` and `3.10.1`
 - Packages:
     - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
         - `pip install pygithub`

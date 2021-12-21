@@ -4,13 +4,18 @@
     "output_dir": "/home/m/files/work/repo-extractor/data/output",
     "range": [
         1,
-        2
+        10
     ],
-    "commit_fields": [],
+    "commit_fields": [
+        "commit_author_name",
+        "commit_date",
+        "commit_message"
+    ],
     "issues_fields": [
         "issue_username"
     ],
     "pr_fields": [
-        "pr_body"
+        "pr_body",
+        "pr_title"
     ]
 }

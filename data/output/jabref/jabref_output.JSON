@@ -1,6 +1,74 @@
 {
     "1": {
         "__pr_merged": true,
-        "pr_body": "This will add a new \"File Sorting\" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date."
+        "pr_body": "This will add a new \"File Sorting\" Tab to the preferences that allows to exactly specify the sort and export order of entries, rather than the rather limited set of choices that were available to date.",
+        "pr_title": "New Sorting/Export preferences",
+        "commit_author_name": "Olaf Lenz",
+        "commit_date": "03/12/14, 09:16:45 AM",
+        "commit_message": "Merge branch 'sorting'"
+    },
+    "2": {
+        "__pr_merged": true,
+        "pr_body": "This adds basic gradle integration. The project files for Intellij and Eclipse can be generated and JabRef can be started from within the IDEs as well as the tests can be run with errors.",
+        "pr_title": "Basic gradle integration",
+        "commit_author_name": "Simon Harrer",
+        "commit_date": "03/12/14, 05:20:08 PM",
+        "commit_message": "Gradle build works basically. Reuses existing folder structure."
+    },
+    "3": {
+        "__pr_merged": true,
+        "pr_body": "Nan",
+        "pr_title": "Some example new Dutch translations via the GitHub web page.",
+        "commit_author_name": "Egon Willighagen",
+        "commit_date": "03/15/14, 09:33:10 AM",
+        "commit_message": "Some example new Dutch translations via the GitHub web page."
+    },
+    "4": {
+        "__pr_merged": true,
+        "pr_body": "Three new strings translated.",
+        "pr_title": "Spanish translation update",
+        "commit_author_name": "jtornero",
+        "commit_date": "03/17/14, 09:28:26 PM",
+        "commit_message": "Spanish translation update"
+    },
+    "5": {
+        "__pr_merged": true,
+        "pr_body": "Indonesian translation added",
+        "pr_title": "Update JabRef_in.properties",
+        "commit_author_name": "was123",
+        "commit_date": "03/18/14, 12:01:58 AM",
+        "commit_message": "Update JabRef_in.propertiesIndonesian translation added"
+    },
+    "6": {
+        "__pr_merged": true,
+        "pr_body": "Nan",
+        "pr_title": "Fixed splash-dev.svg",
+        "commit_author_name": "Olaf Lenz",
+        "commit_date": "03/19/14, 07:41:29 PM",
+        "commit_message": "Fixed splash-dev.svg"
+    },
+    "7": {
+        "__pr_merged": true,
+        "pr_body": "```The user can now specify an arbitrary number of file-link columns in te \"Entry table columns\" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.For each file-link column whenever there are multiple files, the letter \"m\" is displayed at the bottom right corner of the icon.``` Committer: noravanq On branch master Changes to be committed:   (use \"git reset HEAD <file>...\" to unstage)```modified:   src/main/java/net/sf/jabref/GUIGlobals.javamodified:   src/main/java/net/sf/jabref/JabRefPreferences.javamodified:   src/main/java/net/sf/jabref/TableColumnsTab.javamodified:   src/main/java/net/sf/jabref/gui/MainTableFormat.javamodified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.javamodified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java```",
+        "pr_title": " I have implemented 2 features requested in Ticket #841.",
+        "commit_author_name": "noravanq",
+        "commit_date": "03/23/14, 04:48:49 AM",
+        "commit_message": "I have implemented 2 features requested in Ticket #841.    The user can now specify an arbitrary number of file-link columns in te \"Entry table columns\" preferences tab, to be added to the main table. The user can any file types specified in the list of External File Types. The extra columns work exactly like the original file-link column.    For each file-link column whenever there are multiple files, the letter \"m\" is displayed at the bottom right corner of the icon. Committer: noravanq On branch master Changes to be committed:   (use \"git reset HEAD <file>...\" to unstage)\tmodified:   src/main/java/net/sf/jabref/GUIGlobals.java\tmodified:   src/main/java/net/sf/jabref/JabRefPreferences.java\tmodified:   src/main/java/net/sf/jabref/TableColumnsTab.java\tmodified:   src/main/java/net/sf/jabref/gui/MainTableFormat.java\tmodified:   src/main/java/net/sf/jabref/gui/MainTableSelectionListener.java\tmodified:   src/main/java/net/sf/jabref/gui/PreventDraggingJTableHeader.java"
+    },
+    "8": {
+        "__pr_merged": true,
+        "pr_body": "This pull-request pertains to the addition of metadata to PDF files associated with entries, as triggered by the menu entry \"Write XMP metadata to PDFs\" in the \"Tools\" menu. XMP is an extremely interesting feature that allows tagging PDF files (amongst others) with automatically retrievable metadata in much the same way mp3-tags allow adding title/author/... information to mp3 music files. Actually JabRef exports the metadata not only to two XMP namespaces (Dublin Core and a custom JabRef namespace), but also to the PDF DocumentInformation Object.Practically from the beginning of the XMP-writing capabilities of JabRef, Christopher Oezbek had added _privacy filtering_ for the XMP-tagging of PDF-files with data from the bibtex-record, meaning that the user could define a list of fields (in Preferences->XMP metadata) which should _not_ be exported to the PDF file.  Unfortunately, the filtering was incomplete: jabref exports the metadata in three different forms, only one of which was originally filtered. In 2013 filtering was extended to both XMP namespaces, but JabRef still exported _all_ fields into the PDF DocumentInfo object. The two present commits correct this problem. The first (b45316f) prevents private fields from being exported to the PDF DocumentInfo. The second one more agressively erases these fields even if they already exist in the PDF document. The deletion of existing fields might be debateable. It seems the right thing to do for fields clearly generated by JabRef (viz. those prefixed by \"jabref/\"), but there are four fields which might be of other origin (Author,Title,Subject and Keywords). Making a systematic exception for these four fields, i.e. not erasing them even if they are privacy filtered, is a bad idea and violates the principle of least surprise. This is why the second commit makes no exception. Deactivating the erasure for the four generic fields could however easily be added as an option in the XMP export preferences if it is judged important. The current behaviour has the advantage of reliably correcting PDF files previously tagged with a buggy privacy filtering.If these commits are pulled into the master branch and confirmed to work, the bug #869 on the sourceforge tracker: https://sourceforge.net/p/jabref/bugs/869/can be closed.",
+        "pr_title": "PDF-file metadata: Privacy Filtering all metadata",
+        "commit_author_name": "Adrian Daerr",
+        "commit_date": "04/22/14, 06:19:15 PM",
+        "commit_message": "Erase fields listed in XMP Privacy Settings from PDF DocumentInformation when XMP-tagging"
+    },
+    "9": {
+        "__pr_merged": true,
+        "pr_body": "Adds a FullTextFinder implementation to transform the ACS DOI redirect URLs to their PDF download equivalents.",
+        "pr_title": "Support FindFullText with ACS DOIs",
+        "commit_author_name": "Peter Ansell",
+        "commit_date": "05/07/14, 01:02:09 AM",
+        "commit_message": "add CSIRO copyright 2014"
     }
 }
