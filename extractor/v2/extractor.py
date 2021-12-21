@@ -7,9 +7,9 @@ from json.decoder import JSONDecodeError
 import logging
 import os
 import github
-from base import conf, sessions
+from v2 import conf, sessions
 
-PAGE_LEN = 35
+PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
@@ -326,7 +326,7 @@ class Extractor:
         "pr_body": _get_body,
         "pr_closed": _get_closed_time,
         "__pr_num": _get_num,
-        "pr_merged": _get_pr_merged,
+        "__pr_merged": _get_pr_merged,
         "pr_title": _get_title,
         "pr_userlogin": _get_userlogin,
         "pr_username": _get_username,
@@ -548,7 +548,7 @@ class Extractor:
 
                 # create dict to build upon. This variable will later become the val of
                 # a dict entry, making it a subdictionary
-                cur_entry = {"pr_merged": is_merged}
+                cur_entry = {"__pr_merged": is_merged}
 
                 # if the current PR number is greater than or equal to the first
                 # number provided in the "range" cfg val and the PR is merged

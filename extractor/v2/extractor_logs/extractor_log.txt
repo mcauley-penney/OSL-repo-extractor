@@ -1,0 +1,36 @@
+[root]: 2021-12-21 09:44:21 Tue
+INFO:
+Instantiating extractor...
+
+
+[v2.extractor]: 2021-12-21 09:44:21 Tue
+INFO:
+Beginning extractor init, instantiating cfg...
+
+
+[v2.conf]: 2021-12-21 09:44:21 Tue
+INFO:
+initializing cfg...
+
+
+[v2.sessions]: 2021-12-21 09:44:21 Tue
+INFO:
+Auth file found...
+
+
+[root]: 2021-12-21 09:44:22 Tue
+INFO:
+Complete!
+
+
+[root]: 2021-12-21 09:44:22 Tue
+INFO:
+Getting PR and commit data...
+
+
+[root]: 2021-12-21 09:44:30 Tue
+INFO:
+
+Complete!
+
+

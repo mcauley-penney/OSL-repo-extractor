@@ -4,9 +4,10 @@ Extractor class from the extractor module
 """
 
 import argparse
-import sys
 import logging
-from base import extractor
+import os
+import sys
+from v2 import extractor
 
 
 def main():
@@ -87,12 +88,20 @@ def get_cli_args() -> tuple[str, str]:
     arg_parser.add_argument(
         "logging_destination",
         nargs="?",
-        default="../../data/output/extractor_log.txt",
-        help="Path to log messages to",
+        default="./extractor_logs",
+        help="Path to directory to create log files in",
     )
 
     cfg_file = arg_parser.parse_args().extractor_cfg_file
     log_dest = arg_parser.parse_args().logging_destination
+
+    # create logging location if it does not exist
+    os.makedirs(log_dest, exist_ok=True)
+
+    log_dest += "/extractor_log.txt"
+
+    if not os.path.exists(log_dest):
+        os.mknod(log_dest)
 
     # retrieve positional arguments
     return (cfg_file, log_dest)

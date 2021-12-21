@@ -71,3 +71,4 @@
 - refactor `_sanitize_range` and incorporate into `_get_api_item_indices`
 - remove redundant while condition in `__bin_search`
 - add type hints to most methods in `Extractor` class as well as some in `Cfg` and `GithubSessions`
+- join v2 extractor repo with v1 extractor repo
