@@ -22,6 +22,16 @@ correct.
 If no logging path is provided, the extractor will use `./extractor_logs`. In any case, the log file name will be created as
 `extractor_log.txt`.
 
+Note: if you are having an issue running the extractor, such as Python indicating that the `v2` package does not exists,
+      you may need to update your `PYTHONPATH` environment variable. In the command below, you would substitute the path in
+      quotes with the path to the `extractor` subdir inside of the project, i.e.
+      `/home/<user>/<rest_of_path>/GitHub-Repo-Extractor/extractor` and the redirect location with the path to your shell rc
+      file, e.g. `~/.bashrc` or `~/.zshrc`:
+
+```shell
+$ echo 'export PYTHONPATH="<path_to_extractor>"' >> <shell_rcfile_location>
+```
+
 
 #### configuration
 
@@ -77,6 +87,7 @@ Some key points about the configuration:
   the new data in for each key in the JSON output.
     - You do not need to ask for issue numbers, PR numbers, or whether the PR is merged. Those pieces of data are mandatory,
       will always be collected, and the commands to access them are private.
+
 
 ## Contributing
 Using default settings, please:

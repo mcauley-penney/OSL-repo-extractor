@@ -72,3 +72,16 @@
 - remove redundant while condition in `__bin_search`
 - add type hints to most methods in `Extractor` class as well as some in `Cfg` and `GithubSessions`
 - join v2 extractor repo with v1 extractor repo
+
+
+<br>
+2021-12-19
+
+- update `extractor` subdirectory structure
+    - update new extractor's package name
+- large README update
+    - add Usage and Contributing sections
+    - update Requirements section
+- make getter for PR merged status private given that is required and will always be called
+- update logging default path
+- teach logging to make parent dirs to path and create logging file there
