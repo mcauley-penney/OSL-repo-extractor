@@ -4,75 +4,29 @@ Extractor class from the extractor module
 """
 
 import argparse
-import logging
-import os
-import sys
 from v2 import extractor
 
 
 def main():
     """driver function for GitHub Extractor"""
 
-    (cfg_path, log_dest) = get_cli_args()
-
-    # create root logger
-    root_logger = init_root_logger(log_dest)
+    cfg_path = get_cli_args()
 
     # init extractor object
-    root_logger.info("Instantiating extractor...\n")
     gh_ext = extractor.Extractor(cfg_path)
-    root_logger.info("Complete!\n")
 
-    # root_logger.info("Getting issue data...\n")
+    # print("Getting issue data...\n")
     # gh_ext.get_issues_data()
-    # root_logger.info("Complete!\n")
+    # print("Complete!\n")
 
-    root_logger.info("Getting PR and commit data...\n")
     gh_ext.get_pr_data()
-    root_logger.info("\nComplete!\n")
 
 
-def init_root_logger(log_dest):
-    """
-    initialize the root logger for this execution. It's configuration will
-    be inherited by child loggers
-
-    see https://stackoverflow.com/a/50755200
-
-    :param log_dest str: file path to write logging to
-    """
-
-    log_msg_format = "[%(name)s]: %(asctime)s\n%(levelname)s:\n%(message)s\n"
-    log_time_format = "%Y-%m-%d %H:%M:%S %a"
-
-    # providing no params to getLogger() instantiates this
-    # logger as root. If we provided __name__, the name would
-    # be this module. We want root for now
-    logger = logging.getLogger()
-
-    # set threshhold log level
-    logger.setLevel(logging.INFO)
-
-    # establish logging to file functionality
-    file_handler = logging.FileHandler(log_dest)
-
-    # create formatting obj and set format
-    formatter = logging.Formatter(log_msg_format, log_time_format)
-    file_handler.setFormatter(formatter)
-
-    # set handlers for writing to file and to stdout
-    logger.addHandler(file_handler)
-    logger.addHandler(logging.StreamHandler(sys.stdout))
-
-    return logger
-
-
-def get_cli_args() -> tuple[str, str]:
+def get_cli_args() -> str:
     """
     get initializing arguments from CLI
 
-    :rtype tuple[str, str]: file with arguments to program, destination
-    to log execution run information to
+    :rtype str: path to file with arguments to program
     """
 
     # establish positional argument capability
@@ -85,26 +39,8 @@ def get_cli_args() -> tuple[str, str]:
         "extractor_cfg_file",
         help="Path to file with settings for the extractor",
     )
-    arg_parser.add_argument(
-        "logging_destination",
-        nargs="?",
-        default="./extractor_logs",
-        help="Path to directory to create log files in",
-    )
 
-    cfg_file = arg_parser.parse_args().extractor_cfg_file
-    log_dest = arg_parser.parse_args().logging_destination
-
-    # create logging location if it does not exist
-    os.makedirs(log_dest, exist_ok=True)
-
-    log_dest += "/extractor_log.txt"
-
-    if not os.path.exists(log_dest):
-        os.mknod(log_dest)
-
-    # retrieve positional arguments
-    return (cfg_file, log_dest)
+    return arg_parser.parse_args().extractor_cfg_file
 
 
 if __name__ == "__main__":

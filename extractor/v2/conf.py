@@ -1,7 +1,6 @@
 """ The conf package provides classes related to configurations for the extractor"""
 
 import json
-import logging
 import sys
 import cerberus
 
@@ -20,8 +19,7 @@ class Cfg:
         :rtype None: initializes Cfg obj
         """
 
-        self.__logger = logging.getLogger(__name__)
-        self.__logger.info("initializing cfg...\n")
+        print("initializing cfg...\n")
 
         # get dictionary of configuration values from file w/ JSON
         self.cfg_dict = self.__extract_cfg(cfg_path)
@@ -32,7 +30,7 @@ class Cfg:
         # if dictionary from JSON does not follow rules in schema
         if not validator.validate(document=self.cfg_dict):
             # log an exception and print errors
-            self.__logger.exception(f"Validation error!\n {validator.errors}")
+            print(f"Validation error!\n {validator.errors}")
             sys.exit(1)
 
     def __extract_cfg(self, cfg_path: str) -> dict:
@@ -49,7 +47,7 @@ class Cfg:
                 confinfo_json = conffile_obj.read()
 
         except FileNotFoundError:
-            self.__logger.exception("\nConfiguration file not found!")
+            print("\nConfiguration file not found!")
             sys.exit(1)
 
         else:

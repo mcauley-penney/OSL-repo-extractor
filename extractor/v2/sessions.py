@@ -3,7 +3,6 @@ The Sessions module contains classes that expose functionality to the Extractor 
 allow it to interact with external sources that require connections
 """
 
-import logging
 import sys
 import time
 import github
@@ -21,9 +20,6 @@ class GithubSession:
 
         :param auth_path str: path to file containing personal access token
         """
-
-        self.__logger = logging.getLogger(__name__)
-
         self.session = self.__verify_auth(auth_path, page_len)
 
     def __verify_auth(self, auth_path, page_len) -> github.Github:
@@ -57,11 +53,11 @@ class GithubSession:
                     "Authorization file not found! "
                     + "Please provide a valid file. Exiting...\n"
                 )
-                self.__logger.exception(no_auth_msg)
+                print(no_auth_msg)
                 sys.exit(1)
 
             else:
-                self.__logger.info("Auth file found...\n")
+                print("Auth file found...\n")
 
                 # read contents out of auth file object
                 auth_text = authfile_obj.readline()
@@ -84,7 +80,7 @@ class GithubSession:
         except github.BadCredentialsException:
             # log that token is invalid
             inval_token_msg = "Invalid personal access token found!\n"
-            self.__logger.exception(inval_token_msg)
+            print(inval_token_msg)
             sys.exit(1)
 
         except github.RateLimitExceededException:
@@ -155,4 +151,4 @@ class GithubSession:
 
         # this allows us to choose to print a message after sleeping
         if msg_format is not None:
-            self.__logger.info(msg_format)
+            print(msg_format)

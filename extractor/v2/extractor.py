@@ -4,7 +4,6 @@ The extractor module provides and exposes functionality to mine GitHub repositor
 
 import json
 from json.decoder import JSONDecodeError
-import logging
 import os
 import github
 from v2 import conf, sessions
@@ -387,9 +386,7 @@ class Extractor:
         used by the user to extract data, such as in a driver program
         """
 
-        self.__logger = logging.getLogger(__name__)
-
-        self.__logger.info("Beginning extractor init, instantiating cfg...\n")
+        print("Beginning extractor init, instantiating cfg...\n")
 
         # initialize configuration object
         self.cfg = conf.Cfg(cfg_path, self.CFG_SCHEMA)
