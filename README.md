@@ -1,7 +1,6 @@
 # OSL Repo Extractor
 
-The initial stage of [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
-See the [changelog](./CHANGELOG.md) for updates.
+A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
 ## Usage
 
@@ -58,11 +57,8 @@ Some key points about the configuration:
 
 - The `output_dir` will be used to create the necessary outputs for you using the provided repo. You do not need to provide
   a name to an output file nor do you need to create the output directory by hand; it will be created for you if it does not
-  exist.  After an execution, the output directory structure will look like:
-
-                                <output_dir>/<repo>/<repo>_output.JSON
-                                                 e.g.
-                                <output_dir>/jabref/jabref_output.JSON
+  exist.  After an execution, the output directory structure will look like `<output_dir>/<repo>/<repo>_output.json`
+  e.g. `<output_dir>/jabref/jabref_output.json`
 
 - The `range` value discusses the actual item numbers you want to gather data from. If you want data from PR #270 up to
   PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y), gathering the first
