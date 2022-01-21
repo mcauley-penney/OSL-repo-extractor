@@ -31,6 +31,7 @@ def main():
           access to your account. See https://myaccount.google.com/lesssecureapps
     """
     # get configuration from JSON file as a dictionary
+    print("\nReading parser configuration...")
     cfg_metadict = get_cfg_dict()
 
     # cfg should have both "parser" and "extractor" inner dicts. We want "parser" for
@@ -38,18 +39,24 @@ def main():
     parser_cfg = cfg_metadict["parser"]
 
     # get mail object encapsulating open connection to mailbox
+    print("\nConnecting to user's inbox...")
     session = get_connection_obj(parser_cfg)
 
     # get a dictionary of email dates, subjects, and bodies
-    email_content_dict = get_cleaned_email_dict(session, parser_cfg["senders"])
+    sender = SENDER_DICT[parser_cfg["sender"]]
+    repo = parser_cfg["repo"]
+    print(f"\nSearching user's inbox for emails\n\tfrom {sender}\n\tabout {repo}...")
+    email_content_dict = get_cleaned_email_dict(session, parser_cfg["sender"])
 
     # from email dictionary, derive a list of issue numbers to mine with the extractor
     issue_list = get_issue_num_list(email_content_dict, parser_cfg)
+    print(f"\nIssues found in inbox to mine for: {issue_list}...")
 
     # get list of lists of sequential issue number groupings to make extraction simpler
     issue_grp_metalist = partition_issue_list(issue_list)
 
     # execute the extractor
+    print("\nCalling extractor...\n\n")
     exe_extractor(cfg_metadict, issue_grp_metalist)
 
 
@@ -137,16 +144,16 @@ def get_cfg_dict() -> dict:
         return json.loads(confinfo_json)
 
 
-def get_cleaned_email_dict(imap_session: imaplib.IMAP4_SSL, senders: str):
+def get_cleaned_email_dict(imap_session: imaplib.IMAP4_SSL, sender: str):
     """
     parent function that encapsulates the retrieval and cleaning of email data
 
     :param imap_session imaplib.IMAP4_SSL: active connection to imap server
-    :param senders str: sender to look for emails from, e.g. GitHub, in the chosen
+    :param sender str: sender to look for emails from, e.g. GitHub, in the chosen
     inbox
     """
     # use list of message positions to get email objects
-    email_obj_list = get_email_obj_list(imap_session, senders)
+    email_obj_list = get_email_obj_list(imap_session, sender)
 
     # get dictionary of email dates, subjects, and bodies from list of email objects
     email_content_dict = get_email_content_dict(email_obj_list)
@@ -263,12 +270,12 @@ def get_issue_num_list(email_dict: dict, cfg_dict: dict) -> list:
     """
 
     cfg_repo = cfg_dict["repo"]
-    cfg_senders = cfg_dict["senders"]
+    cfg_sender = cfg_dict["sender"]
     body_list = []
     issue_list = []
 
     # remove any emails which are not about new issues
-    if "github" in cfg_senders:
+    if "github" in cfg_sender:
         # create url which indicates new issue created; f-string and regex
         subject_issue_str = r"\(Issue \#\d+\)"
         issue_url = fr"https://github.com/{cfg_repo}/issues/\d+$"
@@ -314,7 +321,7 @@ def get_issue_num_list(email_dict: dict, cfg_dict: dict) -> list:
 
                     issue_list.append(*issue_num)
 
-    elif "jira" in cfg_senders:
+    elif "jira" in cfg_sender:
         pass
 
     else:

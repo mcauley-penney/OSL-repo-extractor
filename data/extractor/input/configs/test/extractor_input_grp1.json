@@ -1,6 +1,6 @@
 {
-    "auth_file": "/home/m/files/work/repo-extractor/data/input/auths/mp_auth.txt",
-    "output_dir": "/home/m/files/work/repo-extractor/data/output",
+    "auth_file": "/home/m/files/work/repo-extractor/data/extractor/input/auths/mp_auth.txt",
+    "output_dir": "/home/m/files/work/repo-extractor/data/extractor/output",
     "commit_fields": [
         "commit_author_name",
         "commit_date",
