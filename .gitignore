@@ -1,2 +1,3 @@
-data/input/auths/*
-data/output/extractor_log.txt
+data/extractor/input/auths/*
+data/extractor/output/*
+data/email-parser/input/*
