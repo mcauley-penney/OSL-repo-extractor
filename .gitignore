@@ -1,3 +1,3 @@
 data/extractor/input/auths/*
 data/extractor/output/*
-data/email-parser/input/*
+data/email-parser/input/repos
