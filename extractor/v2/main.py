@@ -37,7 +37,7 @@ def get_cli_args() -> str:
     # add repo input CLI arg
     arg_parser.add_argument(
         "extractor_cfg_file",
-        help="Path to file with settings for the extractor",
+        help="Path to configuration file for the extractor",
     )
 
     return arg_parser.parse_args().extractor_cfg_file

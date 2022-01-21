@@ -17,7 +17,7 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
     sanitize our range values so that they are guaranteed to be safe, find the indices
     of those values inside of the paginated list, and return
 
-    :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
+    :param paged_list; Github.PaginatedList of Github.Issues or Github.PullRequests:
     list of API objects
 
     :param range_list list[int]: list of range beginning and end values that we wish to
@@ -247,10 +247,11 @@ def _get_commit_files(api_obj) -> dict[str, int | str | list]:
 
     :param api_obj PaginatedList: paginated list of commits
 
-    NOTE: If a list of files is too large, it will be returned as a paginatied
-    list. See note about the list length constraints at
-    https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
-    now, this situation is not handled here.
+    NOTE:
+        If a list of files is too large, it will be returned as a paginatied
+        list. See note about the list length constraints at
+        https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
+        now, this situation is not handled here.
 
     :rtype dict[unknown]: dictionary of fields discussing file attributes of a
     commit
@@ -331,7 +332,7 @@ class Extractor:
         "pr_username": _get_username,
     }
 
-    # see cerberus documentation for schema rules
+    # See cerberus documentation for schema rules:
     # https://docs.python-cerberus.org/en/stable/index.html
     #
     # Above you can see a large amount of private getter methods that interact with
@@ -352,16 +353,12 @@ class Extractor:
     # the configuration will then know that it is allowed. This makes adding the ability
     # to get new information from the API expedient
     #
-    # As an aside, Placing the private getter methods above the dict definitions allow
+    # As an aside, placing the private getter methods above the dict definitions allow
     # them to be used in the dict as vals
     CFG_SCHEMA = {
         "repo": {"type": "string"},
         "auth_file": {"type": "string"},
-        "range": {
-            "min": [0, 0],
-            "schema": {"type": "integer"},
-            "type": "list",
-        },
+        "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
         "commit_fields": {
             "allowed": [*__COMMIT_CMD_DISPATCH],
             "schema": {"type": "string"},
@@ -612,7 +609,7 @@ class Writer:
         # create output directory only if it does not exist
         os.makedirs(repo_subdir, exist_ok=True)
 
-        self.output_file = f"{repo_subdir}/{repo_name}_output.JSON"
+        self.output_file = f"{repo_subdir}/{repo_name}_output.json"
 
         # for each file above, create it if it does not exist
         if not os.path.exists(self.output_file):

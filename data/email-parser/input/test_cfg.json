@@ -1,0 +1,27 @@
+{
+    "parser": {
+        "addr": "jacobmpenney@gmail.com",
+        "passwd": "formatted gmail",
+        "host": "gmail",
+        "senders": "github",
+        "repo": "mcauley-penney/test",
+        "output_dir": "/home/m/files/work/repo-extractor/data/extractor/input/configs",
+        "extractor_exe": "/home/m/files/work/repo-extractor/extractor/v2/main.py"
+    },
+    "extractor": {
+        "auth_file": "/home/m/files/work/repo-extractor/data/input/auths/mp_auth.txt",
+        "output_dir": "/home/m/files/work/repo-extractor/data/output",
+        "commit_fields": [
+            "commit_author_name",
+            "commit_date",
+            "commit_message"
+        ],
+        "issues_fields": [
+            "issue_username"
+        ],
+        "pr_fields": [
+            "pr_body",
+            "pr_title"
+        ]
+    }
+}

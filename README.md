@@ -64,9 +64,9 @@ Some key points about the configuration:
                                                  e.g.
                                 <output_dir>/jabref/jabref_output.JSON
 
-- <span id="range">The `range` value discusses the actual item numbers you want to gather data from. If you want data from
-  PR #270 up to PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y),
-  gathering the first item in the range but excluding the second value.</span>
+- The `range` value discusses the actual item numbers you want to gather data from. If you want data from PR #270 up to
+  PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y), gathering the first
+  item in the range but excluding the second value.
 
 - The `fields` keys discuss what pieces of data you want to gather from the objects in the given range. The extractor will
   merge gathered data. For example, if you collected the `pr_body` for objects 1-10 but wanted to gather the `issue_username`
@@ -87,13 +87,13 @@ extractor will write output to the output file provided in the configuration:
 This means that data will be collected even when the program does not completely finish.
 
 The output produced by the extractor is pretty-printed JSON. Because it is printed in a human-readable format, it is very
-easy to see what the extractor has collected and where the program left off in the case that you must stop it.
-See the example output at `data/output/jabref/jabref_output.JSON`.
+easy to see what the extractor has collected and where the program left off in the case that you must stop it. See the
+example output at `data/output/jabref/jabref_output.JSON`.
 
-The human-readable output paired with the [range functionality](#range) discussed above conveniently allows the user to
-start and stop at will. For example, you may be collecting data from a very large range but must stop for some reason.
-You can look at the output, see what PR or issue number the extractor last collected data for, and use that as the
-starting value in your range during your next execution.
+The human-readable output paired with the range functionality discussed above conveniently allows the user to start and stop
+at will. For example, you may be collecting data from a very large range but must stop for some reason. You can look at the
+output, see what PR or issue number the extractor last collected data for, and use that as the starting value in your range
+during your next execution.
 
 
 ### troubleshooting
