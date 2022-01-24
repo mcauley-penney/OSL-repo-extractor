@@ -358,6 +358,7 @@ class Extractor:
     CFG_SCHEMA = {
         "repo": {"type": "string"},
         "auth_file": {"type": "string"},
+        "state": {"allowed": ["closed", "open"], "type": "string"},
         "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
         "commit_fields": {
             "allowed": [*__COMMIT_CMD_DISPATCH],
@@ -461,6 +462,7 @@ class Extractor:
         :rtype None: sets object member to paginated list object
         """
         job_repo = self.cfg.get_cfg_val("repo")
+        item_state = self.cfg.get_cfg_val("state")
 
         while True:
             try:
@@ -469,11 +471,11 @@ class Extractor:
 
                 if list_type == "issues":
                     return repo_obj.get_issues(
-                        direction="asc", sort="created", state="closed"
+                        direction="asc", sort="created", state=item_state
                     )
 
                 return repo_obj.get_pulls(
-                    direction="asc", sort="created", state="closed"
+                    direction="asc", sort="created", state=item_state
                 )
 
             except github.RateLimitExceededException:

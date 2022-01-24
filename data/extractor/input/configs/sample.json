@@ -1,10 +1,11 @@
 {
-    "repo": "JabRef/jabref",
+    "repo": "mcauley-penney/test",
     "auth_file": "/home/m/files/work/repo-extractor/data/extractor/input/auths/mp_auth.txt",
     "output_dir": "/home/m/files/work/repo-extractor/data/extractor/output",
+    "state": "closed",
     "range": [
-        1,
-        10
+        3,
+        4
     ],
     "commit_fields": [
         "commit_author_name",
