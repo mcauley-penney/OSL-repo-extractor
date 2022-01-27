@@ -14,6 +14,10 @@ import os
 import re
 import sys
 
+# TODO:
+# Extractor always gets one less, e.g. end of range is non-inclusive
+#   • as a consequence, we need to add one to end of range
+
 
 HOST_DICT = {
     "gmail": "imap.gmail.com",
@@ -50,14 +54,16 @@ def main():
 
     # from email dictionary, derive a list of issue numbers to mine with the extractor
     issue_list = get_issue_num_list(email_content_dict, parser_cfg)
-    print(f"\nIssues found in inbox to mine for: {issue_list}...")
+    print(f"\nIssues found in inbox to mine for:\n\t{issue_list}\n")
+
+    issue_list = [int(issue_list[0]), int(issue_list[-1])]
+    print(f"\nIssue range to mine: \n\t{issue_list}\n")
 
     # get list of lists of sequential issue number groupings to make extraction simpler
-    issue_grp_metalist = partition_issue_list(issue_list)
+    # issue_grp_metalist = partition_issue_list(issue_list)
 
     # execute the extractor
-    print("\nCalling extractor...\n\n")
-    exe_extractor(cfg_metadict, issue_grp_metalist)
+    exe_extractor(cfg_metadict, issue_list)
 
 
 def create_extractor_input(
@@ -78,7 +84,7 @@ def create_extractor_input(
     print_json(extractor_cfg, out_path)
 
 
-def exe_extractor(cfg_metadict: dict, issue_metalist: list[list]) -> None:
+def exe_extractor(cfg_metadict: dict, issue_list: list) -> None:
     """
     1. create dir in local fs to store email parser output/repo extractor input in
     2. for each group of sequential issue numbers:
@@ -88,31 +94,34 @@ def exe_extractor(cfg_metadict: dict, issue_metalist: list[list]) -> None:
 
     :param cfg_metadict dict: dictionary of dictionary of configurations for email
     parser
-    :param issue_metalist list[list]: list of lists of sequential issue numbers to mine
+    :param issue_list list[int]: list of starting and ending issue numbers to mine
+    between
     with the extractor
     :rtype None: executes call to repo extractor
     """
-    i = 0
     parser_cfg = cfg_metadict["parser"]
 
     # create dir using name of repo to send new extractor input to
     output_dir = parser_cfg["output_dir"] + "/" + parser_cfg["repo"].rsplit("/", 1)[1]
     os.makedirs(output_dir, exist_ok=True)
 
-    while i < len(issue_metalist):
-        # create file name using index of sequential grouping of issue numbers
-        full_out_path = output_dir + f"/extractor_input_grp{i}.json"
+    print(f"Creating extractor input JSON at {output_dir} ...\n")
 
-        # create a configuration file for running the extractor.
-        # uses values from the configuration file and the issue numbers found by this
-        # program
-        create_extractor_input(cfg_metadict, issue_metalist[i], full_out_path)
+    # create file name using index of sequential grouping of issue numbers
+    cur_extractor_input = output_dir + "/extractor_input.json"
 
-        # call extractor with newly-created configuration
-        extractor_exe = parser_cfg["extractor_exe"]
-        os.system(f"python {extractor_exe} {full_out_path}")
+    # create a configuration file for running the extractor.
+    # uses values from the configuration file and the issue numbers found by this
+    # program
+    create_extractor_input(cfg_metadict, issue_list, cur_extractor_input)
 
-        i += 1
+    # call extractor with newly-created configuration
+    extractor_exe = parser_cfg["extractor_exe"]
+
+    cur_exe_str = f"Calling extractor with {cur_extractor_input} ..."
+
+    print(f"{cur_exe_str}\n{'-' * len(cur_exe_str)}\n")
+    os.system(f"python {extractor_exe} {cur_extractor_input}")
 
 
 def get_cfg_dict() -> dict:
@@ -327,7 +336,7 @@ def get_issue_num_list(email_dict: dict, cfg_dict: dict) -> list:
     else:
         pass
 
-    return issue_list
+    return sorted(issue_list)
 
 
 def parse_email_bodies(email_dict: dict) -> dict:
@@ -366,48 +375,49 @@ def parse_email_bodies(email_dict: dict) -> dict:
     return email_dict
 
 
-def partition_issue_list(issue_list: list) -> list[list]:
-    """
-    1. sorts list of issue numbers
-    2. iterates through and determines which groups are sequential
-    3. packages sequential groupings into lists
-    4. returns list of grouped sequential issue numbers
-
-    :param issue_list list: list of issue numbers from email parsing
-    :rtype list[list]: list of lists of ordered, sequential issue numbers to mine
-    """
-    cur_seq_group = [int(issue_list[0])]
-    i = 0
-    issue_num_metalist = []
-
-    # sort list to be sure of orderliness
-    issue_list.sort()
-
-    while i < len(issue_list) - 1:
-
-        cur_issue = int(issue_list[i])
-        next_issue = int(issue_list[i + 1])
-
-        # if the current and next values in the list are sequential, append next to
-        # current grouping of sequential values
-        if next_issue == cur_issue + 1:
-            cur_seq_group.append(next_issue)
-
-        else:
-            # append current grouping of sequential values to the metalist of values to
-            # return
-            issue_num_metalist.append(cur_seq_group)
-
-            # restart list of sequential groupings, starting at the value that broke the
-            # current sequential grouping
-            cur_seq_group = [next_issue]
-
-        i += 1
-
-    # must append if we reach end of list without finding a non-sequential value
-    issue_num_metalist.append(cur_seq_group)
-
-    return issue_num_metalist
+# def partition_issue_list(issue_list: list) -> list[list]:
+#     """
+#     1. sorts list of issue numbers
+#     2. iterates through and determines which groups are sequential
+#     3. packages sequential groupings into lists
+#     4. returns list of grouped sequential issue numbers
+#
+#     :param issue_list list: list of issue numbers from email parsing
+#     :rtype list[list]: list of lists of ordered, sequential issue numbers to mine
+#     """
+#     cur_seq_group = [int(issue_list[0])]
+#     i = 0
+#     issue_num_metalist = []
+#
+#     # sort list to be sure of orderliness
+#     issue_list.sort()
+#
+#     while i < len(issue_list) - 1:
+#         pass
+#
+#         # cur_issue = int(issue_list[i])
+#         # next_issue = int(issue_list[i + 1])
+#
+#         # print(f"current: {cur_issue}, next: {next_issue}\n")
+#
+#         # cur_seq_group.append(cur_issue)
+#
+#     #     # if the next issue is not the current issue number + 1, e.g. cur = 1,
+#     #     # next = 3
+#     #     if next_issue != cur_issue + 1 or next_i == len(issue_list) - 1:
+#     #         # append current item to list as end of sequential range
+#     #         cur_seq_group.append(cur_issue)
+#
+#     #         # append current grouping of sequential values to the metalist of values
+#     #         issue_num_metalist.append(cur_seq_group)
+#
+#     #         # restart list of sequential groupings, starting at the value that broke
+#     #         # the current sequential grouping
+#     #         cur_seq_group = [next_issue]
+#
+#     #     i += 1
+#
+#     return issue_num_metalist
 
 
 def print_json(out_dict: dict, out_path: str) -> None:

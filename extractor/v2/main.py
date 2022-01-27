@@ -16,10 +16,10 @@ def main():
     gh_ext = extractor.Extractor(cfg_path)
 
     # print("Getting issue data...\n")
-    # gh_ext.get_issues_data()
+    gh_ext.get_issues_data()
     # print("Complete!\n")
 
-    gh_ext.get_pr_data()
+    # gh_ext.get_pr_data()
 
 
 def get_cli_args() -> str:

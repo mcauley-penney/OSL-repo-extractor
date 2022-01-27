@@ -11,8 +11,16 @@ from v2 import conf, sessions
 PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
 
+# TODO:
+# 1. test new binary search boundaries
+#   • test new "high" val in binary search on full pages, e.g. large repos
+#       • works rn on lists that are not full, i.e. less than PAGE_LEN
+# 2. apply types EVERYWHERE
+# 3. make calling all of this less janky
+#   • create a main when called with email-parser?
 
-def _get_api_item_indices(paged_list, range_list) -> list[int]:
+
+def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
     """
     sanitize our range values so that they are guaranteed to be safe, find the indices
     of those values inside of the paginated list, and return
@@ -26,7 +34,7 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
     :rtype int: list of indices to the paginated list of items that we wish to find
     """
 
-    def __bin_search(paged_list_page, val) -> int:
+    def __bin_search(paged_list_page, val: int) -> int:
         """
         Iterative binary search modified to return either the exact index of the item
         with the number the user desires or the index of the item beneath that value in
@@ -35,8 +43,8 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
         begin looking for data at #10. This binary search should return the index of the
         API object with the number 8.
 
-        :param paged_list_page Github.PaginatedList of Github.Issues or
-        Github.PullRequests: list of API objects
+        :param paged_list_page PaginatedList[Github.Issues|Github.PullRequests]: list
+        of API objects
 
         :param val int: the value that we wish to find the index of, e.g. the index of
         PR #10
@@ -45,7 +53,7 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
         """
 
         low = 0
-        high = PAGE_LEN
+        high = paged_list.totalCount
 
         # because this binary search is looking through lists that may have items
         # missing, we want to be able to return the index of the nearest item before the
@@ -86,7 +94,7 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
         last_index = paged_list.totalCount - 1
 
         # divide that value by the quantity of items per page to find the last page
-        last_page = last_index // PAGE_LEN
+        last_page: int = last_index // PAGE_LEN
 
         # get the last item from the last page
         last_item = paged_list.get_page(last_page)[-1]
@@ -104,8 +112,11 @@ def _get_api_item_indices(paged_list, range_list) -> list[int]:
     highest_num = __get_last_item_num(paged_list)
 
     # get sanitized range. This will correct any vals given in the range cfg so that
-    # they are within the values that are in the paged list
-    sani_range_tuple = (min(val, highest_num) for val in (range_list[0], range_list[1]))
+    # they are within the values that are in the paged list. We are protected from too
+    # low of values by the Cerberus config schema.
+    sani_range_tuple = (
+        min(val, highest_num) for val in (range_list[0], range_list[-1])
+    )
 
     print(f"{' ' * 4}finding starting and ending indices of range values...\n")
 
@@ -424,7 +435,7 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
-        while start_val < end_val:
+        while start_val < end_val + 1:
             try:
                 cur_issue = self.issues_paged_list[start_val]
                 cur_issue_num = self.__ISSUE_CMD_DISPATCH["__issue_num"](cur_issue)
@@ -437,7 +448,7 @@ class Extractor:
                 cur_entry = {cur_issue_num: cur_item_data}
 
             except github.RateLimitExceededException:
-                self.writer.concat_json(data_dict)
+                self.writer.concat_to_json(data_dict)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -447,7 +458,7 @@ class Extractor:
 
                 start_val = start_val + 1
 
-        self.writer.concat_json(data_dict)
+        self.writer.concat_to_json(data_dict)
 
     def __get_paged_list(self, list_type):
         """
@@ -535,7 +546,7 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
-        while start_val < end_val:
+        while start_val < end_val + 1:
             try:
                 # get current PR to begin information gathering
                 cur_pr = self.pr_paged_list[start_val]
@@ -548,7 +559,7 @@ class Extractor:
 
                 # if the current PR number is greater than or equal to the first
                 # number provided in the "range" cfg val and the PR is merged
-                if is_merged:
+                if is_merged or self.cfg.get_cfg_val("state") == "open":
                     cur_entry |= {
                         field: self.__PR_CMD_DISPATCH[field](cur_pr)
                         for field in pr_fields
@@ -573,7 +584,7 @@ class Extractor:
 
             except github.RateLimitExceededException:
                 # concatenate gathered data, clear the dict, and sleep
-                self.writer.concat_json(data_dict)
+                self.writer.concat_to_json(data_dict)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -583,7 +594,7 @@ class Extractor:
 
                 start_val += 1
 
-        self.writer.concat_json(data_dict)
+        self.writer.concat_to_json(data_dict)
 
 
 class Writer:
@@ -617,7 +628,7 @@ class Writer:
         if not os.path.exists(self.output_file):
             os.mknod(self.output_file)
 
-    def concat_json(self, out_dict) -> None:
+    def concat_to_json(self, out_dict) -> None:
         """
         gets the desired output path, opens and reads any JSON data that may already be
         there, and recursively merges in param data from the most recent round of API
@@ -684,3 +695,5 @@ class Writer:
             # write JSON content back to file
             with open(path, "w", encoding="UTF-8") as json_outfile:
                 json.dump(json_dict, json_outfile, ensure_ascii=False, indent=4)
+
+        print()
