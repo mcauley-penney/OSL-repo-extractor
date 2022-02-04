@@ -1,22 +1,18 @@
 """
 The email_parser program allows the user to connect to their inbox, find emails from the
 relevant sender (intended to be emails from online version management tools about issues
-opened in a given source code repository), parse those emails, and output the data from
-them to a file in JSON format.
+opened in a given source code repository), parse those emails for identifying
+characteristics (such as issue numbers, for example), send those identifiers to the repo
+extractor for mining.
 """
 
 import argparse
 import email
 from email import policy
 import imaplib
-import json
 import os
 import re
-import sys
-
-# TODO:
-# Extractor always gets one less, e.g. end of range is non-inclusive
-#   • as a consequence, we need to add one to end of range
+from v2 import io
 
 
 HOST_DICT = {
@@ -81,7 +77,7 @@ def create_extractor_input(
     extractor_cfg = cfg_metadict["extractor"]
     extractor_cfg |= {"repo": parser_cfg["repo"], "range": issue_num_list}
 
-    print_json(extractor_cfg, out_path)
+    io.write_dict_to_json(extractor_cfg, out_path)
 
 
 def exe_extractor(cfg_metadict: dict, issue_list: list) -> None:
@@ -141,16 +137,7 @@ def get_cfg_dict() -> dict:
 
     cfg_path = arg_parser.parse_args().json_cfg_path
 
-    try:
-        with open(cfg_path, encoding="UTF-8") as conffile_obj:
-            confinfo_json = conffile_obj.read()
-
-    except FileNotFoundError:
-        print(f"\nConfiguration file {cfg_path} not found!")
-        sys.exit(1)
-
-    else:
-        return json.loads(confinfo_json)
+    return io.read_json_to_dict(cfg_path)
 
 
 def get_cleaned_email_dict(imap_session: imaplib.IMAP4_SSL, sender: str):
@@ -209,7 +196,7 @@ def get_email_content_dict(email_list: list) -> dict:
     # for each email in the list of emails given as param
     for msg in email_list:
 
-        # create dict entry for current message
+        # create and merge dict entry for current message
         email_content_dict |= {
             index: {
                 "date": msg["Date"],
@@ -287,7 +274,7 @@ def get_issue_num_list(email_dict: dict, cfg_dict: dict) -> list:
     if "github" in cfg_sender:
         # create url which indicates new issue created; f-string and regex
         subject_issue_str = r"\(Issue \#\d+\)"
-        issue_url = fr"https://github.com/{cfg_repo}/issues/\d+$"
+        issue_url = rf"https://github.com/{cfg_repo}/issues/\d+$"
 
         # for every val in every key val pair in the dict of emails
         for entry in email_dict.values():
@@ -418,22 +405,6 @@ def parse_email_bodies(email_dict: dict) -> dict:
 #     #     i += 1
 #
 #     return issue_num_metalist
-
-
-def print_json(out_dict: dict, out_path: str) -> None:
-    """
-    write dict to output file
-
-    :param out_dict dict: dictionary to write to output file
-    :param out_path str: file path to write output dictionary to
-    :rtype None
-    """
-    try:
-        with open(out_path, "w", encoding="UTF-8") as json_outfile:
-            json.dump(out_dict, json_outfile, ensure_ascii=False, indent=4)
-
-    except FileNotFoundError:
-        print(f"\nIncorrect path to output file: {out_path}")
 
 
 if __name__ == "__main__":

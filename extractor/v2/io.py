@@ -5,28 +5,43 @@ from json.decoder import JSONDecodeError
 import sys
 
 
-def read_json(cfg_path: str) -> dict:
+def read_json_to_dict(in_path: str) -> dict:
     """
-    open the provided configuartion file, which comes in JSON format, and read
-    its contents out into a dictionary
+    open the provided JSON file and read its contents out into a dictionary
 
     :param cfg_file str: path name to a JSON configuration file
     :rtype dict: dictionary constructed from JSON string
     """
 
     try:
-        with open(cfg_path, encoding="UTF-8") as conffile_obj:
-            cfg_text = conffile_obj.read()
+        with open(in_path, encoding="UTF-8") as file_obj:
+            json_text = file_obj.read()
 
     except FileNotFoundError:
-        print(f"\nFile at {cfg_path} not found!")
+        print(f"\nFile at {in_path} not found!")
         sys.exit(1)
 
     else:
-        return json.loads(cfg_text)
+        return json.loads(json_text)
 
 
 def write_dict_to_json(out_dict: dict, out_path: str) -> None:
+    """
+    write given Python dictionary to output file as JSON
+
+    :param out_dict dict: dictionary to write as JSON
+    :param out_path str: path to write output to
+    :rtype None
+    """
+    try:
+        with open(out_path, "w", encoding="UTF-8") as json_outfile:
+            json.dump(out_dict, json_outfile, ensure_ascii=False, indent=4)
+
+    except FileNotFoundError:
+        print(f"\nFile at {out_path} not found!")
+
+
+def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
     """
     gets the desired output path, opens and reads any JSON data that may already be
     there, and recursively merges in param data from the most recent round of API
@@ -44,7 +59,7 @@ def write_dict_to_json(out_dict: dict, out_path: str) -> None:
         loops through keys in dictionary of data from round of API calls to merge
         their data into existing JSON data
 
-        credit Paul Durivage: https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
+        credit to Paul Durivage: https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
 
         :param add_dict dict[unknown]: dict of data to be written
 
@@ -75,10 +90,10 @@ def write_dict_to_json(out_dict: dict, out_path: str) -> None:
 
     # attempt to read JSON out of output file
     try:
-        with open(out_path, "r", encoding="UTF-8") as json_outfile:
-            json_dict = json.load(json_outfile)
+        json_dict = read_json_to_dict(out_path)
 
-    # if no JSON content exists there, ignore
+    # if no JSON content exists there, ignore. In this context, it simply means that we
+    # are writing JSON to a new file
     except JSONDecodeError:
         pass
 
@@ -88,7 +103,6 @@ def write_dict_to_json(out_dict: dict, out_path: str) -> None:
         __merge_dicts(out_dict, json_dict)
 
         # write JSON content back to file
-        with open(out_path, "w", encoding="UTF-8") as json_outfile:
-            json.dump(json_dict, json_outfile, ensure_ascii=False, indent=4)
+        write_dict_to_json(json_dict, out_path)
 
     print()

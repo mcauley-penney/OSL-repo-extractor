@@ -387,7 +387,7 @@ class Extractor:
         print("Beginning extractor init, instantiating cfg...\n")
 
         # read configuration dictionary from input configuration file
-        cfg_dict = io.read_json(cfg_path)
+        cfg_dict = io.read_json_to_dict(cfg_path)
 
         # initialize configuration object with cfg dict
         self.cfg = conf.Cfg(cfg_dict, self.CFG_SCHEMA)
@@ -438,7 +438,7 @@ class Extractor:
                 cur_entry = {cur_issue_num: cur_item_data}
 
             except github.RateLimitExceededException:
-                io.write_dict_to_json(data_dict, out_file)
+                io.write_merged_dict_to_json(data_dict, out_file)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -448,7 +448,7 @@ class Extractor:
 
                 start_val = start_val + 1
 
-        io.write_dict_to_json(data_dict, out_file)
+        io.write_merged_dict_to_json(data_dict, out_file)
 
     def __get_paged_list(self, list_type):
         """
@@ -577,7 +577,7 @@ class Extractor:
 
             except github.RateLimitExceededException:
                 # concatenate gathered data, clear the dict, and sleep
-                io.write_dict_to_json(data_dict, out_file)
+                io.write_merged_dict_to_json(data_dict, out_file)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -587,4 +587,4 @@ class Extractor:
 
                 start_val += 1
 
-        io.write_dict_to_json(data_dict, out_file)
+        io.write_merged_dict_to_json(data_dict, out_file)
