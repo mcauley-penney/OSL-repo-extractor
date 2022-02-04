@@ -12,7 +12,11 @@ def main():
 
     cfg_path = get_cli_args()
 
+    # TODO: create conditional to determine items to get, e.g. issues or prs
+    #   • potentially use list in cfg
+
     # init extractor object
+    print("Beginning extractor init, instantiating cfg...\n")
     gh_ext = extractor.Extractor(cfg_path)
 
     # print("Getting issue data...\n")

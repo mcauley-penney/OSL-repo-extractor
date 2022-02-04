@@ -1,0 +1,17 @@
+{
+    "auth_file": "/home/m/files/work/repo-extractor/data/extractor/input/auths/mp_auth.txt",
+    "output_dir": "/home/m/files/work/repo-extractor/data/extractor/output",
+    "state": "open",
+    "commit_fields": [],
+    "issues_fields": [
+        "issue_title",
+        "issue_body",
+        "issue_comments"
+    ],
+    "pr_fields": [],
+    "repo": "mcauley-penney/test",
+    "range": [
+        1,
+        3
+    ]
+}

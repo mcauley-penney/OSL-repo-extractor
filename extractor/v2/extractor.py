@@ -2,22 +2,11 @@
 The extractor module provides and exposes functionality to mine GitHub repositories.
 """
 
-import json
-from json.decoder import JSONDecodeError
-import os
 import github
-from v2 import conf, sessions
+from v2 import conf, io, sessions
 
 PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
-
-# TODO:
-# 1. test new binary search boundaries
-#   • test new "high" val in binary search on full pages, e.g. large repos
-#       • works rn on lists that are not full, i.e. less than PAGE_LEN
-# 2. apply types EVERYWHERE
-# 3. make calling all of this less janky
-#   • create a main when called with email-parser?
 
 
 def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
@@ -397,18 +386,16 @@ class Extractor:
 
         print("Beginning extractor init, instantiating cfg...\n")
 
-        # initialize configuration object
-        self.cfg = conf.Cfg(cfg_path, self.CFG_SCHEMA)
+        # read configuration dictionary from input configuration file
+        cfg_dict = io.read_json(cfg_path)
+
+        # initialize configuration object with cfg dict
+        self.cfg = conf.Cfg(cfg_dict, self.CFG_SCHEMA)
 
         auth_path = self.cfg.get_cfg_val("auth_file")
-        out_dir = self.cfg.get_cfg_val("output_dir")
-        repo = self.cfg.get_cfg_val("repo")
 
         # initialize authenticated GitHub session
         self.gh_sesh = sessions.GithubSession(auth_path, PAGE_LEN)
-
-        # initialize writer object
-        self.writer = Writer(out_dir, repo)
 
         self.pr_paged_list = self.__get_paged_list("pr")
         self.issues_paged_list = self.__get_paged_list("issues")
@@ -426,9 +413,12 @@ class Extractor:
         """
 
         data_dict = {}
-        val_range = self.cfg.get_cfg_val("range")
+
+        # get output file path
+        out_file = self.cfg.get_cfg_val("output_file")
 
         # get indices of sanitized range values
+        val_range = self.cfg.get_cfg_val("range")
         range_list = _get_api_item_indices(self.issues_paged_list, val_range)
 
         # unpack vals
@@ -448,7 +438,7 @@ class Extractor:
                 cur_entry = {cur_issue_num: cur_item_data}
 
             except github.RateLimitExceededException:
-                self.writer.concat_to_json(data_dict)
+                io.write_dict_to_json(data_dict, out_file)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -458,7 +448,7 @@ class Extractor:
 
                 start_val = start_val + 1
 
-        self.writer.concat_to_json(data_dict)
+        io.write_dict_to_json(data_dict, out_file)
 
     def __get_paged_list(self, list_type):
         """
@@ -536,6 +526,9 @@ class Extractor:
         commit_fields = self.cfg.get_cfg_val("commit_fields")
         pr_fields = self.cfg.get_cfg_val("pr_fields")
 
+        # get output file path
+        out_file = self.cfg.get_cfg_val("output_file")
+
         # get range cfg value
         val_range = self.cfg.get_cfg_val("range")
 
@@ -584,7 +577,7 @@ class Extractor:
 
             except github.RateLimitExceededException:
                 # concatenate gathered data, clear the dict, and sleep
-                self.writer.concat_to_json(data_dict)
+                io.write_dict_to_json(data_dict, out_file)
                 data_dict.clear()
                 self.gh_sesh.sleep()
 
@@ -594,106 +587,4 @@ class Extractor:
 
                 start_val += 1
 
-        self.writer.concat_to_json(data_dict)
-
-
-class Writer:
-    """
-    The Writer class creates objects that can be used to write data to output files
-    """
-
-    def __init__(self, output_dir, full_repo) -> None:
-        """
-        initialize Writer object
-
-        :param output_dir str: path of output dir, from Cfg object
-
-        :param full_repo str: name of the repo to extract from, e.g. "Owner/Repo"
-
-        :rtype None: initializes Writer object
-        """
-
-        # lop repo str off of full repo info, e.g. owner/repo
-        repo_name = full_repo.rsplit("/", 1)[1]
-
-        # init output subdir for this repo and hold onto it
-        repo_subdir = f"{output_dir}/{repo_name}"
-
-        # create output directory only if it does not exist
-        os.makedirs(repo_subdir, exist_ok=True)
-
-        self.output_file = f"{repo_subdir}/{repo_name}_output.json"
-
-        # for each file above, create it if it does not exist
-        if not os.path.exists(self.output_file):
-            os.mknod(self.output_file)
-
-    def concat_to_json(self, out_dict) -> None:
-        """
-        gets the desired output path, opens and reads any JSON data that may already be
-        there, and recursively merges in param data from the most recent round of API
-        calls
-
-        :param out_type str: the type of output being created, e.g. "commit", "issues"
-
-        :param out_dict dict[unknown]: dict of data from round of API calls to merge and
-        write
-
-        :rtype None: writes output to file, nothing returned
-        """
-
-        def __merge_dicts(add_dict, base_dict) -> None:
-            """
-            loops through keys in dictionary of data from round of API calls to merge
-            their data into existing JSON data
-
-            :param add_dict dict[unknown]: dict of data to be written
-
-            :param base_dict dict[unknown]: dict of data already written to and read out
-            from JSON file
-
-            :rtype None: merges param dicts
-
-            :credit Paul Durivage: https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
-            """
-            # for each key in the dict that we created with the round of API calls
-            for key in add_dict:
-
-                # if that key is in the dict in the existing JSON file and the val at
-                # the key is a dict in both dictionaries
-                if (
-                    key in base_dict
-                    and isinstance(base_dict[key], dict)
-                    and isinstance(add_dict[key], dict)
-                ):
-                    # recurse
-                    __merge_dicts(add_dict[key], base_dict[key])
-
-                else:
-                    # assign the new value from the last round of calls to the existing
-                    # key
-                    base_dict[key] = add_dict[key]
-
-        json_dict = {}
-
-        path = self.output_file
-
-        # attempt to read JSON out of output file
-        try:
-            with open(self.output_file, "r", encoding="UTF-8") as json_outfile:
-                json_dict = json.load(json_outfile)
-
-        # if no JSON content exists there, ignore
-        except JSONDecodeError:
-            pass
-
-        # in any case
-        finally:
-            # recursively merge all dicts and nested dicts in both dictionaries
-            __merge_dicts(out_dict, json_dict)
-
-            # write JSON content back to file
-            with open(path, "w", encoding="UTF-8") as json_outfile:
-                json.dump(json_dict, json_outfile, ensure_ascii=False, indent=4)
-
-        print()
+        io.write_dict_to_json(data_dict, out_file)
