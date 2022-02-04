@@ -9,12 +9,13 @@ def read_json_to_dict(in_path: str) -> dict:
     """
     open the provided JSON file and read its contents out into a dictionary
 
+    :raises FileNotFoundError: file does not exist at path
     :param cfg_file str: path name to a JSON configuration file
     :rtype dict: dictionary constructed from JSON string
     """
 
     try:
-        with open(in_path, encoding="UTF-8") as file_obj:
+        with open(in_path, "r", encoding="UTF-8") as file_obj:
             json_text = file_obj.read()
 
     except FileNotFoundError:
@@ -25,10 +26,32 @@ def read_json_to_dict(in_path: str) -> dict:
         return json.loads(json_text)
 
 
+def read_txt_line(in_path: str) -> str:
+    """
+    read personal access tokens (PATs) out of auth file
+
+    :raises FileNotFoundError: file does not exist at path
+    :param auth_file_path str: path to auth file
+    :rtype pat_list list[str]: text lines from auth file
+    """
+    try:
+        with open(in_path, "r", encoding="UTF-8") as file_obj:
+            file_text = file_obj.readline()
+
+    except FileNotFoundError:
+        # if the file is not found log an error and exit
+        print(f"\nFile at {in_path} not found!")
+        sys.exit(1)
+
+    else:
+        return file_text.strip().strip("\n")
+
+
 def write_dict_to_json(out_dict: dict, out_path: str) -> None:
     """
     write given Python dictionary to output file as JSON
 
+    :raises FileNotFoundError: file does not exist at path
     :param out_dict dict: dictionary to write as JSON
     :param out_path str: path to write output to
     :rtype None

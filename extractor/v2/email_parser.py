@@ -12,7 +12,7 @@ from email import policy
 import imaplib
 import os
 import re
-from v2 import io
+from v2 import file_io
 
 
 HOST_DICT = {
@@ -77,7 +77,7 @@ def create_extractor_input(
     extractor_cfg = cfg_metadict["extractor"]
     extractor_cfg |= {"repo": parser_cfg["repo"], "range": issue_num_list}
 
-    io.write_dict_to_json(extractor_cfg, out_path)
+    file_io.write_dict_to_json(extractor_cfg, out_path)
 
 
 def exe_extractor(cfg_metadict: dict, issue_list: list) -> None:
@@ -137,7 +137,7 @@ def get_cfg_dict() -> dict:
 
     cfg_path = arg_parser.parse_args().json_cfg_path
 
-    return io.read_json_to_dict(cfg_path)
+    return file_io.read_json_to_dict(cfg_path)
 
 
 def get_cleaned_email_dict(imap_session: imaplib.IMAP4_SSL, sender: str):

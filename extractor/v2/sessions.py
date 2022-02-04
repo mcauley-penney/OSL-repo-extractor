@@ -6,6 +6,15 @@ allow it to interact with external sources that require connections
 import sys
 import time
 import github
+from v2 import file_io
+
+
+def _print_in_place(label_str: str, val) -> None:
+    # clear line to erase any errors due to typing in the console
+    print("", end="\r")
+
+    # print output in place
+    print(f"{' ' * 4}{label_str} {val}", end="\r")
 
 
 class GithubSession:
@@ -17,14 +26,14 @@ class GithubSession:
     def __init__(self, auth_path, page_len) -> None:
         """
         initialize GitHub session object
-
         :param auth_path str: path to file containing personal access token
         """
-        self.session = self.__verify_auth(auth_path, page_len)
+        self.session = self.__get_gh_session(auth_path, page_len)
 
-    def __verify_auth(self, auth_path, page_len) -> github.Github:
+    def __get_gh_session(self, auth_path, page_len) -> github.Github:
         """
-        retrieves PAT from auth file and checks whether it is valid
+        retrieves PAT from auth file, checks whether it is valid
+
         :raises github.BadCredentialsException: if given item is not a valid Personal
         Access Token
 
@@ -35,39 +44,8 @@ class GithubSession:
         :rtype None:
         """
 
-        def __read_auth_file(auth_file_path) -> str:
-            """
-            read personal access tokens (PATs) out of auth file
-
-            :raises FileNotFoundError: file does not exist at path
-            :param auth_file_path str: path to auth file
-            :rtype pat_list list[str]: text lines from auth file
-            """
-            try:
-                # attempt to open provided auth file path
-                authfile_obj = open(auth_file_path, encoding="UTF-8")
-
-            except FileNotFoundError:
-                # if the file is not found log an error and exit
-                no_auth_msg = (
-                    "Authorization file not found! "
-                    + "Please provide a valid file. Exiting...\n"
-                )
-                print(no_auth_msg)
-                sys.exit(1)
-
-            else:
-                print("Auth file found...\n")
-
-                # read contents out of auth file object
-                auth_text = authfile_obj.readline()
-
-                authfile_obj.close()
-
-                return auth_text.strip().strip("\n")
-
         # retrieve token from auth file
-        token = __read_auth_file(auth_path)
+        token = file_io.read_txt_line(auth_path)
 
         # establish a session with token
         session = github.Github(token, per_page=page_len, retry=100, timeout=100)
@@ -79,17 +57,17 @@ class GithubSession:
         # if token is not valid, remove token from list
         except github.BadCredentialsException:
             # log that token is invalid
-            inval_token_msg = "Invalid personal access token found!\n"
-            print(inval_token_msg)
+            print("Invalid personal access token found! Exiting...\n")
             sys.exit(1)
 
+        # if rate limited at this stage, session must be valid
         except github.RateLimitExceededException:
             return session
 
         else:
             return session
 
-    def print_rem_calls(self) -> None:
+    def print_rem_gh_calls(self) -> None:
         """
         print remaining calls to API for this hour
 
@@ -101,54 +79,28 @@ class GithubSession:
         # format as a string
         rem_calls_str = f"{remaining_calls:<4d}"
 
-        # clear line to erase any errors due to typing in the console
-        print("", end="\r")
+        _print_in_place("Calls left until sleep:", rem_calls_str)
 
-        # print output in place
-        print(f"{' ' * 4}Calls left until sleep: {rem_calls_str}", end="\r")
-
-    def sleep(self, msg_format=None) -> None:
+    def sleep_gh_session(self) -> None:
         """
         sleep the program until we can make calls again
 
         :param msg_format str: optional message to print after sleeping
         """
 
-        def __get_countdown_str():
+        # time to wait is the amount of seconds until reset minus the current time
+        countdown_time = self.session.rate_limiting_resettime - int(time.time())
+
+        while countdown_time > 0:
+
             # modulo function returns time tuple
             minutes, seconds = divmod(countdown_time, 60)
 
             # format the time string before printing
-            return f"{minutes:02d}:{seconds:02d}"
+            countdown_str = f"{minutes:02d}:{seconds:02d}"
 
-        def __get_countdown_time():
-            # get time until reset
-            reset_time_secs = self.session.rate_limiting_resettime
-
-            # time to wait is the amount of seconds
-            # until reset minus the current time
-            return reset_time_secs - int(time.time())
-
-        def __print_time_str():
-            # clear line to erase any errors in console, such as
-            # typing while the counter runs
-            print("", end="\r")
-
-            # print time string on the same line each decrement
-            print(f"{' ' * 4}time until limit reset: {countdown_str}", end="\r")
-
-        countdown_time = __get_countdown_time()
-
-        while countdown_time > 0:
-
-            countdown_str = __get_countdown_str()
-
-            __print_time_str()
+            _print_in_place("time until limit reset:", countdown_str)
 
             # sleep for a while
             time.sleep(1)
             countdown_time -= 1
-
-        # this allows us to choose to print a message after sleeping
-        if msg_format is not None:
-            print(msg_format)
