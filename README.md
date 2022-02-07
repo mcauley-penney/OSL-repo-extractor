@@ -2,8 +2,17 @@
 
 A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
-## Usage
 
+## Requirements
+- Written in `Python 3.9.9` and `3.10.1`
+- Packages:
+    - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
+        - `pip install pygithub`
+    - [Cerberus](https://pygithub.readthedocs.io/en/latest/introduction.html)
+        - `pip install cerberus`
+
+
+## Usage
 ### arguments
 
 ```shell
@@ -21,7 +30,6 @@ will look like:
 $ python main.py <path/to/cfg/file>
 ```
 
-
 ### configuration
 
 ```shell
@@ -29,6 +37,7 @@ $ python main.py <path/to/cfg/file>
 » cat sample.json
 {
     "repo": "JabRef/jabref",
+    "state": "closed"
     "auth_file": "/home/m/files/work/repo-extractor/data/input/auths/mp_auth.txt",
     "output_dir": "/home/m/files/work/GitHub-Repo-Extractor-2/data/output",
     "range": [
@@ -61,8 +70,7 @@ Some key points about the configuration:
   e.g. `<output_dir>/jabref/jabref_output.json`
 
 - The `range` value discusses the actual item numbers you want to gather data from. If you want data from PR #270 up to
-  PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y), gathering the first
-  item in the range but excluding the second value.
+  PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y]; it is inclusive of both values.
 
 - The `fields` keys discuss what pieces of data you want to gather from the objects in the given range. The extractor will
   merge gathered data. For example, if you collected the `pr_body` for objects 1-10 but wanted to gather the `issue_username`
@@ -70,7 +78,6 @@ Some key points about the configuration:
   the new data in for each key in the JSON output.
     - You do not need to ask for issue numbers, PR numbers, the PR's merged status. Those pieces of data are mandatory, will
       always be collected, and the commands to access them are private.
-
 
 ### output
 
@@ -90,7 +97,6 @@ The human-readable output paired with the range functionality discussed above co
 at will. For example, you may be collecting data from a very large range but must stop for some reason. You can look at the
 output, see what PR or issue number the extractor last collected data for, and use that as the starting value in your range
 during your next execution.
-
 
 ### troubleshooting
 
@@ -113,10 +119,9 @@ Using default settings for each, please:
     - `pip install pylint`
 
 
-## Requirements
-- Written in `Python 3.9.9` and `3.10.1`
-- Packages:
-    - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
-        - `pip install pygithub`
-    - [Cerberus](https://pygithub.readthedocs.io/en/latest/introduction.html)
-        - `pip install cerberus`
+## TODO:
+- Make compatible with more common versions of Python, namely Python 3.8.3
+- update main.py so that it does not need to be manually modified to choose what data to collect
+- update README at next stage
+    - update `troubleshooting`
+    - add information about the `state` configuration value into the `configuration` section
