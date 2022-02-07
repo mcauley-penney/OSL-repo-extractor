@@ -8,6 +8,9 @@ from v2 import conf, file_io, sessions
 PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
 
+# TODO: make compatible with Python 3.7 and put in it's own branch
+#   • TODO: update readme to discuss that change
+
 
 def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
     """
@@ -42,7 +45,7 @@ def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
         """
 
         low = 0
-        high = paged_list.totalCount
+        high = PAGE_LEN
 
         # because this binary search is looking through lists that may have items
         # missing, we want to be able to return the index of the nearest item before the
@@ -91,7 +94,7 @@ def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
         # return its number
         return last_item.number
 
-    page_index = 0
+    page_index = 2
     out_list = []
 
     print(f"{' ' * 4}Sanitizing range configuration values...")
@@ -107,17 +110,23 @@ def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
         min(val, highest_num) for val in (range_list[0], range_list[-1])
     )
 
-    print(f"{' ' * 4}finding starting and ending indices of range values...\n")
+    print(f"{' ' * 4}finding starting and ending indices of range values.")
 
     # for the two boundaries in the sanitized range
     for val in sani_range_tuple:
+
+        print(val)
 
         # while the last item on the page is less than the val we are looking for, go to
         # the next page. When this fails, we know that the value we are looking for is
         # on the page we are on. This will yield the correct page to search in the
         # binary search in the next step
+        #
+        # TODO: try to make faster by using binary search?
+        # TODO: include more prints to let the user know what is happening
         while paged_list.get_page(page_index)[-1].number < val:
             page_index += 1
+            print(page_index)
 
         # use iterative binary search to find item in correct page of linked list
         item_index = __bin_search(paged_list.get_page(page_index), val)
