@@ -23,14 +23,15 @@ class GithubSession:
     API and exposes functionality for that connection up to the Extractor class
     """
 
-    def __init__(self, auth_path, page_len) -> None:
+    def __init__(self, auth_path) -> None:
         """
         initialize GitHub session object
         :param auth_path str: path to file containing personal access token
         """
-        self.session = self.__get_gh_session(auth_path, page_len)
+        self.page_len = 30
+        self.session = self.__get_gh_session(auth_path)
 
-    def __get_gh_session(self, auth_path, page_len) -> github.Github:
+    def __get_gh_session(self, auth_path) -> github.Github:
         """
         retrieves PAT from auth file, checks whether it is valid
 
@@ -48,7 +49,7 @@ class GithubSession:
         token = file_io.read_txt_line(auth_path)
 
         # establish a session with token
-        session = github.Github(token, per_page=page_len, retry=100, timeout=100)
+        session = github.Github(token, per_page=self.page_len, retry=100, timeout=100)
 
         try:
             # if name can be gathered from token, properly authenticated
