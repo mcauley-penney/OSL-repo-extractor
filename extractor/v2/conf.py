@@ -40,7 +40,7 @@ class Cfg:
         """
         return self.cfg_dict[key]
 
-    def set_cfg_val(self, key: str, val: str | int) -> None:
+    def set_cfg_val(self, key: str, val) -> None:
         """
         set a value inside of the configuration dict
 

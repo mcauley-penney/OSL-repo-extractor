@@ -12,7 +12,7 @@ TIME_FMT = "%D, %I:%M:%S %p"
 #   • TODO: update readme to discuss that change
 
 
-def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
+def _get_api_item_indices(paged_list, range_list: list) -> list:
     """
     sanitize our range values so that they are guaranteed to be safe, find the indices
     of those values inside of the paginated list, and return
@@ -94,7 +94,7 @@ def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
         # return its number
         return last_item.number
 
-    page_index = 2
+    page_index = 0
     out_list = []
 
     print(f"{' ' * 4}Sanitizing range configuration values...")
@@ -115,18 +115,12 @@ def _get_api_item_indices(paged_list, range_list: list[int]) -> list[int]:
     # for the two boundaries in the sanitized range
     for val in sani_range_tuple:
 
-        print(val)
-
         # while the last item on the page is less than the val we are looking for, go to
         # the next page. When this fails, we know that the value we are looking for is
         # on the page we are on. This will yield the correct page to search in the
         # binary search in the next step
-        #
-        # TODO: try to make faster by using binary search?
-        # TODO: include more prints to let the user know what is happening
         while paged_list.get_page(page_index)[-1].number < val:
             page_index += 1
-            print(page_index)
 
         # use iterative binary search to find item in correct page of linked list
         item_index = __bin_search(paged_list.get_page(page_index), val)
@@ -250,7 +244,7 @@ def _get_commit_committer(api_obj) -> str:
     return api_obj.commit.committer.name
 
 
-def _get_commit_files(api_obj) -> dict[str, int | str | list]:
+def _get_commit_files(api_obj) -> dict:
     """
     For the list of files modified by a commit on a PR, return a list of qualities
 
@@ -392,9 +386,6 @@ class Extractor:
         Initialize an extractor object. This object is our top-level actor and must be
         used by the user to extract data, such as in a driver program
         """
-
-        print("Beginning extractor init, instantiating cfg...\n")
-
         # read configuration dictionary from input configuration file
         cfg_dict = file_io.read_json_to_dict(cfg_path)
 

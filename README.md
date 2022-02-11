@@ -4,12 +4,20 @@ A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fa
 
 
 ## Requirements
-- Written in `Python 3.9.9` and `3.10.1`
+- Written in `Python 3.8.3`
 - Packages:
     - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
         - `pip install pygithub`
     - [Cerberus](https://pygithub.readthedocs.io/en/latest/introduction.html)
         - `pip install cerberus`
+
+
+## Contributing
+Using default settings for each, please:
+- format all contributions with [black](https://pypi.org/project/black/)
+    - `pip install black`
+- lint all contributions with [pylint](https://pypi.org/project/pylint/)
+    - `pip install pylint`
 
 
 ## Usage
@@ -111,17 +119,10 @@ $ echo 'export PYTHONPATH="<path_to_extractor>"' >> <shell_rcfile_location>
 ```
 
 
-## Contributing
-Using default settings for each, please:
-- format all contributions with [black](https://pypi.org/project/black/)
-    - `pip install black`
-- lint all contributions with [pylint](https://pypi.org/project/pylint/)
-    - `pip install pylint`
-
-
 ## TODO:
 - Make compatible with more common versions of Python, namely Python 3.8.3
 - update main.py so that it does not need to be manually modified to choose what data to collect
 - update README at next stage
+    - add `installation` section and move `troubleshooting` there
     - update `troubleshooting`
     - add information about the `state` configuration value into the `configuration` section
