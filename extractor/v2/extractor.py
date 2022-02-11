@@ -80,28 +80,6 @@ def _get_issue_comments(issue_obj) -> str:
     return "NaN"
 
 
-def _get_num(api_obj) -> str:
-    """
-    Casts PR/Issue num received from GitHub API to a str and returns it
-
-    The Python JSON module will cast all items to str. If we want to use the
-    PR/issue num as a key inside of our JSON/output dicts, we must also cast to
-    str. This will allow our JSON writing methods to recognize that the key of data
-    that has already been written to JSON (and is thus a str) is the same as the
-    key written during our latest round of API calls. For example, if we have
-    Issue #1 in our JSON output already, the key (#1) has been casted to a str.
-    In a hypothetical situation, we want to update #1 to have more info. If we get
-    that new info for #1 in a round of API calls and attempt to update #1 in the
-    already-existing JSON (which would happen in concat_json()) without casting
-    this val to a str, the function will not recognize that the two keys are the
-    same and will yield N separate entries for the same key, where N is the amount
-    of times data is retrieved for that key
-
-    :param api_obj github.PullRequest/github.Issue: PR or Issue to get num of
-    """
-    return str(api_obj.number)
-
-
 def _get_page_last_item(paged_list, page_index):
     return paged_list.get_page(page_index)[-1]
 
@@ -227,7 +205,6 @@ class Extractor:
         "issue_body": _get_body,
         "issue_closed": _get_closed_time,
         "issue_comments": _get_issue_comments,
-        "__issue_num": _get_num,
         "issue_title": _get_title,
         "issue_userlogin": _get_userlogin,
         "issue_username": _get_username,
@@ -236,7 +213,6 @@ class Extractor:
     __PR_CMD_DISPATCH = {
         "pr_body": _get_body,
         "pr_closed": _get_closed_time,
-        "__pr_num": _get_num,
         "__pr_merged": _get_pr_merged,
         "pr_title": _get_title,
         "pr_userlogin": _get_userlogin,
@@ -402,7 +378,6 @@ class Extractor:
 
             return low
 
-        page_index = 0
         page_len = self.gh_sesh.page_len
         out_list = []
 
@@ -418,7 +393,7 @@ class Extractor:
         # they are within the values that are in the paged list. We are protected from
         # too low of values by the Cerberus config schema, so this process only looks at
         # values that are too high.
-        sani_range_tuple = (
+        clean_range_tuple = (
             min(val, highest_num) for val in (range_list[0], range_list[-1])
         )
 
@@ -427,33 +402,30 @@ class Extractor:
         )
 
         # for the two boundaries in the sanitized range
-        for val in sani_range_tuple:
+        for val in clean_range_tuple:
 
             # use binary search to find the index of the page inside of the list of
             # pages that contains the item number, e.g. PR# 600, that we want
             page_index = __bin_search_in_list(paged_list, last_page_index, val)
 
-            # while the last item on the page is less than the val we are looking for,
-            # go to the next page. When this fails, we know that the value we are
-            # looking for is on the page we are on. This will yield the correct page to
-            # search in the binary search in the next step
-            # while paged_list.get_page(page_index)[-1].number < val:
-            #     page_index += 1
-
             # use iterative binary search to find item in correct page of linked list
-            item_index_in_page = __bin_search_in_page(
+            item_page_index = __bin_search_in_page(
                 paged_list.get_page(page_index), page_len, val
             )
 
-            item_index_in_page += page_index * page_len
+            # the index of the item in the total list is the page index that it is on
+            # multiplied by the amount of items per page, summed with the index of the
+            # item in the page, e.g. if the item is on index 20 of page 10 and there are
+            # 30 items per page, its index in the list is 20 + (10 * 30)
+            item_list_index = item_page_index + (page_index * page_len)
 
             print(
-                f"{' ' * 8}item #{val} found at index {item_index_in_page} in the paginated list..."
+                f"{' ' * 8}item #{val} found at index {item_list_index} in the paginated list..."
             )
 
             # the index of the items we need is the amount of items per page that were
             # skipped plus the index of the item in it's page
-            out_list.append(item_index_in_page)
+            out_list.append(item_list_index)
 
         print()
 
@@ -489,7 +461,7 @@ class Extractor:
         while start_val < end_val + 1:
             try:
                 cur_issue = self.issues_paged_list[start_val]
-                cur_issue_num = self.__ISSUE_CMD_DISPATCH["__issue_num"](cur_issue)
+                cur_issue_num = str(cur_issue.number)
 
                 cur_item_data = {
                     field: self.__ISSUE_CMD_DISPATCH[field](cur_issue)
@@ -507,7 +479,7 @@ class Extractor:
                 data_dict = _merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
-                start_val = start_val + 1
+                start_val += 1
 
         file_io.write_merged_dict_to_json(data_dict, out_file)
 
@@ -635,7 +607,7 @@ class Extractor:
                         }
 
                 # get the current PR number as a string
-                cur_pr_num = self.__PR_CMD_DISPATCH["__pr_num"](cur_pr)
+                cur_pr_num = str(cur_pr.number)
 
                 # use all gathered entry data as the val for the PR num key
                 cur_entry = {cur_pr_num: cur_entry}
