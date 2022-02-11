@@ -5,11 +5,13 @@ The extractor module provides and exposes functionality to mine GitHub repositor
 import github
 from v2 import conf, file_io, sessions
 
+# TODO: make this a session member
 PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
-def merge_dicts(base: dict, to_merge: dict) -> dict:
+# TODO: put this in a proper place
+def _merge_dicts(base: dict, to_merge: dict) -> dict:
     """
     Merge two dictionaries
     NOTE: syntax in 3.9 or greater is "base |= to_merge"
@@ -22,6 +24,11 @@ def merge_dicts(base: dict, to_merge: dict) -> dict:
     :rtype:
     """
     return {**base, **to_merge}
+
+
+# TODO: put this in a proper place
+def _get_page_last_item(paged_list, page_index):
+    return paged_list.get_page(page_index)[-1]
 
 
 def _get_api_item_indices(paged_list, range_list: list) -> list:
@@ -38,7 +45,42 @@ def _get_api_item_indices(paged_list, range_list: list) -> list:
     :rtype int: list of indices to the paginated list of items that we wish to find
     """
 
-    def __bin_search(paged_list_page, val: int) -> int:
+    def __bin_search_in_list(paged_list, last_pg_index: int, val: int) -> int:
+        """
+
+        :param paged_list:
+        :type paged_list:
+        :param val: number of item in list that we desire; e.g. PR# 800
+        :type val: int
+        :return:
+        :rtype:
+        """
+        low = 0
+
+        # because this binary search is looking through lists that may have items
+        # missing, we want to be able to return the index of the nearest item before the
+        # item we are looking for. Therefore, we stop when low is one less than high.
+        # This allows us to take the lower value when a value does not exist in the
+        # list.
+        while low < last_pg_index - 1:
+            mid = (low + last_pg_index) // 2
+
+            cur_val = _get_page_last_item(paged_list, mid).number
+
+            # if the value we want is greater than the first item on the middle page but
+            # less than the last item, it is in the middle page
+            if cur_val - PAGE_LEN <= val <= cur_val:
+                return mid
+
+            if val < cur_val - PAGE_LEN:
+                last_pg_index = mid - 1
+
+            elif val > cur_val:
+                low = mid + 1
+
+        return low
+
+    def __bin_search_in_page(paged_list_page, val: int) -> int:
         """
         Iterative binary search modified to return either the exact index of the item
         with the number the user desires or the index of the item beneath that value in
@@ -55,7 +97,6 @@ def _get_api_item_indices(paged_list, range_list: list) -> list:
 
         :rtype int: index of the object we are looking for
         """
-
         low = 0
         high = PAGE_LEN
 
@@ -80,42 +121,19 @@ def _get_api_item_indices(paged_list, range_list: list) -> list:
 
         return low
 
-    def __get_last_item_num(paged_list) -> int:
-        """
-        Finds the number, e.g. issue number, of the last item in a given
-        paginated list
-
-        Simply slicing is INCREDIBLY slow, e.g.
-            last_index = paged_list.totalCount - 1
-            last_item_num = paged_list[last_index].number
-
-        :param paged_list Github.PaginatedList of Github.Issues or Github.PullRequests:
-        list of API objects
-
-        :rtype int: the number of the last item in the paginated list
-        """
-        # get the total amount of items in the list
-        last_index = paged_list.totalCount - 1
-
-        # divide that value by the quantity of items per page to find the last page
-        last_page: int = last_index // PAGE_LEN
-
-        # get the last item from the last page
-        last_item = paged_list.get_page(last_page)[-1]
-
-        # return its number
-        return last_item.number
-
     page_index = 0
     out_list = []
 
     print(f"{' ' * 4}Sanitizing range configuration values...")
 
-    # get the highest item num in the paginated list of items, e.g. PR #8339 for
-    # JabRef
-    highest_num = __get_last_item_num(paged_list)
+    # get index of last page in paginated list
+    last_page_index = (paged_list.totalCount - 1) // PAGE_LEN
 
-    # get sanitized range. This will correct any vals given in the range cfg so that
+    # get the highest item num in the paginated list of items, e.g. very last PR num
+    highest_num = _get_page_last_item(paged_list, last_page_index).number
+
+    # get sanitized range.
+    # This will correct any vals given in the range cfg so that
     # they are within the values that are in the paged list. We are protected from too
     # low of values by the Cerberus config schema, so this process only looks at values
     # that are too high.
@@ -123,24 +141,36 @@ def _get_api_item_indices(paged_list, range_list: list) -> list:
         min(val, highest_num) for val in (range_list[0], range_list[-1])
     )
 
-    print(f"{' ' * 4}finding starting and ending indices of range values.")
+    print(f"{' ' * 4}finding start and end indices corresponding to range values...")
 
     # for the two boundaries in the sanitized range
     for val in sani_range_tuple:
+
+        # use binary search to find the index of the page inside of the list of pages
+        # that contains the item number, e.g. PR# 600, that we want
+        page_index = __bin_search_in_list(paged_list, last_page_index, val)
 
         # while the last item on the page is less than the val we are looking for, go to
         # the next page. When this fails, we know that the value we are looking for is
         # on the page we are on. This will yield the correct page to search in the
         # binary search in the next step
-        while paged_list.get_page(page_index)[-1].number < val:
-            page_index += 1
+        # while paged_list.get_page(page_index)[-1].number < val:
+        #     page_index += 1
 
         # use iterative binary search to find item in correct page of linked list
-        item_index = __bin_search(paged_list.get_page(page_index), val)
+        item_index = __bin_search_in_page(paged_list.get_page(page_index), val)
 
-        # the index of the item we need is the amount of items per page that were
+        item_index += page_index * PAGE_LEN
+
+        print(
+            f"{' ' * 8}item #{val} found at index {item_index} in the paginated list..."
+        )
+
+        # the index of the items we need is the amount of items per page that were
         # skipped plus the index of the item in it's page
-        out_list.append((page_index * PAGE_LEN) + item_index)
+        out_list.append(item_index)
+
+    print()
 
     return out_list
 
@@ -438,6 +468,8 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
+        print("Beginning issue extraction. Starting may take a moment...\n")
+
         while start_val < end_val + 1:
             try:
                 cur_issue = self.issues_paged_list[start_val]
@@ -456,7 +488,7 @@ class Extractor:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict = merge_dicts(data_dict, cur_entry)
+                data_dict = _merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val = start_val + 1
@@ -552,6 +584,10 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
+        print(
+            "Beginning pull request/commit extraction. Starting may take a moment...\n"
+        )
+
         while start_val < end_val + 1:
             try:
                 # get current PR to begin information gathering
@@ -595,7 +631,7 @@ class Extractor:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict = merge_dicts(data_dict, cur_entry)
+                data_dict = _merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
