@@ -8,8 +8,20 @@ from v2 import conf, file_io, sessions
 PAGE_LEN = 30
 TIME_FMT = "%D, %I:%M:%S %p"
 
-# TODO: make compatible with Python 3.7 and put in it's own branch
-#   • TODO: update readme to discuss that change
+
+def merge_dicts(base: dict, to_merge: dict) -> dict:
+    """
+    Merge two dictionaries
+    NOTE: syntax in 3.9 or greater is "base |= to_merge"
+
+    :param base:
+    :type base: dict
+    :param to_merge:
+    :type to_merge: dict
+    :return:
+    :rtype:
+    """
+    return {**base, **to_merge}
 
 
 def _get_api_item_indices(paged_list, range_list: list) -> list:
@@ -105,7 +117,8 @@ def _get_api_item_indices(paged_list, range_list: list) -> list:
 
     # get sanitized range. This will correct any vals given in the range cfg so that
     # they are within the values that are in the paged list. We are protected from too
-    # low of values by the Cerberus config schema.
+    # low of values by the Cerberus config schema, so this process only looks at values
+    # that are too high.
     sani_range_tuple = (
         min(val, highest_num) for val in (range_list[0], range_list[-1])
     )
@@ -443,7 +456,7 @@ class Extractor:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict |= cur_entry
+                data_dict = merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val = start_val + 1
@@ -582,7 +595,7 @@ class Extractor:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict |= cur_entry
+                data_dict = merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
