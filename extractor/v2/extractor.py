@@ -286,14 +286,14 @@ class Extractor:
 
     def _get_api_item_indices(self, paged_list, range_list: list) -> list:
         """
-        sanitize our range values so that they are guaranteed to be safe, find the indices
-        of those values inside of the paginated list, and return
+        sanitize our range values so that they are guaranteed to be safe, find the
+        indices of those values inside of the paginated list, and return
 
         :param paged_list; Github.PaginatedList of Github.Issues or Github.PullRequests:
-        list of API objects
+            list of API objects
 
-        :param range_list list[int]: list of range beginning and end values that we wish to
-        find in the given paginated list
+        :param range_list list[int]: list of range beginning and end values that we wish
+        to find in the given paginated list
 
         :rtype int: list of indices to the paginated list of items that we wish to find
         """
@@ -319,10 +319,6 @@ class Extractor:
 
                 mid_first_val = paged_list.get_page(mid)[0].number
                 mid_last_val = _get_page_last_item(paged_list, mid).number
-
-                print(
-                    f"current mid: {mid}, mid first: {mid_first_val}, mid last: {mid_last_val}"
-                )
 
                 # if the value we want is greater than the first item (cur_val -
                 # page_len) on the middle page but less than the last item, it is in
