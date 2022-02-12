@@ -18,9 +18,6 @@ class Cfg:
         :param cfg_file str: path name to a configuration file
         :rtype None: initializes Cfg obj
         """
-
-        print("initializing cfg...\n")
-
         # hold onto dict from cfg JSON file
         self.cfg_dict = cfg_dict
         self.cfg_schema = cfg_schema

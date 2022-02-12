@@ -2,16 +2,6 @@
 The extractor module provides and exposes functionality to mine GitHub repositories.
 """
 
-# TODO:
-# • store pages as members for quick access by second getter, e.g. if we get pages
-#   or indices for getting issues, store them for use in getting PRs
-#
-# • attempt to use pages to start getters. They are slow to start because we have to
-#   like, increment to them. It's crazy slow
-#   1. send page index and index of item in that page
-#   2. get page, then get item in page, then get number of that item
-#   3. while cur_num (number from point 2) < range[1]
-
 import github
 from v2 import conf, file_io, sessions
 
@@ -165,19 +155,18 @@ def _get_commit_sha(api_obj) -> str:
 
 
 def _merge_dicts(base: dict, to_merge: dict) -> dict:
-    # TODO: finish docstring
     """
     Merge two dictionaries
     NOTES:
         • syntax in 3.9 or greater is "base |= to_merge"
             • pipe is the "merge operator"
 
-    :param base:
+    :param base: dict to merge into
     :type base: dict
-    :param to_merge:
+    :param to_merge: dict to dissolve into base dict
     :type to_merge: dict
-    :return:
-    :rtype:
+    :return: base dict
+    :rtype: dict
     """
     return {**base, **to_merge}
 
@@ -276,7 +265,7 @@ class Extractor:
         # initialize configuration object with cfg dict
         self.cfg = conf.Cfg(cfg_dict, self.CFG_SCHEMA)
 
-        auth_path = self.cfg.get_cfg_val("auth_file")
+        auth_path = self.get_cfg_val("auth_file")
 
         # initialize authenticated GitHub session
         self.gh_sesh = sessions.GithubSession(auth_path)
@@ -299,9 +288,10 @@ class Extractor:
         """
 
         def __bin_search_in_list(paged_list, last_page_index: int, val: int) -> int:
-
-            # TODO: finish docstring
             """
+            iterative binary search which finds the page of an item that we are looking
+            for, such as a PR or issue, inside of a list of pages of related objects
+            from the GitHub API.
 
             :param paged_list: paginated list of issues or PRs
             :type paged_list:Github.PaginatedList of Github.Issues or
@@ -336,7 +326,7 @@ class Extractor:
 
         def __bin_search_in_page(paged_list_page, page_len: int, val: int) -> int:
             """
-            Iterative binary search modified to return either the exact index of the
+            iterative binary search modified to return either the exact index of the
             item with the number the user desires or the index of the item beneath that
             value in the case that the value does not exist in the list. An example
             might be that a paginated list of issues does not have #'s 9, 10, or 11, but
@@ -374,7 +364,7 @@ class Extractor:
 
             return low
 
-        page_len = self.gh_sesh.page_len
+        page_len = self.gh_sesh.get_pg_len()
         out_list = []
 
         print(f"{' ' * 4}Sanitizing range configuration values...")
@@ -427,9 +417,18 @@ class Extractor:
 
         return out_list
 
+    def get_cfg_val(self, key: str):
+        """
+        :param key: key of desired value from configuration dict to get
+        :type key: str
+        :return: value from configuration associated with given key
+        :rtype: [str | int]
+        """
+        return self.cfg.get_cfg_val(key)
+
     def get_issues_data(self) -> None:
         """
-        Retrieves issue data from the GitHub API; uses the "range" configuration value
+        retrieves issue data from the GitHub API; uses the "range" configuration value
         to determine what indices of the issue paged list to look at and the
         "issues_fields" field to determine what information it should retrieve from
         each issues of interest
@@ -439,13 +438,13 @@ class Extractor:
         made again
         """
 
-        data_dict = {}
+        data_dict = {"issue": {}}
 
         # get output file path
-        out_file = self.cfg.get_cfg_val("output_file")
+        out_file = self.get_cfg_val("output_file")
 
         # get indices of sanitized range values
-        val_range = self.cfg.get_cfg_val("range")
+        val_range = self.get_cfg_val("range")
         range_list = self._get_api_item_indices(self.issues_paged_list, val_range)
 
         # unpack vals
@@ -461,7 +460,7 @@ class Extractor:
 
                 cur_item_data = {
                     field: self.__ISSUE_CMD_DISPATCH[field](cur_issue)
-                    for field in self.cfg.get_cfg_val("issues_fields")
+                    for field in self.get_cfg_val("issues_fields")
                 }
 
                 cur_entry = {cur_issue_num: cur_item_data}
@@ -472,7 +471,7 @@ class Extractor:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict = _merge_dicts(data_dict, cur_entry)
+                data_dict["issue"] = _merge_dicts(data_dict["issue"], cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
@@ -481,7 +480,7 @@ class Extractor:
 
     def __get_paged_list(self, list_type):
         """
-        retrieve and store a paginated list from GitHub
+        retrieves and stores a paginated list from GitHub
 
         :param list_type str: type of paginated list to retrieve
 
@@ -491,8 +490,8 @@ class Extractor:
 
         :rtype None: sets object member to paginated list object
         """
-        job_repo = self.cfg.get_cfg_val("repo")
-        item_state = self.cfg.get_cfg_val("state")
+        job_repo = self.get_cfg_val("repo")
+        item_state = self.get_cfg_val("state")
 
         while True:
             try:
@@ -513,12 +512,12 @@ class Extractor:
 
     def get_pr_data(self) -> None:
         """
-        Retrieves both PR and commit data from the GitHub API; uses the "range"
+        retrieves both PR and commit data from the GitHub API; uses the "range"
         configuration value to determine what indices of the PR paged list to
         look at and the "pr_fields" and "commit_fields" configurationfields to
         determine what information it should retrieve from each PR of interest.
 
-        Commits are included by default because the commit info we are interested in
+        commits are included by default because the commit info we are interested in
         descends from and is retrievable via PRs, i.e. we are not intereseted in
         commits that
             1. are not from a closed and merged PR
@@ -549,20 +548,14 @@ class Extractor:
             # use that index to get the commit we are interested in
             return cur_commit_list[last_commit_index]
 
-        data_dict = {}
+        data_dict = {"pr": {}}
 
-        # get fields of values desired from API
-        commit_fields = self.cfg.get_cfg_val("commit_fields")
-        pr_fields = self.cfg.get_cfg_val("pr_fields")
-
-        # get output file path
-        out_file = self.cfg.get_cfg_val("output_file")
-
-        # get range cfg value
-        val_range = self.cfg.get_cfg_val("range")
+        out_file = self.get_cfg_val("output_file")
 
         # get indices of sanitized range values
-        range_list = self._get_api_item_indices(self.pr_paged_list, val_range)
+        range_list = self._get_api_item_indices(
+            self.pr_paged_list, self.get_cfg_val("range")
+        )
 
         # unpack vals
         start_val = range_list[0]
@@ -585,11 +578,13 @@ class Extractor:
 
                 # if the current PR number is greater than or equal to the first
                 # number provided in the "range" cfg val and the PR is merged
-                if is_merged or self.cfg.get_cfg_val("state") == "open":
-                    cur_entry |= {
+                if is_merged or self.get_cfg_val("state") == "open":
+                    cur_entry_data = {
                         field: self.__PR_CMD_DISPATCH[field](cur_pr)
-                        for field in pr_fields
+                        for field in self.get_cfg_val("pr_fields")
                     }
+
+                    cur_entry = _merge_dicts(cur_entry, cur_entry_data)
 
                     last_commit = __get_last_commit(cur_pr)
 
@@ -597,25 +592,23 @@ class Extractor:
                     if len(last_commit.files) > 0:
 
                         # get all data from that commit
-                        cur_entry |= {
+                        cur_entry_data = {
                             field: self.__COMMIT_CMD_DISPATCH[field](last_commit)
-                            for field in commit_fields
+                            for field in self.get_cfg_val("commit_fields")
                         }
 
-                # get the current PR number as a string
-                cur_pr_num = str(cur_pr.number)
+                        cur_entry = _merge_dicts(cur_entry, cur_entry_data)
 
                 # use all gathered entry data as the val for the PR num key
-                cur_entry = {cur_pr_num: cur_entry}
+                cur_entry = {str(cur_pr.number): cur_entry}
 
             except github.RateLimitExceededException:
-                # concatenate gathered data, clear the dict, and sleep
                 file_io.write_merged_dict_to_json(data_dict, out_file)
                 data_dict.clear()
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                data_dict = _merge_dicts(data_dict, cur_entry)
+                data_dict["pr"] = _merge_dicts(data_dict["pr"], cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1

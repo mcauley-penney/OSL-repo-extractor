@@ -77,7 +77,7 @@ def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
     :rtype None: writes output to file, nothing returned
     """
 
-    def __merge_dicts(add_dict, base_dict) -> None:
+    def __merge_dicts_recursive(add_dict, base_dict) -> None:
         """
         loops through keys in dictionary of data from round of API calls to merge
         their data into existing JSON data
@@ -102,7 +102,7 @@ def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
                 and isinstance(add_dict[key], dict)
             ):
                 # recurse
-                __merge_dicts(add_dict[key], base_dict[key])
+                __merge_dicts_recursive(add_dict[key], base_dict[key])
 
             else:
                 # assign the new value from the last round of calls to the existing
@@ -123,7 +123,7 @@ def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
     # in any case
     finally:
         # recursively merge all dicts and nested dicts in both dictionaries
-        __merge_dicts(out_dict, json_dict)
+        __merge_dicts_recursive(out_dict, json_dict)
 
         # write JSON content back to file
         write_dict_to_json(json_dict, out_path)

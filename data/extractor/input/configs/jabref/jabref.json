@@ -4,8 +4,8 @@
     "auth_file": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/input/auths/mp_auth.txt",
     "output_dir": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/output",
     "range": [
-        1,
-        20
+        5,
+        7
     ],
     "commit_fields": [
         "commit_files"
@@ -15,5 +15,7 @@
         "issue_body",
         "issue_comments"
     ],
-    "pr_fields": []
+    "pr_fields": [
+        "pr_title"
+    ]
 }

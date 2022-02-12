@@ -9,7 +9,7 @@ import github
 from v2 import file_io
 
 
-def _print_in_place(label_str: str, val) -> None:
+def _console_print_in_place(label_str: str, val) -> None:
     # clear line to erase any errors due to typing in the console
     print("", end="\r")
 
@@ -28,7 +28,7 @@ class GithubSession:
         initialize GitHub session object
         :param auth_path str: path to file containing personal access token
         """
-        self.page_len = 30
+        self.__page_len = 30
         self.session = self.__get_gh_session(auth_path)
 
     def __get_gh_session(self, auth_path) -> github.Github:
@@ -49,7 +49,7 @@ class GithubSession:
         token = file_io.read_txt_line(auth_path)
 
         # establish a session with token
-        session = github.Github(token, per_page=self.page_len, retry=100, timeout=100)
+        session = github.Github(token, per_page=self.__page_len, retry=100, timeout=100)
 
         try:
             # if name can be gathered from token, properly authenticated
@@ -68,26 +68,25 @@ class GithubSession:
         else:
             return session
 
-    def print_rem_gh_calls(self) -> None:
+    def get_pg_len(self):
         """
-        print remaining calls to API for this hour
+        getter method that allows access to page length of pages in GitHub API
+        paginated lists
+        """
+        return self.__page_len
 
-        :rtype None: prints remaining calls
-        """
+    def print_rem_gh_calls(self) -> None:
+        """print remaining calls to API for this hour"""
         # get remaining calls before reset
         remaining_calls = self.session.rate_limiting[0]
 
         # format as a string
         rem_calls_str = f"{remaining_calls:<4d}"
 
-        _print_in_place("Calls left until sleep:", rem_calls_str)
+        _console_print_in_place("Calls left until sleep:", rem_calls_str)
 
     def sleep_gh_session(self) -> None:
-        """
-        sleep the program until we can make calls again
-
-        :param msg_format str: optional message to print after sleeping
-        """
+        """sleep the program until we can make calls again"""
 
         # time to wait is the amount of seconds until reset minus the current time
         countdown_time = self.session.rate_limiting_resettime - int(time.time())
@@ -100,7 +99,7 @@ class GithubSession:
             # format the time string before printing
             countdown_str = f"{minutes:02d}:{seconds:02d}"
 
-            _print_in_place("time until limit reset:", countdown_str)
+            _console_print_in_place("time until limit reset:", countdown_str)
 
             # sleep for a while
             time.sleep(1)

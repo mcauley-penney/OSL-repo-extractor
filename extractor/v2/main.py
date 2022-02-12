@@ -12,18 +12,27 @@ def main():
 
     cfg_path = get_cli_args()
 
-    # TODO: create conditional to determine items to get, e.g. issues or prs
-    #   • potentially use list in cfg
-
     # init extractor object
-    print("Beginning extractor init, instantiating cfg...\n")
+    print("\nBeginning extractor init, instantiating cfg...")
     gh_ext = extractor.Extractor(cfg_path)
 
-    # print("Getting issue data...\n")
-    gh_ext.get_issues_data()
-    # print("Complete!\n")
+    if gh_ext.get_cfg_val("issues_fields"):
+        print("\nGetting issue data...")
+        gh_ext.get_issues_data()
+        print("\nIssue data complete!")
 
-    # gh_ext.get_pr_data()
+    else:
+        print("\nNo issue fields given! Proceeding...")
+
+    if gh_ext.get_cfg_val("pr_fields"):
+        print("\nGetting pull request data...")
+        gh_ext.get_pr_data()
+        print("\nPull request data complete!")
+
+    else:
+        print("\nNo pull request fields given!")
+
+    print("\nExtraction complete!")
 
 
 def get_cli_args() -> str:
