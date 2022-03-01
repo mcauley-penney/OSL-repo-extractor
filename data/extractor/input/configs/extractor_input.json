@@ -1,21 +1,22 @@
 {
     "repo": "JabRef/jabref",
-    "state": "closed",
     "auth_file": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/input/auths/mp_auth.txt",
     "output_dir": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/output",
-    "range": [
-        5,
-        7
-    ],
+    "state": "closed",
     "commit_fields": [
-        "commit_files"
+        "commit_author_name",
+        "commit_date",
+        "commit_message"
     ],
-    "issues_fields": [
-        "issue_title",
-        "issue_body",
-        "issue_comments"
+    "issue_fields": [
+        "issue_username"
     ],
     "pr_fields": [
+        "pr_body",
         "pr_title"
+    ],
+    "range": [
+        1,
+        20
     ]
 }

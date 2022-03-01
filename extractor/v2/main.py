@@ -16,7 +16,7 @@ def main():
     print("\nBeginning extractor init, instantiating cfg...")
     gh_ext = extractor.Extractor(cfg_path)
 
-    if gh_ext.get_cfg_val("issues_fields"):
+    if gh_ext.get_cfg_val("issue_fields"):
         print("\nGetting issue data...")
         gh_ext.get_issues_data()
         print("\nIssue data complete!")

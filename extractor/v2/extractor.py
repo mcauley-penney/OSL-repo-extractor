@@ -241,7 +241,7 @@ class Extractor:
             "schema": {"type": "string"},
             "type": "list",
         },
-        "issues_fields": {
+        "issue_fields": {
             "allowed": [*__ISSUE_CMD_DISPATCH],
             "schema": {"type": "string"},
             "type": "list",
@@ -428,14 +428,14 @@ class Extractor:
 
     def get_issues_data(self) -> None:
         """
-        retrieves issue data from the GitHub API; uses the "range" configuration value
-        to determine what indices of the issue paged list to look at and the
-        "issues_fields" field to determine what information it should retrieve from
-        each issues of interest
+        retrieves issue data from the GitHub API; uses the "range"
+        configuration value to determine what indices of the issue paged list
+        to look at and the "issues_fields" field to determine what information
+        it should retrieve from each issues of interest
 
-        :raises github.RateLimitExceededException: if rate limited by the GitHub REST
-        API, dump collected data to output file and sleep the program until calls can be
-        made again
+        :raises github.RateLimitExceededException: if rate limited by the
+        GitHub REST API, dump collected data to output file and sleep the
+        program until calls can be made again
         """
 
         data_dict = {"issue": {}}
@@ -444,8 +444,9 @@ class Extractor:
         out_file = self.get_cfg_val("output_file")
 
         # get indices of sanitized range values
-        val_range = self.get_cfg_val("range")
-        range_list = self._get_api_item_indices(self.issues_paged_list, val_range)
+        range_list = self._get_api_item_indices(
+            self.issues_paged_list, self.get_cfg_val("range")
+        )
 
         # unpack vals
         start_val = range_list[0]
@@ -456,19 +457,13 @@ class Extractor:
         while start_val < end_val + 1:
             try:
                 cur_issue = self.issues_paged_list[start_val]
-                cur_issue_num = str(cur_issue.number)
 
-                cur_item_data = {
-                    field: self.__ISSUE_CMD_DISPATCH[field](cur_issue)
-                    for field in self.get_cfg_val("issues_fields")
-                }
+                cur_item_data = self.__get_item_data("issue", cur_issue)
 
-                cur_entry = {cur_issue_num: cur_item_data}
+                cur_entry = {str(cur_issue.number): cur_item_data}
 
             except github.RateLimitExceededException:
-                file_io.write_merged_dict_to_json(data_dict, out_file)
-                data_dict.clear()
-                self.gh_sesh.sleep_gh_session()
+                self.__update_output_json(data_dict, out_file)
 
             else:
                 data_dict["issue"] = _merge_dicts(data_dict["issue"], cur_entry)
@@ -478,15 +473,33 @@ class Extractor:
 
         file_io.write_merged_dict_to_json(data_dict, out_file)
 
+    def __get_item_data(self, item_type, cur_item) -> dict:
+
+        field_str = f"{item_type}_fields"
+
+        if item_type == "pr":
+            dispatch_tbl = self.__PR_CMD_DISPATCH
+
+        elif item_type == "issue":
+            dispatch_tbl = self.__ISSUE_CMD_DISPATCH
+
+        else:
+            dispatch_tbl = self.__COMMIT_CMD_DISPATCH
+
+        return {
+            field: dispatch_tbl[field](cur_item)
+            for field in self.get_cfg_val(field_str)
+        }
+
     def __get_paged_list(self, list_type):
         """
         retrieves and stores a paginated list from GitHub
 
         :param list_type str: type of paginated list to retrieve
 
-        :raises github.RateLimitExceededException: if rate limited by the GitHub REST
-        API, sleep the program until calls can be made again and continue attempt to
-        collect desired paginated list
+        :raises github.RateLimitExceededException: if rate limited by the
+        GitHub REST API, sleep the program until calls can be made again and
+        continue attempt to collect desired paginated list
 
         :rtype None: sets object member to paginated list object
         """
@@ -579,12 +592,9 @@ class Extractor:
                 # if the current PR number is greater than or equal to the first
                 # number provided in the "range" cfg val and the PR is merged
                 if is_merged or self.get_cfg_val("state") == "open":
-                    cur_entry_data = {
-                        field: self.__PR_CMD_DISPATCH[field](cur_pr)
-                        for field in self.get_cfg_val("pr_fields")
-                    }
+                    cur_item_data = self.__get_item_data("pr", cur_pr)
 
-                    cur_entry = _merge_dicts(cur_entry, cur_entry_data)
+                    cur_entry = _merge_dicts(cur_entry, cur_item_data)
 
                     last_commit = __get_last_commit(cur_pr)
 
@@ -592,20 +602,18 @@ class Extractor:
                     if len(last_commit.files) > 0:
 
                         # get all data from that commit
-                        cur_entry_data = {
-                            field: self.__COMMIT_CMD_DISPATCH[field](last_commit)
-                            for field in self.get_cfg_val("commit_fields")
-                        }
+                        cur_item_data = self.__get_item_data(
+                            "commit",
+                            last_commit,
+                        )
 
-                        cur_entry = _merge_dicts(cur_entry, cur_entry_data)
+                        cur_entry = _merge_dicts(cur_entry, cur_item_data)
 
                 # use all gathered entry data as the val for the PR num key
                 cur_entry = {str(cur_pr.number): cur_entry}
 
             except github.RateLimitExceededException:
-                file_io.write_merged_dict_to_json(data_dict, out_file)
-                data_dict.clear()
-                self.gh_sesh.sleep_gh_session()
+                self.__update_output_json(data_dict, out_file)
 
             else:
                 data_dict["pr"] = _merge_dicts(data_dict["pr"], cur_entry)
@@ -614,3 +622,22 @@ class Extractor:
                 start_val += 1
 
         file_io.write_merged_dict_to_json(data_dict, out_file)
+
+    def __update_output_json(self, data_dict, out_file):
+        """
+
+        During rate limiting, we can update the JSON dict in the output file
+        with the data that we have collected since we were last rate limited.
+        This entails writing the current dict of data to the output file,
+        clearing the current dictionary, and sleeping.
+
+        :param data_dict: dictionary of current data to write to output file
+        :type data_dict: dict
+        :param out_file: path to output file
+        :type out_file: string
+        """
+        file_io.write_merged_dict_to_json(data_dict, out_file)
+        data_dict.clear()
+        self.gh_sesh.sleep_gh_session()
+
+        return data_dict
