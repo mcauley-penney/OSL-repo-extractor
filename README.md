@@ -8,7 +8,7 @@ A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fa
 - Packages:
     - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
         - `pip install pygithub`
-    - [Cerberus](https://pygithub.readthedocs.io/en/latest/introduction.html)
+    - [Cerberus](https://docs.python-cerberus.org/en/stable/)
         - `pip install cerberus`
 
 
@@ -57,7 +57,7 @@ $ python main.py <path/to/cfg/file>
         "commit_date",
         "commit_message"
     ],
-    "issues_fields": [
+    "issue_fields": [
         "issue_username"
     ],
     "pr_fields": [
@@ -108,21 +108,18 @@ during your next execution.
 
 ### troubleshooting
 
-If you are having an issue running the extractor, such as Python reporting that the `v2` package does not exists, you likely
-need to update your `PYTHONPATH` environment variable. To do this, you can use the command below with modifications;
-substitute the path in quotes with the path to the `extractor` subdir inside of the project, i.e.
-`/home/<user>/<rest_of_path>/GitHub-Repo-Extractor/extractor` and the redirect location with the path to your shell rc file,
-e.g. `~/.bashrc` or `~/.zshrc`:
+1. `v2` package does not exists
+
+You likely need to update your `PYTHONPATH` environment variable so that your Python executable knows where to look for packages and modules. To do this, you can modify and paste the `export` statment below into your shell rc file e.g. `~/.bashrc` or `~/.zshrc`:
 
 ```shell
-$ echo 'export PYTHONPATH="<path_to_extractor>"' >> <shell_rcfile_location>
+export PYTHONPATH='$PYTHONPATH:<path>/GitHub-Repo-Extractor/extractor'
 ```
+
+In the future, the `v2` source may be collapsed into a monolithic module, eliminating the need for this.
 
 
 ## TODO:
-- Make compatible with more common versions of Python, namely Python 3.8.3
-- update main.py so that it does not need to be manually modified to choose what data to collect
-- update README at next stage
-    - add `installation` section and move `troubleshooting` there
-    - update `troubleshooting`
-    - add information about the `state` configuration value into the `configuration` section
+- update README
+    - add `state` configuration value into the `configuration` section
+    - update `configuration` completely
