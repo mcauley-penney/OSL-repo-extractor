@@ -90,11 +90,11 @@ def _get_userlogin(api_obj) -> str:
     return _clean_str(api_obj.user.login)
 
 
-def _get_commit_auth_date(api_obj) -> str:
+def _get_commit_date(api_obj) -> str:
     return api_obj.commit.author.date.strftime(TIME_FMT)
 
 
-def _get_commit_auth_name(api_obj) -> str:
+def _get_commit_author_name(api_obj) -> str:
     return api_obj.commit.author.name
 
 
@@ -159,7 +159,7 @@ def _merge_dicts(base: dict, to_merge: dict) -> dict:
     Merge two dictionaries
     NOTES:
         • syntax in 3.9 or greater is "base |= to_merge"
-            • pipe is the "merge operator"
+            • pipe is the "merge" operator, can be used in augmented assignment
 
     :param base: dict to merge into
     :type base: dict
@@ -181,31 +181,31 @@ class Extractor:
 
     # init dispatch tables that allow us to use strings to access functions
     # intro: https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
-    __COMMIT_CMD_DISPATCH = {
-        "commit_author_name": _get_commit_auth_name,
-        "committer": _get_commit_committer,
-        "commit_date": _get_commit_auth_date,
-        "commit_files": _get_commit_files,
-        "commit_message": _get_commit_msg,
-        "commit_sha": _get_commit_sha,
-    }
-
-    __ISSUE_CMD_DISPATCH = {
-        "issue_body": _get_body,
-        "issue_closed": _get_closed_time,
-        "issue_comments": _get_issue_comments,
-        "issue_title": _get_title,
-        "issue_userlogin": _get_userlogin,
-        "issue_username": _get_username,
-    }
-
-    __PR_CMD_DISPATCH = {
-        "pr_body": _get_body,
-        "pr_closed": _get_closed_time,
-        "__pr_merged": _get_pr_merged,
-        "pr_title": _get_title,
-        "pr_userlogin": _get_userlogin,
-        "pr_username": _get_username,
+    __cmd_tbl_dict = {
+        "commit": {
+            "commit_author_name": _get_commit_author_name,
+            "committer": _get_commit_committer,
+            "commit_date": _get_commit_date,
+            "commit_files": _get_commit_files,
+            "commit_message": _get_commit_msg,
+            "commit_sha": _get_commit_sha,
+        },
+        "issue": {
+            "body": _get_body,
+            "closed": _get_closed_time,
+            "issue_comments": _get_issue_comments,
+            "title": _get_title,
+            "userlogin": _get_userlogin,
+            "username": _get_username,
+        },
+        "pr": {
+            "body": _get_body,
+            "closed": _get_closed_time,
+            "__pr_merged": _get_pr_merged,
+            "title": _get_title,
+            "userlogin": _get_userlogin,
+            "username": _get_username,
+        },
     }
 
     # See cerberus documentation for schema rules:
@@ -237,17 +237,17 @@ class Extractor:
         "state": {"allowed": ["closed", "open"], "type": "string"},
         "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
         "commit_fields": {
-            "allowed": [*__COMMIT_CMD_DISPATCH],
+            "allowed": [*__cmd_tbl_dict["commit"]],
             "schema": {"type": "string"},
             "type": "list",
         },
         "issue_fields": {
-            "allowed": [*__ISSUE_CMD_DISPATCH],
+            "allowed": [*__cmd_tbl_dict["issue"]],
             "schema": {"type": "string"},
             "type": "list",
         },
         "pr_fields": {
-            "allowed": [*__PR_CMD_DISPATCH],
+            "allowed": [*__cmd_tbl_dict["pr"]],
             "schema": {"type": "string"},
             "type": "list",
         },
@@ -270,10 +270,9 @@ class Extractor:
         # initialize authenticated GitHub session
         self.gh_sesh = sessions.GithubSession(auth_path)
 
-        self.pr_paged_list = self.__get_paged_list("pr")
-        self.issues_paged_list = self.__get_paged_list("issues")
+        self.paged_list_dict = self.__get_paged_list_dict()
 
-    def _get_api_item_indices(self, paged_list, range_list: list) -> list:
+    def _get_range_api_indices(self, paged_list) -> list:
         """
         sanitize our range values so that they are guaranteed to be safe, find the
         indices of those values inside of the paginated list, and return
@@ -364,6 +363,7 @@ class Extractor:
 
             return low
 
+        range_list = self.get_cfg_val("range")
         page_len = self.gh_sesh.get_pg_len()
         out_list = []
 
@@ -409,8 +409,8 @@ class Extractor:
                 f"{' ' * 8}item #{val} found at index {item_list_index} in the paginated list..."
             )
 
-            # the index of the items we need is the amount of items per page that were
-            # skipped plus the index of the item in it's page
+            # the index of the items we need is the amount of items per page
+            # that were skipped plus the index of the item in it's page
             out_list.append(item_list_index)
 
         print()
@@ -438,15 +438,13 @@ class Extractor:
         program until calls can be made again
         """
 
-        data_dict = {"issue": {}}
-
-        # get output file path
+        data_type = "issue"
+        data_dict = {data_type: {}}
         out_file = self.get_cfg_val("output_file")
+        paged_list = self.__get_paged_list(data_type)
 
         # get indices of sanitized range values
-        range_list = self._get_api_item_indices(
-            self.issues_paged_list, self.get_cfg_val("range")
-        )
+        range_list = self._get_range_api_indices(paged_list)
 
         # unpack vals
         start_val = range_list[0]
@@ -456,17 +454,17 @@ class Extractor:
 
         while start_val < end_val + 1:
             try:
-                cur_issue = self.issues_paged_list[start_val]
+                cur_issue = paged_list[start_val]
 
-                cur_item_data = self.__get_item_data("issue", cur_issue)
+                cur_item_data = self.__get_item_data(data_type, cur_issue)
 
                 cur_entry = {str(cur_issue.number): cur_item_data}
 
             except github.RateLimitExceededException:
-                self.__update_output_json(data_dict, out_file)
+                self.__update_output_json_for_sleep(data_dict, out_file)
 
             else:
-                data_dict["issue"] = _merge_dicts(data_dict["issue"], cur_entry)
+                data_dict[data_type] = _merge_dicts(data_dict[data_type], cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
@@ -474,24 +472,30 @@ class Extractor:
         file_io.write_merged_dict_to_json(data_dict, out_file)
 
     def __get_item_data(self, item_type, cur_item) -> dict:
+        """
+        For each field in the list provided by the user in configuration, e.g.
+        "issue_fields", get the associated piece of data and store it in a
+        dict where {field name: field data}, e.g. {"issue number": 20}
 
-        field_str = f"{item_type}_fields"
+        :param item_type: name of item type to retrieve, e.g. "pr" or "issue"
+        :type item_type: str
+        :param cur_item: the current API item to get data about, e.g. current PR
+        :type cur_item: PyGitHub PR or Issue
+        :return: dictionary of API data values for param item
+        :rtype: dict
+        """
+        field_list = self.get_cfg_val(f"{item_type}_fields")
 
-        if item_type == "pr":
-            dispatch_tbl = self.__PR_CMD_DISPATCH
+        cmd_tbl = self.__cmd_tbl_dict[item_type]
 
-        elif item_type == "issue":
-            dispatch_tbl = self.__ISSUE_CMD_DISPATCH
+        # when called, this will resolve to various function calls, e.g.
+        # "body": cmd_tbl["body"](cur_PR)
+        return {field: cmd_tbl[field](cur_item) for field in field_list}
 
-        else:
-            dispatch_tbl = self.__COMMIT_CMD_DISPATCH
+    def __get_paged_list(self, key):
+        return self.paged_list_dict[key]
 
-        return {
-            field: dispatch_tbl[field](cur_item)
-            for field in self.get_cfg_val(field_str)
-        }
-
-    def __get_paged_list(self, list_type):
+    def __get_paged_list_dict(self):
         """
         retrieves and stores a paginated list from GitHub
 
@@ -506,22 +510,29 @@ class Extractor:
         job_repo = self.get_cfg_val("repo")
         item_state = self.get_cfg_val("state")
 
+        # create tuple of valid repo object function refs that get paginated
+        # lists
+        paged_ls_fn_ref_strs = {"issue": "get_issues", "pr": "get_pulls"}
+
         while True:
             try:
                 # retrieve GitHub repo object
                 repo_obj = self.gh_sesh.session.get_repo(job_repo)
 
-                if list_type == "issues":
-                    return repo_obj.get_issues(
+                # create dict of {list type name: fn ref to get list}
+                # e.g. {"issue": repo_obj.get_issues}
+                paged_list_dict = {
+                    ls_name: getattr(repo_obj, fn_name_str)(
                         direction="asc", sort="created", state=item_state
                     )
-
-                return repo_obj.get_pulls(
-                    direction="asc", sort="created", state=item_state
-                )
+                    for ls_name, fn_name_str in paged_ls_fn_ref_strs.items()
+                }
 
             except github.RateLimitExceededException:
                 self.gh_sesh.sleep_gh_session()
+
+            else:
+                return paged_list_dict
 
     def get_pr_data(self) -> None:
         """
@@ -530,15 +541,15 @@ class Extractor:
         look at and the "pr_fields" and "commit_fields" configurationfields to
         determine what information it should retrieve from each PR of interest.
 
-        commits are included by default because the commit info we are interested in
-        descends from and is retrievable via PRs, i.e. we are not intereseted in
-        commits that
-            1. are not from a closed and merged PR
+        commits are included by default because the commit info we are
+        interested in descends from and is retrievable via PRs, i.e. we are
+        not intereseted in commits that
+            1. are not from an open or a closed and merged PR
             2. have no files changed by the commit
 
-        :raises github.RateLimitExceededException: if rate limited by the GitHub REST
-        API, dump collected data to output file and sleep the program until calls can
-        be made again
+        :raises github.RateLimitExceededException: if rate limited by the
+        GitHub REST API, dump collected data to output file and sleep the
+        program until calls can be made again
 
         :rtype None
         """
@@ -561,14 +572,13 @@ class Extractor:
             # use that index to get the commit we are interested in
             return cur_commit_list[last_commit_index]
 
-        data_dict = {"pr": {}}
-
+        data_type = "pr"
+        data_dict = {data_type: {}}
         out_file = self.get_cfg_val("output_file")
+        paged_list = self.__get_paged_list(data_type)
 
         # get indices of sanitized range values
-        range_list = self._get_api_item_indices(
-            self.pr_paged_list, self.get_cfg_val("range")
-        )
+        range_list = self._get_range_api_indices(paged_list)
 
         # unpack vals
         start_val = range_list[0]
@@ -581,18 +591,19 @@ class Extractor:
         while start_val < end_val + 1:
             try:
                 # get current PR to begin information gathering
-                cur_pr = self.pr_paged_list[start_val]
+                cur_pr = paged_list[start_val]
 
                 is_merged = cur_pr.merged
 
-                # create dict to build upon. This variable will later become the val of
-                # a dict entry, making it a subdictionary
+                # create dict to build upon. This variable will later become
+                # the val of a dict entry, making it a subdictionary
                 cur_entry = {"__pr_merged": is_merged}
 
-                # if the current PR number is greater than or equal to the first
-                # number provided in the "range" cfg val and the PR is merged
+                # if the current PR number is greater than or equal to the
+                # first number provided in the "range" cfg val and the PR is
+                # merged
                 if is_merged or self.get_cfg_val("state") == "open":
-                    cur_item_data = self.__get_item_data("pr", cur_pr)
+                    cur_item_data = self.__get_item_data(data_type, cur_pr)
 
                     cur_entry = _merge_dicts(cur_entry, cur_item_data)
 
@@ -613,17 +624,17 @@ class Extractor:
                 cur_entry = {str(cur_pr.number): cur_entry}
 
             except github.RateLimitExceededException:
-                self.__update_output_json(data_dict, out_file)
+                self.__update_output_json_for_sleep(data_dict, out_file)
 
             else:
-                data_dict["pr"] = _merge_dicts(data_dict["pr"], cur_entry)
+                data_dict[data_type] = _merge_dicts(data_dict[data_type], cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
 
         file_io.write_merged_dict_to_json(data_dict, out_file)
 
-    def __update_output_json(self, data_dict, out_file):
+    def __update_output_json_for_sleep(self, data_dict, out_file):
         """
 
         During rate limiting, we can update the JSON dict in the output file

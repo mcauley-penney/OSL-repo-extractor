@@ -77,13 +77,14 @@ class GithubSession:
 
     def print_rem_gh_calls(self) -> None:
         """print remaining calls to API for this hour"""
+
         # get remaining calls before reset
-        remaining_calls = self.session.rate_limiting[0]
+        calls_left = self.session.rate_limiting[0]
 
         # format as a string
-        rem_calls_str = f"{remaining_calls:<4d}"
+        calls_left_str = f"{calls_left:<4d}"
 
-        _console_print_in_place("Calls left until sleep:", rem_calls_str)
+        _console_print_in_place("Calls left until sleep:", calls_left_str)
 
     def sleep_gh_session(self) -> None:
         """sleep the program until we can make calls again"""

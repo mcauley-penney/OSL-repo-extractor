@@ -9,11 +9,11 @@
         "commit_message"
     ],
     "issue_fields": [
-        "issue_username"
+        "username"
     ],
     "pr_fields": [
-        "pr_body",
-        "pr_title"
+        "body",
+        "title"
     ],
     "range": [
         1,

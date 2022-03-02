@@ -28,7 +28,8 @@ def read_json_to_dict(in_path: str) -> dict:
 
 def read_txt_line(in_path: str) -> str:
     """
-    read personal access tokens (PATs) out of auth file
+    read a single line from the top of a text file.
+    Used for reading personal access tokens (PATs) out of auth file
 
     :raises FileNotFoundError: file does not exist at path
     :param auth_file_path str: path to auth file
