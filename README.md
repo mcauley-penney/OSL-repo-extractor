@@ -2,6 +2,9 @@
 
 A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
+## Purpose
+The GitHub Repo Extractor ("extractor") provides an expedient way to gather data from GitHub repositories using the [GitHub REST API](https://docs.github.com/en/rest).
+
 
 ## Requirements
 - Written in `Python 3.8.3`
@@ -10,14 +13,6 @@ A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fa
         - `pip install pygithub`
     - [Cerberus](https://docs.python-cerberus.org/en/stable/)
         - `pip install cerberus`
-
-
-## Contributing
-Using default settings for each, please:
-- format all contributions with [black](https://pypi.org/project/black/)
-    - `pip install black`
-- lint all contributions with [pylint](https://pypi.org/project/pylint/)
-    - `pip install pylint`
 
 
 ## Usage
@@ -58,11 +53,11 @@ $ python main.py <path/to/cfg/file>
         "commit_message"
     ],
     "issue_fields": [
-        "issue_username"
+        "username"
     ],
     "pr_fields": [
-        "pr_body",
-        "pr_title"
+        "body",
+        "title"
     ]
 }
 ```
@@ -72,20 +67,28 @@ Some key points about the configuration:
 - The `auth_file` value requires a path to a file containing a GitHub Personal Access Token. Please format the PAT with no
   extra newlines or trailing spaces. The PAT should be on the first line.
 
-- The `output_dir` will be used to create the necessary outputs for you using the provided repo. You do not need to provide
-  a name to an output file nor do you need to create the output directory by hand; it will be created for you if it does not
-  exist.  After an execution, the output directory structure will look like `<output_dir>/<repo>/<repo>_output.json`
+- The `output_dir` value will be used to create the necessary outputs for you using the provided repo. You do not need to
+  provide a name to an output file nor do you need to create the output directory by hand; it will be created for you if it
+  does not exist.  After an execution, the output directory structure will look like `<output_dir>/<repo>/<repo>_output.json`
   e.g. `<output_dir>/jabref/jabref_output.json`
+
+- The `state` value is used to determine whether or not the extractor will gather data on PR's that are either
+    1. open
+    2. closed *and* merged
+
+    The extractor will not look at PR's that are closed and not merged.
 
 - The `range` value discusses the actual item numbers you want to gather data from. If you want data from PR #270 up to
   PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y]; it is inclusive of both values.
 
 - The `fields` keys discuss what pieces of data you want to gather from the objects in the given range. The extractor will
-  merge gathered data. For example, if you collected the `pr_body` for objects 1-10 but wanted to gather the `issue_username`
-  for those same objects, you can simply change the values of the `fields` keys and run again. The extractor will simply add
-  the new data in for each key in the JSON output.
-    - You do not need to ask for issue numbers, PR numbers, the PR's merged status. Those pieces of data are mandatory, will
-      always be collected, and the commands to access them are private.
+  merge gathered data. If you collected one piece of data for a range of API items, e.g. the body of a set of PR's, but now want to collect the title of those same PR's, you can simply add the correct field, "title", to the "pr_fields" list and the extractor will collect that data and merge it with the already existing JSON dictionary at the current output.
+    - You do not need to ask for:
+        - issue numbers
+        - PR numbers
+        - a PR's merged status
+
+      Those pieces of data are mandatory when collecting data for those API item types, meaning that they will always be collected when collecting data on their respective item. *You do not need to attempt to provide them as arguments to the configuration files "fields" lists.*
 
 ### output
 
@@ -119,7 +122,19 @@ export PYTHONPATH='$PYTHONPATH:<path>/GitHub-Repo-Extractor/extractor'
 In the future, the `v2` source may be collapsed into a monolithic module, eliminating the need for this.
 
 
+## Contributing
+
+#### commit formatting
+Please attempt to abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
+
+#### source code standards
+Using default settings for each, please:
+- format all contributions with [black](https://pypi.org/project/black/)
+    - `pip install black`
+- lint all contributions with [pylint](https://pypi.org/project/pylint/)
+    - `pip install pylint`
+
+
 ## TODO:
 - update README
     - add `state` configuration value into the `configuration` section
-    - update `configuration` completely
