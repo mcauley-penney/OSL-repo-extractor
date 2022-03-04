@@ -133,8 +133,3 @@ Using default settings for each, please:
     - `pip install black`
 - lint all contributions with [pylint](https://pypi.org/project/pylint/)
     - `pip install pylint`
-
-
-## TODO:
-- update README
-    - add `state` configuration value into the `configuration` section
