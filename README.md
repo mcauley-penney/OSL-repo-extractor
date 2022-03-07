@@ -2,8 +2,11 @@
 
 A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
+
 ## Purpose
 The GitHub Repo Extractor ("extractor") provides an expedient way to gather data from GitHub repositories using the [GitHub REST API](https://docs.github.com/en/rest).
+
+
 
 
 ## Requirements
@@ -15,9 +18,10 @@ The GitHub Repo Extractor ("extractor") provides an expedient way to gather data
         - `pip install cerberus`
 
 
+
+
 ## Usage
 ### arguments
-
 ```shell
 $ python main.py
 usage: main.py [-h] extractor_cfg_file
@@ -33,8 +37,8 @@ will look like:
 $ python main.py <path/to/cfg/file>
 ```
 
-### configuration
 
+### configuration
 ```shell
 ~/files/work/repo-extractor/data/input/configs
 » cat sample.json
@@ -90,8 +94,8 @@ Some key points about the configuration:
 
       Those pieces of data are mandatory when collecting data for those API item types, meaning that they will always be collected when collecting data on their respective item. *You do not need to attempt to provide them as arguments to the configuration files "fields" lists.*
 
-### output
 
+### output
 During a round of API calls, the extractor will compile gathered outputs into a dictionary. Under two conditions, the
 extractor will write output to the output file provided in the configuration:
 
@@ -110,7 +114,6 @@ output, see what PR or issue number the extractor last collected data for, and u
 during your next execution.
 
 ### troubleshooting
-
 1. `v2` package does not exists
 
 You likely need to update your `PYTHONPATH` environment variable so that your Python executable knows where to look for packages and modules. To do this, you can modify and paste the `export` statment below into your shell rc file e.g. `~/.bashrc` or `~/.zshrc`:
@@ -119,7 +122,7 @@ You likely need to update your `PYTHONPATH` environment variable so that your Py
 export PYTHONPATH='$PYTHONPATH:<path>/GitHub-Repo-Extractor/extractor'
 ```
 
-In the future, the `v2` source may be collapsed into a monolithic module, eliminating the need for this.
+
 
 
 ## Contributing
