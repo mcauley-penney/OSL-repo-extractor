@@ -57,69 +57,16 @@ def _get_body(api_obj) -> str:
     return _clean_str(api_obj.body)
 
 
-def _get_closed_time(api_obj) -> str:
-    """
-    if the API object has been closed, i.e. closed PR or issue, return the formatted
-    datetime that it was closed at
-
-    :param api_obj github.PullRequest/github.Issue: API object to get datetime of
-    closing of
-    """
-    if api_obj.closed_at is not None:
-        return api_obj.closed_at.strftime(TIME_FMT)
-
-    return "NaN"
-
-
-def _get_issue_comments(issue_obj) -> str:
-    """
-    if a given issue has comments, collect them all into one string separated by a
-    special delimeter, format the str, and return it
-
-    :param api_obj github.Issue: Issue object to comments of
-    """
-    comments_paged_list = issue_obj.get_comments()
-
-    if comments_paged_list.totalCount != 0:
-        sep_str = " =||= "
-
-        # get body from each comment, strip of whitespace, and join w/ special char
-        comment_str = sep_str.join(
-            comment.body.strip() for comment in comments_paged_list
-        )
-
-        # strip comment string of \n, \r, and whitespace again
-        return _clean_str(comment_str)
-
-    return "NaN"
-
-
-def _get_pr_merged(pr_obj) -> bool:
-    return pr_obj.merged
-
-
-def _get_title(api_obj) -> str:
-    return api_obj.title
-
-
-def _get_username(api_obj) -> str:
-    return _clean_str(api_obj.user.name)
-
-
-def _get_userlogin(api_obj) -> str:
-    return _clean_str(api_obj.user.login)
-
-
-def _get_commit_date(api_obj) -> str:
-    return api_obj.commit.author.date.strftime(TIME_FMT)
-
-
 def _get_commit_author_name(api_obj) -> str:
     return api_obj.commit.author.name
 
 
 def _get_commit_committer(api_obj) -> str:
     return api_obj.commit.committer.name
+
+
+def _get_commit_date(api_obj) -> str:
+    return api_obj.commit.author.date.strftime(TIME_FMT)
 
 
 def _get_commit_files(api_obj) -> dict:
@@ -172,6 +119,59 @@ def _get_commit_msg(api_obj) -> str:
 
 def _get_commit_sha(api_obj) -> str:
     return api_obj.sha
+
+
+def _get_closed_time(api_obj) -> str:
+    """
+    if the API object has been closed, i.e. closed PR or issue, return the formatted
+    datetime that it was closed at
+
+    :param api_obj github.PullRequest/github.Issue: API object to get datetime of
+    closing of
+    """
+    if api_obj.closed_at is not None:
+        return api_obj.closed_at.strftime(TIME_FMT)
+
+    return "NaN"
+
+
+def _get_issue_comments(issue_obj) -> str:
+    """
+    if a given issue has comments, collect them all into one string separated by a
+    special delimeter, format the str, and return it
+
+    :param api_obj github.Issue: Issue object to comments of
+    """
+    comments_paged_list = issue_obj.get_comments()
+
+    if comments_paged_list.totalCount != 0:
+        sep_str = " =||= "
+
+        # get body from each comment, strip of whitespace, and join w/ special char
+        comment_str = sep_str.join(
+            comment.body.strip() for comment in comments_paged_list
+        )
+
+        # strip comment string of \n, \r, and whitespace again
+        return _clean_str(comment_str)
+
+    return "NaN"
+
+
+def _get_pr_merged(pr_obj) -> bool:
+    return pr_obj.merged
+
+
+def _get_title(api_obj) -> str:
+    return api_obj.title
+
+
+def _get_userlogin(api_obj) -> str:
+    return _clean_str(api_obj.user.login)
+
+
+def _get_username(api_obj) -> str:
+    return _clean_str(api_obj.user.name)
 
 
 cmd_tbl_dict = {

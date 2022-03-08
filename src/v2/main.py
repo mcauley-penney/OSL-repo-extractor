@@ -25,9 +25,9 @@ def main():
         print("\nNo issue fields given! Proceeding...")
 
     if gh_ext.get_cfg_val("pr_fields"):
-        print("\nGetting pull request data...")
+        print("\nGetting pull request/commit data...")
         gh_ext.get_pr_data()
-        print("\nPull request data complete!")
+        print("\nPull request/commit data complete!")
 
     else:
         print("\nNo pull request fields given!")

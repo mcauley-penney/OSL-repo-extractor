@@ -34,14 +34,47 @@ def main():
         print("\nNo issue fields given! Proceeding...")
 
     if gh_ext.get_cfg_val("pr_fields"):
-        print("\nGetting pull request data...")
+        print("\nGetting pull request/commit data...")
         gh_ext.get_pr_data()
-        print("\nPull request data complete!")
+        print("\nPull request data/commit complete!")
 
     else:
         print("\nNo pull request fields given!")
 
     print("\nExtraction complete!")
+
+
+def _clean_str(str_to_clean) -> str:
+    """
+    If a string is empty or None, returns NaN. Otherwise, strip the string of any
+    carriage returns, newlines, and leading or trailing whitespace.
+
+    :param str_to_clean str: string to clean and return
+    """
+    if str_to_clean is None or str_to_clean == "":
+        return "Nan"
+
+    output_str = str_to_clean.replace("\r", "")
+    output_str = output_str.replace("\n", "")
+
+    return output_str.strip()
+
+
+def _console_print_in_place(label_str: str, val) -> None:
+    # clear line to erase any errors due to typing in the console
+    print("", end="\r")
+
+    # print output in place
+    print(f"{' ' * 4}{label_str} {val}", end="\r")
+
+
+def _get_body(api_obj) -> str:
+    """
+    return issue or PR text body
+
+    :param api_obj github.PullRequest/github.Issue: API object to get body text of
+    """
+    return _clean_str(api_obj.body)
 
 
 def get_cli_args() -> str:
@@ -65,31 +98,6 @@ def get_cli_args() -> str:
     return arg_parser.parse_args().extractor_cfg_file
 
 
-def _clean_str(str_to_clean) -> str:
-    """
-    If a string is empty or None, returns NaN. Otherwise, strip the string of any
-    carriage returns, newlines, and leading or trailing whitespace.
-
-    :param str_to_clean str: string to clean and return
-    """
-    if str_to_clean is None or str_to_clean == "":
-        return "Nan"
-
-    output_str = str_to_clean.replace("\r", "")
-    output_str = output_str.replace("\n", "")
-
-    return output_str.strip()
-
-
-def _get_body(api_obj) -> str:
-    """
-    return issue or PR text body
-
-    :param api_obj github.PullRequest/github.Issue: API object to get body text of
-    """
-    return _clean_str(api_obj.body)
-
-
 def _get_closed_time(api_obj) -> str:
     """
     if the API object has been closed, i.e. closed PR or issue, return the formatted
@@ -104,55 +112,16 @@ def _get_closed_time(api_obj) -> str:
     return "NaN"
 
 
-def _get_issue_comments(issue_obj) -> str:
-    """
-    if a given issue has comments, collect them all into one string separated by a
-    special delimeter, format the str, and return it
-
-    :param api_obj github.Issue: Issue object to comments of
-    """
-    comments_paged_list = issue_obj.get_comments()
-
-    if comments_paged_list.totalCount != 0:
-        sep_str = " =||= "
-
-        # get body from each comment, strip of whitespace, and join w/ special char
-        comment_str = sep_str.join(
-            comment.body.strip() for comment in comments_paged_list
-        )
-
-        # strip comment string of \n, \r, and whitespace again
-        return _clean_str(comment_str)
-
-    return "NaN"
-
-
-def _get_pr_merged(pr_obj) -> bool:
-    return pr_obj.merged
-
-
-def _get_title(api_obj) -> str:
-    return api_obj.title
-
-
-def _get_username(api_obj) -> str:
-    return _clean_str(api_obj.user.name)
-
-
-def _get_userlogin(api_obj) -> str:
-    return _clean_str(api_obj.user.login)
-
-
-def _get_commit_date(api_obj) -> str:
-    return api_obj.commit.author.date.strftime(TIME_FMT)
-
-
 def _get_commit_author_name(api_obj) -> str:
     return api_obj.commit.author.name
 
 
 def _get_commit_committer(api_obj) -> str:
     return api_obj.commit.committer.name
+
+
+def _get_commit_date(api_obj) -> str:
+    return api_obj.commit.author.date.strftime(TIME_FMT)
 
 
 def _get_commit_files(api_obj) -> dict:
@@ -207,6 +176,193 @@ def _get_commit_sha(api_obj) -> str:
     return api_obj.sha
 
 
+def _get_issue_comments(issue_obj) -> str:
+    """
+    if a given issue has comments, collect them all into one string separated by a
+    special delimeter, format the str, and return it
+
+    :param api_obj github.Issue: Issue object to comments of
+    """
+    comments_paged_list = issue_obj.get_comments()
+
+    if comments_paged_list.totalCount != 0:
+        sep_str = " =||= "
+
+        # get body from each comment, strip of whitespace, and join w/ special char
+        comment_str = sep_str.join(
+            comment.body.strip() for comment in comments_paged_list
+        )
+
+        # strip comment string of \n, \r, and whitespace again
+        return _clean_str(comment_str)
+
+    return "NaN"
+
+
+def _get_page_last_item(paged_list, page_index):
+    return paged_list.get_page(page_index)[-1]
+
+
+def _get_pr_merged(pr_obj) -> bool:
+    return pr_obj.merged
+
+
+def _get_title(api_obj) -> str:
+    return api_obj.title
+
+
+def _get_username(api_obj) -> str:
+    return _clean_str(api_obj.user.name)
+
+
+def _get_userlogin(api_obj) -> str:
+    return _clean_str(api_obj.user.login)
+
+
+def _merge_dicts(base: dict, to_merge: dict) -> dict:
+    """
+    Merge two dictionaries
+    NOTES:
+        • syntax in 3.9 or greater is "base |= to_merge"
+            • pipe is the "merge" operator, can be used in augmented assignment
+
+    :param base: dict to merge into
+    :type base: dict
+    :param to_merge: dict to dissolve into base dict
+    :type to_merge: dict
+    :return: base dict
+    :rtype: dict
+    """
+    return {**base, **to_merge}
+
+
+def read_json_to_dict(in_path: str) -> dict:
+    """
+    open the provided JSON file and read its contents out into a dictionary
+
+    :raises FileNotFoundError: file does not exist at path
+    :param cfg_file str: path name to a JSON configuration file
+    :rtype dict: dictionary constructed from JSON string
+    """
+
+    try:
+        with open(in_path, "r", encoding="UTF-8") as file_obj:
+            json_text = file_obj.read()
+
+    except FileNotFoundError:
+        print(f"\nFile at {in_path} not found!")
+        sys.exit(1)
+
+    else:
+        return json.loads(json_text)
+
+
+def read_txt_line(in_path: str) -> str:
+    """
+    read a single line from the top of a text file.
+    Used for reading personal access tokens (PATs) out of auth file
+
+    :raises FileNotFoundError: file does not exist at path
+    :param auth_file_path str: path to auth file
+    :rtype pat_list list[str]: text lines from auth file
+    """
+    try:
+        with open(in_path, "r", encoding="UTF-8") as file_obj:
+            file_text = file_obj.readline()
+
+    except FileNotFoundError:
+        # if the file is not found log an error and exit
+        print(f"\nFile at {in_path} not found!")
+        sys.exit(1)
+
+    else:
+        return file_text.strip().strip("\n")
+
+
+def write_dict_to_json(out_dict: dict, out_path: str) -> None:
+    """
+    write given Python dictionary to output file as JSON
+
+    :raises FileNotFoundError: file does not exist at path
+    :param out_dict dict: dictionary to write as JSON
+    :param out_path str: path to write output to
+    :rtype None
+    """
+    try:
+        with open(out_path, "w", encoding="UTF-8") as json_outfile:
+            json.dump(out_dict, json_outfile, ensure_ascii=False, indent=4)
+
+    except FileNotFoundError:
+        print(f"\nFile at {out_path} not found!")
+
+
+def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
+    """
+    gets the desired output path, opens and reads any JSON data that may already be
+    there, and recursively merges in param data from the most recent round of API
+    calls
+
+    :param out_dict dict[unknown]: dict of data from round of API calls to merge and
+    write
+    :param out_path str: path to file in fs that we want to write to
+
+    :rtype None: writes output to file, nothing returned
+    """
+
+    def __merge_dicts_recursive(add_dict, base_dict) -> None:
+        """
+        loops through keys in dictionary of data from round of API calls to merge
+        their data into existing JSON data
+
+        credit to Paul Durivage: https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
+
+        :param add_dict dict[unknown]: dict of data to be written
+
+        :param base_dict dict[unknown]: dict of data already written to and read out
+        from JSON file
+
+        :rtype None: merges param dicts
+        """
+        # for each key in the dict that we created with the round of API calls
+        for key in add_dict:
+
+            # if that key is in the dict in the existing JSON file and the val at
+            # the key is a dict in both dictionaries
+            if (
+                key in base_dict
+                and isinstance(base_dict[key], dict)
+                and isinstance(add_dict[key], dict)
+            ):
+                # recurse
+                __merge_dicts_recursive(add_dict[key], base_dict[key])
+
+            else:
+                # assign the new value from the last round of calls to the existing
+                # key
+                base_dict[key] = add_dict[key]
+
+    json_dict = {}
+
+    # attempt to read JSON out of output file
+    try:
+        json_dict = read_json_to_dict(out_path)
+
+    # if no JSON content exists there, ignore. In this context, it simply means that we
+    # are writing JSON to a new file
+    except JSONDecodeError:
+        pass
+
+    # in any case
+    finally:
+        # recursively merge all dicts and nested dicts in both dictionaries
+        __merge_dicts_recursive(out_dict, json_dict)
+
+        # write JSON content back to file
+        write_dict_to_json(json_dict, out_path)
+
+    print()
+
+
 cmd_tbl_dict = {
     "commit": {
         "commit_author_name": _get_commit_author_name,
@@ -259,25 +415,88 @@ cfg_schema = {
 }
 
 
-def _get_page_last_item(paged_list, page_index):
-    return paged_list.get_page(page_index)[-1]
-
-
-def _merge_dicts(base: dict, to_merge: dict) -> dict:
+class Cfg:
     """
-    Merge two dictionaries
-    NOTES:
-        • syntax in 3.9 or greater is "base |= to_merge"
-            • pipe is the "merge" operator, can be used in augmented assignment
-
-    :param base: dict to merge into
-    :type base: dict
-    :param to_merge: dict to dissolve into base dict
-    :type to_merge: dict
-    :return: base dict
-    :rtype: dict
+    The Cfg class provides an object which holds all of the configuration
+    for the extractor class
     """
-    return {**base, **to_merge}
+
+    def __init__(self, cfg_dict: dict, schema) -> None:
+        """
+        initialize an object to hold configuration values for the extractor
+
+        :param cfg_file str: path name to a configuration file
+        :rtype None: initializes Cfg obj
+        """
+        # hold onto dict from cfg JSON file
+        self.cfg_dict = cfg_dict
+        self.cfg_schema = schema
+
+        # validate cfg dict
+        self.__validate_dict_entries()
+
+        # use repo and output dir from cfg to create path to write output to
+        self.__set_full_output_dir()
+
+    def get_cfg_val(self, key: str):
+        """
+        print the associated value of key param
+
+        :param key str: associated key for desired val; defaults
+        to returning the path to the config file
+        """
+        return self.cfg_dict[key]
+
+    def set_cfg_val(self, key: str, val) -> None:
+        """
+        set a value inside of the configuration dict
+
+        :param key str: the key of the dict entry to modify
+        :param val str | int: value to assign to dict[key]
+        :rtype None
+        """
+        self.cfg_dict[key] = val
+
+    def __set_full_output_dir(self):
+        """ """
+
+        out_dir = self.get_cfg_val("output_dir")
+
+        # lop repo str off of full repo info, e.g. owner/repo
+        repo_name = self.get_cfg_val("repo").rsplit("/", 1)[1]
+
+        # init output subdir for this repo and hold onto it
+        repo_subdir = f"{out_dir}/{repo_name}"
+
+        # create output directory only if it does not exist
+        os.makedirs(repo_subdir, exist_ok=True)
+
+        out_file = f"{repo_subdir}/{repo_name}_output.json"
+
+        self.set_cfg_val("output_file", out_file)
+
+        # for each file above, create it if it does not exist
+        if not os.path.exists(out_file):
+            os.mknod(out_file)
+
+    def __validate_dict_entries(self) -> None:
+        """
+        use Cerberus to check all entries in the configuration dictionary for
+        correctness of type and content
+
+        See extractor.CFG_SCHEMA for what is permitted
+
+        :rtype None: exits program with failure code if cfg dict is incorrect
+        """
+
+        # init schema for validation
+        validator = cerberus.Validator(self.cfg_schema, require_all=True)
+
+        # if dictionary from JSON does not follow rules in schema
+        if not validator.validate(document=self.cfg_dict):
+            # log an exception and print errors
+            print(f"Validation error!\n {validator.errors}")
+            sys.exit(1)
 
 
 class Extractor:
@@ -484,7 +703,7 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
-        print("Beginning issue extraction. Starting may take a moment...\n")
+        print(f"{' ' * 4}Beginning issue extraction. Starting may take a moment...\n")
 
         while start_val < end_val + 1:
             try:
@@ -619,7 +838,7 @@ class Extractor:
         end_val = range_list[1]
 
         print(
-            "Beginning pull request/commit extraction. Starting may take a moment...\n"
+            f"{' ' * 4}Beginning pull request/commit extraction. Starting may take a moment...\n"
         )
 
         while start_val < end_val + 1:
@@ -670,7 +889,6 @@ class Extractor:
 
     def __update_output_json_for_sleep(self, data_dict, out_file):
         """
-
         During rate limiting, we can update the JSON dict in the output file
         with the data that we have collected since we were last rate limited.
         This entails writing the current dict of data to the output file,
@@ -686,98 +904,6 @@ class Extractor:
         self.gh_sesh.sleep_gh_session()
 
         return data_dict
-
-
-class Cfg:
-    """
-    The Cfg class provides an object which holds all of the configuration
-    for the extractor class
-    """
-
-    def __init__(self, cfg_dict: dict, schema) -> None:
-        """
-        initialize an object to hold configuration values for the extractor
-
-        :param cfg_file str: path name to a configuration file
-        :rtype None: initializes Cfg obj
-        """
-        # hold onto dict from cfg JSON file
-        self.cfg_dict = cfg_dict
-        self.cfg_schema = schema
-
-        # validate cfg dict
-        self.__validate_dict_entries()
-
-        # use repo and output dir from cfg to create path to write output to
-        self.__set_full_output_dir()
-
-    def get_cfg_val(self, key: str):
-        """
-        print the associated value of key param
-
-        :param key str: associated key for desired val; defaults
-        to returning the path to the config file
-        """
-        return self.cfg_dict[key]
-
-    def set_cfg_val(self, key: str, val) -> None:
-        """
-        set a value inside of the configuration dict
-
-        :param key str: the key of the dict entry to modify
-        :param val str | int: value to assign to dict[key]
-        :rtype None
-        """
-        self.cfg_dict[key] = val
-
-    def __set_full_output_dir(self):
-        """ """
-
-        out_dir = self.get_cfg_val("output_dir")
-
-        # lop repo str off of full repo info, e.g. owner/repo
-        repo_name = self.get_cfg_val("repo").rsplit("/", 1)[1]
-
-        # init output subdir for this repo and hold onto it
-        repo_subdir = f"{out_dir}/{repo_name}"
-
-        # create output directory only if it does not exist
-        os.makedirs(repo_subdir, exist_ok=True)
-
-        out_file = f"{repo_subdir}/{repo_name}_output.json"
-
-        self.set_cfg_val("output_file", out_file)
-
-        # for each file above, create it if it does not exist
-        if not os.path.exists(out_file):
-            os.mknod(out_file)
-
-    def __validate_dict_entries(self) -> None:
-        """
-        use Cerberus to check all entries in the configuration dictionary for
-        correctness of type and content
-
-        See extractor.CFG_SCHEMA for what is permitted
-
-        :rtype None: exits program with failure code if cfg dict is incorrect
-        """
-
-        # init schema for validation
-        validator = cerberus.Validator(self.cfg_schema, require_all=True)
-
-        # if dictionary from JSON does not follow rules in schema
-        if not validator.validate(document=self.cfg_dict):
-            # log an exception and print errors
-            print(f"Validation error!\n {validator.errors}")
-            sys.exit(1)
-
-
-def _console_print_in_place(label_str: str, val) -> None:
-    # clear line to erase any errors due to typing in the console
-    print("", end="\r")
-
-    # print output in place
-    print(f"{' ' * 4}{label_str} {val}", end="\r")
 
 
 class GithubSession:
@@ -868,133 +994,6 @@ class GithubSession:
             # sleep for a while
             time.sleep(1)
             countdown_time -= 1
-
-
-def read_json_to_dict(in_path: str) -> dict:
-    """
-    open the provided JSON file and read its contents out into a dictionary
-
-    :raises FileNotFoundError: file does not exist at path
-    :param cfg_file str: path name to a JSON configuration file
-    :rtype dict: dictionary constructed from JSON string
-    """
-
-    try:
-        with open(in_path, "r", encoding="UTF-8") as file_obj:
-            json_text = file_obj.read()
-
-    except FileNotFoundError:
-        print(f"\nFile at {in_path} not found!")
-        sys.exit(1)
-
-    else:
-        return json.loads(json_text)
-
-
-def read_txt_line(in_path: str) -> str:
-    """
-    read a single line from the top of a text file.
-    Used for reading personal access tokens (PATs) out of auth file
-
-    :raises FileNotFoundError: file does not exist at path
-    :param auth_file_path str: path to auth file
-    :rtype pat_list list[str]: text lines from auth file
-    """
-    try:
-        with open(in_path, "r", encoding="UTF-8") as file_obj:
-            file_text = file_obj.readline()
-
-    except FileNotFoundError:
-        # if the file is not found log an error and exit
-        print(f"\nFile at {in_path} not found!")
-        sys.exit(1)
-
-    else:
-        return file_text.strip().strip("\n")
-
-
-def write_dict_to_json(out_dict: dict, out_path: str) -> None:
-    """
-    write given Python dictionary to output file as JSON
-
-    :raises FileNotFoundError: file does not exist at path
-    :param out_dict dict: dictionary to write as JSON
-    :param out_path str: path to write output to
-    :rtype None
-    """
-    try:
-        with open(out_path, "w", encoding="UTF-8") as json_outfile:
-            json.dump(out_dict, json_outfile, ensure_ascii=False, indent=4)
-
-    except FileNotFoundError:
-        print(f"\nFile at {out_path} not found!")
-
-
-def write_merged_dict_to_json(out_dict: dict, out_path: str) -> None:
-    """
-    gets the desired output path, opens and reads any JSON data that may already be
-    there, and recursively merges in param data from the most recent round of API
-    calls
-
-    :param out_dict dict[unknown]: dict of data from round of API calls to merge and
-    write
-    :param out_path str: path to file in fs that we want to write to
-
-    :rtype None: writes output to file, nothing returned
-    """
-
-    def __merge_dicts_recursive(add_dict, base_dict) -> None:
-        """
-        loops through keys in dictionary of data from round of API calls to merge
-        their data into existing JSON data
-
-        credit to Paul Durivage: https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
-
-        :param add_dict dict[unknown]: dict of data to be written
-
-        :param base_dict dict[unknown]: dict of data already written to and read out
-        from JSON file
-
-        :rtype None: merges param dicts
-        """
-        # for each key in the dict that we created with the round of API calls
-        for key in add_dict:
-
-            # if that key is in the dict in the existing JSON file and the val at
-            # the key is a dict in both dictionaries
-            if (
-                key in base_dict
-                and isinstance(base_dict[key], dict)
-                and isinstance(add_dict[key], dict)
-            ):
-                # recurse
-                __merge_dicts_recursive(add_dict[key], base_dict[key])
-
-            else:
-                # assign the new value from the last round of calls to the existing
-                # key
-                base_dict[key] = add_dict[key]
-
-    json_dict = {}
-
-    # attempt to read JSON out of output file
-    try:
-        json_dict = read_json_to_dict(out_path)
-
-    # if no JSON content exists there, ignore. In this context, it simply means that we
-    # are writing JSON to a new file
-    except JSONDecodeError:
-        pass
-
-    # in any case
-    finally:
-        # recursively merge all dicts and nested dicts in both dictionaries
-        __merge_dicts_recursive(out_dict, json_dict)
-
-        # write JSON content back to file
-        write_dict_to_json(json_dict, out_path)
-
-    print()
 
 
 if __name__ == "__main__":

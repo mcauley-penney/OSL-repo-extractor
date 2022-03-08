@@ -231,7 +231,7 @@ class Extractor:
         start_val = range_list[0]
         end_val = range_list[1]
 
-        print("Beginning issue extraction. Starting may take a moment...\n")
+        print(f"{' ' * 4}Beginning issue extraction. Starting may take a moment...\n")
 
         while start_val < end_val + 1:
             try:
@@ -366,7 +366,7 @@ class Extractor:
         end_val = range_list[1]
 
         print(
-            "Beginning pull request/commit extraction. Starting may take a moment...\n"
+            f"{' ' * 4}Beginning pull request/commit extraction. Starting may take a moment...\n"
         )
 
         while start_val < end_val + 1:
@@ -417,7 +417,6 @@ class Extractor:
 
     def __update_output_json_for_sleep(self, data_dict, out_file):
         """
-
         During rate limiting, we can update the JSON dict in the output file
         with the data that we have collected since we were last rate limited.
         This entails writing the current dict of data to the output file,

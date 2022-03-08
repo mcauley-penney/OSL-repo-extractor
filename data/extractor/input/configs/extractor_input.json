@@ -8,9 +8,7 @@
         "commit_date",
         "commit_message"
     ],
-    "issue_fields": [
-        "username"
-    ],
+    "issue_fields": [],
     "pr_fields": [
         "body",
         "title"
