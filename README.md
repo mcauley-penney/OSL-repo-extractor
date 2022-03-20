@@ -42,8 +42,6 @@ $ python main.py <path/to/cfg/file>
 
 ### configuration
 ```json
-~/files/work/repo-extractor/data/input/configs
-» cat sample.json
 {
     "repo": "JabRef/jabref",
     "state": "closed"
@@ -154,7 +152,7 @@ during your next execution.
 ## Contributing
 
 #### commit formatting
-- Please attempt to abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
+- Please abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
 
 #### source code standards
 Using default settings for each, please:
