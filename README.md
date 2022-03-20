@@ -11,18 +11,20 @@ The GitHub Repo Extractor ("extractor") provides an expedient way to gather data
 
 ## Requirements
 - Written in `Python 3.8.3`
-- Packages:
-    - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
-        - `pip install pygithub`
-    - [Cerberus](https://docs.python-cerberus.org/en/stable/)
-        - `pip install cerberus`
+- Install library dependencies via `requirments.txt` or manually
+    - `pip install -r requirements.txt`
+    - Packages:
+        - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
+            - `pip install pygithub`
+        - [Cerberus](https://docs.python-cerberus.org/en/stable/)
+            - `pip install cerberus`
 
 
 
 
 ## Usage
 ### arguments
-```shell
+```sh
 $ python main.py
 usage: main.py [-h] extractor_cfg_file
 main.py: error: the following arguments are required: extractor_cfg_file
@@ -39,7 +41,7 @@ $ python main.py <path/to/cfg/file>
 
 
 ### configuration
-```shell
+```json
 ~/files/work/repo-extractor/data/input/configs
 » cat sample.json
 {
@@ -86,8 +88,41 @@ Some key points about the configuration:
   PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y]; it is inclusive of both values.
 
 - The `fields` keys discuss what pieces of data you want to gather from the objects in the given range. The extractor will
-  merge gathered data. If you collected one piece of data for a range of API items, e.g. the body of a set of PR's, but now want to collect the title of those same PR's, you can simply add the correct field, "title", to the "pr_fields" list and the extractor will collect that data and merge it with the already existing JSON dictionary at the current output.
-    - You do not need to ask for:
+  merge gathered data. If you collected one piece of data for a range of API items, e.g. the `body` of a set of PR's, but now want to collect the `title` of those same PR's, you can simply add the correct field, `title`, to the `pr_fields` list and the extractor will collect that data and merge it with the already existing JSON dictionary at the current output.
+
+    - The currently accepted fields and their function references are:
+        ```python
+        "commit": {
+            "commit_author_name": _get_commit_author_name,
+            "committer": _get_commit_committer,
+            "commit_date": _get_commit_date,
+            "commit_files": _get_commit_files,
+            "commit_message": _get_commit_msg,
+            "commit_sha": _get_commit_sha,
+        },
+        "issue": {
+            "body": _get_body,
+            "closed": _get_closed_time,
+            "issue_comments": _get_issue_comments,
+            "title": _get_title,
+            "userlogin": _get_userlogin,
+            "username": _get_username,
+        },
+        "pr": {
+            "body": _get_body,
+            "closed": _get_closed_time,
+            "title": _get_title,
+            "userlogin": _get_userlogin,
+            "username": _get_username,
+        },
+        ```
+
+        Please see `src/v2/schema.py` for the entire source code.
+
+
+        <br>
+
+    - **You do not need to ask for:**
         - issue numbers
         - PR numbers
         - a PR's merged status
@@ -113,22 +148,13 @@ at will. For example, you may be collecting data from a very large range but mus
 output, see what PR or issue number the extractor last collected data for, and use that as the starting value in your range
 during your next execution.
 
-### troubleshooting
-1. `v2` package does not exists
-
-You likely need to update your `PYTHONPATH` environment variable so that your Python executable knows where to look for packages and modules. To do this, you can modify and paste the `export` statment below into your shell rc file e.g. `~/.bashrc` or `~/.zshrc`:
-
-```shell
-export PYTHONPATH='$PYTHONPATH:<path>/GitHub-Repo-Extractor/extractor'
-```
-
 
 
 
 ## Contributing
 
 #### commit formatting
-Please attempt to abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
+- Please attempt to abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
 
 #### source code standards
 Using default settings for each, please:

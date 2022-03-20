@@ -6,7 +6,7 @@ allow it to interact with external sources that require connections
 import sys
 import time
 import github
-from v2 import file_io
+from src import file_io
 
 
 def _console_print_in_place(label_str: str, val) -> None:
@@ -22,6 +22,9 @@ class GithubSession:
     The GithubSession class initializes and holds a verified connection to the GitHub
     API and exposes functionality for that connection up to the Extractor class
     """
+
+    __page_len: int
+    session: github.Github
 
     def __init__(self, auth_path) -> None:
         """

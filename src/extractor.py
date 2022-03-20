@@ -3,7 +3,7 @@ The extractor module provides and exposes functionality to mine GitHub repositor
 """
 
 import github
-from v2 import conf, file_io, schema, sessions
+from src import conf, file_io, schema, sessions
 
 
 def _get_page_last_item(paged_list, page_index):

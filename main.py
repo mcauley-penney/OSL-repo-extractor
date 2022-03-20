@@ -4,7 +4,7 @@ Extractor class from the extractor module
 """
 
 import argparse
-from v2 import extractor
+from src import extractor
 
 
 def main():
