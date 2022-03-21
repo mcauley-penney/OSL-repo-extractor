@@ -1,0 +1,20 @@
+{
+    "repo": "JabRef/jabref",
+    "auth_file": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/input/auths/mp_auth.txt",
+    "output_dir": "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/output",
+    "state": "closed",
+    "commit_fields": [
+        "commit_author_name",
+        "commit_date",
+        "commit_message"
+    ],
+    "issue_fields": [],
+    "pr_fields": [
+        "body",
+        "title"
+    ],
+    "range": [
+        1,
+        20
+    ]
+}

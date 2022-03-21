@@ -8,12 +8,10 @@
         "commit_date",
         "commit_message"
     ],
-    "issue_fields": [
-        "issue_username"
-    ],
+    "issue_fields": [],
     "pr_fields": [
-        "pr_body",
-        "pr_title"
+        "body",
+        "title"
     ],
     "range": [
         1,
