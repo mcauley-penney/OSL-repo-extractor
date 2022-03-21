@@ -24,7 +24,7 @@ The GitHub Repo Extractor ("extractor") provides an expedient way to gather data
 
 ## Usage
 ### arguments
-```sh
+```
 $ python main.py
 usage: main.py [-h] extractor_cfg_file
 main.py: error: the following arguments are required: extractor_cfg_file
@@ -35,7 +35,7 @@ The extractor requires only a path to a configuration file. The sample configura
 what keys are missing, if any, and whether the values for those keys are acceptable. An acceptable call from the command line
 will look like:
 
-```shell
+```
 $ python main.py <path/to/cfg/file>
 ```
 
