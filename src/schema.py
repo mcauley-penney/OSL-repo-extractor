@@ -174,6 +174,24 @@ def _get_username(api_obj) -> str:
     return _clean_str(api_obj.user.name)
 
 
+# Initialize map of strings to function references, a dispatch table.
+# This allows us to call a function using a string by saying
+#
+#           cmd_tbl_dict[type][function name]()
+#
+# To get an issue body, for example, we can either say
+#
+#           cmd_tbl_dict["issue"]["body"]()
+#
+# or we can store the subdictionary as a variable first
+#
+#           issue_fn_dict = cmd_tbl_dict["issue"])
+#
+# and then call from that subdictionary like
+#
+#           issue_fn_dict["body"]()
+#
+# We peform this exact method in the Extractor class getters
 cmd_tbl_dict = {
     "commit": {
         "commit_author_name": _get_commit_author_name,
@@ -202,6 +220,9 @@ cmd_tbl_dict = {
 }
 
 
+# Schema used to validate user-provided configuration. This acts as a template
+# to judge whether the user cfg is acceptable to the program. This *does not*
+# need to be modified to add new getter functionality
 cfg_schema = {
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},

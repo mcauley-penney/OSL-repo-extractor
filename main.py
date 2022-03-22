@@ -8,13 +8,14 @@ from src import extractor
 
 
 def main():
-    """driver function for GitHub Extractor"""
+    """driver function for GitHub Repo Extractor"""
 
     cfg_path = get_cli_args()
 
     # init extractor object
-    print("\nBeginning extractor init, instantiating cfg...")
+    print("\nInitializing extractor...")
     gh_ext = extractor.Extractor(cfg_path)
+    print("\nExtractor initialization complete!")
 
     if gh_ext.get_cfg_val("issue_fields"):
         print("\nGetting issue data...")

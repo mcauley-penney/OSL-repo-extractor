@@ -1,6 +1,6 @@
 # OSL Repo Extractor
 
-A tool which mines GitHub repositories for [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
+The extraction stage of [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
 
 ## Purpose
@@ -31,10 +31,9 @@ main.py: error: the following arguments are required: extractor_cfg_file
 ```
 
 The extractor requires only a path to a configuration file. The sample configuration at
-`repo-extractor/data/input/configs/sample.json` is a good place to start experimenting. The extractor will report to you
-what keys are missing, if any, and whether the values for those keys are acceptable. An acceptable call from the command line
-will look like:
-
+`./doc/example_extractor_cfg.json` is a good place to start experimenting. The extractor will report to you
+what keys are missing, if any, and whether the values for the accepted keys are acceptable. An acceptable call
+from the command line will look like:
 ```
 $ python main.py <path/to/cfg/file>
 ```
@@ -125,7 +124,7 @@ Some key points about the configuration:
         - PR numbers
         - a PR's merged status
 
-      Those pieces of data are mandatory when collecting data for those API item types, meaning that they will always be collected when collecting data on their respective item. *You do not need to attempt to provide them as arguments to the configuration files "fields" lists.*
+      Those pieces of data are mandatory when collecting data for those API item types, meaning that they will always be collected when collecting data on their respective item. *You do not need to attempt to provide them as arguments to the configuration file's "fields" lists.*
 
 
 ### output
@@ -152,7 +151,7 @@ during your next execution.
 ## Contributing
 
 #### commit formatting
-- Please abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification
+- Please abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification for all commits
 
 #### source code standards
 Using default settings for each, please:
