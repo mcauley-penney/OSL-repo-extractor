@@ -1,3 +1,1 @@
-data/extractor/input/*
-data/extractor/output/*
-data/email-parser/*
+data/*

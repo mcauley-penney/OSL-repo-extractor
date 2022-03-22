@@ -175,10 +175,10 @@ class Extractor:
             # pages that contains the item number, e.g. PR# 600, that we want
             page_index = __bin_search_in_list(paged_list, last_page_index, val)
 
+            found_page = paged_list.get_page(page_index)
+
             # use iterative binary search to find item in correct page of linked list
-            item_page_index = __bin_search_in_page(
-                paged_list.get_page(page_index), page_len, val
-            )
+            item_page_index = __bin_search_in_page(found_page, len(found_page), val)
 
             # the index of the item in the total list is the page index that it is on
             # multiplied by the amount of items per page, summed with the index of the
