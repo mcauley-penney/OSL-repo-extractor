@@ -135,15 +135,37 @@ def _get_closed_time(api_obj) -> str:
     return "NaN"
 
 
-def _get_issue_comments(issue_obj) -> str:
+def _get_issue_comments_dict(issue_obj) -> dict:
     """
     if a given issue has comments, collect them all into one string separated by a
     special delimeter, format the str, and return it
 
-    :param api_obj github.Issue: Issue object to comments of
+    :param api_obj github.Issue: Issue object to get comments of
     """
+    commnts_dict = {}
+
     comments_paged_list = issue_obj.get_comments()
 
+    commnts_dict["string"] = _get_issue_comments_str(comments_paged_list)
+
+    commnts_dict["discussants"] = _get_issue_comments_discussants(comments_paged_list)
+
+    return commnts_dict
+
+
+def _get_issue_comments_discussants(comments_paged_list) -> list:
+
+    # TODO: lists are unhashable, meaning that, if we want a list of data about
+    # discussants, we cannot simply put those lists in a set and return it. We
+    # will need another way to remove non-unique identities from the list
+
+    return [
+        [_get_username(comment), _get_userlogin(comment)]
+        for comment in comments_paged_list
+    ]
+
+
+def _get_issue_comments_str(comments_paged_list) -> str:
     if comments_paged_list.totalCount != 0:
         sep_str = " =||= "
 
@@ -204,7 +226,7 @@ cmd_tbl_dict = {
     "issue": {
         "body": _get_body,
         "closed": _get_closed_time,
-        "issue_comments": _get_issue_comments,
+        "issue_comments": _get_issue_comments_dict,
         "title": _get_title,
         "userlogin": _get_userlogin,
         "username": _get_username,

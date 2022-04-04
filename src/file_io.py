@@ -19,7 +19,7 @@ def read_json_to_dict(in_path: str) -> dict:
             json_text = file_obj.read()
 
     except FileNotFoundError:
-        print(f"\nFile at {in_path} not found!")
+        print(f'\nFile at "{in_path}" not found!')
         sys.exit(1)
 
     else:
@@ -41,7 +41,7 @@ def read_txt_line(in_path: str) -> str:
 
     except FileNotFoundError:
         # if the file is not found log an error and exit
-        print(f"\nFile at {in_path} not found!")
+        print(f'\nFile at "{in_path}" not found!')
         sys.exit(1)
 
     else:
