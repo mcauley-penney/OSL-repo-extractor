@@ -6,11 +6,19 @@ import github
 from src import conf, file_io, schema, sessions
 
 
+# TODO:
+#   1. Remove all prints?
+#   2. if you use binary search on open state items and search for issues or PRs
+#   below the lowest value, it will return the lowest value, e.g. "280" for open
+#   PRs on react/facebook will returns a value in the 13000's. We want to not do
+#   that
+
+
 def _get_page_last_item(paged_list, page_index):
     return paged_list.get_page(page_index)[-1]
 
 
-def _merge_dicts(base: dict, to_merge: dict) -> dict:
+def _merge_dicts(base: dict, to_merge) -> dict:
     """
     Merge two dictionaries
     NOTES:
@@ -24,7 +32,13 @@ def _merge_dicts(base: dict, to_merge: dict) -> dict:
     :return: base dict
     :rtype: dict
     """
-    return {**base, **to_merge}
+
+    # sometimes getters return empty dictionaries. we want to merge if they
+    # arent empty
+    if to_merge:
+        return {**base, **to_merge}
+
+    return base
 
 
 class Extractor:
@@ -51,7 +65,7 @@ class Extractor:
         # initialize authenticated GitHub session
         self.gh_sesh = sessions.GithubSession(auth_path)
 
-        self.paged_list_dict = self.__get_paged_list_dict()
+        self.issues_paged_list = self.__get_issues_paged_list()
 
     def _get_range_api_indices(self, paged_list) -> list:
         """
@@ -220,12 +234,12 @@ class Extractor:
         """
 
         data_type = "issue"
-        data_dict = {data_type: {}}
+        data_dict = {}
         out_file = self.get_cfg_val("output_file")
-        paged_list = self.__get_paged_list(data_type)
+        issue_list = self.issues_paged_list
 
         # get indices of sanitized range values
-        range_list = self._get_range_api_indices(paged_list)
+        range_list = self._get_range_api_indices(issue_list)
 
         # unpack vals
         start_val = range_list[0]
@@ -235,22 +249,60 @@ class Extractor:
 
         while start_val < end_val + 1:
             try:
-                cur_issue = paged_list[start_val]
+                cur_issue = issue_list[start_val]
 
-                cur_item_data = self.__get_item_data(data_type, cur_issue)
+                # get issue data, provided in the "issues" cfg list
+                cur_issue_dict = self.__get_item_data(data_type, cur_issue)
 
-                cur_entry = {str(cur_issue.number): cur_item_data}
+                # get issue as a PR if it exists
+                cur_issue_pr_dict = self.__get_issue_pr(cur_issue)
+                cur_issue_dict = _merge_dicts(cur_issue_dict, cur_issue_pr_dict)
+
+                # get comments if they exist
+                # TODO: may need to get general data about comments besides the
+                # data about specific comments that we are already getting
+                cur_issue_comments_dict = self.get_issue_comments_data(cur_issue)
+                cur_issue_dict = _merge_dicts(cur_issue_dict, cur_issue_comments_dict)
+
+                cur_entry = {str(cur_issue.number): cur_issue_dict}
 
             except github.RateLimitExceededException:
                 self.__update_output_json_for_sleep(data_dict, out_file)
 
             else:
-                data_dict[data_type] = _merge_dicts(data_dict[data_type], cur_entry)
+                data_dict = _merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
 
         file_io.write_merged_dict_to_json(data_dict, out_file)
+
+    def get_issue_comments_data(self, issue_obj):
+        """
+        TODO
+
+        :param cur_issue:
+        :type cur_issue:
+        """
+        # dict will hold data related to all comments for an issue. Issue to
+        # comments is a one to many relationship
+        comment_index = 0
+        cur_issue_comment_dict = {}
+        item_type = "issue_comment"
+
+        if self.cfg.get_cfg_val("issue_comment_fields"):
+            comments_paged_list = issue_obj.get_comments()
+
+            for comment in comments_paged_list:
+                cur_entry = self.__get_item_data(item_type, comment)
+
+                cur_entry = {str(comment_index): cur_entry}
+
+                cur_issue_comment_dict = _merge_dicts(cur_issue_comment_dict, cur_entry)
+
+                comment_index += 1
+
+        return {"issue_comments": cur_issue_comment_dict}
 
     def __get_item_data(self, item_type, cur_item) -> dict:
         """
@@ -273,10 +325,7 @@ class Extractor:
         # "body": cmd_tbl["body"](cur_PR)
         return {field: cmd_tbl[field](cur_item) for field in field_list}
 
-    def __get_paged_list(self, key):
-        return self.paged_list_dict[key]
-
-    def __get_paged_list_dict(self):
+    def __get_issues_paged_list(self):
         """
         retrieves and stores a paginated list from GitHub
 
@@ -291,10 +340,6 @@ class Extractor:
         job_repo = self.get_cfg_val("repo")
         item_state = self.get_cfg_val("state")
 
-        # create tuple of valid repo object function refs that get paginated
-        # lists
-        paged_ls_fn_ref_strs = {"issue": "get_issues", "pr": "get_pulls"}
-
         while True:
             try:
                 # retrieve GitHub repo object
@@ -302,37 +347,24 @@ class Extractor:
 
                 # create dict of {list type name: fn ref to get list}
                 # e.g. {"issue": repo_obj.get_issues}
-                paged_list_dict = {
-                    ls_name: getattr(repo_obj, fn_name_str)(
-                        direction="asc", sort="created", state=item_state
-                    )
-                    for ls_name, fn_name_str in paged_ls_fn_ref_strs.items()
-                }
+                issues_paged_list = repo_obj.get_issues(
+                    direction="asc", sort="created", state=item_state
+                )
 
             except github.RateLimitExceededException:
                 self.gh_sesh.sleep_gh_session()
 
             else:
-                return paged_list_dict
+                return issues_paged_list
 
-    def get_pr_data(self) -> None:
+    def get_pr_datum(self, cur_pr):
         """
-        retrieves both PR and commit data from the GitHub API; uses the "range"
-        configuration value to determine what indices of the PR paged list to
-        look at and the "pr_fields" and "commit_fields" configurationfields to
-        determine what information it should retrieve from each PR of interest.
+        TODO
 
-        commits are included by default because the commit info we are
-        interested in descends from and is retrievable via PRs, i.e. we are
-        not intereseted in commits that
-            1. are not from an open or a closed and merged PR
-            2. have no files changed by the commit
-
-        :raises github.RateLimitExceededException: if rate limited by the
-        GitHub REST API, dump collected data to output file and sleep the
-        program until calls can be made again
-
-        :rtype None
+        :param cur_pr:
+        :type cur_pr:
+        :return:
+        :rtype:
         """
 
         def __get_last_commit(pr_obj):
@@ -347,73 +379,42 @@ class Extractor:
             # get paginated list of commits for PR at current index
             cur_commit_list = pr_obj.get_commits()
 
-            # get index of commit we want from len of paginated list of commits
-            last_commit_index = cur_commit_list.totalCount - 1
+            # return last commit in that list
+            return cur_commit_list[cur_commit_list.totalCount - 1]
 
-            # use that index to get the commit we are interested in
-            return cur_commit_list[last_commit_index]
+        item_type = "pr"
+        is_merged = cur_pr.merged
 
-        data_type = "pr"
-        data_dict = {data_type: {}}
-        out_file = self.get_cfg_val("output_file")
-        paged_list = self.__get_paged_list(data_type)
+        # create dict to build upon. This variable will later become
+        # the val of a dict entry, making it a subdictionary
+        cur_pr_dict = {"pr_merged": is_merged}
 
-        # get indices of sanitized range values
-        range_list = self._get_range_api_indices(paged_list)
+        # if the current PR is merged or is in the list of open PRs, we are
+        # interested in it. Closed and unmerged PRs are of no help to the
+        # project
+        if self.get_cfg_val("pr_fields") and (
+            is_merged or self.get_cfg_val("state") == "open"
+        ):
+            cur_item_data = self.__get_item_data(item_type, cur_pr)
 
-        # unpack vals
-        start_val = range_list[0]
-        end_val = range_list[1]
+            cur_pr_dict = _merge_dicts(cur_pr_dict, cur_item_data)
 
-        print(
-            f"{' ' * 4}Beginning pull request/commit extraction. Starting may take a moment...\n"
-        )
+            last_commit = __get_last_commit(cur_pr)
 
-        while start_val < end_val + 1:
-            try:
-                # get current PR to begin information gathering
-                cur_pr = paged_list[start_val]
+            if len(last_commit.files) > 0:
 
-                is_merged = cur_pr.merged
+                # get all data from that commit
+                cur_item_data = self.__get_item_data(
+                    "commit",
+                    last_commit,
+                )
 
-                # create dict to build upon. This variable will later become
-                # the val of a dict entry, making it a subdictionary
-                cur_entry = {"__pr_merged": is_merged}
+                cur_item_data = {"commit": cur_item_data}
 
-                # if the current PR number is greater than or equal to the
-                # first number provided in the "range" cfg val and the PR is
-                # merged
-                if is_merged or self.get_cfg_val("state") == "open":
-                    cur_item_data = self.__get_item_data(data_type, cur_pr)
+                cur_pr_dict = _merge_dicts(cur_pr_dict, cur_item_data)
 
-                    cur_entry = _merge_dicts(cur_entry, cur_item_data)
-
-                    last_commit = __get_last_commit(cur_pr)
-
-                    # if there are files changed for this commit
-                    if len(last_commit.files) > 0:
-
-                        # get all data from that commit
-                        cur_item_data = self.__get_item_data(
-                            "commit",
-                            last_commit,
-                        )
-
-                        cur_entry = _merge_dicts(cur_entry, cur_item_data)
-
-                # use all gathered entry data as the val for the PR num key
-                cur_entry = {str(cur_pr.number): cur_entry}
-
-            except github.RateLimitExceededException:
-                self.__update_output_json_for_sleep(data_dict, out_file)
-
-            else:
-                data_dict[data_type] = _merge_dicts(data_dict[data_type], cur_entry)
-                self.gh_sesh.print_rem_gh_calls()
-
-                start_val += 1
-
-        file_io.write_merged_dict_to_json(data_dict, out_file)
+        # use all gathered entry data as the val for the PR num key
+        return {item_type: cur_pr_dict}
 
     def __update_output_json_for_sleep(self, data_dict, out_file):
         """
@@ -432,3 +433,25 @@ class Extractor:
         self.gh_sesh.sleep_gh_session()
 
         return data_dict
+
+    def __get_issue_pr(self, issue_obj):
+        """
+        TODO
+
+        :param issue_obj:
+        :type issue_obj:
+        """
+
+        try:
+            cur_pr = issue_obj.as_pull_request()
+
+        except github.UnknownObjectException:
+            # Not a PR, does not need to raise an error
+            # return up and keep going
+            pass
+
+        else:
+            # return dict of PR data
+            return self.get_pr_datum(cur_pr)
+
+        return None

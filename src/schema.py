@@ -135,57 +135,31 @@ def _get_closed_time(api_obj) -> str:
     return "NaN"
 
 
-def _get_issue_comments_dict(issue_obj) -> dict:
-    """
-    if a given issue has comments, collect them all into one string separated by a
-    special delimeter, format the str, and return it
-
-    :param api_obj github.Issue: Issue object to get comments of
-    """
-    commnts_dict = {}
-
-    comments_paged_list = issue_obj.get_comments()
-
-    commnts_dict["string"] = _get_issue_comments_str(comments_paged_list)
-
-    commnts_dict["discussants"] = _get_issue_comments_discussants(comments_paged_list)
-
-    return commnts_dict
-
-
-def _get_issue_comments_discussants(comments_paged_list) -> list:
+def _get_issue_comments_discussants(comment_obj) -> dict:
 
     # TODO: lists are unhashable, meaning that, if we want a list of data about
     # discussants, we cannot simply put those lists in a set and return it. We
     # will need another way to remove non-unique identities from the list
 
-    return [
-        [_get_username(comment), _get_userlogin(comment)]
-        for comment in comments_paged_list
-    ]
+    discussant_dict = {
+        "id": _get_userid(comment_obj),
+        "name": _get_username(comment_obj),
+        "username": _get_userlogin(comment_obj),
+    }
+
+    return discussant_dict
 
 
-def _get_issue_comments_str(comments_paged_list) -> str:
-    if comments_paged_list.totalCount != 0:
-        sep_str = " =||= "
-
-        # get body from each comment, strip of whitespace, and join w/ special char
-        comment_str = sep_str.join(
-            comment.body.strip() for comment in comments_paged_list
-        )
-
-        # strip comment string of \n, \r, and whitespace again
-        return _clean_str(comment_str)
-
-    return "NaN"
-
-
-def _get_pr_merged(pr_obj) -> bool:
-    return pr_obj.merged
+def _get_issue_comments_quant(issue_obj):
+    return issue_obj.comments
 
 
 def _get_title(api_obj) -> str:
     return api_obj.title
+
+
+def _get_userid(api_obj) -> str:
+    return str(api_obj.user.id)
 
 
 def _get_userlogin(api_obj) -> str:
@@ -226,19 +200,16 @@ cmd_tbl_dict = {
     "issue": {
         "body": _get_body,
         "closed": _get_closed_time,
-        "issue_comments": _get_issue_comments_dict,
+        "num_comments": _get_issue_comments_quant,
         "title": _get_title,
         "userlogin": _get_userlogin,
         "username": _get_username,
     },
-    "pr": {
+    "issue_comment": {
         "body": _get_body,
-        "closed": _get_closed_time,
-        "__pr_merged": _get_pr_merged,
-        "title": _get_title,
-        "userlogin": _get_userlogin,
-        "username": _get_username,
+        "discussant": _get_issue_comments_discussants,
     },
+    "pr": {},
 }
 
 
@@ -252,6 +223,11 @@ cfg_schema = {
     "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
     "commit_fields": {
         "allowed": [*cmd_tbl_dict["commit"]],
+        "schema": {"type": "string"},
+        "type": "list",
+    },
+    "issue_comment_fields": {
+        "allowed": [*cmd_tbl_dict["issue_comment"]],
         "schema": {"type": "string"},
         "type": "list",
     },

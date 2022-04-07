@@ -17,6 +17,7 @@ def main():
     gh_ext = extractor.Extractor(cfg_path)
     print("\nExtractor initialization complete!")
 
+    # TODO: update this to reflect recent deprecation of user-facing PR getter
     if gh_ext.get_cfg_val("issue_fields"):
         print("\nGetting issue data...")
         gh_ext.get_issues_data()
@@ -24,14 +25,6 @@ def main():
 
     else:
         print("\nNo issue fields given! Proceeding...")
-
-    if gh_ext.get_cfg_val("pr_fields"):
-        print("\nGetting pull request/commit data...")
-        gh_ext.get_pr_data()
-        print("\nPull request/commit data complete!")
-
-    else:
-        print("\nNo pull request fields given!")
 
     print("\nExtraction complete!")
 
