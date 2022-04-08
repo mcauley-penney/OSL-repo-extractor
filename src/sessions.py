@@ -1,5 +1,5 @@
 """
-The Sessions module contains classes that expose functionality to the Extractor that
+The sessions module contains classes that expose functionality to the Extractor that
 allow it to interact with external sources that require connections
 """
 
@@ -29,8 +29,14 @@ class GithubSession:
     def __init__(self, auth_path) -> None:
         """
         initialize GitHub session object
+        NOTES:
+            - paginated lists are set to return 30 items per page by default.
+              See https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination
+              for more information.
+
         :param auth_path str: path to file containing personal access token
         """
+        #
         self.__page_len = 30
         self.session = self.__get_gh_session(auth_path)
 

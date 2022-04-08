@@ -135,35 +135,31 @@ def _get_closed_time(api_obj) -> str:
     return "NaN"
 
 
-def _get_issue_comments(issue_obj) -> str:
-    """
-    if a given issue has comments, collect them all into one string separated by a
-    special delimeter, format the str, and return it
+def _get_issue_comments_discussants(comment_obj) -> dict:
 
-    :param api_obj github.Issue: Issue object to comments of
-    """
-    comments_paged_list = issue_obj.get_comments()
+    # TODO: lists are unhashable, meaning that, if we want a list of data about
+    # discussants, we cannot simply put those lists in a set and return it. We
+    # will need another way to remove non-unique identities from the list
 
-    if comments_paged_list.totalCount != 0:
-        sep_str = " =||= "
+    discussant_dict = {
+        "id": _get_userid(comment_obj),
+        "name": _get_username(comment_obj),
+        "username": _get_userlogin(comment_obj),
+    }
 
-        # get body from each comment, strip of whitespace, and join w/ special char
-        comment_str = sep_str.join(
-            comment.body.strip() for comment in comments_paged_list
-        )
-
-        # strip comment string of \n, \r, and whitespace again
-        return _clean_str(comment_str)
-
-    return "NaN"
+    return discussant_dict
 
 
-def _get_pr_merged(pr_obj) -> bool:
-    return pr_obj.merged
+def _get_issue_comments_quant(issue_obj):
+    return issue_obj.comments
 
 
 def _get_title(api_obj) -> str:
     return api_obj.title
+
+
+def _get_userid(api_obj) -> str:
+    return str(api_obj.user.id)
 
 
 def _get_userlogin(api_obj) -> str:
@@ -174,6 +170,24 @@ def _get_username(api_obj) -> str:
     return _clean_str(api_obj.user.name)
 
 
+# Initialize map of strings to function references, a dispatch table.
+# This allows us to call a function using a string by saying
+#
+#           cmd_tbl_dict[type][function name]()
+#
+# To get an issue body, for example, we can either say
+#
+#           cmd_tbl_dict["issue"]["body"]()
+#
+# or we can store the subdictionary as a variable first
+#
+#           issue_fn_dict = cmd_tbl_dict["issue"])
+#
+# and then call from that subdictionary like
+#
+#           issue_fn_dict["body"]()
+#
+# We peform this exact method in the Extractor class getters
 cmd_tbl_dict = {
     "commit": {
         "commit_author_name": _get_commit_author_name,
@@ -186,22 +200,22 @@ cmd_tbl_dict = {
     "issue": {
         "body": _get_body,
         "closed": _get_closed_time,
-        "issue_comments": _get_issue_comments,
+        "num_comments": _get_issue_comments_quant,
         "title": _get_title,
         "userlogin": _get_userlogin,
         "username": _get_username,
     },
-    "pr": {
+    "issue_comment": {
         "body": _get_body,
-        "closed": _get_closed_time,
-        "__pr_merged": _get_pr_merged,
-        "title": _get_title,
-        "userlogin": _get_userlogin,
-        "username": _get_username,
+        "discussant": _get_issue_comments_discussants,
     },
+    "pr": {},
 }
 
 
+# Schema used to validate user-provided configuration. This acts as a template
+# to judge whether the user cfg is acceptable to the program. This *does not*
+# need to be modified to add new getter functionality
 cfg_schema = {
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},
@@ -209,6 +223,11 @@ cfg_schema = {
     "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
     "commit_fields": {
         "allowed": [*cmd_tbl_dict["commit"]],
+        "schema": {"type": "string"},
+        "type": "list",
+    },
+    "issue_comment_fields": {
+        "allowed": [*cmd_tbl_dict["issue_comment"]],
         "schema": {"type": "string"},
         "type": "list",
     },
