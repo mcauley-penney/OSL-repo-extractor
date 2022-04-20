@@ -3,10 +3,9 @@
 import argparse
 import sys
 
-
-sys.path.append("../..")
+sys.path.append("../../..")
 from src import file_io
-from src.metrics import transformations
+from src.integration_utils.social_metrics import transformations
 
 # from src.metrics import transformations
 
@@ -18,21 +17,18 @@ def main():
 
     issue_dict = file_io.read_json_to_dict(issue_json)
 
-    # issue_comments = issue_dict["issue_comment"]
-
     for issue in issue_dict.values():
 
-        comment_dict = issue["issue_comments"]
+        if issue["num_comments"] > 0:
+            comment_dict = issue["issue_comments"]
 
-        discussants_set = transformations.get_unique_discussants(comment_dict)
+            discussants_set = transformations.get_unique_discussants(comment_dict)
 
-        print(discussants_set)
+            print(discussants_set)
 
-        # issue_comments = issue["issue_comment"]
+            issue_wc = transformations.get_issue_wordiness(comment_dict)
 
-        # print(issue_comments)
-
-    # transformations.get_unique_discussants(issue_dict)
+            print(issue_wc)
 
 
 def get_cli_args() -> str:
