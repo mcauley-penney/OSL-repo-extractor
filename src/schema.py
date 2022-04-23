@@ -29,7 +29,33 @@ Resources:
         https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
 """
 
+from src import conf
+
+
 TIME_FMT = "%D, %I:%M:%S %p"
+
+
+# TODO: consider separating this from the Cfg class
+def get_item_data(user_cfg: conf.Cfg, item_type, cur_item) -> dict:
+    """
+    For each field in the list provided by the user in configuration, e.g.
+    "issue_fields", get the associated piece of data and store it in a
+    dict where {field name: field data}, e.g. {"issue number": 20}
+
+    :param item_type: name of item type to retrieve, e.g. "pr" or "issue"
+    :type item_type: str
+    :param cur_item: the current API item to get data about, e.g. current PR
+    :type cur_item: PyGitHub API object
+    :return: dictionary of API data values for param item
+    :rtype: dict
+    """
+    field_list = user_cfg.get_cfg_val(f"{item_type}_fields")
+
+    cmd_tbl = cmd_tbl_dict[item_type]
+
+    # when called, this will resolve to various function calls, e.g.
+    # "body": cmd_tbl["body"](cur_PR)
+    return {field: cmd_tbl[field](cur_item) for field in field_list}
 
 
 def _clean_str(str_to_clean) -> str:
@@ -137,10 +163,6 @@ def _get_closed_time(api_obj) -> str:
 
 def _get_issue_comments_discussants(comment_obj) -> dict:
 
-    # TODO: lists are unhashable, meaning that, if we want a list of data about
-    # discussants, we cannot simply put those lists in a set and return it. We
-    # will need another way to remove non-unique identities from the list
-
     discussant_dict = {
         "id": _get_userid(comment_obj),
         "name": _get_username(comment_obj),
@@ -168,6 +190,49 @@ def _get_userlogin(api_obj) -> str:
 
 def _get_username(api_obj) -> str:
     return _clean_str(api_obj.user.name)
+
+
+def _get_issue_wordiness(issuecmmnt_dict: dict):
+    """
+    Count the amount of words over a length of 2 in each comment in an issue
+
+    :param issuecmmnt_dict: dictionary of comments for an issue
+    :type issuecmmnt_dict: dict
+    """
+
+    sum_wc = 0
+
+    for comment in issuecmmnt_dict.values():
+        body = comment["body"]
+
+        # get all words greater in len than 2
+        split_body = [word for word in body.split() if len(word) > 2]
+
+        sum_wc += len(split_body)
+
+    return sum_wc
+
+
+def _get_num_uniq_discussants(issuecmmnt_dict: dict):
+    """
+    TODO
+
+    :param issuecmmnt_dict:
+    :type issuecmmnt_dict: dict
+    :return:
+    :rtype:
+    """
+    if len(issuecmmnt_dict) > 0:
+
+        discussants_set = {
+            comment["discussant"]["id"]
+            for comment in issuecmmnt_dict.values()
+            if isinstance(comment["discussant"]["id"], str)
+        }
+
+        return len(discussants_set)
+
+    return 0
 
 
 # Initialize map of strings to function references, a dispatch table.
@@ -210,8 +275,11 @@ cmd_tbl_dict = {
         "discussant": _get_issue_comments_discussants,
     },
     "pr": {},
+    "social_metrics": {
+        "num_discussants": _get_num_uniq_discussants,
+        "word_count": _get_issue_wordiness,
+    },
 }
-
 
 # Schema used to validate user-provided configuration. This acts as a template
 # to judge whether the user cfg is acceptable to the program. This *does not*
@@ -221,25 +289,18 @@ cfg_schema = {
     "auth_file": {"type": "string"},
     "state": {"allowed": ["closed", "open"], "type": "string"},
     "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
-    "commit_fields": {
-        "allowed": [*cmd_tbl_dict["commit"]],
-        "schema": {"type": "string"},
-        "type": "list",
-    },
-    "issue_comment_fields": {
-        "allowed": [*cmd_tbl_dict["issue_comment"]],
-        "schema": {"type": "string"},
-        "type": "list",
-    },
-    "issue_fields": {
-        "allowed": [*cmd_tbl_dict["issue"]],
-        "schema": {"type": "string"},
-        "type": "list",
-    },
-    "pr_fields": {
-        "allowed": [*cmd_tbl_dict["pr"]],
-        "schema": {"type": "string"},
-        "type": "list",
-    },
+    "commit_fields": {},
+    "issue_comment_fields": {},
+    "issue_fields": {},
+    "pr_fields": {},
+    "social_metrics_fields": {},
     "output_dir": {"type": "string"},
 }
+
+# init fields schema programmatically
+for field_type in ["commit", "issue", "issue_comment", "pr", "social_metrics"]:
+    cfg_schema[f"{field_type}_fields"] = {
+        "allowed": [*cmd_tbl_dict[field_type]],
+        "schema": {"type": "string"},
+        "type": "list",
+    }

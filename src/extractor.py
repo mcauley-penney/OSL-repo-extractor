@@ -3,7 +3,7 @@ The extractor module provides and exposes functionality to mine GitHub repositor
 """
 
 import github
-from src import conf, file_io, schema, sessions
+from src import conf, dict_utils, file_io_utils, schema, sessions
 
 
 # TODO:
@@ -18,47 +18,21 @@ def _get_page_last_item(paged_list, page_index):
     return paged_list.get_page(page_index)[-1]
 
 
-def _merge_dicts(base: dict, to_merge) -> dict:
-    """
-    Merge two dictionaries
-    NOTES:
-        • syntax in 3.9 or greater is "base |= to_merge"
-            • pipe is the "merge" operator, can be used in augmented assignment
-
-    :param base: dict to merge into
-    :type base: dict
-    :param to_merge: dict to dissolve into base dict
-    :type to_merge: dict
-    :return: base dict
-    :rtype: dict
-    """
-
-    # sometimes getters return empty dictionaries. we want to merge if they
-    # arent empty
-    if to_merge:
-        return {**base, **to_merge}
-
-    return base
-
-
 class Extractor:
     """
-    The Extractor class contains and executes GitHub REST API functionality. It
-    initiates and holds onto an object that stores the configuration for the program
-    execution, an object that initiates and contains a connection to the GitHub API, and
-    an object that writes content to JSON files.
+    The Extractor class contains and executes GitHub REST API functionality.
+    It initiates and holds onto an object that stores the configuration for
+    the program execution, an object that initiates and contains a connection
+    to the GitHub API, and an object that writes content to JSON files.
     """
 
-    def __init__(self, cfg_path) -> None:
+    def __init__(self, cfg_obj: conf.Cfg) -> None:
         """
         Initialize an extractor object. This object is our top-level actor and must be
         used by the user to extract data, such as in a driver program
         """
-        # read configuration dictionary from input configuration file
-        cfg_dict = file_io.read_json_to_dict(cfg_path)
-
         # initialize configuration object with cfg dict
-        self.cfg = conf.Cfg(cfg_dict, schema.cfg_schema)
+        self.cfg = cfg_obj
 
         auth_path = self.get_cfg_val("auth_file")
 
@@ -66,6 +40,8 @@ class Extractor:
         self.gh_sesh = sessions.GithubSession(auth_path)
 
         self.issues_paged_list = self.__get_issues_paged_list()
+
+        self.__set_output_file_dict_val()
 
     def _get_range_api_indices(self, paged_list) -> list:
         """
@@ -235,7 +211,7 @@ class Extractor:
 
         data_type = "issue"
         data_dict = {}
-        out_file = self.get_cfg_val("output_file")
+        out_file = self.get_cfg_val("issue_output_file")
         issue_list = self.issues_paged_list
 
         # get indices of sanitized range values
@@ -252,17 +228,18 @@ class Extractor:
                 cur_issue = issue_list[start_val]
 
                 # get issue data, provided in the "issues" cfg list
-                cur_issue_dict = self.__get_item_data(data_type, cur_issue)
+                cur_issue_dict = schema.get_item_data(self.cfg, data_type, cur_issue)
 
                 # get issue as a PR if it exists
                 cur_issue_pr_dict = self.__get_issue_pr(cur_issue)
-                cur_issue_dict = _merge_dicts(cur_issue_dict, cur_issue_pr_dict)
+                cur_issue_dict = dict_utils.merge_dicts(
+                    cur_issue_dict, cur_issue_pr_dict
+                )
 
-                # get comments if they exist
-                # TODO: may need to get general data about comments besides the
-                # data about specific comments that we are already getting
                 cur_issue_comments_dict = self.get_issue_comments_data(cur_issue)
-                cur_issue_dict = _merge_dicts(cur_issue_dict, cur_issue_comments_dict)
+                cur_issue_dict = dict_utils.merge_dicts(
+                    cur_issue_dict, cur_issue_comments_dict
+                )
 
                 cur_entry = {str(cur_issue.number): cur_issue_dict}
 
@@ -270,12 +247,12 @@ class Extractor:
                 self.__update_output_json_for_sleep(data_dict, out_file)
 
             else:
-                data_dict = _merge_dicts(data_dict, cur_entry)
+                data_dict = dict_utils.merge_dicts(data_dict, cur_entry)
                 self.gh_sesh.print_rem_gh_calls()
 
                 start_val += 1
 
-        file_io.write_merged_dict_to_json(data_dict, out_file)
+        file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
 
     def get_issue_comments_data(self, issue_obj):
         """
@@ -294,36 +271,17 @@ class Extractor:
             comments_paged_list = issue_obj.get_comments()
 
             for comment in comments_paged_list:
-                cur_entry = self.__get_item_data(item_type, comment)
+                cur_entry = schema.get_item_data(self.cfg, item_type, comment)
 
                 cur_entry = {str(comment_index): cur_entry}
 
-                cur_issue_comment_dict = _merge_dicts(cur_issue_comment_dict, cur_entry)
+                cur_issue_comment_dict = dict_utils.merge_dicts(
+                    cur_issue_comment_dict, cur_entry
+                )
 
                 comment_index += 1
 
         return {"issue_comments": cur_issue_comment_dict}
-
-    def __get_item_data(self, item_type, cur_item) -> dict:
-        """
-        For each field in the list provided by the user in configuration, e.g.
-        "issue_fields", get the associated piece of data and store it in a
-        dict where {field name: field data}, e.g. {"issue number": 20}
-
-        :param item_type: name of item type to retrieve, e.g. "pr" or "issue"
-        :type item_type: str
-        :param cur_item: the current API item to get data about, e.g. current PR
-        :type cur_item: PyGitHub PR or Issue
-        :return: dictionary of API data values for param item
-        :rtype: dict
-        """
-        field_list = self.get_cfg_val(f"{item_type}_fields")
-
-        cmd_tbl = schema.cmd_tbl_dict[item_type]
-
-        # when called, this will resolve to various function calls, e.g.
-        # "body": cmd_tbl["body"](cur_PR)
-        return {field: cmd_tbl[field](cur_item) for field in field_list}
 
     def __get_issues_paged_list(self):
         """
@@ -395,26 +353,39 @@ class Extractor:
         if self.get_cfg_val("pr_fields") and (
             is_merged or self.get_cfg_val("state") == "open"
         ):
-            cur_item_data = self.__get_item_data(item_type, cur_pr)
 
-            cur_pr_dict = _merge_dicts(cur_pr_dict, cur_item_data)
+            cur_entry = schema.get_item_data(self.cfg, item_type, cur_pr)
+
+            cur_pr_dict = dict_utils.merge_dicts(cur_pr_dict, cur_entry)
 
             last_commit = __get_last_commit(cur_pr)
 
             if len(last_commit.files) > 0:
 
                 # get all data from that commit
-                cur_item_data = self.__get_item_data(
-                    "commit",
-                    last_commit,
-                )
+                cur_entry = schema.get_item_data(self.cfg, "commit", last_commit)
 
-                cur_item_data = {"commit": cur_item_data}
+                cur_item_data = {"commit": cur_entry}
 
-                cur_pr_dict = _merge_dicts(cur_pr_dict, cur_item_data)
+                cur_pr_dict = dict_utils.merge_dicts(cur_pr_dict, cur_item_data)
 
         # use all gathered entry data as the val for the PR num key
         return {item_type: cur_pr_dict}
+
+    def __set_output_file_dict_val(self):
+        """
+        Create directories and files related to output, then set
+        "output_file" value in user configuration dictionary
+        """
+
+        out_dir = self.get_cfg_val("output_dir")
+
+        # lop repo str off of full repo info, e.g. owner/repo
+        repo_title = self.get_cfg_val("repo").rsplit("/", 1)[1]
+
+        out_path = file_io_utils.mk_json_outpath(out_dir, repo_title, "issues")
+
+        self.cfg.set_cfg_val("issue_output_file", out_path)
 
     def __update_output_json_for_sleep(self, data_dict, out_file):
         """
@@ -428,7 +399,7 @@ class Extractor:
         :param out_file: path to output file
         :type out_file: string
         """
-        file_io.write_merged_dict_to_json(data_dict, out_file)
+        file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
         data_dict.clear()
         self.gh_sesh.sleep_gh_session()
 

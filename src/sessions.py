@@ -6,7 +6,7 @@ allow it to interact with external sources that require connections
 import sys
 import time
 import github
-from src import file_io
+from src import file_io_utils
 
 
 def _console_print_in_place(label_str: str, val) -> None:
@@ -55,7 +55,7 @@ class GithubSession:
         """
 
         # retrieve token from auth file
-        token = file_io.read_txt_line(auth_path)
+        token = file_io_utils.read_file_line(auth_path)
 
         # establish a session with token
         session = github.Github(token, per_page=self.__page_len, retry=100, timeout=100)
