@@ -3,7 +3,6 @@ The conf module provides functionality related to configurations for the
 extractor
 """
 
-import os
 import sys
 import cerberus
 
@@ -31,9 +30,6 @@ class Cfg:
         # validate user-provided configuration dict
         self.__validate_dict_entries()
 
-        # use repo and output dir from cfg to create path to write output to
-        self.__set_output_file_dict_val()
-
     def get_cfg_val(self, key: str):
         """
         print the associated value of key param
@@ -52,31 +48,6 @@ class Cfg:
         :rtype None
         """
         self.cfg_dict[key] = val
-
-    def __set_output_file_dict_val(self):
-        """
-        Create directories and files related to output, then set
-        "output_file" value in user configuration dictionary
-        """
-        out_dir = self.get_cfg_val("output_dir")
-
-        # lop repo str off of full repo info, e.g. owner/repo
-        repo_name = self.get_cfg_val("repo").rsplit("/", 1)[1]
-
-        # init output subdir for this repo and hold onto it
-        repo_subdir = f"{out_dir}/{repo_name}"
-
-        # init path to output file
-        out_file = f"{repo_subdir}/{repo_name}_output.json"
-
-        # create output directory only if it does not exist
-        os.makedirs(repo_subdir, exist_ok=True)
-
-        # for each file above, create it if it does not exist
-        if not os.path.exists(out_file):
-            os.mknod(out_file)
-
-        self.set_cfg_val("output_file", out_file)
 
     def __validate_dict_entries(self) -> None:
         """

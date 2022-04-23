@@ -4,20 +4,21 @@ Extractor class from the extractor module
 """
 
 import argparse
-from src import extractor
+from src import conf, extractor, file_io_utils, schema, social_metrics_utils
 
 
 def main():
     """driver function for GitHub Repo Extractor"""
 
-    cfg_path = get_cli_args()
+    cfg_dict = get_user_cfg_dict()
+
+    cfg_obj = conf.Cfg(cfg_dict, schema.cfg_schema)
 
     # init extractor object
     print("\nInitializing extractor...")
-    gh_ext = extractor.Extractor(cfg_path)
+    gh_ext = extractor.Extractor(cfg_obj)
     print("\nExtractor initialization complete!")
 
-    # TODO: update this to reflect recent deprecation of user-facing PR getter
     if gh_ext.get_cfg_val("issue_fields"):
         print("\nGetting issue data...")
         gh_ext.get_issues_data()
@@ -25,6 +26,14 @@ def main():
 
     else:
         print("\nNo issue fields given! Proceeding...")
+
+    if gh_ext.get_cfg_val("social_metrics_fields"):
+        print("\nProducing social metrics...")
+        social_metrics_utils.get_social_metrics_data(cfg_obj)
+        print("\nSocial metrics complete!")
+
+    else:
+        print("\nNo social metrics fields given! Proceeding...")
 
     print("\nExtraction complete!")
 
@@ -48,6 +57,18 @@ def get_cli_args() -> str:
     )
 
     return arg_parser.parse_args().extractor_cfg_file
+
+
+def get_user_cfg_dict() -> dict:
+    """
+    TODO:
+
+    :return:
+    :rtype:
+    """
+    cfg_path = get_cli_args()
+
+    return file_io_utils.read_jsonfile_into_dict(cfg_path)
 
 
 if __name__ == "__main__":
