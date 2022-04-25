@@ -1,0 +1,12 @@
+{
+ "repo":,
+ "auth_file":,
+ "state":,
+ "range":,
+ "output_dir":,
+ "commit_fields": {},
+ "issue_comment_fields": {},
+ "issue_fields": {},
+ "pr_fields": {},
+ "social_metrics_fields": {}
+}

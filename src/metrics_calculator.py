@@ -22,14 +22,14 @@ def get_social_metrics_data(user_cfg: conf.Cfg):
     issue_metrics_dict = {}
 
     if len(issue_dict) > 0:
-        for issue in issue_dict:
+        for num, issue in issue_dict.items():
 
-            cmmnt_dict = issue_dict[issue]["issue_comments"]
+            cmmnt_dict = issue["issue_comments"]
 
             if cmmnt_dict:
-                cur_metrics_dict = schema.get_item_data(
-                    user_cfg, "social_metrics", cmmnt_dict
-                )
+                cur_metrics_dict = {
+                    num: schema.get_item_data(user_cfg, "social_metrics", cmmnt_dict)
+                }
 
                 issue_metrics_dict = dict_utils.merge_dicts(
                     issue_metrics_dict, cur_metrics_dict
