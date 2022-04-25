@@ -4,7 +4,7 @@ Extractor class from the extractor module
 """
 
 import argparse
-from src import conf, extractor, file_io_utils, schema, social_metrics_utils
+from src import conf, extractor, file_io_utils, schema, metrics_calculator
 
 
 def main():
@@ -17,25 +17,25 @@ def main():
     # init extractor object
     print("\nInitializing extractor...")
     gh_ext = extractor.Extractor(cfg_obj)
-    print("\nExtractor initialization complete!")
+    print(f'{" " * 4}Extractor initialization complete!\n')
 
     if gh_ext.get_cfg_val("issue_fields"):
-        print("\nGetting issue data...")
+        print("Getting issue data...")
         gh_ext.get_issues_data()
-        print("\nIssue data complete!")
+        print(f'{" " * 4}Issue data complete!\n')
 
     else:
-        print("\nNo issue fields given! Proceeding...")
+        print("No issue fields given! Proceeding...\n")
 
     if gh_ext.get_cfg_val("social_metrics_fields"):
-        print("\nProducing social metrics...")
-        social_metrics_utils.get_social_metrics_data(cfg_obj)
-        print("\nSocial metrics complete!")
+        print("Producing social metrics...")
+        metrics_calculator.get_social_metrics_data(cfg_obj)
+        print(f'{" " * 4}Social metrics complete!\n')
 
     else:
-        print("\nNo social metrics fields given! Proceeding...")
+        print("No social metrics fields given! Proceeding...\n")
 
-    print("\nExtraction complete!")
+    print("Extraction complete!\n")
 
 
 def get_cli_args() -> str:

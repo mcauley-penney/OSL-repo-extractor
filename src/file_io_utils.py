@@ -1,11 +1,69 @@
-"""The io module provides I/O functionality to the Extractor class"""
+"""
+TODO
+
+gzip docs:
+    https://docs.python.org/3/library/gzip.html
+
+json docs:
+    https://docs.python.org/3/library/json.html
+
+
+"""
 
 import json
 from json.decoder import JSONDecodeError
+import gzip
 import os
 import sys
 
 from src import dict_utils
+
+
+def compress_jsonfile_to_gzip(in_json: str, out_gzip: str) -> None:
+    """
+    TODO:
+    :param in_json:
+    :type in_json:
+    :param out_gzip:
+    :type out_gzip:
+    """
+    json_bytes = read_jsonfile_into_bytes(in_json)
+
+    try:
+        with gzip.open(out_gzip, "wt", encoding="UTF-8") as zipfile:
+            json.dump(json_bytes, zipfile)
+
+    except FileExistsError:
+        print(f'\nFile at "{out_gzip}" already exists!')
+        sys.exit(1)
+
+
+def decompress_gzip_to_jsonfile(in_gzip: str, out_json: str) -> None:
+    """
+    TODO:
+    :param in_gzip:
+    :type in_gzip:
+    :param out_json:
+    :type out_json:
+    """
+
+    # TODO: modularize?
+
+    try:
+        with gzip.open(in_gzip, "rt", encoding="UTF-8") as zipfile:
+            json_str = json.load(zipfile)
+
+    except FileNotFoundError:
+        print(f'\nFile at "{in_gzip}" not found!')
+        sys.exit(1)
+
+    try:
+        with open(out_json, "w", encoding="UTF-8") as jsonfile:
+            jsonfile.write(json_str)
+
+    except FileExistsError:
+        print(f'\nFile at "{out_json}" already exists!')
+        sys.exit(1)
 
 
 def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
@@ -163,5 +221,3 @@ def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
 
     # write JSON content back to file
     write_dict_to_jsonfile(json_dict, out_path)
-
-    print()
