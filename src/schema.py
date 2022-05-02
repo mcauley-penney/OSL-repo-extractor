@@ -277,7 +277,7 @@ cmd_tbl_dict = {
     "pr": {},
     "social_metrics": {
         "num_discussants": _get_num_uniq_discussants,
-        "word_count": _get_issue_wordiness,
+        "wordiness": _get_issue_wordiness,
     },
 }
 

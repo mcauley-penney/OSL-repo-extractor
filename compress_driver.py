@@ -14,7 +14,7 @@ def main():
     for arg in arg_list:
         print(f"Compressing {arg}...")
         file_io_utils.compress_jsonfile_to_gzip(arg, f"{arg}.gz")
-        print(f"{' ' * 4}Compression complete!\n")
+        print(f"{' ' * 4}Compression complete!")
 
 
 def get_cli_args() -> str:

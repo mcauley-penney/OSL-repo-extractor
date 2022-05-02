@@ -14,7 +14,7 @@ def main():
     for arg in arg_list:
         print(f"Decompressing {arg}...")
         file_io_utils.decompress_gzip_to_jsonfile(arg, arg.rsplit(".", 1)[0])
-        print(f"{' ' * 4}Decompression complete!\n")
+        print(f"{' ' * 4}Decompression complete!")
 
 
 def get_cli_args() -> str:

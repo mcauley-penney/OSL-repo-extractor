@@ -1,6 +1,6 @@
 """
 This module is a storehouse for tools that derive social metrics from data
-gathered from GitHub via the Extractor class
+gathered from GitHub via the Extractor class.
 """
 
 from src import conf, dict_utils, file_io_utils, schema
@@ -29,6 +29,8 @@ def get_social_metrics_data(user_cfg: conf.Cfg):
             cur_metrics_dict = {
                 num: schema.get_item_data(user_cfg, "social_metrics", cmmnt_dict)
             }
+
+            cur_metrics_dict[num]["num_comments"] = issue["num_comments"]
 
             issue_metrics_dict = dict_utils.merge_dicts(
                 issue_metrics_dict, cur_metrics_dict

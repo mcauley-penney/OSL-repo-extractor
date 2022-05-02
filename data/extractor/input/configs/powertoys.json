@@ -13,6 +13,6 @@
   "pr_fields": [],
   "social_metrics_fields": [
     "num_discussants",
-    "word_count"
+    "wordiness"
   ]
 }

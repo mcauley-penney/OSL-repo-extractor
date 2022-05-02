@@ -4,7 +4,11 @@ TODO:
 Documentation: https://www.psycopg.org/docs/
 """
 
+import sys
 import psycopg2
+
+sys.path.append("../../..")
+from src import file_io_utils
 
 
 def main():
@@ -19,23 +23,37 @@ def main():
     )
 
     # Create a cursor object
-    cur = conn.cursor()
+    cur_cursor = conn.cursor()
 
-    num_list = []
+    table = "pr_issue"
 
-    for item_type in ["pr", "pr_issue"]:
-        cur = select(cur, item_type, "*")
-        query_res = cur.fetchall()
+    # read keys into list
+    key_file = "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/output/PowerToys/PowerToys_pg_keys.txt"
+    metrics_file = "/home/m/files/work/GitHub-Repo-Extractor/data/extractor/output/PowerToys/PowerToys_metrics.json"
 
-        for data_tuple in query_res:
-            num_list.append(int(data_tuple[0]))
+    with open(key_file, "r", encoding="UTF-8") as key_fptr:
+        key_list_str = key_fptr.read()
 
-        sorted_num_list = sorted(num_list)
-        write_output("pt_keys.txt", sorted_num_list)
+    key_list = key_list_str.split("\n")
 
-    # conn.commit()
+    # read json data into dict
+    metrics_dict = file_io_utils.read_jsonfile_into_dict(metrics_file)
 
-    close_cnxn(cur, conn)
+    for key in key_list:
+        try:
+            cur_metric_dict = metrics_dict[key]
+
+        except KeyError:
+            # simply ignore
+            pass
+
+        else:
+            for sub_key, val in cur_metric_dict.items():
+                update(cur_cursor, table, sub_key, val, str(key))
+
+    conn.commit()
+
+    close_cnxn(cur_cursor, conn)
 
 
 def close_cnxn(cursor, cnxn):
@@ -51,24 +69,34 @@ def close_cnxn(cursor, cnxn):
     cnxn.close()
 
 
-def insert(cursor, table, cols_list, val_list):
+def insert(cursor, table, col: str, val: str) -> None:
     """TODO:"""
 
-    # joining in this manner turns a python list of strings into one string in
-    # the format that SQL expects of a list of columns, e.g.
-    # ["col1", "col2"] ─►  "col1, col2"
-    col_str = ", ".join(cols_list)
+    insert_str = f"INSERT INTO {table}({col}) VALUES ({val});"
 
-    # cursor.execute(f"INSERT INTO {table}({col_str}) VALUES {*val_list,};")
-    cursor.execute(f"INSERT INTO {table}({col_str}) VALUES %s")(val_list)
+    cursor.execute(insert_str)
 
 
-def select(cursor, table, col):
+def select(cursor, table: str, col: str):
     """TODO:"""
 
-    cursor.execute(f"SELECT {col} from {table};")
+    try:
+        cursor.execute(f"SELECT {col} from {table};")
 
-    return cursor
+    except psycopg2.errors.UndefinedColumn:
+        print(f'Error: Column "{col}" does not exist!\n')
+        return []
+
+    else:
+        return cursor.fetchall()
+
+
+def update(cursor, table: str, col: str, val: str, item_num: str):
+    """
+    TODO
+    """
+    update_str = f"UPDATE {table} SET {col} = {val} WHERE pr = '{item_num}';"
+    cursor.execute(update_str)
 
 
 def write_output(filepath, output):

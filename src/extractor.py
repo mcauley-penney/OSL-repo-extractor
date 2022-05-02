@@ -1,6 +1,4 @@
-"""
-The extractor module provides and exposes functionality to mine GitHub repositories.
-"""
+"""The extractor module provides and exposes functionality to mine GitHub repositories."""
 
 import github
 from src import conf, dict_utils, file_io_utils, schema, sessions
@@ -21,6 +19,7 @@ def _get_page_last_item(paged_list, page_index):
 class Extractor:
     """
     The Extractor class contains and executes GitHub REST API functionality.
+
     It initiates and holds onto an object that stores the configuration for
     the program execution, an object that initiates and contains a connection
     to the GitHub API, and an object that writes content to JSON files.
@@ -28,6 +27,8 @@ class Extractor:
 
     def __init__(self, cfg_obj: conf.Cfg) -> None:
         """
+        Extractor object initialization.
+
         Initialize an extractor object. This object is our top-level actor and must be
         used by the user to extract data, such as in a driver program
         """
@@ -406,7 +407,7 @@ class Extractor:
         return data_dict
 
     def __get_issue_pr(self, issue_obj):
-        """
+        """.
         TODO
 
         :param issue_obj:

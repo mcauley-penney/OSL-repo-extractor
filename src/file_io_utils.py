@@ -6,8 +6,6 @@ gzip docs:
 
 json docs:
     https://docs.python.org/3/library/json.html
-
-
 """
 
 import json
@@ -161,7 +159,7 @@ def read_jsonfile_into_dict(in_path: str) -> dict:
 
 def read_jsonfile_into_bytes(in_path: str) -> str:
     """
-    TODO:
+    TODO.
 
     :param in_path:
     :type in_path: str
@@ -170,14 +168,14 @@ def read_jsonfile_into_bytes(in_path: str) -> str:
     """
     try:
         with open(in_path, "r", encoding="UTF-8") as file_obj:
-            json_text = file_obj.read()
+            json_bytes = file_obj.read()
 
     except FileNotFoundError:
         print(f'\nFile at "{in_path}" not found!')
         sys.exit(1)
 
     else:
-        return json_text
+        return json_bytes
 
 
 def write_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
@@ -200,9 +198,11 @@ def write_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
 
 def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     """
-    gets the desired output path, opens and reads any JSON data that may already be
-    there, and recursively merges in param data from the most recent round of API
-    calls
+    Recursively merge dictionaries and write them to an output JSON file.
+
+    Get the desired output path, open and read any JSON data that may
+    already be there, and recursively merge in param data from the
+    most recent round of API calls.
 
     :param out_dict dict[unknown]: dict of data from round of API calls to merge and
     write
