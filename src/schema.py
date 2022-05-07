@@ -1,4 +1,6 @@
 """
+Exposes schema and related getter functionality to Cfg class.
+
 This module is intended to provide easy access to the extractor's
     1. getter functionality
     2. command dispatch tables
@@ -28,20 +30,40 @@ Resources:
     • introduction to dispatch tables:
         https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
 """
-
 from src import conf
-
+from src.utils import dict_utils
 
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
-# TODO: consider separating this from the Cfg class
 def get_item_data(user_cfg: conf.Cfg, item_type, cur_item) -> dict:
     """
-    For each field in the list provided by the user in configuration, e.g.
-    "issue_fields", get the associated piece of data and store it in a
-    dict where {field name: field data}, e.g. {"issue number": 20}
+    Getter engine used to aggregate desired data from a given API item.
 
+    For each field in the list provided by the user in configuration,
+    e.g. "issue_fields", get the associated piece of data and store
+    it in a dict where {field name: field data}, e.g.
+    {"issue number": 20}. If a field in the field list is itself a
+    field list, e.g. "user", then get_item_data() will recurse into
+    that field list and gather the fields therein.
+
+    cfg:
+    {
+        issue: {
+            body,─── field
+            user ─┐
+        }         ├─ field list
+     ┌────────────┘
+     └► user: {
+            userid
+        }
+     }
+
+     This pattern can be used for other nested types as well, e.g.
+     github.Label.Label.
+
+    :param user_cfg: Cfg object containing user-provided configuration
+    :type: Cfg object
     :param item_type: name of item type to retrieve, e.g. "pr" or "issue"
     :type item_type: str
     :param cur_item: the current API item to get data about, e.g. current PR
@@ -49,19 +71,34 @@ def get_item_data(user_cfg: conf.Cfg, item_type, cur_item) -> dict:
     :return: dictionary of API data values for param item
     :rtype: dict
     """
-    field_list = user_cfg.get_cfg_val(f"{item_type}_fields")
-
     cmd_tbl = cmd_tbl_dict[item_type]
+    field_list = user_cfg.get_cfg_val(f"{item_type}_fields")
+    item_dict = {}
 
-    # when called, this will resolve to various function calls, e.g.
-    # "body": cmd_tbl["body"](cur_PR)
-    return {field: cmd_tbl[field](cur_item) for field in field_list}
+    for field in field_list:
+        cur_data_dict = None
+
+        try:
+            item_data = get_item_data(user_cfg, field, cur_item)
+
+            if item_data:
+                cur_data_dict = {field: item_data}
+
+        except KeyError:
+            # when called, this will resolve to various function
+            # calls, e.g. "body": cmd_tbl["body"](cur_PR)
+            cur_data_dict = {field: cmd_tbl[field](cur_item)}
+
+        item_dict = dict_utils.merge_dicts(item_dict, cur_data_dict)
+
+    return item_dict
 
 
 def _clean_str(str_to_clean) -> str:
     """
-    If a string is empty or None, returns NaN. Otherwise, strip the string of any
-    carriage returns, newlines, and leading or trailing whitespace.
+    If given a valid string, strip it of whitespace and carriage returns.
+
+    If a string is empty or None, returns NaN.
 
     :param str_to_clean str: string to clean and return
     """
@@ -75,11 +112,6 @@ def _clean_str(str_to_clean) -> str:
 
 
 def _get_body(api_obj) -> str:
-    """
-    return issue or PR text body
-
-    :param api_obj github.PullRequest/github.Issue: API object to get body text of
-    """
     return _clean_str(api_obj.body)
 
 
@@ -95,11 +127,9 @@ def _get_commit_date(api_obj) -> str:
     return api_obj.commit.author.date.strftime(TIME_FMT)
 
 
-def _get_commit_files(api_obj) -> dict:
+def _get_commit_files(commit_obj) -> dict:
     """
-    For the list of files modified by a commit on a PR, return a list of qualities
-
-    :param api_obj PaginatedList: paginated list of commits
+    For the list of files modified by a PR commit, return a list of qualities.
 
     NOTE:
         If a list of files is too large, it will be returned as a paginatied
@@ -107,10 +137,12 @@ def _get_commit_files(api_obj) -> dict:
         https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
         now, this situation is not handled here.
 
-    :rtype dict[unknown]: dictionary of fields discussing file attributes of a
-    commit
+    :param pr_obj: pull request to get file change data from
+    :type pr_obj: Github.PullRequest
+    :return: dict of data about file changes made by the given PR
+    :rtype: dict
     """
-    file_list = api_obj.files
+    file_list = commit_obj.files
 
     commit_file_list = []
     commit_adds = 0
@@ -149,11 +181,12 @@ def _get_commit_sha(api_obj) -> str:
 
 def _get_closed_time(api_obj) -> str:
     """
-    if the API object has been closed, i.e. closed PR or issue, return the formatted
-    datetime that it was closed at
+    Get the datetime an API object, such as an issue, was closed if closed.
 
-    :param api_obj github.PullRequest/github.Issue: API object to get datetime of
-    closing of
+    :param api_obj: API object to get closed time of
+    :type api_obj: Github.Issue
+    :return: datetime string of API object closure or "NaN"
+    :rtype: str
     """
     if api_obj.closed_at is not None:
         return api_obj.closed_at.strftime(TIME_FMT)
@@ -162,11 +195,18 @@ def _get_closed_time(api_obj) -> str:
 
 
 def _get_issue_comments_discussants(comment_obj) -> dict:
+    """
+    Get dict of data about discussant in an API object comment.
 
+    :param comment_obj: comment on a GitHub issue
+    :type comment_obj: Github.IssueComment
+    :return: dict of identification data about discussant in comment
+    :rtype: dict
+    """
     discussant_dict = {
-        "id": _get_userid(comment_obj),
-        "name": _get_username(comment_obj),
-        "username": _get_userlogin(comment_obj),
+        "userid": _get_userid(comment_obj),
+        "userlogin": _get_userlogin(comment_obj),
+        "username": _get_username(comment_obj),
     }
 
     return discussant_dict
@@ -192,68 +232,39 @@ def _get_username(api_obj) -> str:
     return _clean_str(api_obj.user.name)
 
 
-def _get_issue_wordiness(issuecmmnt_dict: dict):
-    """
-    Count the amount of words over a length of 2 in each comment in an issue
-
-    :param issuecmmnt_dict: dictionary of comments for an issue
-    :type issuecmmnt_dict: dict
-    """
-
-    sum_wc = 0
-
-    for comment in issuecmmnt_dict.values():
-        body = comment["body"]
-
-        # get all words greater in len than 2
-        split_body = [word for word in body.split() if len(word) > 2]
-
-        sum_wc += len(split_body)
-
-    return sum_wc
-
-
-def _get_num_uniq_discussants(issuecmmnt_dict: dict):
-    """
-    TODO
-
-    :param issuecmmnt_dict:
-    :type issuecmmnt_dict: dict
-    :return:
-    :rtype:
-    """
-    if len(issuecmmnt_dict) > 0:
-
-        discussants_set = {
-            comment["discussant"]["id"]
-            for comment in issuecmmnt_dict.values()
-            if isinstance(comment["discussant"]["id"], str)
-        }
-
-        return len(discussants_set)
-
-    return 0
-
-
-# Initialize map of strings to function references, a dispatch table.
-# This allows us to call a function using a string by saying
+# Initialize map of strings to function references; a
+# dispatch table. This allows us to call a function
+# using a string, by saying
 #
-#           cmd_tbl_dict[type][function name]()
+#       cmd_tbl_dict[type][function name]()
 #
 # To get an issue body, for example, we can either say
 #
-#           cmd_tbl_dict["issue"]["body"]()
+#       cmd_tbl_dict["issue"]["body"]()
 #
-# or we can store the subdictionary as a variable first
-#
-#           issue_fn_dict = cmd_tbl_dict["issue"])
-#
-# and then call from that subdictionary like
-#
-#           issue_fn_dict["body"]()
-#
-# We peform this exact method in the Extractor class getters
+# Items which map to get_item_data are intended to be
+# recursively gathered; mapping to get_item_data does
+# nothing, and those items which are will be caught in
+# get_item_data by a conditional which checks for
+# field lists nested in other field lists, e.g.
+# "user" in "issue"
+
 cmd_tbl_dict = {
+    # top-level actors
+    "issue": {
+        "body": _get_body,
+        "closed": _get_closed_time,
+        "num_comments": _get_issue_comments_quant,
+        "title": _get_title,
+        "user": get_item_data,
+    },
+    "comments": {
+        "body": _get_body,
+        "user": get_item_data,
+        "discussant": _get_issue_comments_discussants,
+    },
+    "pr": {},
+    # sub-actors
     "commit": {
         "commit_author_name": _get_commit_author_name,
         "committer": _get_commit_committer,
@@ -262,45 +273,30 @@ cmd_tbl_dict = {
         "commit_message": _get_commit_msg,
         "commit_sha": _get_commit_sha,
     },
-    "issue": {
-        "body": _get_body,
-        "closed": _get_closed_time,
-        "num_comments": _get_issue_comments_quant,
-        "title": _get_title,
+    "user": {
+        "userid": _get_userid,
         "userlogin": _get_userlogin,
         "username": _get_username,
     },
-    "issue_comment": {
-        "body": _get_body,
-        "discussant": _get_issue_comments_discussants,
-    },
-    "pr": {},
-    "social_metrics": {
-        "num_discussants": _get_num_uniq_discussants,
-        "wordiness": _get_issue_wordiness,
-    },
 }
 
-# Schema used to validate user-provided configuration. This acts as a template
-# to judge whether the user cfg is acceptable to the program. This *does not*
-# need to be modified to add new getter functionality
+# Schema used to validate user-provided configuration.
+# This acts as a template to judge whether the user cfg
+# is acceptable to the program. This *does not* need to
+# be modified to add new getter functionality
 cfg_schema = {
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},
     "state": {"allowed": ["closed", "open"], "type": "string"},
     "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
-    "commit_fields": {},
-    "issue_comment_fields": {},
-    "issue_fields": {},
-    "pr_fields": {},
-    "social_metrics_fields": {},
     "output_dir": {"type": "string"},
 }
 
-# init fields schema programmatically
-for field_type in ["commit", "issue", "issue_comment", "pr", "social_metrics"]:
-    cfg_schema[f"{field_type}_fields"] = {
-        "allowed": [*cmd_tbl_dict[field_type]],
+# loop over keys in cmd_tbl_dict and init corresponding
+# entries in the configuration schema
+for key, _ in cmd_tbl_dict.items():
+    cfg_schema[f"{key}_fields"] = {
+        "allowed": [*cmd_tbl_dict[key]],
         "schema": {"type": "string"},
         "type": "list",
     }

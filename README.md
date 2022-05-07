@@ -1,6 +1,6 @@
 # OSL Repo Extractor
 
-The extraction stage of [Fabio Marcos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
+The extraction stage of [Fabio Santos'](https://github.com/fabiojavamarcos) NAU-OSL project pipeline.
 
 
 ## Purpose

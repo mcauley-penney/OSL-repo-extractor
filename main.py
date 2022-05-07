@@ -1,15 +1,13 @@
-"""
-This module provides driver functionality for running the GitHub extractor
-via the Extractor class from the extractor module
-"""
+"""Provides driver functionality for running the GitHub extractor."""
 
 import argparse
-from src import conf, extractor, file_io_utils, schema, metrics_calculator
+from src import conf, schema
+from src.extractor import github_extractor
+from src.utils import file_io_utils
 
 
 def main():
-    """driver function for GitHub Repo Extractor"""
-
+    """Driver function for GitHub Repo Extractor."""
     tab = " " * 4
 
     cfg_dict = get_user_cfg_dict()
@@ -18,7 +16,7 @@ def main():
 
     # init extractor object
     print("\nInitializing extractor...")
-    gh_ext = extractor.Extractor(cfg_obj)
+    gh_ext = github_extractor.Extractor(cfg_obj)
     print(f"{tab}Extractor initialization complete!\n")
 
     if gh_ext.get_cfg_val("issue_fields"):
@@ -27,26 +25,18 @@ def main():
         print(f"{tab}Issue data complete!\n")
 
     else:
-        print("No issue fields given! Proceeding...\n")
-
-    if gh_ext.get_cfg_val("social_metrics_fields"):
-        print("Producing social metrics...")
-        metrics_calculator.get_social_metrics_data(cfg_obj)
-        print(f"{tab}Social metrics complete!\n")
-
-    else:
-        print("No social metrics fields given! Proceeding...\n")
+        print("No issue fields given!\n")
 
     print("Extraction complete!\n")
 
 
 def get_cli_args() -> str:
     """
-    get initializing arguments from CLI
+    Get initializing arguments from CLI.
 
-    :rtype str: path to file with arguments to program
+    :return: path to file with arguments to program
+    :rtype: str
     """
-
     # establish positional argument capability
     arg_parser = argparse.ArgumentParser(
         description="Gathers and stores specific data from GitHub repositories",
@@ -63,10 +53,10 @@ def get_cli_args() -> str:
 
 def get_user_cfg_dict() -> dict:
     """
-    TODO:
+    Get path to and read from configuration file.
 
-    :return:
-    :rtype:
+    :return: dict of configuration values
+    :rtype: dict
     """
     cfg_path = get_cli_args()
 
