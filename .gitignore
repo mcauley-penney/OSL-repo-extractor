@@ -1,3 +1,4 @@
 *.json
 data/input/auths
+merge.py
 todo.txt
