@@ -173,8 +173,8 @@ def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     """
     json_dict = {}
 
-    # attempt to read JSON out of output file. Will return empty dict if no
-    # valid Json is found
+    # attempt to read JSON out of output file. Will return
+    # empty dict if no valid Json is found
     json_dict = read_jsonfile_into_dict(out_path)
 
     # recursively merge all dicts and nested dicts in both dictionaries

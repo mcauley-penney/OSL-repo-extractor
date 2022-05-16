@@ -42,9 +42,9 @@ class Cfg:
         """
         Set a value inside of the configuration dict.
 
-        :param key str: the key of the dict entry to modify
-        :param val str | int: value to assign to dict[key]
-        :rtype None
+        :param val: value to assign to dict[key]
+        :param key: the key of the dict entry to modify
+        :type key: str
         """
         self.cfg_dict[key] = val
 

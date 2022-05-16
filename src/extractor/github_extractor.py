@@ -21,7 +21,7 @@ CLR = "\x1b[K"
 TAB = " " * 4
 
 
-def _get_page_last_item(paged_list, page_index):
+def _get_page_last_item(paged_list, page_index: int):
     try:
         last_item = paged_list.get_page(page_index)[-1]
 
@@ -271,8 +271,8 @@ class Extractor:
         interest
 
         :raises github.RateLimitExceededException: if rate limited by the
-        GitHub REST API, dump collected data to output file and sleep the
-        program until calls can be made again
+            GitHub REST API, dump collected data to output file and sleep the
+            program until calls can be made again
         """
         data_dict = {}
         out_file = self.get_cfg_val("issue_output_file")

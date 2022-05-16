@@ -8,9 +8,9 @@ from src.utils import file_io_utils
 
 def main():
     """Driver function for GitHub Repo Extractor."""
-    tab = " " * 4
+    tab: str = " " * 4
 
-    cfg_dict = get_user_cfg_dict()
+    cfg_dict: dict = get_user_cfg_dict()
 
     cfg_obj = conf.Cfg(cfg_dict, schema.cfg_schema)
 

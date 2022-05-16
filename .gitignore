@@ -1,4 +1,3 @@
 *.json
 data/input/auths
-merge.py
-todo.txt
+docs/sphinx_build

@@ -12,9 +12,9 @@ This module is intended to provide easy access to the extractor's
 To add a new piece of functionality, the user has to make a few modifications:
     1. create a new getter function which accesses items provided by PyGithub
     2. add that function to the appropriate subdictionary in the command
-       dispatch table: {"field name to access function": function reference }
-        • this allows the configuration schema to know which fields are
-          acceptable
+        dispatch table: {"field name to access function": function reference }
+            • this allows the configuration schema to know which fields are
+                acceptable
 
     You *do not* need to modify the schema to add a new getter. You *only* need
     to create the function and add it to the dispatch table in the appropriate
