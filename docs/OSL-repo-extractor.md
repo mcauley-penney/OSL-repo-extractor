@@ -2,15 +2,6 @@
 
 1. add visuals for:
     • the pipeline
-
-2. update configuration and usage info
-    • provide internal links to items and just avoid giving paths
-        • paths keep changing, just avoid them dummy
-
-3. after migrating to pdoc, host external API stuff on GitHub Pages
-
-
-
 ====================================================================
 
 Author: Jacob McAuley Penney <jacobmpenney@gmail.com>
@@ -44,17 +35,15 @@ usage: main.py [-h] extractor_cfg_file
 main.py: error: the following arguments are required: extractor_cfg_file
 ```
 
-The extractor requires only a path to a configuration file. The sample configuration at
-`./doc/example_extractor_cfg.json` is a good place to start experimenting. The extractor will report to you
-what keys are missing, if any, and whether the values for the accepted keys are acceptable. An acceptable call
-from the command line will look like:
+The extractor requires only a path to a configuration file. See the [example configuration](./example_io/example_cfg.json) to begin experimenting. The extractor will report to you what keys are missing, if any, and whether the values for the accepted keys are acceptable. An acceptable call from the command line will look like:
+
 ```
-$ python main.py <path/to/cfg/file>
+$ python main.py path/to/cfg/file
 ```
 
 
 #### configuration
-Please see the extractor configuration template in `docs/example_io/` to get started.
+As mentioned above, please see the [example configuration](./example_io/example_cfg.json) to get started.
 
 Some key points about the configuration:
 
@@ -68,14 +57,13 @@ Some key points about the configuration:
     The extractor will not look at PR's that are closed and not merged.
 
 - The `range` value discusses the actual item numbers you want to gather data from. If you want data from PR #270 up to
-  PR #280 in a given repository, give [270, 280] to the range key, as above. The range behaves [x, y]; it is inclusive of both values.
+  PR #280 in a given repository, give `[270, 280]` to the range key, as above. The range behaves [x, y]; it is inclusive of both values.
 
 - The `fields` keys discuss what pieces of data you want to gather from the objects in the given range. The extractor will
   merge gathered data. If you collected one piece of data for a range of API items, e.g. the `body` of a set of PR's, but now want to collect the `title` of those same PR's, you can simply add the correct field, `title`, to the `pr_fields` list and the extractor will collect that data and merge it with the already existing JSON dictionary at the current output.
 
     - **You do not need to ask for:**
-        - issue numbers
-        - PR numbers
+        - issue/PR numbers
         - a PR's merged status
 
       Those pieces of data are mandatory when collecting data for those API item types, meaning that they will always be collected when collecting data on their respective item. *You do not need to attempt to provide them as arguments to the configuration file's "fields" lists.*
@@ -92,7 +80,7 @@ This means that data will be collected even when the program does not completely
 
 The output produced by the extractor is pretty-printed JSON. Because it is printed in a human-readable format, it is very
 easy to see what the extractor has collected and where the program left off in the case that you must stop it. See the
-example output at `data/output/jabref/jabref_output.JSON`.
+[example output](./example_io/facebook-react_example_output.json) for more.
 
 The human-readable output paired with the range functionality discussed above conveniently allows the user to start and stop
 at will. For example, you may be collecting data from a very large range but must stop for some reason. You can look at the
