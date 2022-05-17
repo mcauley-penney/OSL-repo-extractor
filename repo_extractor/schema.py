@@ -67,7 +67,7 @@ def get_item_data(user_cfg: conf.Cfg, item_type: str, cur_item) -> dict:
     return {field: cmd_tbl[field](cur_item) for field in field_list}
 
 
-def _clean_str(str_to_clean: str | None) -> str:
+def _sanitize_str(in_str) -> str:
     """
     If given a valid string, strip it of whitespace and carriage returns.
 
@@ -78,17 +78,17 @@ def _clean_str(str_to_clean: str | None) -> str:
         str: if param string is empty or None, returns "NaN". Else,
         return param string stripped of carriage returns and whitespace.
     """
-    if str_to_clean is None or str_to_clean == "":
+    if in_str is None or in_str == "":
         return "Nan"
 
-    output_str = str_to_clean.replace("\r", "")
+    output_str = in_str.replace("\r", "")
     output_str = output_str.replace("\n", "")
 
     return output_str.strip()
 
 
 def _get_body(api_obj) -> str:
-    return _clean_str(api_obj.body)
+    return _sanitize_str(api_obj.body)
 
 
 def _get_commit_author_name(api_obj) -> str:
@@ -142,14 +142,14 @@ def _get_commit_files(commit_obj) -> dict:
         "file_list": commit_file_list,
         "additions": commit_adds,
         "changes": commit_changes,
-        "patch_text": _clean_str(commit_patch_text),
+        "patch_text": _sanitize_str(commit_patch_text),
         "removals": commit_removes,
-        "status": _clean_str(quoted_commit_status_str),
+        "status": _sanitize_str(quoted_commit_status_str),
     }
 
 
 def _get_commit_msg(api_obj) -> str:
-    return _clean_str(api_obj.commit.message)
+    return _sanitize_str(api_obj.commit.message)
 
 
 def _get_commit_sha(api_obj) -> str:
@@ -185,7 +185,7 @@ def _get_userid(api_obj) -> str:
 
 
 def _get_userlogin(api_obj) -> str:
-    return _clean_str(api_obj.user.login)
+    return _sanitize_str(api_obj.user.login)
 
 
 # Initialize map of strings to function references; a

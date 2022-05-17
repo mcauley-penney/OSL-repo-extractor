@@ -364,7 +364,7 @@ class Extractor:
         file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
         print("\n")
 
-    def __get_issue_comments(self, issue_obj) -> dict | None:
+    def __get_issue_comments(self, issue_obj):
         """
         Create a dict of issue comment data for the given issue param.
 
@@ -376,7 +376,7 @@ class Extractor:
             issue_obj (Github.Issue): issue to get comment data from.
 
         Returns:
-            dict or None: If the user does not ask for comment data,
+            dict|None: If the user does not ask for comment data,
             return None. Else, attempt to gather comment data points.
         """
         item_type = "comments"
@@ -441,7 +441,7 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_issue_pr(self, issue_obj) -> dict | None:
+    def __get_issue_pr(self, issue_obj):
         """
         Check if an issue is a PR and, if so, collect it's PR data.
 
@@ -454,7 +454,7 @@ class Extractor:
                 raise this error. In that case, we needn't do anything.
 
         Returns:
-            dict or None: if the issue is also a PR, return a dict of
+            dict|None: if the issue is also a PR, return a dict of
             PR info. Else, return None.
         """
         try:

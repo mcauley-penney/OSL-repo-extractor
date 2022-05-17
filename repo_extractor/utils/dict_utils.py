@@ -1,7 +1,7 @@
 """Commonly-used functionality related to Python dictionaries."""
 
 
-def merge_dicts(base: dict, to_merge: dict | None) -> dict:
+def merge_dicts(base: dict, to_merge) -> dict:
     """
     Merge two dictionaries.
 
