@@ -10,7 +10,7 @@ from json.decoder import JSONDecodeError
 import os
 import sys
 
-from src.utils import dict_utils
+from repo_extractor.utils import dict_utils
 
 
 def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
@@ -21,14 +21,18 @@ def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
     for us, so we must protect our operations by ensuring path
     existence
 
-    :param out_dir: dir to init output file in
-    :type out_dir: str
-    :param repo_title: the name of the repo, e.g. "bar" in "foo/bar"
-    :type repo_title: str
-    :param output_type: Type of output being created
-    :type output_type: str
-    :return: path to output file
-    :rtype: str
+    Args:
+        out_dir (str): dir to init output file in.
+        repo_title (str): the name of the repo, e.g. "bar" in "foo/bar".
+        output_type (str): type of output being created.
+
+    Raises:
+        FileExistsError: if the file that we are attempting to
+        create already exists, simply move on. The extractor
+        knows how to update already existing JSON outputs.
+
+    Returns:
+        str: path to output file
     """
     path = f"{out_dir}/{repo_title}_{output_type}.json"
 
@@ -49,18 +53,20 @@ def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
     return path
 
 
-def read_file_into_text(in_path: str) -> str:
+def _read_json_into_text(in_path: str) -> str:
     """
     Read file contents into string.
 
     Used for reading JSON data out of JSON files.
 
-    :raises FileNotFoundError: no file found at given path
+    Args:
+        in_path (str): path to file to read contents from.
 
-    :param in_path: path to file to read contents from
-    :type in_path: str
-    :return: text from file
-    :rtype: str
+    Raises:
+        FileNotFoundError: hard exit if a file cannot be found.
+
+    Returns:
+        str: text from file.
     """
     try:
         with open(in_path, "r", encoding="UTF-8") as file_obj:
@@ -78,14 +84,16 @@ def read_file_line(in_path: str) -> str:
     """
     Read a single line from the top of a text file.
 
-    Used for reading personal access tokens (PATs) out of auth file.
+    Used for reading personal access tokens out of a file.
 
-    :raises FileNotFoundError: file does not exist at path
+    Args:
+        in_path (str): path to file to read line from.
 
-    :param in_path: path to file to read line from
-    :type in_path: str
-    :return: line from file, stripped of whitespace and newlines
-    :rtype: str
+    Raises:
+        FileNotFoundError: hard exit if a file cannot be found.
+
+    Returns:
+        str: line from file, stripped of whitespace and newlines.
     """
     try:
         with open(in_path, "r", encoding="UTF-8") as file_obj:
@@ -103,12 +111,13 @@ def read_jsonfile_into_dict(in_path: str) -> dict:
     """
     Read the contents of the provided JSON file into a dictionary.
 
-    :param in_path: path to JSON file to read from
-    :type in_path: str
-    :return: dictionary constructed from JSON contents
-    :rtype: dict
+    Args:
+        in_path (str): path to JSON file to read from.
+
+    Returns:
+        dict: dictionary constructed from JSON contents.
     """
-    json_text = read_file_into_text(in_path)
+    json_text = _read_json_into_text(in_path)
 
     json_dict = read_jsontext_into_dict(json_text)
 
@@ -119,18 +128,20 @@ def read_jsontext_into_dict(json_text: str) -> dict:
     """
     Convert text from JSON file into a python dict.
 
-    :raises JSONDecodeError: contents of str param are not valid JSON
+    Args:
+        json_text (str): text from JSON file.
 
-    :param json_text: text from JSON file
-    :type json_text: str
-    :return: dictionary of contents from JSON file
-    :rtype: dict
+    Raises:
+        JSONDecodeError: if no valid JSON content exists, ignore.
+            In this context, it simply means that we are writing
+            JSON to a new file.
+
+    Returns:
+        dict: dictionary constructed from JSON contents.
     """
     try:
         json_dict = json.loads(json_text)
 
-    # if no JSON content exists there, ignore. In this context, it simply
-    # means that we are writing JSON to a new file
     except JSONDecodeError:
         return {}
 
@@ -142,12 +153,12 @@ def write_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     """
     Write given Python dictionary to output file as JSON.
 
-    :raises FileNotFoundError: no file found at given path
+    Args:
+        out_dict (dict): dictionary to write as JSON.
+        out_path (str): path to write output to.
 
-    :param out_dict: dictionary to write as JSON
-    :type out_dict: dict
-    :param out_path: path to write output to
-    :type out_path: str
+    Raises:
+        FileNotFoundError: no file found at given path.
     """
     try:
         with open(out_path, "w", encoding="UTF-8") as json_outfile:
@@ -166,10 +177,10 @@ def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     already be there, and recursively merge in param data from the
     most recent round of API calls.
 
-    :param out_dict: dict of data from round of API calls to merge and write
-    :type out_dict: dict
-    :param out_path: path to output file
-    :type out_path: str
+    Args:
+        out_dict (dict): dict of data from round of API calls
+            to merge and write.
+        out_path (str): path to output file.
     """
     json_dict = {}
 

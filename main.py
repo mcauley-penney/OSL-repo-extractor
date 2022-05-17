@@ -1,9 +1,9 @@
 """Provides driver functionality for running the GitHub extractor."""
 
 import argparse
-from src import conf, schema
-from src.extractor import github_extractor
-from src.utils import file_io_utils
+from repo_extractor import conf, schema
+from repo_extractor.extractor import github_extractor
+from repo_extractor.utils import file_io_utils
 
 
 def main():

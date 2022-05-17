@@ -3,9 +3,9 @@
 import sys
 import time
 import github
-from src import conf, schema
-from src.extractor import _sessions
-from src.utils import dict_utils, file_io_utils
+from repo_extractor import conf, schema
+from repo_extractor.extractor import _sessions
+from repo_extractor.utils import dict_utils, file_io_utils
 
 
 # TODO:
@@ -42,8 +42,17 @@ class Extractor:
 
         This object is our top-level actor and must be used by the user
         to extract data, such as in a driver program.
+
+        Args:
+            cfg_obj (conf.Cfg): configuration object.
+
+        Attributes:
+            cfg (conf.Cfg): configuration object.
+            gh_sesh (github.Github): GitHub connection object.
+            issues_paged_list (github.PaginatedList of github.Issue): the
+                paginated list containing all issues of the chosen type
+                for the repository.
         """
-        # initialize configuration object with cfg dict
         self.cfg = cfg_obj
 
         auth_path = self.get_cfg_val("auth_file")
@@ -66,11 +75,12 @@ class Extractor:
         find the indices of those values inside of the paginated list,
         and return
 
-        :param paged_list: paginated list of API objects
-        :type paged_list: Github.PaginatedList of Github.Issues or
-            Github.PullRequests
-        :return: list of starting and ending indices for desired API items
-        :rtype: list[int]
+        Args:
+            paged_list (Github.PaginatedList of Github.Issue): paginated
+                list of issues
+
+        Returns:
+            list[int]: list of starting and ending indices for desired API items
         """
 
         def __bin_search_in_list(paged_list, last_page_index: int, val: int) -> int:
@@ -81,14 +91,15 @@ class Extractor:
             such as a PR or issue, inside of a list of pages of related
             objects from the GitHub API.
 
-            :param paged_list: paginated list of issues or PRs
-            :type paged_list:Github.PaginatedList of Github.Issues or
-                Github.PullRequests
-            :param val: number of item in list that we desire; e.g. PR# 800
-            :type val: int
-            :return: index of page in paginated list param where val
+            Args:
+                paged_list(Github.PaginatedList of Github.Issue): paginated
+                    list of issues
+                last_page_index (int): index of last page in paginated list
+                val (int): number of item in list that we desire; e.g. PR# 800
+
+            Returns:
+                int: index of page in given paginated listwhere val
                 param is located
-            :rtype: int
             """
             low = 0
             high = last_page_index
@@ -113,7 +124,7 @@ class Extractor:
 
             return low
 
-        def __bin_search_in_page(paged_list_page, page_len: int, val: int) -> int:
+        def __bin_search_in_page(val: int, paged_list_page, page_len: int) -> int:
             """
             Find the index of an API item in a page of API items.
 
@@ -126,15 +137,15 @@ class Extractor:
             binary search should return the index of the API object
             with the number 8.
 
-            :param paged_list_page: page from paginated list of API
-                items
-            :type paged_list_page: PaginatedList ofGithub.Issues
-            :param page_len: length of the page parameter
-            :type page_len: int
-            :param val: value to look for in page parameter
-            :type val: int
-            :return: index of the object we are looking for
-            :rtype: int
+            Args:
+                val (int): value to look for in page parameter
+                paged_list_page (page of Github.Issue): a single page
+                    from paginated list of issues
+                page_len (int): length of pages in paginated lists for
+                    this validated GitHub session
+
+            Returns:
+                int: index of the object we are looking for
             """
             low = 0
 
@@ -160,30 +171,47 @@ class Extractor:
 
             return low
 
-        def __get_range_val_index(
-            range_val: int, last_page_index: int, page_len: int
+        def __get_issue_num_paginated_index(
+            issue_num: int, last_page_index: int, page_len: int
         ) -> int:
             """
-            TODO.
+            Find the index of the issue with the given number in list of issues.
 
-            :param range_val:
-            :type range_val: int
-            :param last_page_index:
-            :type last_page_index: int
-            :return:
-            :rtype:
+            GitHub obviously cannot ensure that issue indices match
+            with issue numbers. We have to account for missing items
+            and page lengths when searching for an item.
+
+            Note:
+                This function and the associated functions are pretty
+                slow. They would benefit a lot from optimization and a
+                faster fetching mechanism. PyGithub has a private method
+                that can actually be accesed but this is firstly abusive
+                of its purpose and, secondly, seems to be the method that
+                is slow under the hood of this method. See __fetchToIndex()
+                in https://github.com/PyGithub/PyGithub/blob/master/github/PaginatedList.py
+
+            Args:
+                issue_num (int): issue number to search for
+                last_page_index (int): index of the last page in the
+                    paginated list
+                page_len (int): length of pages in paginated lists for
+                    this validated GitHub session
+
+            Returns:
+                int: index of a user-specified issue number in paginated
+                list of issues
             """
             # use binary search to find the index of the page inside
             # of the list of pages that contains the item number, e.g.
             # PR# 600, that we want
-            page_index = __bin_search_in_list(paged_list, last_page_index, range_val)
+            page_index = __bin_search_in_list(paged_list, last_page_index, issue_num)
 
             found_page = paged_list.get_page(page_index)
 
             # use iterative binary search to find item in correct page
             # of linked list
             item_page_index = __bin_search_in_page(
-                found_page, len(found_page), range_val
+                issue_num, found_page, len(found_page)
             )
 
             # the index of the item in the total list is the page index
@@ -197,16 +225,29 @@ class Extractor:
             # that were skipped plus the index of the item in it's page
             return item_list_index
 
-        def __get_sanitized_range_vals(range_list: list, last_page_index: int) -> list:
+        def __get_sanitized_range_vals(
+            range_list: list[int], last_page_index: int
+        ) -> list[int]:
             """
-            TODO.
+            Sanitize the given issue number pair so that they are in bounds.
 
-            :param range_list:
-            :type range_list: list
-            :param last_page_index:
-            :type last_page_index: int
-            :return:
-            :rtype:
+            The user configuration allows the user to choose the
+            range of issues they would like to mine. This config
+            entry will be guaranteed to be a list of two numbers
+            above 0 by Cerberus, but the numbers can be anything
+            above that. We must make sure before we begin to mine
+            that both numbers in the issue number range are less
+            than the maximum issue number for our chosen type, e.g.
+            closed, in the repository.
+
+            Args:
+                range_list (list[int]): list of issue numbers to
+                    sanitize. Will have an enforced length of two.
+                last_page_index (int): index of last page in paginated
+                    list of issues.
+
+            Returns:
+                list[int]: list of sanitized issue numbers.
             """
             # get the highest item num in the paginated list of items,
             # e.g. very last PR num
@@ -239,7 +280,7 @@ class Extractor:
 
         # for the two boundaries in the sanitized range
         for val in clean_range_list:
-            val_index = __get_range_val_index(val, last_page_index, page_len)
+            val_index = __get_issue_num_paginated_index(val, last_page_index, page_len)
             out_list.append(val_index)
 
             print(
@@ -252,27 +293,32 @@ class Extractor:
 
     def get_cfg_val(self, key: str):
         """
-        Wrap cfg.get_cfg_val for brevity of use.
+        Wrap cfg.get_cfg_val for brevity.
 
-        :param key: key of desired value from configuration dict to get
-        :type key: str
-        :return: value from configuration associated with given key
-        :rtype: [str | int]
+        Args:
+            key (str): key of desired value from configuration dict to get.
+
+        Returns:
+            value from configuration dict.
+
+        Todo:
+            give the output a comprehensive type and adjust other
+            methods accordingly.
         """
         return self.cfg.get_cfg_val(key)
 
     def get_issues_data(self) -> None:
         """
-        Retrieve issue data from the GitHub API.
+        Gather all chosen data points from chosen issue numbers.
 
-        Uses the "range" configuration value to determine what indices of
-        the issue paged list to look at and the "issues_fields" field to
-        determine what information it should retrieve from each issues of
-        interest
+        This method is our access point into the GitHub API, the
+        primary tool afforded by the Extractor class to the user.
 
-        :raises github.RateLimitExceededException: if rate limited by the
-            GitHub REST API, dump collected data to output file and sleep the
-            program until calls can be made again
+        Raises:
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, dump collected data to
+                output file and sleep the program until calls
+                can be made again.
         """
         data_dict = {}
         out_file = self.get_cfg_val("issue_output_file")
@@ -326,10 +372,12 @@ class Extractor:
         get a paginated list of comments from an issue, get the desired
         data from them, and return a dict of that data.
 
-        :param issue_obj: issue to get comment data from
-        :type issue_obj: Github.Issue
-        :return: dictionary of comment data for given issue or nothing
-        :rtype: dict | None
+        Args:
+            issue_obj (Github.Issue): issue to get comment data from.
+
+        Returns:
+            dict or None: If the user does not ask for comment data,
+            return None. Else, attempt to gather comment data points.
         """
         item_type = "comments"
 
@@ -356,10 +404,20 @@ class Extractor:
         """
         Retrieve and store a paginated list from GitHub.
 
-        :raises github.RateLimitExceededException: if rate limited
-            by the GitHub REST API, sleep the program until calls
-            can be made again and continue attempt to collect
-            desired paginated list
+        Raises:
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, sleep the program until
+                calls can be made again and continue attempt to
+                collect desired paginated list.
+
+            github.UnknownObjectException: this exception is
+                thrown at least when a repository is not
+                accessible. This is can occur because the repo
+                is private or does not exist, but may occur
+                for other, unforeseen reasons.
+
+        Returns:
+            github.PaginatedList of github.Issue.
         """
         job_repo = self.get_cfg_val("repo")
         item_state = self.get_cfg_val("state")
@@ -383,12 +441,21 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_issue_pr(self, issue_obj):
+    def __get_issue_pr(self, issue_obj) -> dict | None:
         """
         Check if an issue is a PR and, if so, collect it's PR data.
 
-        :param issue_obj: Issue object from GitHub API
-        :type issue_obj: GitHub.Issue
+        Args:
+            issue_obj (GitHub.Issue): issue to check for PR data.
+
+        Raises:
+            github.UnknownObjectException: if the given issue is not
+                also a PR, the as_pull_request() method will fail and
+                raise this error. In that case, we needn't do anything.
+
+        Returns:
+            dict or None: if the issue is also a PR, return a dict of
+            PR info. Else, return None.
         """
         try:
             cur_pr = issue_obj.as_pull_request()
@@ -400,28 +467,29 @@ class Extractor:
 
         else:
             # return dict of PR data
-            return self.get_pr_datum(cur_pr)
+            return self.__get_pr_datum(cur_pr)
 
-    def get_pr_datum(self, cur_pr) -> dict:
+    def __get_pr_datum(self, cur_pr) -> dict:
         """
-        Retrieve data for a single PR.
+        Retrieve data for a single PR and return it in a dictionary.
 
-        Get data for the given PR, store it in a dict, and return.
+        Args:
+            cur_pr (github.PullRequest): PR to gather data for.
 
-        :param cur_pr: PR to gather data for
-        :type cur_pr: Github.PullRequest:
-        :return: dictionary containing data from PR parameter
-        :rtype: dict
+        Returns:
+            dict: dictionary containing data from PR parameter.
         """
 
         def __get_last_commit(pr_obj):
             """
             Return the last commit from a paginated list of commits from a PR.
 
-            :param pr_obj: PR to gather data for
-            :type pr_obj: Github.PullRequest
-            :return: last commit made in PR
-            :rtype: Github.Commit
+            Args:
+                pr_obj (github.PullRequest): PR to gather data for.
+
+            Returns:
+                Github.Commit: last commit made in PR.
+
             """
             last_commit_data = {}
             data_type = "commit"
@@ -498,7 +566,7 @@ class Extractor:
 
         print("Restarting data collection...", end="\r")
 
-    def __update_output_json_for_sleep(self, data_dict, out_file):
+    def __update_output_json_for_sleep(self, data_dict: dict, out_file: str) -> dict:
         """
         Write collected data to output and sleep the program.
 
@@ -506,10 +574,14 @@ class Extractor:
         file with the data that we have collected since we were last
         rate limited.
 
-        :param data_dict: dictionary of current data to write to output file
-        :type data_dict: dict
-        :param out_file: path to output file
-        :type out_file: string
+        Args:
+            data_dict (dict): dictionary of current data to write to
+                output file.
+            out_file (str): path to output file.
+
+        Returns:
+            dict: param dictionary, emptied.
+
         """
         file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
 

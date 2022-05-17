@@ -2,25 +2,28 @@
 Exposes schema and related getter functionality to Cfg class.
 
 This module is intended to provide easy access to the extractor's
+
     1. getter functionality
     2. command dispatch tables
     3. configuration schema
 
-    so that a user may be able to have an easier time adding functionality for
-    their own uses, such as adding a new getter function.
+so that a user may be able to have an easier time adding functionality for
+their own uses, such as adding a new getter function.
 
 To add a new piece of functionality, the user has to make a few modifications:
+
     1. create a new getter function which accesses items provided by PyGithub
     2. add that function to the appropriate subdictionary in the command
-        dispatch table: {"field name to access function": function reference }
+        dispatch table: {"field name to access function": function reference}
             • this allows the configuration schema to know which fields are
                 acceptable
 
-    You *do not* need to modify the schema to add a new getter. You *only* need
-    to create the function and add it to the dispatch table in the appropriate
-    item subdictionary.
+You *do not* need to modify the schema to add a new getter. You *only* need
+to create the function and add it to the dispatch table in the appropriate
+item subdictionary.
 
 Resources:
+
     • PyGithub documentation:
         https://pygithub.readthedocs.io/en/latest/github.html?highlight=main
 
@@ -30,45 +33,50 @@ Resources:
     • introduction to dispatch tables:
         https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
 """
-from src import conf
+from repo_extractor import conf
 
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
-def get_item_data(user_cfg: conf.Cfg, item_type, cur_item) -> dict:
+def get_item_data(user_cfg: conf.Cfg, item_type: str, cur_item) -> dict:
     """
     Getter engine used to aggregate desired data from a given API item.
 
-    For each field in the list provided by the user in configuration,
-    e.g. "issue_fields", get the associated piece of data and store
-    it in a dict where {field name: field data}, e.g.
-    {"issue number": 20}.
+    For each field in the list provided by the user in
+    configuration, e.g. "issue_fields", get the associated
+    piece of data and store it in a dict where
+    {field name: field data}, e.g. {"issue number": 20}.
 
-    :param user_cfg: Cfg object containing user-provided configuration
-    :type: Cfg object
-    :param item_type: name of item type to retrieve, e.g. "pr" or "issue"
-    :type item_type: str
-    :param cur_item: the current API item to get data about, e.g. current PR
-    :type cur_item: PyGitHub API object
-    :return: dictionary of API data values for param item
-    :rtype: dict
+    Args:
+        user_cfg (conf.Cfg): Cfg object containing user-provided
+            configuration
+        item_type (str): name of item type to retrieve, e.g.
+            "pr" or "issue"
+        cur_item (github.Issue/PullRequest/Commit): the current
+            API item to get data about, e.g. current PR
+
+    Returns:
+        dict: dictionary of API data values for param item
     """
     field_list = user_cfg.get_cfg_val(f"{item_type}_fields")
 
-    cmd_tbl = cmd_tbl_dict[item_type]
+    cmd_tbl = _cmd_tbl_dict[item_type]
 
     # when called, this will resolve to various function calls, e.g.
     # "body": cmd_tbl["body"](cur_PR)
     return {field: cmd_tbl[field](cur_item) for field in field_list}
 
 
-def _clean_str(str_to_clean) -> str:
+def _clean_str(str_to_clean: str | None) -> str:
     """
     If given a valid string, strip it of whitespace and carriage returns.
 
-    If a string is empty or None, returns NaN.
+    Args:
+        str_to_clean (str|None): string to clean and return
 
-    :param str_to_clean str: string to clean and return
+    Returns:
+        str: if param string is empty or None, returns "NaN". Else,
+        return param string stripped of carriage returns and whitespace.
     """
     if str_to_clean is None or str_to_clean == "":
         return "Nan"
@@ -97,18 +105,19 @@ def _get_commit_date(api_obj) -> str:
 
 def _get_commit_files(commit_obj) -> dict:
     """
-    For the list of files modified by a PR commit, return a list of qualities.
+    For the list of files modified by a commit, return a list of qualities.
 
-    NOTE:
-        If a list of files is too large, it will be returned as a paginatied
-        list. See note about the list length constraints at
-        https://docs.github.com/en/rest/reference/commits#get-a-commit. As of right
-        now, this situation is not handled here.
+    Note:
+        If a list of files is too large, it will be returned as
+        a paginatied list. See note about the list length constraints
+        at https://docs.github.com/en/rest/reference/commits#get-a-commit.
+        As of right now, this situation is not handled here.
 
-    :param pr_obj: pull request to get file change data from
-    :type pr_obj: Github.PullRequest
-    :return: dict of data about file changes made by the given PR
-    :rtype: dict
+    Args:
+        commit_obj (github.Commit): commit to get file change data from
+
+    Returns:
+        dict: dict of data about file changes made by the given PR
     """
     file_list = commit_obj.files
 
@@ -147,17 +156,18 @@ def _get_commit_sha(api_obj) -> str:
     return api_obj.sha
 
 
-def _get_closed_time(api_obj) -> str:
+def _get_closed_time(issue) -> str:
     """
-    Get the datetime an API object, such as an issue, was closed if closed.
+    Get the datetime an API object was closed, if closed.
 
-    :param api_obj: API object to get closed time of
-    :type api_obj: Github.Issue
-    :return: datetime string of API object closure or "NaN"
-    :rtype: str
+    Args:
+        api_obj (Github.Issue): API object to get closed time of
+
+    Returns:
+        str: datetime string of API object closure or "NaN"
     """
-    if api_obj.closed_at is not None:
-        return api_obj.closed_at.strftime(TIME_FMT)
+    if issue.closed_at is not None:
+        return issue.closed_at.strftime(TIME_FMT)
 
     return "NaN"
 
@@ -195,7 +205,7 @@ def _get_userlogin(api_obj) -> str:
 # field lists nested in other field lists, e.g.
 # "user" in "issue"
 
-cmd_tbl_dict = {
+_cmd_tbl_dict: dict = {
     # top-level actors
     "issue": {
         "body": _get_body,
@@ -225,7 +235,7 @@ cmd_tbl_dict = {
 # This acts as a template to judge whether the user cfg
 # is acceptable to the program. This *does not* need to
 # be modified to add new getter functionality
-cfg_schema = {
+cfg_schema: dict = {
     "repo": {"type": "string"},
     "auth_file": {"type": "string"},
     "state": {"allowed": ["closed", "open"], "type": "string"},
@@ -235,9 +245,9 @@ cfg_schema = {
 
 # loop over keys in cmd_tbl_dict and init corresponding
 # entries in the configuration schema
-for key, _ in cmd_tbl_dict.items():
+for key, _ in _cmd_tbl_dict.items():
     cfg_schema[f"{key}_fields"] = {
-        "allowed": [*cmd_tbl_dict[key]],
+        "allowed": [*_cmd_tbl_dict[key]],
         "schema": {"type": "string"},
         "type": "list",
     }

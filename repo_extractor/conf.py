@@ -11,10 +11,17 @@ class Cfg:
         """
         Initialize an object to hold configuration values for the extractor.
 
-        :param cfg_dict: configuration values provided by user as arg
-        :type cfg_dict: dict
-        :param cfg_schema: template used to evaluate validity of user cfg
-        :type cfg_schema: dict
+        Args:
+            cfg_dict (dict): configuration values provided
+                by user as arg.
+            cfg_schema (dict): template used to evaluate
+                validity of user cfg.
+
+        Attributes:
+            cfg_dict (dict): configuration values provided
+                by user as arg.
+            cfg_schema (dict): template used to evaluate
+                validity of user cfg.
         """
         # init object members
         self.cfg_dict = cfg_dict
@@ -27,7 +34,8 @@ class Cfg:
         """
         Print the value mapped to the given key.
 
-        :param key str: associated key for desired val
+        Args:
+            key (str): associated key for desired val.
         """
         try:
             val = self.cfg_dict[key]
@@ -42,9 +50,9 @@ class Cfg:
         """
         Set a value inside of the configuration dict.
 
-        :param val: value to assign to dict[key]
-        :param key: the key of the dict entry to modify
-        :type key: str
+        Args:
+            val (): value to assign to dict[key].
+            key (str): the key of the dict entry to modify.
         """
         self.cfg_dict[key] = val
 
@@ -56,8 +64,6 @@ class Cfg:
         dictionary for correctness of type and content. Fail
         stop is implemented if configuration does not meet schema
         specification.
-
-        :rtype None: exits program with failure code if cfg dict is incorrect
         """
         # init schema for validation
         validator = cerberus.Validator(self.cfg_schema, require_all=True)

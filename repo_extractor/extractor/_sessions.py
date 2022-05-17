@@ -3,7 +3,7 @@
 import sys
 import time
 import github
-from src.utils import file_io_utils
+from repo_extractor.utils import file_io_utils
 
 
 class GithubSession:
@@ -12,36 +12,47 @@ class GithubSession:
     __page_len: int
     session: github.Github
 
-    def __init__(self, auth_path) -> None:
+    def __init__(self, auth_path: str) -> None:
         """
         Initialize GitHub session object.
 
-        NOTES:
-            - paginated lists are set to return 30 items per page
-              by default. See
-              https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination
-              for more information.
+        Notes:
+            paginated lists are set to return 30 items per page
+                by default. See
+                https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination
+                for more information.
 
-        :param auth_path str: path to file containing personal
-            access token
+        Args:
+            auth_path (str): path to file containing personal
+                access token.
+
+        Attributes:
+            __page_len (int): amount of items per page in paginated
+                lists.
+            session (github.Github): object containing connection to
+                GitHub.
         """
-        self.__page_len = 30
+        self.__page_len: int = 30
         self.session = self.__get_gh_session(auth_path)
 
-    def __get_gh_session(self, auth_path) -> github.Github:
+    def __get_gh_session(self, auth_path: str) -> github.Github:
         """
         Retrieve PAT from auth file and check whether it is valid.
 
-        :raises github.BadCredentialsException: if given item is not
-            a valid Personal Access Token
+        Args:
+            auth_path (str): path to file containing personal access token.
 
-        :raises github.RateLimitExceededException: if rate limited
-            by the GitHub REST API, return the authorized session.
-            If rate limited, it means that the given PAT is valid
-            and a usable connection has been made
+        Raises:
+            github.BadCredentialsException: string read from file is not
+                a valid Personal Access Token.
 
-        :return: session object or exit
-        :rtype: github.Github
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, return the authorized session.
+                If rate limited, it means that the given PAT is valid
+                and a usable connection has been made.
+
+        Returns:
+            github.Github: session object or exit.
         """
         # retrieve token from auth file
         token = file_io_utils.read_file_line(auth_path)
