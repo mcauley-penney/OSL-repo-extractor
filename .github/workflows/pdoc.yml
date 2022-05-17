@@ -22,12 +22,12 @@ jobs:
       - uses: actions/setup-python@v3
         with:
           python-version: 3.8.3
-          
+
       - name: install dependencies
         run: |
           pip install pdoc
           pip install -e .
-      
+
       - name: create documentation
         run: pdoc -o docs repo_extractor
 
@@ -36,7 +36,7 @@ jobs:
         with:
           name: github-pages
           path: ./artifact.tar
-  
+
   # Deploy the artifact to GitHub pages.
   # This is a separate job so that only actions/deploy-pages has the necessary permissions.
   deploy:
