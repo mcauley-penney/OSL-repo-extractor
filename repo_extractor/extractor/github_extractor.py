@@ -1,5 +1,6 @@
 """The github_extractor module provides and exposes functionality to mine GitHub repositories."""
 
+import datetime
 import sys
 import time
 import github
@@ -8,29 +9,10 @@ from repo_extractor.extractor import _sessions
 from repo_extractor.utils import dict_utils, file_io_utils
 
 
-# TODO:
-#   1. if you use binary search on open state items and search for issues or PRs
-#   below the lowest value, it will return the lowest value, e.g. "280" for open
-#   PRs on react/facebook will returns a value in the 13000's. We want to not do
-#   that
-
-
 # ANSI escape sequence for clearing a row in the console:
-# https://stackoverflow.com/a/64245513
+# credit: https://stackoverflow.com/a/64245513
 CLR = "\x1b[K"
 TAB = " " * 4
-
-
-def _get_page_last_item(paged_list, page_index: int):
-    try:
-        last_item = paged_list.get_page(page_index)[-1]
-
-    except IndexError:
-        print("There are no issues of the specified type in this repo!")
-        sys.exit(1)
-
-    else:
-        return last_item
 
 
 class Extractor:
@@ -60,14 +42,9 @@ class Extractor:
         # initialize authenticated GitHub session
         self.gh_sesh = _sessions.GithubSession(auth_path)
 
-        self.issues_paged_list = self.__get_issues_paged_list()
-
         self.__set_output_file_dict_val()
 
-    def __fields_exist(self, item_type: str) -> bool:
-        return len(self.get_cfg_val(f"{item_type}_fields")) > 0
-
-    def __get_range_api_indices(self, paged_list) -> list:
+    def __get_range_api_indices(self, paged_list, issue_opts_dict: dict) -> list:
         """
         Find start and end indices of API items in paginated list of items.
 
@@ -108,7 +85,7 @@ class Extractor:
                 mid = (low + high) // 2
 
                 mid_first_val = paged_list.get_page(mid)[0].number
-                mid_last_val = _get_page_last_item(paged_list, mid).number
+                mid_last_val = __get_page_last_item(paged_list, mid).number
 
                 # if the value we want is greater than the first item
                 # (cur_val - page_len) on the middle page but less
@@ -225,6 +202,17 @@ class Extractor:
             # that were skipped plus the index of the item in it's page
             return item_list_index
 
+        def __get_page_last_item(paged_list, page_index: int):
+            try:
+                last_item = paged_list.get_page(page_index)[-1]
+
+            except IndexError:
+                print("There are no issues of the specified type in this repo!")
+                sys.exit(1)
+
+            else:
+                return last_item
+
         def __get_sanitized_range_vals(
             range_list: list[int], last_page_index: int
         ) -> list[int]:
@@ -251,7 +239,7 @@ class Extractor:
             """
             # get the highest item num in the paginated list of items,
             # e.g. very last PR num
-            highest_num = _get_page_last_item(paged_list, last_page_index).number
+            highest_num = __get_page_last_item(paged_list, last_page_index).number
 
             # get sanitized range. This will correct any vals given in
             # the range cfg so that they are within the values that are
@@ -273,7 +261,7 @@ class Extractor:
         print(f"{TAB}Sanitizing range configuration values...")
 
         clean_range_list = __get_sanitized_range_vals(
-            self.get_cfg_val("range"), last_page_index
+            issue_opts_dict["range"], last_page_index
         )
 
         print(f"{TAB}finding start and end indices corresponding to range values...")
@@ -307,7 +295,119 @@ class Extractor:
         """
         return self.cfg.get_cfg_val(key)
 
-    def get_issues_data(self) -> None:
+    @staticmethod
+    def __get_item_data(category_dict: dict, field_type: str, cur_item) -> dict:
+        """
+        Getter engine used to aggregate desired data from a given API item.
+
+        For each field in the list provided by the user in
+        configuration, e.g. "issue_fields", get the associated
+        piece of data and store it in a dict where
+        {field name: field data}, e.g. {"issue number": 20}.
+
+        Args:
+            user_cfg (conf.Cfg): Cfg object containing user-provided
+                configuration
+            item_type (str): name of item type to retrieve, e.g.
+                "pr" or "issue"
+            cur_item (github.Issue/PullRequest/Commit): the current
+                API item to get data about, e.g. current PR
+
+        Returns:
+            dict: dictionary of API data values for param item
+        """
+        field_list = category_dict[f"{field_type}_fields"]
+
+        if len(field_list) > 0:
+            cmd_tbl = schema.cmd_tbl_dict[field_type]
+
+            # when called, this will resolve to various function calls, e.g.
+            # "body": cmd_tbl["body"](cur_PR)
+            return {field: cmd_tbl[field](cur_item) for field in field_list}
+
+        return {}
+
+    def get_repo_commit_data(self) -> None:
+        """
+        Create a dict of contributors and their contributions.
+
+        The project is interested in determining the core contributors for
+        a given repository. To do this, we have implemented the algorithm
+        discussed in Coelho et al., 2018 (see citation below) wherein the
+        contributors whose sum commits are 80% of the total commits for the
+        repo are aggregated and those who have less than five commits are
+        disregarded. This implementation is found in the OSL metrics
+        aggregator. This method creates a dict of all contributors,
+        descendingly ordered by total commits, for input into the Coelho
+        et al. custom "Commit-Based Heuristic" algorithm.
+
+        Citations:
+            Coelho J, Valente MT, Silva LL, Hora A (2018) Why we engage in
+            floss: Answers from core developers. In: Proceedings of the 11th
+            International Workshop on Cooperative and Human Aspects of
+            Software Engineering, pp 114–121
+
+            link: https://arxiv.org/pdf/1803.05741.pdf
+        """
+
+        def __get_dev_contributions(commits, num_commits):
+            """
+            TODO.
+
+            Args:
+                num_commits ():
+
+            Returns:
+                dict: sorted dictionary of (contributor: contributions) pairs
+            """
+            contrib_dict = {}
+            i = 0
+            print(f"{TAB * 2}total: {total_commits}")
+
+            while i < num_commits:
+                try:
+                    author = commits[i].commit.author.name
+
+                    if author not in contrib_dict:
+                        contrib_dict[author] = 1
+
+                    else:
+                        contrib_dict[author] += 1
+
+                except github.RateLimitExceededException:
+                    self.__update_output_json_for_sleep(data_dict, out_file)
+
+                else:
+                    print(f"{CLR}{TAB * 2}", end="")
+                    print(f"index: {i}, ", end="")
+                    print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
+                    i += 1
+
+            return dict(sorted(contrib_dict.items(), key=lambda x: x[1], reverse=True))
+
+        data_dict: dict = {}
+
+        commits_opts: dict = self.cfg.cfg_dict["repo_data"]["by_commit"]
+        timeframe_dict: dict = commits_opts["timeframe"]
+        commits_list = self.__get_commits_paged_list(commits_opts)
+
+        out_file: str = self.get_cfg_val("issue_output_file")
+        total_commits: int = commits_list.totalCount
+
+        data_dict["num_commits"] = total_commits
+
+        data_dict["contributions"] = __get_dev_contributions(
+            commits_list, total_commits
+        )
+
+        # nest commit data in appropriate label
+        data_dict = {
+            "by_commit": {timeframe_dict["since"]: {timeframe_dict["until"]: data_dict}}
+        }
+
+        file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
+
+    def get_repo_issues_data(self) -> None:
         """
         Gather all chosen data points from chosen issue numbers.
 
@@ -320,30 +420,36 @@ class Extractor:
                 output file and sleep the program until calls
                 can be made again.
         """
+        issue_opts: dict = self.cfg.cfg_dict["repo_data"]["by_issue"]
+
+        paged_list = self.__get_issues_paged_list(issue_opts)
+
         data_dict = {}
         out_file = self.get_cfg_val("issue_output_file")
 
         # get indices of sanitized range values
-        range_list = self.__get_range_api_indices(self.issues_paged_list)
+        range_list: list[int] = self.__get_range_api_indices(paged_list, issue_opts)
 
-        # unpack vals
         start_val = range_list[0]
-        end_val = range_list[1]
 
-        print(f"{TAB}Beginning issue extraction. Starting may take a moment...\n")
+        print(f"{TAB}Beginning issue extraction. This may take a moment...\n")
 
-        while start_val < end_val + 1:
+        while start_val < range_list[1] + 1:
             try:
-                cur_issue = self.issues_paged_list[start_val]
+                cur_issue = paged_list[start_val]
 
-                # get issue data, provided in the "issues" cfg list
-                cur_issue_dict = schema.get_item_data(self.cfg, "issue", cur_issue)
+                # get issue data
+                cur_issue_dict = self.__get_item_data(issue_opts, "issue", cur_issue)
 
-                # get issue as a PR if it exists
-                cur_issue_pr_dict = self.__get_issue_pr(cur_issue)
+                # get issue as a PR, if it exists, and get its data
+                cur_issue_pr_dict = self.__get_issue_pr(issue_opts, cur_issue)
 
-                cur_issue_comments_dict = self.__get_issue_comments(cur_issue)
+                # retrieve issue comments
+                cur_issue_comments_dict = self.__get_issue_comments(
+                    issue_opts, cur_issue
+                )
 
+                # merge the PR and issue comment dicts with the issue dict
                 for entry in (cur_issue_pr_dict, cur_issue_comments_dict):
                     cur_issue_dict = dict_utils.merge_dicts(cur_issue_dict, entry)
 
@@ -361,10 +467,10 @@ class Extractor:
 
                 start_val += 1
 
+        data_dict = {"by_issue": data_dict}
         file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
-        print("\n")
 
-    def __get_issue_comments(self, issue_obj):
+    def __get_issue_comments(self, datatype_dict: dict, issue_obj):
         """
         Create a dict of issue comment data for the given issue param.
 
@@ -373,6 +479,7 @@ class Extractor:
         data from them, and return a dict of that data.
 
         Args:
+            datatype_dict(dict): dict of fields to get for issues from cfg.
             issue_obj (Github.Issue): issue to get comment data from.
 
         Returns:
@@ -381,26 +488,23 @@ class Extractor:
         """
         item_type = "comments"
 
-        if self.__fields_exist(item_type):
-            # dict will hold data related to all comments for an
-            # issue. Issue to comments is a one to many relationship
-            comment_index = 0
-            cur_issue_comment_dict = {}
+        # dict will hold data related to all comments for an
+        # issue. Issue to comments is a one to many relationship
+        comment_index = 0
+        cur_comment_dict = {}
 
-            for comment in issue_obj.get_comments():
-                cur_entry = schema.get_item_data(self.cfg, item_type, comment)
+        for comment in issue_obj.get_comments():
+            cur_entry = self.__get_item_data(datatype_dict, item_type, comment)
 
-                cur_issue_comment_dict = dict_utils.merge_dicts(
-                    cur_issue_comment_dict, {str(comment_index): cur_entry}
-                )
+            cur_entry = {str(comment_index): cur_entry}
 
-                comment_index += 1
+            cur_comment_dict = dict_utils.merge_dicts(cur_comment_dict, cur_entry)
 
-            return {item_type: cur_issue_comment_dict}
+            comment_index += 1
 
-        return None
+        return {item_type: cur_comment_dict}
 
-    def __get_issues_paged_list(self):
+    def __get_commits_paged_list(self, commits_opts_dict: dict):
         """
         Retrieve and store a paginated list from GitHub.
 
@@ -420,7 +524,66 @@ class Extractor:
             github.PaginatedList of github.Issue.
         """
         job_repo = self.get_cfg_val("repo")
-        item_state = self.get_cfg_val("state")
+        timeframe_dict: dict = commits_opts_dict["timeframe"]
+
+        try:
+            datetime_list = [
+                datetime.datetime.strptime(date, "%Y-%m-%dT%H:%M:%SZ")
+                for _, date in timeframe_dict.items()
+            ]
+
+        except ValueError as err:
+            print(
+                f"""{TAB}ERROR: {err}
+{TAB * 2}ensure that your datetime strings are of the format
+{TAB * 3}'YYYY-MM-DDTHH:MM:SSZ', where 'T' and 'Z' are literal, e.g.
+{TAB * 3}'1993-01-06T00:00:00Z'""",
+                file=sys.stderr,
+            )
+
+            sys.exit(1)
+
+        while True:
+            try:
+                # retrieve GitHub repo object
+                repo_obj = self.gh_sesh.session.get_repo(job_repo)
+
+                commits_paged_list = repo_obj.get_commits(
+                    since=datetime_list[0], until=datetime_list[1]
+                )
+
+            except github.RateLimitExceededException:
+                self.__sleep_extractor()
+
+            except github.UnknownObjectException:
+                print(f'{TAB}Repo "{job_repo}" either does not exist or is private!')
+                sys.exit(1)
+
+            else:
+                return commits_paged_list
+
+    def __get_issues_paged_list(self, issues_opts_dict: dict):
+        """
+        Retrieve and store a paginated list from GitHub.
+
+        Raises:
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, sleep the program until
+                calls can be made again and continue attempt to
+                collect desired paginated list.
+
+            github.UnknownObjectException: this exception is
+                thrown at least when a repository is not
+                accessible. This is can occur because the repo
+                is private or does not exist, but may occur
+                for other, unforeseen reasons.
+
+        Returns:
+            github.PaginatedList of github.Issue.
+        """
+        job_repo = self.get_cfg_val("repo")
+
+        item_state = issues_opts_dict["state"]
 
         while True:
             try:
@@ -441,7 +604,7 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_issue_pr(self, issue_obj):
+    def __get_issue_pr(self, issue_opts: dict, issue_obj):
         """
         Check if an issue is a PR and, if so, collect it's PR data.
 
@@ -467,9 +630,9 @@ class Extractor:
 
         else:
             # return dict of PR data
-            return self.__get_pr_datum(cur_pr)
+            return self.__get_pr_datum(cur_pr, issue_opts)
 
-    def __get_pr_datum(self, cur_pr) -> dict:
+    def __get_pr_datum(self, cur_pr, issue_opts: dict) -> dict:
         """
         Retrieve data for a single PR and return it in a dictionary.
 
@@ -480,7 +643,7 @@ class Extractor:
             dict: dictionary containing data from PR parameter.
         """
 
-        def __get_last_commit(pr_obj):
+        def __get_last_commit(datatype_dict, pr_obj):
             """
             Return the last commit from a paginated list of commits from a PR.
 
@@ -502,15 +665,15 @@ class Extractor:
             if len(last_commit.files) > 0:
 
                 # get all data from that commit
-                last_commit_data = schema.get_item_data(
-                    self.cfg, data_type, last_commit
+                last_commit_data = self.__get_item_data(
+                    datatype_dict, data_type, last_commit
                 )
 
             return {data_type: last_commit_data}
 
         item_type = "pr"
         is_merged = cur_pr.merged
-        is_valid_pr = is_merged or self.get_cfg_val("state") == "open"
+        is_valid_pr = is_merged or issue_opts["state"] == "open"
 
         # create dict to build upon. This variable will later become
         # the val of a dict entry, making it a subdictionary
@@ -523,11 +686,9 @@ class Extractor:
             # if the current PR is merged or is in the list of open PRs, we are
             # interested in it. Closed and unmerged PRs are of no help to the
             # project
-            if self.__fields_exist(item_type):
-                cur_pr_data = schema.get_item_data(self.cfg, item_type, cur_pr)
+            cur_pr_data = self.__get_item_data(issue_opts, item_type, cur_pr)
 
-            if self.__fields_exist("commit"):
-                last_commit_data = __get_last_commit(cur_pr)
+            last_commit_data = __get_last_commit(issue_opts, cur_pr)
 
             for data_dict in (cur_pr_data, last_commit_data):
                 cur_pr_dict = dict_utils.merge_dicts(cur_pr_dict, data_dict)
@@ -564,7 +725,7 @@ class Extractor:
             time.sleep(1)
             cntdown_time -= 1
 
-        print("Restarting data collection...", end="\r")
+        print(f"{CLR}{TAB * 2}Starting data collection...", end="\r")
 
     def __update_output_json_for_sleep(self, data_dict: dict, out_file: str) -> dict:
         """

@@ -95,6 +95,3 @@ during your next execution.
 
 - implement a class to manage the various external connections, including the GitHub session but possibly also to Postgres
     - As of right now, the GitHub session is the only one necessary, but that may change in the future and this proposed session manager class would be a more fitting "main actor" than the extractor class. The extractor class would become more lower level than the GitHub session instance.
-
-- use class and function decorators to improve coherence
-    - for example, this project has some methods that really should belong to a class but were left out of that class because they did not require an instance of the object type. These methods could benefit from the `@static` decorator

@@ -1,32 +1,42 @@
 {
-    "repo": "org/repo",
-    "auth_file": "~/path/to/file",
-    "state": "closed",
-    "range": [
-        0,
-        10
-    ],
-    "output_dir": "~/your/output/dir",
-    "comments_fields": [
-        "body",
-        "userid",
-        "userlogin"
-    ],
-    "commit_fields": [
-        "commit_author_name",
-        "committer",
-        "commit_date",
-        "commit_files",
-        "commit_message",
-        "commit_sha"
-    ],
-    "issue_fields": [
-        "body",
-        "closed",
-        "num_comments",
-        "title",
-        "userid",
-        "userlogin"
-    ],
-    "pr_fields": []
+    "repo": "jabref/JabRef",
+    "auth_file": "/path/to/auth/file.txt",
+    "output_dir": "/path/to/output/directory",
+    "repo_data": {
+        "by_commit": {
+            "timeframe": {
+                "since": "2013-10-23T00:00:00Z",
+                "until": "2013-10-24T00:00:00Z"
+            }
+        },
+        "by_issue": {
+            "range": [
+                0,
+                10
+            ],
+            "state": "closed",
+            "comments_fields": [
+                "body",
+                "userid",
+                "userlogin"
+            ],
+            "commit_fields": [
+                "commit_author_name",
+                "committer",
+                "commit_date",
+                "commit_files",
+                "commit_message",
+                "commit_sha"
+            ],
+            "issue_fields": [
+                "body",
+                "closed",
+                "num_comments",
+                "title",
+                "userid",
+                "userlogin"
+            ],
+            "pr_fields": []
+        }
+    }
 }

@@ -32,16 +32,20 @@ class Cfg:
 
     def get_cfg_val(self, key: str):
         """
-        Print the value mapped to the given key.
+        Return the value mapped to the given key.
 
         Args:
             key (str): associated key for desired val.
+
+        Returns:
+            list|int|str: value in the top level of the cfg
+            dict associated with the given key
         """
         try:
             val = self.cfg_dict[key]
 
         except KeyError:
-            print(f"Key {key} does not exist!")
+            print(f"Key '{key}' does not exist!")
             sys.exit(1)
 
         return val

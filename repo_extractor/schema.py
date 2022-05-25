@@ -27,44 +27,14 @@ Resources:
     • PyGithub documentation:
         https://pygithub.readthedocs.io/en/latest/github.html?highlight=main
 
-    • See cerberus documentation for schema rules:
+    • See Cerberus documentation for schema rules:
         https://docs.python-cerberus.org/en/stable/index.html
 
     • introduction to dispatch tables:
         https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
 """
-from repo_extractor import conf
 
 TIME_FMT = "%D, %I:%M:%S %p"
-
-
-def get_item_data(user_cfg: conf.Cfg, item_type: str, cur_item) -> dict:
-    """
-    Getter engine used to aggregate desired data from a given API item.
-
-    For each field in the list provided by the user in
-    configuration, e.g. "issue_fields", get the associated
-    piece of data and store it in a dict where
-    {field name: field data}, e.g. {"issue number": 20}.
-
-    Args:
-        user_cfg (conf.Cfg): Cfg object containing user-provided
-            configuration
-        item_type (str): name of item type to retrieve, e.g.
-            "pr" or "issue"
-        cur_item (github.Issue/PullRequest/Commit): the current
-            API item to get data about, e.g. current PR
-
-    Returns:
-        dict: dictionary of API data values for param item
-    """
-    field_list = user_cfg.get_cfg_val(f"{item_type}_fields")
-
-    cmd_tbl = _cmd_tbl_dict[item_type]
-
-    # when called, this will resolve to various function calls, e.g.
-    # "body": cmd_tbl["body"](cur_PR)
-    return {field: cmd_tbl[field](cur_item) for field in field_list}
 
 
 def _sanitize_str(in_str) -> str:
@@ -79,12 +49,12 @@ def _sanitize_str(in_str) -> str:
         return param string stripped of carriage returns and whitespace.
     """
     if in_str is None or in_str == "":
-        return "Nan"
+        return "NaN"
 
-    output_str = in_str.replace("\r", "")
-    output_str = output_str.replace("\n", "")
+    for esc_char in ("\r", "\n"):
+        in_str = in_str.replace(esc_char, "")
 
-    return output_str.strip()
+    return in_str.strip()
 
 
 def _get_body(api_obj) -> str:
@@ -197,15 +167,7 @@ def _get_userlogin(api_obj) -> str:
 # To get an issue body, for example, we can either say
 #
 #       cmd_tbl_dict["issue"]["body"]()
-#
-# Items which map to get_item_data are intended to be
-# recursively gathered; mapping to get_item_data does
-# nothing, and those items which are will be caught in
-# get_item_data by a conditional which checks for
-# field lists nested in other field lists, e.g.
-# "user" in "issue"
-
-_cmd_tbl_dict: dict = {
+cmd_tbl_dict: dict = {
     # top-level actors
     "issue": {
         "body": _get_body,
@@ -231,23 +193,62 @@ _cmd_tbl_dict: dict = {
     },
 }
 
+
+_str_type = {"type": "string"}
+
+
+# TODO: expand comment explaining this.
+# Create dictionary out of each dict in the command
+# table which discusses what types of fields are
+# allowed in the configuration schema.
+#
+# [*_] = create a list from the keys of the unpacked
+#        dict comprehension operand dict, e.g. _cmd_tbl_dict
+issue_fields_schema = {
+    f"{key}_fields": {
+        "allowed": [*_],
+        "schema": _str_type,
+        "type": "list",
+    }
+    for key, _ in cmd_tbl_dict.items()
+}
+
 # Schema used to validate user-provided configuration.
 # This acts as a template to judge whether the user cfg
 # is acceptable to the program. This *does not* need to
 # be modified to add new getter functionality
 cfg_schema: dict = {
-    "repo": {"type": "string"},
-    "auth_file": {"type": "string"},
-    "state": {"allowed": ["closed", "open"], "type": "string"},
-    "range": {"min": [0, 0], "schema": {"type": "integer"}, "type": "list"},
-    "output_dir": {"type": "string"},
+    "auth_file": _str_type,
+    "repo": _str_type,
+    "output_dir": _str_type,
+    "repo_data": {
+        "type": "dict",
+        "schema": {
+            "by_commit": {
+                "type": "dict",
+                "schema": {
+                    "timeframe": {
+                        "type": "dict",
+                        "schema": {
+                            "since": {"type": "string"},
+                            "until": {"type": "string"},
+                        },
+                    },
+                },
+            },
+            "by_issue": {
+                "type": "dict",
+                "schema": {
+                    **issue_fields_schema,
+                    "state": {**_str_type, "allowed": ["closed", "open"]},
+                    "range": {
+                        "nullable": True,
+                        "min": [0, 0],
+                        "schema": {"type": "integer"},
+                        "type": "list",
+                    },
+                },
+            },
+        },
+    },
 }
-
-# loop over keys in cmd_tbl_dict and init corresponding
-# entries in the configuration schema
-for key, _ in _cmd_tbl_dict.items():
-    cfg_schema[f"{key}_fields"] = {
-        "allowed": [*_cmd_tbl_dict[key]],
-        "schema": {"type": "string"},
-        "type": "list",
-    }
