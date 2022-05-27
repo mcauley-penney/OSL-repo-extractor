@@ -42,218 +42,31 @@ class Extractor:
         # initialize authenticated GitHub session
         self.gh_sesh = _sessions.GithubSession(auth_path)
 
-        self.__set_output_file_dict_val()
+        self.repo_obj = self.__get_repo_obj()
 
-    def __get_range_api_indices(self, paged_list, issue_opts_dict: dict) -> list:
+    def __get_repo_obj(self):
         """
-        Find start and end indices of API items in paginated list of items.
-
-        Sanitize our range values so that they are guaranteed to be safe,
-        find the indices of those values inside of the paginated list,
-        and return
-
-        Args:
-            paged_list (Github.PaginatedList of Github.Issue): paginated
-                list of issues
+        TODO.
 
         Returns:
-            list[int]: list of starting and ending indices for desired API items
+            github.Repository.Repository: repo obj for current extraction op
         """
+        job_repo = self.get_cfg_val("repo")
 
-        def __bin_search_in_list(paged_list, last_page_index: int, val: int) -> int:
-            """
-            Find the index of a page of an API item in paginated list of API items.
-
-            Iterative binary search which finds the page of an API item,
-            such as a PR or issue, inside of a list of pages of related
-            objects from the GitHub API.
-
-            Args:
-                paged_list(Github.PaginatedList of Github.Issue): paginated
-                    list of issues
-                last_page_index (int): index of last page in paginated list
-                val (int): number of item in list that we desire; e.g. PR# 800
-
-            Returns:
-                int: index of page in given paginated listwhere val
-                param is located
-            """
-            low = 0
-            high = last_page_index
-
-            while low < high - 1:
-                mid = (low + high) // 2
-
-                mid_first_val = paged_list.get_page(mid)[0].number
-                mid_last_val = __get_page_last_item(paged_list, mid).number
-
-                # if the value we want is greater than the first item
-                # (cur_val - page_len) on the middle page but less
-                # than the last item, it is in the middle page
-                if mid_first_val <= val <= mid_last_val:
-                    return mid
-
-                if val < mid_first_val:
-                    high = mid - 1
-
-                elif val > mid_last_val:
-                    low = mid + 1
-
-            return low
-
-        def __bin_search_in_page(val: int, paged_list_page, page_len: int) -> int:
-            """
-            Find the index of an API item in a page of API items.
-
-            Iterative binary search modified to return either the exact
-            index of the item with the number the user desires or the
-            index of the item beneath that value in the case that the
-            value does not exist in the list. An example might be that
-            a paginated list of issues does not have #'s 9, 10, or 11,
-            but the user wants to begin looking for data at #10. This
-            binary search should return the index of the API object
-            with the number 8.
-
-            Args:
-                val (int): value to look for in page parameter
-                paged_list_page (page of Github.Issue): a single page
-                    from paginated list of issues
-                page_len (int): length of pages in paginated lists for
-                    this validated GitHub session
-
-            Returns:
-                int: index of the object we are looking for
-            """
-            low = 0
-
-            # because this binary search is looking through lists that
-            # may have items missing, we want to be able to return the
-            # index of the nearest item before the item we are looking
-            # for. Therefore, we stop when low is one less than high.
-            # This allows us to take the lower value when a value does
-            # not exist in the list.
-            while low < page_len - 1:
-                mid = (low + page_len) // 2
-
-                cur_val = paged_list_page[mid].number
-
-                if val == cur_val:
-                    return mid
-
-                if val < cur_val:
-                    page_len = mid - 1
-
-                elif val > cur_val:
-                    low = mid + 1
-
-            return low
-
-        def __get_issue_num_paginated_index(
-            issue_num: int, last_page_index: int, page_len: int
-        ) -> int:
-            """
-            Find the index of the issue with the given number in list of issues.
-
-            GitHub obviously cannot ensure that issue indices match
-            with issue numbers. We have to account for missing items
-            and page lengths when searching for an item.
-
-            Note:
-                This function and the associated functions are pretty
-                slow. They would benefit a lot from optimization and a
-                faster fetching mechanism. PyGithub has a private method
-                that can actually be accesed but this is firstly abusive
-                of its purpose and, secondly, seems to be the method that
-                is slow under the hood of this method. See __fetchToIndex()
-                in https://github.com/PyGithub/PyGithub/blob/master/github/PaginatedList.py
-
-            Args:
-                issue_num (int): issue number to search for
-                last_page_index (int): index of the last page in the
-                    paginated list
-                page_len (int): length of pages in paginated lists for
-                    this validated GitHub session
-
-            Returns:
-                int: index of a user-specified issue number in paginated
-                list of issues
-            """
-            # use binary search to find the index of the page inside
-            # of the list of pages that contains the item number, e.g.
-            # PR# 600, that we want
-            page_index = __bin_search_in_list(paged_list, last_page_index, issue_num)
-
-            found_page = paged_list.get_page(page_index)
-
-            # use iterative binary search to find item in correct page
-            # of linked list
-            item_page_index = __bin_search_in_page(
-                issue_num, found_page, len(found_page)
-            )
-
-            # the index of the item in the total list is the page index
-            # that it is on multiplied by the amount of items per page,
-            # summed with the index of the item in the page, e.g. if
-            # the item is on index 20 of page 10 and there are 30
-            # items per page, its index in the list is 20 + (10 * 30)
-            item_list_index = item_page_index + (page_index * page_len)
-
-            # the index of the items we need is the amount of items per page
-            # that were skipped plus the index of the item in it's page
-            return item_list_index
-
-        def __get_page_last_item(paged_list, page_index: int):
+        while True:
             try:
-                last_item = paged_list.get_page(page_index)[-1]
+                # retrieve GitHub repo object
+                repo_obj = self.gh_sesh.session.get_repo(job_repo)
 
-            except IndexError:
-                print("There are no issues of the specified type in this repo!")
+            except github.RateLimitExceededException:
+                self.__sleep_extractor()
+
+            except github.UnknownObjectException:
+                print(f'{TAB}Repo "{job_repo}" either does not exist or is private!')
                 sys.exit(1)
 
             else:
-                return last_item
-
-        def __get_sanitized_range_vals(
-            range_list: list[int], last_page_index: int
-        ) -> list[int]:
-            """
-            Sanitize the given issue number pair so that they are in bounds.
-
-            The user configuration allows the user to choose the
-            range of issues they would like to mine. This config
-            entry will be guaranteed to be a list of two numbers
-            above 0 by Cerberus, but the numbers can be anything
-            above that. We must make sure before we begin to mine
-            that both numbers in the issue number range are less
-            than the maximum issue number for our chosen type, e.g.
-            closed, in the repository.
-
-            Args:
-                range_list (list[int]): list of issue numbers to
-                    sanitize. Will have an enforced length of two.
-                last_page_index (int): index of last page in paginated
-                    list of issues.
-
-            Returns:
-                list[int]: list of sanitized issue numbers.
-            """
-            # get the highest item num in the paginated list of items,
-            # e.g. very last PR num
-            highest_num = __get_page_last_item(paged_list, last_page_index).number
-
-            # get sanitized range. This will correct any vals given in
-            # the range cfg so that they are within the values that are
-            # in the paged list. We are protected from too low of values
-            # by the Cerberus config schema, so this process only looks
-            # at values that are too high.
-            clean_range_tuple = [
-                min(val, highest_num) for val in (range_list[0], range_list[-1])
-            ]
-
-            return clean_range_tuple
-
-        out_list = []
-        page_len = self.gh_sesh.get_pg_len()
+                return repo_obj
 
         # get index of last page in paginated list
         last_page_index = (paged_list.totalCount - 1) // page_len
@@ -294,6 +107,25 @@ class Extractor:
             methods accordingly.
         """
         return self.cfg.get_cfg_val(key)
+
+    def __get_commit_datum(self, commit_opts: dict, cur_commit):
+        """
+        Retrieve data for a single commit and return it in a dictionary.
+
+        Wrapper around API getter engine.
+
+        Args:
+            cur_commit (github.Commit): commit to gather data for.
+
+        Returns:
+            dict: dictionary containing data from commit parameter.
+
+            key = commit SHA
+            val = commit data
+        """
+        cur_commit_data = self.__get_item_data(commit_opts, "commit", cur_commit)
+
+        return {cur_commit.sha: cur_commit_data}
 
     @staticmethod
     def __get_item_data(category_dict: dict, field_type: str, cur_item) -> dict:
