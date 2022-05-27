@@ -61,16 +61,16 @@ def _get_body(api_obj) -> str:
     return _sanitize_str(api_obj.body)
 
 
-def _get_commit_author_name(api_obj) -> str:
-    return api_obj.commit.author.name
+def _get_commit_author_name(commit_obj) -> str:
+    return __get_nameduser_name(commit_obj.commit.author)
 
 
-def _get_commit_committer(api_obj) -> str:
-    return api_obj.commit.committer.name
+def _get_commit_committer(commit_obj) -> str:
+    return __get_nameduser_name(commit_obj.commit.committer)
 
 
-def _get_commit_date(api_obj) -> str:
-    return api_obj.commit.author.date.strftime(TIME_FMT)
+def _get_commit_date(commit_obj) -> str:
+    return commit_obj.commit.author.date.strftime(TIME_FMT)
 
 
 def _get_commit_files(commit_obj) -> dict:
@@ -118,12 +118,12 @@ def _get_commit_files(commit_obj) -> dict:
     }
 
 
-def _get_commit_msg(api_obj) -> str:
-    return _sanitize_str(api_obj.commit.message)
+def _get_commit_msg(commit_obj) -> str:
+    return _sanitize_str(commit_obj.commit.message)
 
 
-def _get_commit_sha(api_obj) -> str:
-    return api_obj.sha
+def _get_commit_sha(commit_obj) -> str:
+    return commit_obj.sha
 
 
 def _get_closed_time(issue) -> str:
@@ -184,12 +184,11 @@ cmd_tbl_dict: dict = {
     },
     "pr": {},
     "commit": {
-        "commit_author_name": _get_commit_author_name,
+        "author_name": _get_commit_author_name,
         "committer": _get_commit_committer,
-        "commit_date": _get_commit_date,
-        "commit_files": _get_commit_files,
-        "commit_message": _get_commit_msg,
-        "commit_sha": _get_commit_sha,
+        "date": _get_commit_date,
+        "files": _get_commit_files,
+        "message": _get_commit_msg,
     },
 }
 
@@ -227,11 +226,29 @@ cfg_schema: dict = {
             "by_commit": {
                 "type": "dict",
                 "schema": {
-                    "timeframe": {
+                    "dev_contributions": {
                         "type": "dict",
                         "schema": {
-                            "since": {"type": "string"},
-                            "until": {"type": "string"},
+                            "start": {
+                                "type": "list",
+                                "items": [
+                                    {"type": "integer", "min": 2007, "max": 2022},
+                                    {"type": "integer", "min": 1, "max": 12},
+                                    {"type": "integer", "min": 1, "max": 31},
+                                ],
+                            },
+                            "frequency": {
+                                "type": "list",
+                                "items": [
+                                    {"type": "integer", "min": 0, "meta": "weeks"},
+                                    {
+                                        "type": "integer",
+                                        "min": 0,
+                                        "max": 6,
+                                        "meta": "days",
+                                    },
+                                ],
+                            },
                         },
                     },
                 },

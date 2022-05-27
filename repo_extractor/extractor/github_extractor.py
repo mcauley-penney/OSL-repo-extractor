@@ -182,7 +182,7 @@ class Extractor:
             link: https://arxiv.org/pdf/1803.05741.pdf
         """
 
-        def __get_dev_contributions(commits, num_commits):
+        def __get_dev_num_contribs(commits, total_num_commits: int, out_file: str):
             """
             TODO.
 
@@ -194,9 +194,9 @@ class Extractor:
             """
             contrib_dict = {}
             i = 0
-            print(f"{TAB * 2}total: {total_commits}")
+            print(f"{TAB * 2}total: {total_num_commits}")
 
-            while i < num_commits:
+            while i < total_num_commits:
                 try:
                     author = commits[i].commit.author.name
 
@@ -207,7 +207,7 @@ class Extractor:
                         contrib_dict[author] += 1
 
                 except github.RateLimitExceededException:
-                    self.__update_output_json_for_sleep(data_dict, out_file)
+                    self.__update_output_json_for_sleep(contrib_dict, out_file)
 
                 else:
                     print(f"{CLR}{TAB * 2}", end="")
@@ -215,22 +215,60 @@ class Extractor:
                     print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
                     i += 1
 
+            print("\n")
+
             return dict(sorted(contrib_dict.items(), key=lambda x: x[1], reverse=True))
 
-        data_dict: dict = {}
+        contrib_opts: dict = self.cfg.cfg_dict["repo_data"]["by_commit"][
+            "dev_contributions"
+        ]
 
-        commits_opts: dict = self.cfg.cfg_dict["repo_data"]["by_commit"]
-        timeframe_dict: dict = commits_opts["timeframe"]
-        commits_list = self.__get_commits_paged_list(commits_opts)
+        strttm_list = contrib_opts["start"]
+        freq_list = contrib_opts["frequency"]
+        out_file: str = self.get_cfg_val("output_file")
 
-        out_file: str = self.get_cfg_val("issue_output_file")
-        total_commits: int = commits_list.totalCount
-
-        data_dict["num_commits"] = total_commits
-
-        data_dict["contributions"] = __get_dev_contributions(
-            commits_list, total_commits
+        start_tm = datetime.datetime(
+            strttm_list[0], strttm_list[1], strttm_list[2], 0, 0, 0
         )
+
+        cur_entry = {}
+        data_dict = {}
+
+        while start_tm < datetime.datetime.now():
+            try:
+                # get the current starting time plus the user-defined
+                # frequency. This will be the end date of the current
+                # request for a paginated list of commits.
+                start_tm_next = start_tm + datetime.timedelta(
+                    weeks=freq_list[0], days=freq_list[1]
+                )
+
+                print(f"{TAB}{start_tm} - {start_tm_next}")
+
+                # get commits to process
+                cur_commit_list = self.__get_commits_paged_list(start_tm, start_tm_next)
+                total_commits = cur_commit_list.totalCount
+
+                cur_entry["num_commits"] = total_commits
+
+                # process commits
+                cur_entry["contributions"] = __get_dev_num_contribs(
+                    cur_commit_list, total_commits, out_file
+                )
+
+                for date_obj in [start_tm_next, start_tm]:
+                    date_key = date_obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    cur_entry = {date_key: cur_entry}
+
+                start_tm = start_tm_next
+
+            except github.RateLimitExceededException:
+                self.__update_output_json_for_sleep(data_dict, out_file)
+
+            else:
+                # merge it to the total dict
+                data_dict = dict_utils.merge_dicts(data_dict, cur_entry)
+                cur_entry.clear()
 
         # nest commit data in appropriate label
         data_dict = {
@@ -239,6 +277,36 @@ class Extractor:
 
         file_io_utils.write_merged_dict_to_jsonfile(data_dict, out_file)
 
+    def __get_commits_paged_list(self, start, end):
+        """
+        Retrieve and store a paginated list of commits from GitHub.
+
+        Raises:
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, sleep the program until
+                calls can be made again and continue attempt to
+                collect desired paginated list.
+
+            github.UnknownObjectException: this exception is
+                thrown at least when a repository is not
+                accessible. This is can occur because the repo
+                is private or does not exist, but may occur
+                for other, unforeseen reasons.
+
+        Returns:
+            github.PaginatedList of github.Commit.
+        """
+        while True:
+            try:
+                commits_paged_list = self.repo_obj.get_commits(since=start, until=end)
+
+            except github.RateLimitExceededException:
+                self.__sleep_extractor()
+
+            else:
+                return commits_paged_list
+
+    # ISSUE ACCESS POINT #
     def get_repo_issues_data(self) -> None:
         """
         Gather all chosen data points from chosen issue numbers.
