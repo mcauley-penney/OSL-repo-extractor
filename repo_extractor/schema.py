@@ -146,6 +146,10 @@ def _get_issue_comments_quant(issue_obj):
     return issue_obj.comments
 
 
+def __get_nameduser_name(api_obj_nameduser):
+    return api_obj_nameduser.name
+
+
 def _get_title(api_obj) -> str:
     return api_obj.title
 
