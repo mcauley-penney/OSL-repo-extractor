@@ -4,8 +4,19 @@ import sys
 import cerberus
 
 
+def _access_dict_at_key(dictionary, key):
+    try:
+        val = dictionary[key]
+
+    except KeyError:
+        print(f"Key '{key}' does not exist!")
+        sys.exit(1)
+
+    return val
+
+
 class Cfg:
-    """Provide an object which holds all of the configuration for the extractor class."""
+    """Object which holds all of the configuration for the extractor class."""
 
     def __init__(self, cfg_dict: dict, cfg_schema: dict) -> None:
         """
@@ -32,27 +43,37 @@ class Cfg:
 
     def get_cfg_val(self, key: str):
         """
-        Print the value mapped to the given key.
+        Return the value mapped to the given key in the configuration dict.
 
         Args:
             key (str): associated key for desired val.
+
+        Returns:
+            list|int|str: value in the top level of the cfg
+            dict associated with the given key
         """
-        try:
-            val = self.cfg_dict[key]
+        return _access_dict_at_key(self.cfg_dict, key)
 
-        except KeyError:
-            print(f"Key {key} does not exist!")
-            sys.exit(1)
+    def get_repo_data_cfg_val(self, key: str):
+        """
+        Return the value mapped to the given key in the "repo_data" subdict.
 
-        return val
+        Args:
+            key (str): associated key for desired val.
+
+        Returns:
+            list|int|str: value in the top level of the cfg
+            dict associated with the given key
+        """
+        return _access_dict_at_key(self.cfg_dict["repo_data"], key)
 
     def set_cfg_val(self, key: str, val) -> None:
         """
         Set a value inside of the configuration dict.
 
         Args:
-            val (): value to assign to dict[key].
             key (str): the key of the dict entry to modify.
+            val (): value to assign to dict[key].
         """
         self.cfg_dict[key] = val
 

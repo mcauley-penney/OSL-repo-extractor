@@ -7,7 +7,7 @@ from repo_extractor.utils import file_io_utils
 
 
 class GithubSession:
-    """Initialize and expose functionality for verified connections to the GitHub API."""
+    """Functionality for verified connections to the GitHub API."""
 
     __page_len: int
     session: github.Github
@@ -58,7 +58,9 @@ class GithubSession:
         token = file_io_utils.read_file_line(auth_path)
 
         # establish a session with token
-        session = github.Github(token, per_page=self.__page_len, retry=100, timeout=100)
+        session = github.Github(
+            token, per_page=self.__page_len, retry=100, timeout=100
+        )
 
         try:
             # if name can be gathered from token, properly authenticated
@@ -78,7 +80,7 @@ class GithubSession:
             return session
 
     def get_pg_len(self):
-        """Get the page length setting of paginated lists for this Github connection."""
+        """Get the page length of paginated lists for this connection."""
         return self.__page_len
 
     def get_remaining_calls(self) -> str:
