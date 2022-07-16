@@ -14,28 +14,6 @@ CLR = "\x1b[K"
 TAB = " " * 4
 
 
-def _get_page_last_item(paged_list, page_index: int):
-    """
-    TODO.
-
-    Args:
-        paged_list ():
-        page_index (int):
-
-    Returns:
-        The last PyGithub object on a the given page
-    """
-    try:
-        last_item = paged_list.get_page(page_index)[-1]
-
-    except IndexError:
-        print("This repo contains no issues!")
-        sys.exit(1)
-
-    else:
-        return last_item
-
-
 class Extractor:
     """The Extractor class contains GitHub REST API functionality."""
 
@@ -101,6 +79,37 @@ class Extractor:
             else:
                 return repo_obj
 
+    def __get_issues_paged_list(self, repo_obj, state: str):
+        """
+        Retrieve and store a paginated list from GitHub.
+
+        Raises:
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, sleep the program until
+                calls can be made again and continue attempt to
+                collect desired paginated list.
+
+            github.UnknownObjectException: this exception is
+                thrown at least when a repository is not
+                accessible. This is can occur because the repo
+                is private or does not exist, but may occur
+                for other, unforeseen reasons.
+
+        Returns:
+            github.PaginatedList of github.Issue.
+        """
+        while True:
+            try:
+                issues_paged_list = repo_obj.get_issues(
+                    direction="asc", sort="created", state=state
+                )
+
+            except github.RateLimitExceededException:
+                self.__sleep_extractor()
+
+            else:
+                return issues_paged_list
+
     def __get_repo_metadata(self) -> dict:
 
         repo = self.__get_repo_obj()
@@ -124,7 +133,9 @@ class Extractor:
 
         # get the highest item num in the paginated list of items,
         # e.g. very last PR num
-        highest_num = _get_page_last_item(paged_list, last_page_index).number
+        last_page = paged_list.get_page(last_page_index)
+        last_item = last_page[-1]
+        highest_num = last_item.number
 
         # get sanitized range. This will correct any vals given in
         # the range cfg so that they are within the values that are
@@ -246,8 +257,6 @@ class Extractor:
     # If a helper is capable of being used by more than one,
     # it will be listed above this heading.
     # ----------------------------------------------------------------------
-
-    # ISSUE ACCESS POINT #
     def get_repo_issues_data(self) -> None:
         """
         Gather all chosen data points from chosen issue numbers.
@@ -261,31 +270,15 @@ class Extractor:
                 output file and sleep the program until calls
                 can be made again.
         """
-
-        def get_first_issue(issue_list, first_num_index: int):
-            while True:
-                try:
-                    cur_issue = issue_list[first_num_index]
-
-                except github.RateLimitExceededException:
-                    self.__sleep_extractor()
-
-                else:
-                    return cur_issue
-
         out_data: dict = {}
         out_file: str = self.get_cfg_val("output_path")
         issue_cfg: dict = self.get_cfg_val("repo_data")
         paged_list = self.repo_metadata["paged_list"]
         issue_num_range: list = issue_cfg["range"]
-
-        start_index: int = self.__get_api_obj_index(
-            paged_list, issue_num_range[0]
-        )
+        index: int = self.__get_api_obj_by_num(paged_list, issue_num_range[0])
 
         print(f"{TAB}Beginning issue extraction. This may take a moment...\n")
-
-        cur_issue = get_first_issue(paged_list, start_index)
+        cur_issue = paged_list[index]
 
         while cur_issue.number < issue_num_range[-1] + 1:
             try:
@@ -320,10 +313,12 @@ class Extractor:
                 print(f"Issue: {cur_issue.number}, ", end="")
                 print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
 
-                start_val += 1
+                index += 1
+                cur_issue = paged_list[index]
 
-        out_data = {"by_issue": out_data}
         file_io_utils.write_merged_dict_to_jsonfile(out_data, out_file)
+
+        print()
 
     def __get_issue_comments(self, datatype_dict: dict, issue_obj):
         """
@@ -486,7 +481,7 @@ class Extractor:
         # use all gathered entry data as the val for the PR num key
         return {item_type: cur_pr_dict}
 
-    def __get_api_obj_index(self, paged_list, api_obj_num: int) -> int:
+    def __get_api_obj_by_num(self, paged_list, api_obj_num: int) -> int:
         """
         Find start and end indices of API items in paginated list of items.
 
@@ -503,9 +498,7 @@ class Extractor:
                 API items.
         """
 
-        def bin_search_in_list(
-            paged_list, last_page_index: int, val: int
-        ) -> int:
+        def bin_search_in_list(val: int, paged_list, last_page_index: int):
             """
             Find the index of a page in paginated list of API items.
 
@@ -529,14 +522,15 @@ class Extractor:
             while low < high - 1:
                 mid = (low + high) // 2
 
-                mid_first_val = paged_list.get_page(mid)[0].number
-                mid_last_val = _get_page_last_item(paged_list, mid).number
+                mid_page = paged_list.get_page(mid)
+                mid_first_val = mid_page[0].number
+                mid_last_val = mid_page[-1].number
 
                 # if the value we want is greater than the first item
                 # (cur_val - page_len) on the middle page but less
                 # than the last item, it is in the middle page
                 if mid_first_val <= val <= mid_last_val:
-                    return mid
+                    return mid_page
 
                 if val < mid_first_val:
                     high = mid - 1
@@ -544,11 +538,9 @@ class Extractor:
                 elif val > mid_last_val:
                     low = mid + 1
 
-            return low
+            return paged_list.get_page(low)
 
-        def bin_search_in_page(
-            val: int, paged_list_page, page_len: int
-        ) -> int:
+        def bin_search_in_page(val: int, page, page_len: int) -> int:
             """
             Find the index of an API item in a page of API items.
 
@@ -582,7 +574,7 @@ class Extractor:
             while low < page_len - 1:
                 mid = (low + page_len) // 2
 
-                cur_val = paged_list_page[mid].number
+                cur_val = page[mid].number
 
                 if val == cur_val:
                     return mid
@@ -595,74 +587,13 @@ class Extractor:
 
             return low
 
-        def get_issue_num_index(
-            issue_num: int, last_page_index: int, page_len: int
-        ) -> int:
-            """
-            Find the index of the issue with the given number in issues list.
-
-            GitHub obviously cannot ensure that issue indices match
-            with issue numbers. We have to account for missing items
-            and page lengths when searching for an item.
-
-            Note:
-                This function and the associated functions are pretty
-                slow. They would benefit a lot from optimization and a
-                faster fetching mechanism. PyGithub has a private method
-                that can actually be accesed but this is firstly abusive
-                of its purpose and, secondly, seems to be the method that
-                is slow under the hood of this method. See __fetchToIndex()
-                in
-                https://github.com/PyGithub/PyGithub/blob/master/github/PaginatedList.py
-
-            Args:
-                issue_num (int): issue number to search for
-                last_page_index (int): index of the last page in the
-                    paginated list
-                page_len (int): length of pages in paginated lists for
-                    this validated GitHub session
-
-            Returns:
-                int: index of a user-specified issue number in paginated
-                list of issues
-            """
-            # use binary search to find the index of the page inside
-            # of the list of pages that contains the item number, e.g.
-            # PR# 600, that we want
-            page_index = bin_search_in_list(
-                paged_list, last_page_index, issue_num
-            )
-
-            found_page = paged_list.get_page(page_index)
-
-            # use iterative binary search to find item in correct page
-            # of linked list
-            item_page_index = bin_search_in_page(
-                issue_num, found_page, len(found_page)
-            )
-
-            # the index of the item in the total list is the page index
-            # that it is on multiplied by the amount of items per page,
-            # summed with the index of the item in the page, e.g. if
-            # the item is on index 20 of page 10 and there are 30
-            # items per page, its index in the list is 20 + (10 * 30)
-            item_list_index = item_page_index + (page_index * page_len)
-
-            # the index of the items we need is the amount of items per page
-            # that were skipped plus the index of the item in it's page
-            return item_list_index
-
-        page_len = self.gh_sesh.get_pg_len()
-
-        # get index of last page in paginated list
-        last_page_index = self.repo_metadata["last_page_index"]
-
         print(f"{TAB}Finding index of first item in range...")
 
-        clean_index = get_issue_num_index(
-            api_obj_num, last_page_index, page_len
+        # use binary search to find the page inside of the
+        # list of pages that contains the item number of interest
+        found_page = bin_search_in_list(
+            api_obj_num, paged_list, self.repo_metadata["last_page_index"]
         )
 
-        print(f"{TAB * 2}Item #{api_obj_num} found at index {clean_index}\n")
-
-        return clean_index
+        # use iterative binary search to find item of interest in found page
+        return bin_search_in_page(api_obj_num, found_page, len(found_page))
