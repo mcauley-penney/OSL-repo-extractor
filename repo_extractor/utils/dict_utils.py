@@ -26,7 +26,7 @@ def merge_dicts(base: dict, to_merge) -> dict:
     return base
 
 
-def merge_dicts_recursive(add_dict: dict, base_dict: dict) -> None:
+def merge_dicts_recursive(base_dict: dict, add_dict: dict) -> None:
     """
     Recursively merge two dictionaries.
 
@@ -35,8 +35,8 @@ def merge_dicts_recursive(add_dict: dict, base_dict: dict) -> None:
             https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
 
     Args:
-        add_dict (dict): dict of data to be merged
         base_dict (dict): dict to be merged into
+        add_dict (dict): dict of data to be merged
     """
     # for each key in the dict that we created with the round of API calls
     for key in add_dict:
@@ -49,7 +49,7 @@ def merge_dicts_recursive(add_dict: dict, base_dict: dict) -> None:
             and isinstance(add_dict[key], dict)
         ):
             # recurse
-            merge_dicts_recursive(add_dict[key], base_dict[key])
+            merge_dicts_recursive(base_dict[key], add_dict[key])
 
         else:
             # assign the new value from the last round of calls to the existing

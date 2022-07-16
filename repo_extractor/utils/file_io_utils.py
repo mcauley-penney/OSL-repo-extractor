@@ -186,7 +186,7 @@ def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     json_dict = read_jsonfile_into_dict(out_path)
 
     # recursively merge all dicts and nested dicts in both dictionaries
-    dict_utils.merge_dicts_recursive(out_dict, json_dict)
+    dict_utils.merge_dicts_recursive(json_dict, out_dict)
 
     # write JSON content back to file
     write_dict_to_jsonfile(json_dict, out_path)
