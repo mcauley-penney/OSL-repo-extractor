@@ -13,7 +13,7 @@ import sys
 from repo_extractor.utils import dict_utils
 
 
-def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
+def mk_json_outpath(out_path: str):
     """
     Create path to JSON file to write output data to.
 
@@ -34,23 +34,20 @@ def mk_json_outpath(out_dir: str, repo_title: str, output_type: str) -> str:
     Returns:
         str: path to output file
     """
-    path = f"{out_dir}/{repo_title}_{output_type}.json"
-
     # ensures that path exists, no exception handling required
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     # Using open() instead of mknode() allows this program to be portable;
     # mknode appears to be *nix specific. We can use "x" mode to ensure that
     # the open call is used exclusively for creating the file. If the file
-    # exists, though, "x" mode raises a FileExistsError, which we must ignore.
+    # exists, though, "x" mode raises a FileExistsError, which we can/must
+    # ignore.
     try:
-        with open(path, "x", encoding="UTF-8") as fptr:
+        with open(out_path, "x", encoding="UTF-8") as fptr:
             fptr.close()
 
     except FileExistsError:
         pass
-
-    return path
 
 
 def _read_json_into_text(in_path: str) -> str:
@@ -160,6 +157,8 @@ def write_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     Raises:
         FileNotFoundError: no file found at given path.
     """
+    mk_json_outpath(out_path)
+
     try:
         with open(out_path, "w", encoding="UTF-8") as json_outfile:
             json.dump(out_dict, json_outfile, ensure_ascii=False, indent=4)

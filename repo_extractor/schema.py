@@ -142,6 +142,19 @@ def _get_closed_time(issue) -> str:
     return "NaN"
 
 
+def _get_created_time(issue) -> str:
+    """
+    Get the datetime an issue was created at.
+
+    Args:
+        issue (Github.Issue): PyGithub issue to get closed time of
+
+    Returns:
+        str: datetime string of issue creation
+    """
+    return issue.created_at.strftime(TIME_FMT)
+
+
 def _get_issue_comments_quant(issue_obj):
     return issue_obj.comments
 
@@ -173,27 +186,29 @@ def _get_userlogin(api_obj) -> str:
 #       cmd_tbl_dict["issue"]["body"]()
 cmd_tbl_dict: dict = {
     # top-level actors
-    "issue": {
-        "body": _get_body,
-        "closed": _get_closed_time,
-        "num_comments": _get_issue_comments_quant,
-        "title": _get_title,
-        "userid": _get_userid,
-        "userlogin": _get_userlogin,
-    },
-    "comments": {
+    "comment": {
         "body": _get_body,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
     },
-    "pr": {},
     "commit": {
         "author_name": _get_commit_author_name,
         "committer": _get_commit_committer,
         "date": _get_commit_date,
         "files": _get_commit_files,
         "message": _get_commit_msg,
+        "sha": _get_commit_sha,
     },
+    "issue": {
+        "body": _get_body,
+        "closed_at": _get_closed_time,
+        "created_at": _get_created_time,
+        "num_comments": _get_issue_comments_quant,
+        "title": _get_title,
+        "userid": _get_userid,
+        "userlogin": _get_userlogin,
+    },
+    "pr": {},
 }
 
 
@@ -208,7 +223,7 @@ _str_type = {"type": "string"}
 # [*_] = create a list from the keys of the unpacked
 #        dict comprehension operand dict, e.g. _cmd_tbl_dict
 issue_fields_schema = {
-    f"{key}_fields": {
+    key: {
         "allowed": [*_],
         "schema": _str_type,
         "type": "list",
@@ -218,57 +233,21 @@ issue_fields_schema = {
 
 # Schema used to validate user-provided configuration.
 # This acts as a template to judge whether the user cfg
-# is acceptable to the program. This *does not* need to
-# be modified to add new getter functionality
+# is acceptable to the program.
 cfg_schema: dict = {
-    "auth_file": _str_type,
+    "auth_path": _str_type,
     "repo": _str_type,
-    "output_dir": _str_type,
+    "output_path": _str_type,
     "repo_data": {
         "type": "dict",
         "schema": {
-            "by_commit": {
-                "type": "dict",
-                "schema": {
-                    "dev_contributions": {
-                        "type": "dict",
-                        "schema": {
-                            "start": {
-                                "type": "list",
-                                "items": [
-                                    {"type": "integer", "min": 2007, "max": 2022},
-                                    {"type": "integer", "min": 1, "max": 12},
-                                    {"type": "integer", "min": 1, "max": 31},
-                                ],
-                            },
-                            "frequency": {
-                                "type": "list",
-                                "items": [
-                                    {"type": "integer", "min": 0, "meta": "weeks"},
-                                    {
-                                        "type": "integer",
-                                        "min": 0,
-                                        "max": 6,
-                                        "meta": "days",
-                                    },
-                                ],
-                            },
-                        },
-                    },
-                },
-            },
-            "by_issue": {
-                "type": "dict",
-                "schema": {
-                    **issue_fields_schema,
-                    "state": {**_str_type, "allowed": ["closed", "open"]},
-                    "range": {
-                        "nullable": True,
-                        "min": [0, 0],
-                        "schema": {"type": "integer"},
-                        "type": "list",
-                    },
-                },
+            **issue_fields_schema,
+            "state": {**_str_type, "allowed": ["closed", "open"]},
+            "range": {
+                "nullable": True,
+                "min": [0, 0],
+                "schema": {"type": "integer"},
+                "type": "list",
             },
         },
     },
