@@ -186,12 +186,12 @@ def _get_userlogin(api_obj) -> str:
 #       cmd_tbl_dict["issue"]["body"]()
 cmd_tbl_dict: dict = {
     # top-level actors
-    "comment": {
+    "comments": {
         "body": _get_body,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
     },
-    "commit": {
+    "commits": {
         "author_name": _get_commit_author_name,
         "committer": _get_commit_committer,
         "date": _get_commit_date,
@@ -208,7 +208,6 @@ cmd_tbl_dict: dict = {
         "userid": _get_userid,
         "userlogin": _get_userlogin,
     },
-    "pr": {},
 }
 
 

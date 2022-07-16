@@ -166,9 +166,7 @@ class Extractor:
         return self.cfg.get_cfg_val(key)
 
     @staticmethod
-    def __get_item_data(
-        category_dict: dict, field_type: str, cur_item
-    ) -> dict:
+    def __get_item_data(fields_cfg: dict, field_type: str, cur_item) -> dict:
         """
         Getter engine used to aggregate desired data from a given API item.
 
@@ -188,7 +186,7 @@ class Extractor:
         Returns:
             dict: dictionary of API data values for param item
         """
-        field_list = category_dict[f"{field_type}_fields"]
+        field_list = fields_cfg[field_type]
 
         if len(field_list) > 0:
             cmd_tbl = schema.cmd_tbl_dict[field_type]
@@ -201,12 +199,12 @@ class Extractor:
 
     def __sleep_extractor(self) -> None:
         """Sleep the program until we can make calls again."""
-        cntdown_time = self.gh_sesh.get_remaining_ratelimit_time()
+        cntdwn_time = self.gh_sesh.get_remaining_ratelimit_time()
 
-        while cntdown_time > 0:
+        while cntdwn_time > 0:
 
             # modulo function returns time tuple
-            minutes, seconds = divmod(cntdown_time, 60)
+            minutes, seconds = divmod(cntdwn_time, 60)
 
             # format the time string before printing
             cntdown_str = f"{minutes:02d}:{seconds:02d}"
@@ -218,7 +216,7 @@ class Extractor:
 
             # sleep for a while
             time.sleep(1)
-            cntdown_time -= 1
+            cntdwn_time -= 1
 
         print(f"{CLR}{TAB * 2}Starting data collection...", end="\r")
 
@@ -270,6 +268,12 @@ class Extractor:
                 output file and sleep the program until calls
                 can be made again.
         """
+        data_schema: dict = {
+            "issue": self.__get_issue,
+            "commits": self.__get_issue_commits,
+            "comments": self.__get_issue_comments,
+        }
+
         out_data: dict = {}
         out_file: str = self.get_cfg_val("output_path")
         issue_cfg: dict = self.get_cfg_val("repo_data")
@@ -282,26 +286,19 @@ class Extractor:
 
         while cur_issue.number < issue_num_range[-1] + 1:
             try:
-                # get issue data
-                cur_issue_dict = self.__get_item_data(
-                    issue_opts, "issue", cur_issue
-                )
 
-                # get issue as a PR, if it exists, and get its data
-                cur_issue_pr_dict = self.__get_issue_pr(issue_opts, cur_issue)
+                cur_item_data: dict = {}
+                cur_issue_data: dict = {}
 
-                # retrieve issue comments
-                cur_issue_comments_dict = self.__get_issue_comments(
-                    issue_opts, cur_issue
-                )
+                for key, func in data_schema.items():
+                    if self.cfg.get_repo_data_cfg_val(key):
+                        cur_item_data = func(issue_cfg, cur_issue)
 
-                # merge the PR and issue comment dicts with the issue dict
-                for entry in (cur_issue_pr_dict, cur_issue_comments_dict):
-                    cur_issue_dict = dict_utils.merge_dicts(
-                        cur_issue_dict, entry
-                    )
+                        cur_issue_data = dict_utils.merge_dicts(
+                            cur_issue_data, cur_item_data
+                        )
 
-                cur_total_entry = {str(cur_issue.number): cur_issue_dict}
+                cur_total_entry = {str(cur_issue.number): cur_issue_data}
 
             except github.RateLimitExceededException:
                 self.__update_output_json_for_sleep(out_data, out_file)
@@ -311,7 +308,10 @@ class Extractor:
 
                 print(f"{CLR}{TAB * 2}", end="")
                 print(f"Issue: {cur_issue.number}, ", end="")
-                print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
+                print(
+                    f"calls: {self.gh_sesh.get_remaining_calls()}",
+                    end="\r",
+                )
 
                 index += 1
                 cur_issue = paged_list[index]
@@ -320,7 +320,10 @@ class Extractor:
 
         print()
 
-    def __get_issue_comments(self, datatype_dict: dict, issue_obj):
+    def __get_issue(self, datatype_dict: dict, issue_obj) -> dict:
+        return self.__get_item_data(datatype_dict, "issue", issue_obj)
+
+    def __get_issue_comments(self, datatype_dict: dict, issue_obj) -> dict:
         """
         Create a dict of issue comment data for the given issue param.
 
@@ -341,88 +344,35 @@ class Extractor:
         # dict will hold data related to all comments for an
         # issue. Issue to comments is a one to many relationship
         comment_index = 0
-        cur_comment: dict = {}
+        cur_comment_data: dict = {}
 
         for comment in issue_obj.get_comments():
             cur_entry = self.__get_item_data(datatype_dict, item_type, comment)
 
             cur_entry = {str(comment_index): cur_entry}
 
-            cur_comment = dict_utils.merge_dicts(cur_comment, cur_entry)
+            cur_comment_data = dict_utils.merge_dicts(
+                cur_comment_data, cur_entry
+            )
 
             comment_index += 1
 
-        return {item_type: cur_comment}
+        return {item_type: cur_comment_data}
 
-    def __get_issues_paged_list(self, issues_opts_dict: dict):
-        """
-        Retrieve and store a paginated list from GitHub.
+    def __get_issue_commits(self, issue_opts: dict, issue_obj) -> dict:
+        """TODO."""
 
-        Raises:
-            github.RateLimitExceededException: if rate limited
-                by the GitHub REST API, sleep the program until
-                calls can be made again and continue attempt to
-                collect desired paginated list.
-
-            github.UnknownObjectException: this exception is
-                thrown at least when a repository is not
-                accessible. This is can occur because the repo
-                is private or does not exist, but may occur
-                for other, unforeseen reasons.
-
-        Returns:
-            github.PaginatedList of github.Issue.
-        """
-        while True:
+        def is_pr(cur_issue):
             try:
-                issues_paged_list = repo_obj.get_issues(
-                    direction="asc", sort="created", state=state
-                )
+                cur_pr = cur_issue.as_pull_request()
 
-            except github.RateLimitExceededException:
-                self.__sleep_extractor()
+            except github.UnknownObjectException:
+                # Not a PR, does not need to raise an error.
+                # Return up and keep going
+                return None
 
             else:
-                return issues_paged_list
-
-    def __get_issue_pr(self, issue_opts: dict, issue_obj):
-        """
-        Check if an issue is a PR and, if so, collect it's PR data.
-
-        Args:
-            issue_obj (GitHub.Issue): issue to check for PR data.
-
-        Raises:
-            github.UnknownObjectException: if the given issue is not
-                also a PR, the as_pull_request() method will fail and
-                raise this error. In that case, we needn't do anything.
-
-        Returns:
-            dict|None: if the issue is also a PR, return a dict of
-            PR info. Else, return None.
-        """
-        try:
-            cur_pr = issue_obj.as_pull_request()
-
-        except github.UnknownObjectException:
-            # Not a PR, does not need to raise an error.
-            # return up and keep going
-            return None
-
-        else:
-            # return dict of PR data
-            return self.__get_pr_datum(cur_pr, issue_opts)
-
-    def __get_pr_datum(self, cur_pr, issue_opts: dict) -> dict:
-        """
-        Retrieve data for a single PR and return it in a dictionary.
-
-        Args:
-            cur_pr (github.PullRequest): PR to gather data for.
-
-        Returns:
-            dict: dictionary containing data from PR parameter.
-        """
+                return cur_pr
 
         def __get_commit_data(datatype_dict, pr_obj):
             """
@@ -435,14 +385,14 @@ class Extractor:
                 Github.Commit: last commit made in PR.
 
             """
-            cur_commits = pr_obj.get_commits()
-            commit_index = 0
-            pr_commit_data = {}
+            item_type: str = "commits"
+            commit_index: int = 0
+            pr_commit_data: dict = {}
 
-            for commit in cur_commits:
+            for commit in pr_obj.get_commits():
                 if len(commit.files) > 0:
                     commit_datum = self.__get_item_data(
-                        datatype_dict, "commit", commit
+                        datatype_dict, item_type, commit
                     )
 
                 else:
@@ -454,32 +404,25 @@ class Extractor:
 
                 commit_index += 1
 
-            return {"commits": pr_commit_data}
+            return {item_type: pr_commit_data}
 
-        item_type = "pr"
-        is_merged = cur_pr.merged
-        is_valid_pr = is_merged or issue_opts["state"] == "open"
+        pr_data: dict = {}
+        pr_obj = is_pr(issue_obj)
 
-        # create dict to build upon. This variable will later become
-        # the val of a dict entry, making it a subdictionary
-        cur_pr_dict = {"pr_merged": is_merged}
+        if pr_obj is not None:
+            pr_data = {
+                "is_pr": True,
+                "state": pr_obj.state,
+                "is_merged": pr_obj.merged,
+            }
 
-        if is_valid_pr:
-            cur_pr_data = {}
-            commit_data = {}
+            commit_data: dict = __get_commit_data(issue_opts, pr_obj)
+            pr_data = dict_utils.merge_dicts(pr_data, commit_data)
 
-            # if the current PR is merged or is in the list of open PRs, we are
-            # interested in it. Closed and unmerged PRs are of no help to the
-            # project
-            cur_pr_data = self.__get_item_data(issue_opts, item_type, cur_pr)
+        else:
+            pr_data = {"is_pr": False}
 
-            commit_data = __get_commit_data(issue_opts, cur_pr)
-
-            for data_dict in (cur_pr_data, commit_data):
-                cur_pr_dict = dict_utils.merge_dicts(cur_pr_dict, data_dict)
-
-        # use all gathered entry data as the val for the PR num key
-        return {item_type: cur_pr_dict}
+        return pr_data
 
     def __get_api_obj_by_num(self, paged_list, api_obj_num: int) -> int:
         """
