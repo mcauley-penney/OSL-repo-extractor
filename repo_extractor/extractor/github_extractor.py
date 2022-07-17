@@ -112,11 +112,8 @@ class Extractor:
 
     def __get_repo_metadata(self) -> dict:
 
-        repo = self.__get_repo_obj()
-
         state: str = self.cfg.get_repo_data_cfg_val("state")
-
-        paged_list = self.__get_issues_paged_list(repo, state)
+        paged_list = self.__get_issues_paged_list(self.__get_repo_obj(), state)
 
         # get index of last page in paginated list
         last_page_index: int = (
@@ -125,26 +122,24 @@ class Extractor:
 
         return {"paged_list": paged_list, "last_page_index": last_page_index}
 
-    def __get_sanitized_cfg_range(self):
+    def __get_sanitized_cfg_range(self) -> list[int]:
 
-        last_page_index = self.repo_metadata["last_page_index"]
+        last_page_index: int = self.repo_metadata["last_page_index"]
         paged_list = self.repo_metadata["paged_list"]
-        range_list: list = self.cfg.get_repo_data_cfg_val("range")
+        range_list: list[int] = self.cfg.get_repo_data_cfg_val("range")
 
         # get the highest item num in the paginated list of items,
         # e.g. very last PR num
         last_page = paged_list.get_page(last_page_index)
         last_item = last_page[-1]
-        highest_num = last_item.number
+        last_num: int = last_item.number
 
         # get sanitized range. This will correct any vals given in
         # the range cfg so that they are within the values that are
         # in the paged list. We are protected from too low of values
         # by the Cerberus config schema, so this process only looks
         # at values that are too high.
-        return [
-            min(val, highest_num) for val in (range_list[0], range_list[-1])
-        ]
+        return [min(last_num, val) for val in range_list]
 
     # ----------------------------------------------------------------------
     # Helper methods
@@ -188,14 +183,11 @@ class Extractor:
         """
         field_list = fields_cfg[field_type]
 
-        if len(field_list) > 0:
-            cmd_tbl = schema.cmd_tbl_dict[field_type]
+        cmd_tbl = schema.cmd_tbl_dict[field_type]
 
-            # when called, this will resolve to various function calls, e.g.
-            # "body": cmd_tbl["body"](cur_PR)
-            return {field: cmd_tbl[field](cur_item) for field in field_list}
-
-        return {}
+        # when called, this will resolve to various function calls, e.g.
+        # "body": cmd_tbl["body"](cur_PR)
+        return {field: cmd_tbl[field](cur_item) for field in field_list}
 
     def __sleep_extractor(self) -> None:
         """Sleep the program until we can make calls again."""
@@ -279,17 +271,19 @@ class Extractor:
         issue_cfg: dict = self.get_cfg_val("repo_data")
         paged_list = self.repo_metadata["paged_list"]
         issue_num_range: list = issue_cfg["range"]
-        index: int = self.__get_api_obj_by_num(paged_list, issue_num_range[0])
+        index: int = self.__get_issue_index_by_num(
+            paged_list, issue_num_range[0]
+        )
 
         print(f"{TAB}Beginning issue extraction. This may take a moment...\n")
         cur_issue = paged_list[index]
 
         while cur_issue.number < issue_num_range[-1] + 1:
+
+            cur_item_data: dict = {}
+            cur_issue_data: dict = {}
+
             try:
-
-                cur_item_data: dict = {}
-                cur_issue_data: dict = {}
-
                 for key, func in data_schema.items():
                     if self.cfg.get_repo_data_cfg_val(key):
                         cur_item_data = func(issue_cfg, cur_issue)
@@ -343,7 +337,7 @@ class Extractor:
 
         # dict will hold data related to all comments for an
         # issue. Issue to comments is a one to many relationship
-        comment_index = 0
+        comment_index: int = 0
         cur_comment_data: dict = {}
 
         for comment in issue_obj.get_comments():
@@ -390,7 +384,7 @@ class Extractor:
             pr_commit_data: dict = {}
 
             for commit in pr_obj.get_commits():
-                if len(commit.files) > 0:
+                if commit.files:
                     commit_datum = self.__get_item_data(
                         datatype_dict, item_type, commit
                     )
@@ -424,7 +418,7 @@ class Extractor:
 
         return pr_data
 
-    def __get_api_obj_by_num(self, paged_list, api_obj_num: int) -> int:
+    def __get_issue_index_by_num(self, paged_list, api_obj_num: int) -> int:
         """
         Find start and end indices of API items in paginated list of items.
 
