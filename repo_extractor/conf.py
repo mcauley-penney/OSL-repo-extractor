@@ -92,5 +92,5 @@ class Cfg:
         # if dictionary from JSON does not follow rules in schema
         if not validator.validate(document=self.cfg_dict):
             # log an exception and print errors
-            print(f"Validation error!\n {validator.errors}")
+            print(f"Validation error!\n{validator.errors}")
             sys.exit(1)

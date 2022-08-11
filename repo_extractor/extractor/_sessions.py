@@ -64,11 +64,9 @@ class GithubSession:
 
         try:
             # if name can be gathered from token, properly authenticated
-            session.get_user().name
+            session.get_user().id
 
-        # if token is not valid, remove token from list
         except github.BadCredentialsException:
-            # log that token is invalid
             print("Invalid personal access token found! Exiting...\n")
             sys.exit(1)
 
@@ -76,8 +74,8 @@ class GithubSession:
         except github.RateLimitExceededException:
             return session
 
-        else:
-            return session
+        # else:
+        return session
 
     def get_pg_len(self):
         """Get the page length of paginated lists for this connection."""

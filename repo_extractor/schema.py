@@ -184,7 +184,7 @@ def _get_userlogin(api_obj) -> str:
 # To get an issue body, for example, we can either say
 #
 #       cmd_tbl_dict["issue"]["body"]()
-cmd_tbl_dict: dict = {
+cmd_tbl: dict = {
     # top-level actors
     "comments": {
         "body": _get_body,
@@ -227,7 +227,7 @@ issue_fields_schema = {
         "schema": _str_type,
         "type": "list",
     }
-    for key, _ in cmd_tbl_dict.items()
+    for key, _ in cmd_tbl.items()
 }
 
 # Schema used to validate user-provided configuration.
