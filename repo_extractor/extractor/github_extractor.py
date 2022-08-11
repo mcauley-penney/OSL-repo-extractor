@@ -1,12 +1,12 @@
 """Exposes functionality to mine GitHub repositories."""
 
-# import datetime
 import sys
 import time
+import traceback
 import github
 from repo_extractor import conf, schema
-from repo_extractor.extractor import _sessions
 from repo_extractor.utils import dict_utils, file_io_utils
+from repo_extractor.extractor import _sessions
 
 # ANSI escape sequence for clearing a row in the console:
 # credit: https://stackoverflow.com/a/64245513
@@ -39,12 +39,12 @@ class Extractor:
         """
         self.cfg = cfg_obj
 
-        # create output path so that it is already ready for work. The
-        # JSON writing functionality will check if it exists later and
-        # create it again if something happened to it during execution,
-        # attempting to circumvent TOCTOU errors that will crash
-        # execution. Because this program can be very long-running,
-        # multiple checks are smart because the filesystem can change.
+        # create output path in fs so that it is already ready for work.
+        # The JSON writing functionality will check if it exists later
+        # and create it again if something happened to it during execution,
+        # attempting to circumvent TOCTOU errors that will crash execution.
+        # Because this program can be very long-running, multiple checks
+        # and inits are smart because the filesystem can change.
         file_io_utils.mk_json_outpath(self.get_cfg_val("output_path"))
 
         # initialize authenticated GitHub session
@@ -65,7 +65,6 @@ class Extractor:
 
         while True:
             try:
-                # retrieve GitHub repo object
                 repo_obj = self.gh_sesh.session.get_repo(job_repo)
 
             except github.RateLimitExceededException:
@@ -112,11 +111,8 @@ class Extractor:
 
     def __get_repo_metadata(self) -> dict:
 
-        repo = self.__get_repo_obj()
-
         state: str = self.cfg.get_repo_data_cfg_val("state")
-
-        paged_list = self.__get_issues_paged_list(repo, state)
+        paged_list = self.__get_issues_paged_list(self.__get_repo_obj(), state)
 
         # get index of last page in paginated list
         last_page_index: int = (
@@ -125,26 +121,32 @@ class Extractor:
 
         return {"paged_list": paged_list, "last_page_index": last_page_index}
 
-    def __get_sanitized_cfg_range(self):
+    def __get_sanitized_cfg_range(self) -> tuple:
 
-        last_page_index = self.repo_metadata["last_page_index"]
+        print(f"{TAB}Sanitizing range...")
+
+        last_page_index: int = self.repo_metadata["last_page_index"]
         paged_list = self.repo_metadata["paged_list"]
-        range_list: list = self.cfg.get_repo_data_cfg_val("range")
+        range_list: list[int] = self.cfg.get_repo_data_cfg_val("range")
 
         # get the highest item num in the paginated list of items,
         # e.g. very last PR num
         last_page = paged_list.get_page(last_page_index)
-        last_item = last_page[-1]
-        highest_num = last_item.number
+        last_num: int = last_page[-1].number
+        print(f"{TAB * 2}Last item number: {last_num}")
 
         # get sanitized range. This will correct any vals given in
         # the range cfg so that they are within the values that are
         # in the paged list. We are protected from too low of values
         # by the Cerberus config schema, so this process only looks
         # at values that are too high.
-        return [
-            min(val, highest_num) for val in (range_list[0], range_list[-1])
-        ]
+        sani_range: tuple[int, ...] = tuple(
+            min(last_num, val) for val in range_list
+        )
+
+        print(f"{TAB * 2}Range cleaned: {sani_range[0]} to {sani_range[-1]}")
+
+        return sani_range
 
     # ----------------------------------------------------------------------
     # Helper methods
@@ -188,14 +190,11 @@ class Extractor:
         """
         field_list = fields_cfg[field_type]
 
-        if len(field_list) > 0:
-            cmd_tbl = schema.cmd_tbl_dict[field_type]
+        cmd_tbl = schema.cmd_tbl[field_type]
 
-            # when called, this will resolve to various function calls, e.g.
-            # "body": cmd_tbl["body"](cur_PR)
-            return {field: cmd_tbl[field](cur_item) for field in field_list}
-
-        return {}
+        # when called, this will resolve to various function calls, e.g.
+        # "body": cmd_tbl["body"](cur_PR)
+        return {field: cmd_tbl[field](cur_item) for field in field_list}
 
     def __sleep_extractor(self) -> None:
         """Sleep the program until we can make calls again."""
@@ -279,17 +278,20 @@ class Extractor:
         issue_cfg: dict = self.get_cfg_val("repo_data")
         paged_list = self.repo_metadata["paged_list"]
         issue_num_range: list = issue_cfg["range"]
-        index: int = self.__get_api_obj_by_num(paged_list, issue_num_range[0])
+        index: int = self.__get_issue_index_by_num(
+            paged_list, issue_num_range[0]
+        )
 
-        print(f"{TAB}Beginning issue extraction. This may take a moment...\n")
+        print(f"{TAB}Beginning issue extraction at {issue_num_range[0]}...")
+        print(f"{TAB}This may take a moment...\n")
         cur_issue = paged_list[index]
 
         while cur_issue.number < issue_num_range[-1] + 1:
+
+            cur_item_data: dict = {}
+            cur_issue_data: dict = {}
+
             try:
-
-                cur_item_data: dict = {}
-                cur_issue_data: dict = {}
-
                 for key, func in data_schema.items():
                     if self.cfg.get_repo_data_cfg_val(key):
                         cur_item_data = func(issue_cfg, cur_issue)
@@ -302,6 +304,15 @@ class Extractor:
 
             except github.RateLimitExceededException:
                 self.__update_output_json_for_sleep(out_data, out_file)
+
+            except (IndexError, KeyboardInterrupt):
+                traceback.print_exc()
+                print(
+                    f"\n\nOperation terminating at item #{cur_issue.number}\n",
+                )
+
+                file_io_utils.write_merged_dict_to_jsonfile(out_data, out_file)
+                sys.exit(1)
 
             else:
                 out_data = dict_utils.merge_dicts(out_data, cur_total_entry)
@@ -343,7 +354,7 @@ class Extractor:
 
         # dict will hold data related to all comments for an
         # issue. Issue to comments is a one to many relationship
-        comment_index = 0
+        comment_index: int = 0
         cur_comment_data: dict = {}
 
         for comment in issue_obj.get_comments():
@@ -390,7 +401,7 @@ class Extractor:
             pr_commit_data: dict = {}
 
             for commit in pr_obj.get_commits():
-                if len(commit.files) > 0:
+                if commit.files:
                     commit_datum = self.__get_item_data(
                         datatype_dict, item_type, commit
                     )
@@ -406,7 +417,7 @@ class Extractor:
 
             return {item_type: pr_commit_data}
 
-        pr_data: dict = {}
+        pr_data: dict
         pr_obj = is_pr(issue_obj)
 
         if pr_obj is not None:
@@ -424,7 +435,7 @@ class Extractor:
 
         return pr_data
 
-    def __get_api_obj_by_num(self, paged_list, api_obj_num: int) -> int:
+    def __get_issue_index_by_num(self, paged_list, api_obj_num: int) -> int:
         """
         Find start and end indices of API items in paginated list of items.
 
@@ -459,10 +470,12 @@ class Extractor:
                 int: index of page in given paginated listwhere val
                 param is located
             """
-            low = 0
-            high = last_page_index
+            low: int = 0
+            high: int = last_page_index
+            mid_first_val: int
+            mid_last_val: int
 
-            while low < high - 1:
+            while low < high:
                 mid = (low + high) // 2
 
                 mid_page = paged_list.get_page(mid)
@@ -473,7 +486,7 @@ class Extractor:
                 # (cur_val - page_len) on the middle page but less
                 # than the last item, it is in the middle page
                 if mid_first_val <= val <= mid_last_val:
-                    return mid_page
+                    return mid_page, mid
 
                 if val < mid_first_val:
                     high = mid - 1
@@ -481,7 +494,7 @@ class Extractor:
                 elif val > mid_last_val:
                     low = mid + 1
 
-            return paged_list.get_page(low)
+            return paged_list.get_page(low), low
 
         def bin_search_in_page(val: int, page, page_len: int) -> int:
             """
@@ -506,7 +519,8 @@ class Extractor:
             Returns:
                 int: index of the object we are looking for
             """
-            low = 0
+            low: int = 0
+            mid: int
 
             # because this binary search is looking through lists that
             # may have items missing, we want to be able to return the
@@ -530,13 +544,23 @@ class Extractor:
 
             return low
 
-        print(f"{TAB}Finding index of first item in range...")
+        print(f"{TAB}Finding index of item #{api_obj_num}...")
 
         # use binary search to find the page inside of the
         # list of pages that contains the item number of interest
-        found_page = bin_search_in_list(
+        found_page, found_page_index = bin_search_in_list(
             api_obj_num, paged_list, self.repo_metadata["last_page_index"]
         )
 
         # use iterative binary search to find item of interest in found page
-        return bin_search_in_page(api_obj_num, found_page, len(found_page))
+        item_index: int = bin_search_in_page(
+            api_obj_num, found_page, len(found_page)
+        )
+
+        item_index = (
+            found_page_index * self.gh_sesh.get_pg_len()
+        ) + item_index
+
+        print(f"{TAB * 2}Found at index {item_index}!")
+
+        return item_index
