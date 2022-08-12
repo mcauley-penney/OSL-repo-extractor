@@ -18,7 +18,7 @@ def main():
     gh_ext = github_extractor.Extractor(cfg_obj)
     print(f"{tab}Extractor initialization complete!\n")
 
-    print("Getting issue data...")
+    print("Mining repo data...")
     gh_ext.get_repo_issues_data()
     print(f"\n{tab}Issue data complete!\n")
 

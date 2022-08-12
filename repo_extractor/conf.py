@@ -4,17 +4,6 @@ import sys
 import cerberus
 
 
-def _access_dict_at_key(dictionary, key):
-    try:
-        val = dictionary[key]
-
-    except KeyError:
-        print(f"Key '{key}' does not exist!")
-        sys.exit(1)
-
-    return val
-
-
 class Cfg:
     """Object which holds all of the configuration for the extractor class."""
 
@@ -52,20 +41,7 @@ class Cfg:
             list|int|str: value in the top level of the cfg
             dict associated with the given key
         """
-        return _access_dict_at_key(self.cfg_dict, key)
-
-    def get_repo_data_cfg_val(self, key: str):
-        """
-        Return the value mapped to the given key in the "repo_data" subdict.
-
-        Args:
-            key (str): associated key for desired val.
-
-        Returns:
-            list|int|str: value in the top level of the cfg
-            dict associated with the given key
-        """
-        return _access_dict_at_key(self.cfg_dict["repo_data"], key)
+        return self.cfg_dict[key]
 
     def set_cfg_val(self, key: str, val) -> None:
         """

@@ -199,7 +199,7 @@ cmd_tbl: dict = {
         "message": _get_commit_msg,
         "sha": _get_commit_sha,
     },
-    "issue": {
+    "issues": {
         "body": _get_body,
         "closed_at": _get_closed_time,
         "created_at": _get_created_time,
@@ -221,7 +221,7 @@ _str_type = {"type": "string"}
 #
 # [*_] = create a list from the keys of the unpacked
 #        dict comprehension operand dict, e.g. _cmd_tbl_dict
-issue_fields_schema = {
+issues_fields_schema = {
     key: {
         "allowed": [*_],
         "schema": _str_type,
@@ -237,17 +237,12 @@ cfg_schema: dict = {
     "auth_path": _str_type,
     "repo": _str_type,
     "output_path": _str_type,
-    "repo_data": {
-        "type": "dict",
-        "schema": {
-            **issue_fields_schema,
-            "state": {**_str_type, "allowed": ["closed", "open"]},
-            "range": {
-                "nullable": True,
-                "min": [0, 0],
-                "schema": {"type": "integer"},
-                "type": "list",
-            },
-        },
+    **issues_fields_schema,
+    "state": {**_str_type, "allowed": ["closed", "open"]},
+    "range": {
+        "nullable": True,
+        "min": [0, 0],
+        "schema": {"type": "integer"},
+        "type": "list",
     },
 }
