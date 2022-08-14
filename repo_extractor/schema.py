@@ -37,28 +37,8 @@ Resources:
 TIME_FMT = "%D, %I:%M:%S %p"
 
 
-def _sanitize_str(in_str) -> str:
-    """
-    If given a valid string, strip it of whitespace and carriage returns.
-
-    Args:
-        str_to_clean (str|None): string to clean and return
-
-    Returns:
-        str: if param string is empty or None, returns "NaN". Else,
-        return param string stripped of carriage returns and whitespace.
-    """
-    if in_str is None or in_str == "":
-        return "NaN"
-
-    for esc_char in ("\r", "\n"):
-        in_str = in_str.replace(esc_char, "")
-
-    return in_str.strip()
-
-
 def _get_body(api_obj) -> str:
-    return _sanitize_str(api_obj.body)
+    return api_obj.body
 
 
 def _get_commit_author_name(commit_obj) -> str:
@@ -91,35 +71,33 @@ def _get_commit_files(commit_obj) -> dict:
     """
     file_list = commit_obj.files
 
-    commit_file_list = []
-    commit_adds = 0
-    commit_changes = 0
-    commit_patch_text = ""
-    commit_removes = 0
-    commit_status_str = ""
+    commit_files: list = []
+    commit_patches: list = []
+    commit_statuses: list = []
+    commit_adds: int = 0
+    commit_changes: int = 0
+    commit_removes: int = 0
 
     for file in file_list:
-        commit_file_list.append(file.filename)
+        commit_files.append(file.filename)
+        commit_patches.append(file.patch)
+        commit_statuses.append(file.status)
         commit_adds += int(file.additions)
         commit_changes += int(file.changes)
-        commit_patch_text += str(file.patch) + ", "
         commit_removes += int(file.deletions)
-        commit_status_str += str(file.status) + ", "
-
-    quoted_commit_status_str = '"' + commit_status_str + '"'
 
     return {
-        "file_list": commit_file_list,
         "additions": commit_adds,
-        "changes": commit_changes,
-        "patch_text": _sanitize_str(commit_patch_text),
         "removals": commit_removes,
-        "status": _sanitize_str(quoted_commit_status_str),
+        "changes": commit_changes,
+        "file_list": commit_files,
+        "status": commit_statuses,
+        "patch_text": commit_patches,
     }
 
 
 def _get_commit_msg(commit_obj) -> str:
-    return _sanitize_str(commit_obj.commit.message)
+    return commit_obj.commit.message
 
 
 def _get_commit_sha(commit_obj) -> str:
@@ -172,7 +150,7 @@ def _get_userid(api_obj) -> str:
 
 
 def _get_userlogin(api_obj) -> str:
-    return _sanitize_str(api_obj.user.login)
+    return api_obj.user.login
 
 
 # Initialize map of strings to function references; a

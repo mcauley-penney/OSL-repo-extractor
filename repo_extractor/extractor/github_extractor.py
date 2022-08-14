@@ -1,8 +1,8 @@
 """Exposes functionality to mine GitHub repositories."""
 
+import socket
 import sys
 import time
-import traceback
 import github
 from repo_extractor import conf, schema
 from repo_extractor.utils import dict_utils, file_io_utils as io
@@ -267,7 +267,14 @@ class Extractor:
 
             except KeyboardInterrupt:
                 io.write_merged_dict_to_jsonfile(out_data, output_file)
-                print(f"\n\n{TAB}Terminating at item #{cur_issue.number}\n")
+                print("\n\nKeyboard Interrupt!")
+                print(f"{TAB}Terminating at item #{cur_issue.number}\n")
+                sys.exit(1)
+
+            except (socket.error, socket.gaierror):
+                io.write_merged_dict_to_jsonfile(out_data, output_file)
+                print("\n\nSocket Error!")
+                print(f"{TAB}Terminating at item #{cur_issue.number}\n")
                 sys.exit(1)
 
             else:
