@@ -1,48 +1,32 @@
 {
-    "repo": "jabref/JabRef",
-    "auth_file": "/path/to/auth/file.txt",
-    "output_dir": "/path/to/output/directory",
-    "repo_data": {
-        "by_commit": {
-            "dev_contributions": {
-                "start": [
-                    2007,
-                    1,
-                    1
-                ],
-                "frequency": [
-                    12,
-                    0
-                ]
-            }
-        },
-        "by_issue": {
-            "range": [
-                0,
-                0
-            ],
-            "state": "closed",
-            "comments_fields": [
-                "body",
-                "userid",
-                "userlogin"
-            ],
-            "commit_fields": [
-                "author_name",
-                "committer",
-                "date",
-                "files",
-                "message"
-            ],
-            "issue_fields": [
-                "body",
-                "closed",
-                "num_comments",
-                "title",
-                "userid",
-                "userlogin"
-            ],
-            "pr_fields": []
-        }
-    }
+    "repo": "microsoft/PowerToys",
+    "auth_path": "/home/m/files/OSL/OSL-repo-extractor/input/auths/mp_auth.txt",
+    "output_path": "/home/m/files/OSL/OSL-data/1-extractor/powertoys/powertoys_2022-09.json",
+    "range": [
+        0,
+        10000000
+    ],
+    "state": "closed",
+    "comments": [
+        "body",
+        "userid",
+        "userlogin"
+    ],
+    "commits": [
+        "author_name",
+        "committer",
+        "date",
+        "files",
+        "message",
+        "sha"
+    ],
+    "issues": [
+        "body",
+        "closed_at",
+        "created_at",
+        "num_comments",
+        "title",
+        "userid",
+        "userlogin"
+    ]
 }
