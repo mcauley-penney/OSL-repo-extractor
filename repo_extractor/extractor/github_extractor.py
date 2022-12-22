@@ -384,6 +384,7 @@ class Extractor:
                 "is_pr": True,
                 "state": pr_obj.state,
                 "is_merged": pr_obj.merged,
+                "num_review_comments": pr_obj.comments,
             }
 
             commit_data: dict = __get_commit_data(pr_obj)
