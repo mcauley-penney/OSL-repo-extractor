@@ -77,7 +77,7 @@ def _get_commit_files(commit_obj) -> dict:
     commit_statuses: list = []
     commit_adds: int = 0
     commit_changes: int = 0
-    commit_removes: int = 0
+    commit_deletions: int = 0
 
     for file in file_list:
         commit_files.append(file.filename)
@@ -85,11 +85,11 @@ def _get_commit_files(commit_obj) -> dict:
         commit_statuses.append(file.status)
         commit_adds += int(file.additions)
         commit_changes += int(file.changes)
-        commit_removes += int(file.deletions)
+        commit_deletions += int(file.deletions)
 
     return {
         "additions": commit_adds,
-        "removals": commit_removes,
+        "deletions": commit_deletions,
         "changes": commit_changes,
         "file_list": commit_files,
         "status": commit_statuses,
