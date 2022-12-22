@@ -34,7 +34,8 @@ Resources:
         https://betterprogramming.pub/dispatch-tables-in-python-d37bcc443b0b
 """
 
-TIME_FMT = "%D, %I:%M:%S %p"
+# 0000-00-00T00:00:00Z
+TIME_FMT = "%Y-%m-%dT%H:%M:%SZ"
 
 
 def _get_body(api_obj) -> str:
