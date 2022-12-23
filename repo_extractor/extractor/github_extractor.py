@@ -3,6 +3,7 @@
 import socket
 import sys
 import time
+import traceback
 import github
 from repo_extractor import conf, schema
 from repo_extractor.utils import dict_utils, file_io_utils as io
@@ -265,15 +266,14 @@ class Extractor:
                 out_data.clear()
                 self.__sleep_extractor()
 
-            except KeyboardInterrupt:
-                io.write_merged_dict_to_jsonfile(out_data, output_file)
-                print("\n\nKeyboard Interrupt!")
-                print(f"{TAB}Terminating at item #{cur_issue.number}\n")
-                sys.exit(1)
+            except (KeyboardInterrupt,
+                    github.GithubException,
+                    socket.error,
+                    socket.gaierror):
 
-            except (socket.error, socket.gaierror):
+                traceback.print_exc()
+                print("\n\n Writing gathered data...")
                 io.write_merged_dict_to_jsonfile(out_data, output_file)
-                print("\n\nSocket Error!")
                 print(f"{TAB}Terminating at item #{cur_issue.number}\n")
                 sys.exit(1)
 
