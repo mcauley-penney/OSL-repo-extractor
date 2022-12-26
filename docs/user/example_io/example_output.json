@@ -1,0 +1,651 @@
+{
+    "1": {
+        "userlogin": "benjamn",
+        "userid": "5750",
+        "title": "Run each test in its own <iframe>",
+        "body": "This is not blocking the initial launch, so feel free to put it on the back-burner for now.\n\nThe Jasmine test harness still runs in the parent window and reports to PhantomJS via `window.callPhantom`, but each test `<iframe>` has its own copy of `react-test.js` and each individual test module is required in the global context of a separate `<iframe>`.\n\nThis gives us a significant approximation of the benefits of mocking, at least in terms of isolating tests from one another.\n\ncr @jeffmo @zpao\n",
+        "created_at": "2013-05-29T20:20:53Z",
+        "closed_at": "2013-06-03T17:58:02Z",
+        "num_comments": 4,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 4,
+        "commits": {
+            "0": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T19:57:17Z",
+                "message": "Make the bin/jsx source and output directories configurable.",
+                "sha": "83029eb75600e306696bc5bf03c6d899fa3c10f8",
+                "files": {
+                    "additions": 11,
+                    "deletions": 5,
+                    "changes": 16,
+                    "file_list": [
+                        "grunt/config/jsx/jsx.js",
+                        "grunt/tasks/jsx.js"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -6,20 +6,26 @@ var rootIDs = [\n \n var debug = {\n   rootIDs: rootIDs,\n-  configFile: \"grunt/config/jsx/debug.json\"\n+  configFile: \"grunt/config/jsx/debug.json\",\n+  sourceDir: \"src\",\n+  outputDir: \"build/modules\"\n };\n \n var test = {\n   rootIDs: rootIDs.concat([\n     \"test/all.js\",\n     \"**/__tests__/*.js\"\n   ]),\n-  configFile: debug.configFile\n+  configFile: debug.configFile,\n+  sourceDir: \"src\",\n+  outputDir: \"build/modules\"\n };\n \n var release = {\n   rootIDs: rootIDs,\n-  configFile: \"grunt/config/jsx/release.json\"\n+  configFile: \"grunt/config/jsx/release.json\",\n+  sourceDir: \"src\",\n+  outputDir: \"build/modules\"\n };\n \n module.exports = {",
+                        "@@ -9,8 +9,8 @@ module.exports = function() {\n \n   var args = [\n     \"bin/jsx\",\n-    \"src\",\n-    \"build/modules\"\n+    config.sourceDir,\n+    config.outputDir\n   ];\n \n   var rootIDs = expand({"
+                    ]
+                }
+            },
+            "1": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T20:10:50Z",
+                "message": "Use bin/jsx and browserify to build a jasmine bundle.",
+                "sha": "f8af93237adaa7c02df9edcbfccd07e6fdaaa0ed",
+                "files": {
+                    "additions": 92,
+                    "deletions": 36,
+                    "changes": 128,
+                    "file_list": [
+                        "Gruntfile.js",
+                        "grunt/config/browserify.js",
+                        "grunt/config/jsx/jsx.js",
+                        "src/test/all.js",
+                        "test/index.html",
+                        "test/phantom-harness.js",
+                        "vendor/jasmine/HtmlReporter.js",
+                        "vendor/jasmine/PrintReporter.js",
+                        "vendor/jasmine/ReporterView.js",
+                        "vendor/jasmine/SpecView.js",
+                        "vendor/jasmine/SuiteView.js",
+                        "vendor/jasmine/all.js",
+                        "vendor/jasmine/console.js",
+                        "vendor/jasmine/diff.js",
+                        "vendor/jasmine/jasmine-html.js",
+                        "vendor/jasmine/jasmine-support.js",
+                        "vendor/jasmine/jasmine.js",
+                        "vendor/jasmine/phantom.js"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified",
+                        "modified",
+                        "modified",
+                        "modified",
+                        "modified",
+                        "renamed",
+                        "renamed",
+                        "renamed",
+                        "renamed",
+                        "renamed",
+                        "added",
+                        "renamed",
+                        "renamed",
+                        "modified",
+                        "renamed",
+                        "modified",
+                        "renamed"
+                    ],
+                    "patch_text": [
+                        "@@ -53,7 +53,9 @@ module.exports = function(grunt) {\n   grunt.registerTask('build:min', ['jsx:release', 'browserify:min']);\n   grunt.registerTask('build:test', [\n     'jsx:debug',\n+    'jsx:jasmine',\n     'jsx:test',\n+    'browserify:jasmine',\n     'browserify:test'\n   ]);\n ",
+                        "@@ -76,6 +76,17 @@ var transformer = {\n   after: [simpleBannerify]\n };\n \n+var jasmine = {\n+  entries: [\n+    \"./build/jasmine/all.js\"\n+  ],\n+  requires: {\n+    \"jasmine\": \"./build/jasmine/all.js\"\n+  },\n+  outfile: \"./build/jasmine.js\",\n+  debug: false\n+};\n+\n var test = {\n   entries: [\n     \"./build/modules/test/all.js\",\n@@ -88,6 +99,7 @@ var test = {\n \n module.exports = {\n   basic: basic,\n+  jasmine: jasmine,\n   test: test,\n   min: min,\n   transformer: transformer",
+                        "@@ -11,6 +11,15 @@ var debug = {\n   outputDir: \"build/modules\"\n };\n \n+var jasmine = {\n+  rootIDs: [\n+    \"all\"\n+  ],\n+  configFile: debug.configFile,\n+  sourceDir: \"vendor/jasmine\",\n+  outputDir: \"build/jasmine\"\n+};\n+\n var test = {\n   rootIDs: rootIDs.concat([\n     \"test/all.js\",\n@@ -30,6 +39,7 @@ var release = {\n \n module.exports = {\n   debug: debug,\n+  jasmine: jasmine,\n   test: test,\n   release: release\n };",
+                        "@@ -2,17 +2,8 @@\n // modules in src/test and to specify an ordering on those modules, since\n // some still have implicit dependencies on others.\n \n-require(\"./phantom\");\n-require(\"./console\");\n require(\"ReactTestUtils\");\n require(\"reactComponentExpect\");\n-require(\"./diff\");\n-require(\"./PrintReporter\");\n-require(\"./HtmlReporter\");\n-require(\"./ReporterView\");\n-require(\"./SpecView\");\n-require(\"./SuiteView\");\n-require(\"./jasmine-support\");\n require(\"mocks\");\n require(\"mock-modules\");\n require(\"./mock-timers\");",
+                        "@@ -3,11 +3,10 @@\n   <head>\n     <link rel=\"stylesheet\" type=\"text/css\" href=\"jasmine.css\" />\n     <script src=\"jasmine.js\"></script>\n-    <script src=\"jasmine-html.js\"></script>\n     <script src=\"react-test.js\"></script>\n     <script>\n       window.onload = function() {\n-        jasmine.getEnv().execute();\n+        require(\"jasmine\").getEnv().execute();\n       };\n     </script>\n   </head>",
+                        "@@ -45,10 +45,12 @@ server.listen(port, function(req, res) {\n     break;\n \n   case \"jasmine.css\":\n-  case \"jasmine.js\":\n-  case \"jasmine-html.js\":\n     file = \"../vendor/jasmine/\" + file;\n     break;\n+\n+  case \"jasmine.js\":\n+    file = \"../build/\" + file;\n+    break;\n   }\n \n   if (/\\.css$/i.test(file)) {",
+                        "@@ -1,3 +1,5 @@\n+var jasmine = require(\"./jasmine\");\n+\n exports.HtmlReporter =\n jasmine.HtmlReporter = function(_doc) {\n   var self = this;",
+                        "@@ -1,3 +1,4 @@\n+var jasmine = require(\"./jasmine\");\n var diff = require('./diff');\n \n var red = '\\u001b[1;41m';\n@@ -54,7 +55,7 @@ PrintReporter.prototype.reportRunnerResults = function(runner) {\n     this.failCount + \" fail\"\n   ].join(\"  \"));\n \n-  require(\"test/phantom\").exit(this.failCount);\n+  require(\"./phantom\").exit(this.failCount);\n };\n \n ",
+                        "@@ -1,3 +1,5 @@\n+var jasmine = require(\"jasmine\");\n+\n jasmine.HtmlReporter.ReporterView = function(dom) {\n   this.startedAt = new Date();\n   this.runningSpecCount = 0;",
+                        "@@ -1,3 +1,5 @@\n+var jasmine = require(\"./jasmine\");\n+\n jasmine.HtmlReporter.SpecView = function(spec, dom, views) {\n   this.spec = spec;\n   this.dom = dom;",
+                        "@@ -1,3 +1,5 @@\n+var jasmine = require(\"./jasmine\");\n+\n jasmine.HtmlReporter.SuiteView = function(suite, dom, views) {\n   this.suite = suite;\n   this.dom = dom;",
+                        "@@ -0,0 +1,38 @@\n+require(\"./phantom\");\n+require(\"./console\");\n+\n+// TODO Also bundle jasmine.css here.\n+var jasmine = require(\"./jasmine\");\n+require(\"./jasmine-html\");\n+require(\"./jasmine-support\");\n+\n+require(\"./HtmlReporter\");\n+require(\"./PrintReporter\");\n+require(\"./ReporterView\");\n+require(\"./SpecView\");\n+require(\"./SuiteView\");\n+\n+var env = jasmine.getEnv();\n+env.addReporter(new jasmine.HtmlReporter);\n+env.addReporter(new jasmine.PrintReporter);\n+\n+function exposeFrom(obj) {\n+  obj.spyOn = jasmine.spyOn;\n+  obj.it = jasmine.it;\n+  obj.xit = jasmine.xit;\n+  obj.expect = jasmine.expect;\n+  obj.runs = jasmine.runs;\n+  obj.waits = jasmine.waits;\n+  obj.waitsFor = jasmine.waitsFor;\n+  obj.beforeEach = jasmine.beforeEach;\n+  obj.afterEach = jasmine.afterEach;\n+  obj.describe = jasmine.describe;\n+  obj.xdescribe = jasmine.xdescribe;\n+  obj.jasmine = jasmine;\n+  return obj;\n+}\n+jasmine.exposeFrom = exposeFrom;\n+var global = Function(\"return this\")();\n+exposeFrom(global);\n+\n+module.exports = jasmine;",
+                        null,
+                        null,
+                        "@@ -1,3 +1,5 @@\n+var jasmine = require(\"./jasmine\");\n+\n jasmine.HtmlReporterHelpers = {};\n \n jasmine.HtmlReporterHelpers.createDom = function(type, attrs, childrenVarArgs) {",
+                        "@@ -1,5 +1,4 @@\n-var global = Function(\"return this\")();\n-var jasmine = global.jasmine;\n+var jasmine = require(\"./jasmine\");\n var spec = false; // TODO\n \n // Add some matcher for mock functions\n@@ -126,9 +125,3 @@ if (typeof WeakMap !== \"undefined\") {\n     return (mismatchKeys.length == 0 && mismatchValues.length == 0);\n   };\n }\n-\n-var HtmlReporter = require(\"./HtmlReporter\").HtmlReporter;\n-var PrintReporter = require(\"./PrintReporter\").PrintReporter;\n-\n-jasmine.getEnv().addReporter(new HtmlReporter);\n-jasmine.getEnv().addReporter(new PrintReporter);",
+                        "@@ -1,12 +1,10 @@\n-var isCommonJS = typeof window == \"undefined\" && typeof exports == \"object\";\n-\n /**\n  * Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.\n  *\n  * @namespace\n  */\n var jasmine = {};\n-if (isCommonJS) exports.jasmine = jasmine;\n+exports = module.exports = jasmine;\n /**\n  * @private\n  */\n@@ -480,7 +478,7 @@ jasmine.log = function() {\n var spyOn = function(obj, methodName) {\n   return jasmine.getEnv().currentSpec.spyOn(obj, methodName);\n };\n-if (isCommonJS) exports.spyOn = spyOn;\n+exports.spyOn = spyOn;\n \n /**\n  * Creates a Jasmine spec that will be added to the current suite.\n@@ -498,7 +496,7 @@ if (isCommonJS) exports.spyOn = spyOn;\n var it = function(desc, func) {\n   return jasmine.getEnv().it(desc, func);\n };\n-if (isCommonJS) exports.it = it;\n+exports.it = it;\n \n /**\n  * Creates a <em>disabled</em> Jasmine spec.\n@@ -511,7 +509,7 @@ if (isCommonJS) exports.it = it;\n var xit = function(desc, func) {\n   return jasmine.getEnv().xit(desc, func);\n };\n-if (isCommonJS) exports.xit = xit;\n+exports.xit = xit;\n \n /**\n  * Starts a chain for a Jasmine expectation.\n@@ -525,7 +523,7 @@ if (isCommonJS) exports.xit = xit;\n var expect = function(actual) {\n   return jasmine.getEnv().currentSpec.expect(actual);\n };\n-if (isCommonJS) exports.expect = expect;\n+exports.expect = expect;\n \n /**\n  * Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.\n@@ -535,7 +533,7 @@ if (isCommonJS) exports.expect = expect;\n var runs = function(func) {\n   jasmine.getEnv().currentSpec.runs(func);\n };\n-if (isCommonJS) exports.runs = runs;\n+exports.runs = runs;\n \n /**\n  * Waits a fixed time period before moving to the next block.\n@@ -546,7 +544,7 @@ if (isCommonJS) exports.runs = runs;\n var waits = function(timeout) {\n   jasmine.getEnv().currentSpec.waits(timeout);\n };\n-if (isCommonJS) exports.waits = waits;\n+exports.waits = waits;\n \n /**\n  * Waits for the latchFunction to return true before proceeding to the next block.\n@@ -558,7 +556,7 @@ if (isCommonJS) exports.waits = waits;\n var waitsFor = function(latchFunction, optional_timeoutMessage, optional_timeout) {\n   jasmine.getEnv().currentSpec.waitsFor.apply(jasmine.getEnv().currentSpec, arguments);\n };\n-if (isCommonJS) exports.waitsFor = waitsFor;\n+exports.waitsFor = waitsFor;\n \n /**\n  * A function that is called before each spec in a suite.\n@@ -570,7 +568,7 @@ if (isCommonJS) exports.waitsFor = waitsFor;\n var beforeEach = function(beforeEachFunction) {\n   jasmine.getEnv().beforeEach(beforeEachFunction);\n };\n-if (isCommonJS) exports.beforeEach = beforeEach;\n+exports.beforeEach = beforeEach;\n \n /**\n  * A function that is called after each spec in a suite.\n@@ -582,7 +580,7 @@ if (isCommonJS) exports.beforeEach = beforeEach;\n var afterEach = function(afterEachFunction) {\n   jasmine.getEnv().afterEach(afterEachFunction);\n };\n-if (isCommonJS) exports.afterEach = afterEach;\n+exports.afterEach = afterEach;\n \n /**\n  * Defines a suite of specifications.\n@@ -602,7 +600,7 @@ if (isCommonJS) exports.afterEach = afterEach;\n var describe = function(description, specDefinitions) {\n   return jasmine.getEnv().describe(description, specDefinitions);\n };\n-if (isCommonJS) exports.describe = describe;\n+exports.describe = describe;\n \n /**\n  * Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.\n@@ -613,7 +611,7 @@ if (isCommonJS) exports.describe = describe;\n var xdescribe = function(description, specDefinitions) {\n   return jasmine.getEnv().xdescribe(description, specDefinitions);\n };\n-if (isCommonJS) exports.xdescribe = xdescribe;\n+exports.xdescribe = xdescribe;\n \n \n // Provide the XMLHttpRequest class for IE 5.x-6.x:",
+                        null
+                    ]
+                }
+            },
+            "2": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T21:29:57Z",
+                "message": "Polyfill Function.prototype.bind during tests.",
+                "sha": "03f92bb15573e380cdf7261e3f952b8792e4cd17",
+                "files": {
+                    "additions": 21,
+                    "deletions": 20,
+                    "changes": 41,
+                    "file_list": [
+                        "src/test/all.js",
+                        "vendor/jasmine/phantom.js"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -2,6 +2,27 @@\n // modules in src/test and to specify an ordering on those modules, since\n // some still have implicit dependencies on others.\n \n+var Ap = Array.prototype;\n+var slice = Ap.slice;\n+var Fp = Function.prototype;\n+\n+if (!Fp.bind) {\n+  // PhantomJS doesn't support Function.prototype.bind natively, so\n+  // polyfill it whenever this module is required.\n+  Fp.bind = function(context) {\n+    var func = this;\n+    var args = slice.call(arguments, 1);\n+    return args.length > 0 ? function() {\n+      return func.apply(\n+        context || this,\n+        args.concat(slice.call(arguments))\n+      );\n+    } : function() {\n+      return func.apply(context || this, arguments);\n+    };\n+  };\n+}\n+\n require(\"ReactTestUtils\");\n require(\"reactComponentExpect\");\n require(\"mocks\");",
+                        "@@ -19,26 +19,6 @@\n \n var console = require(\"./console\");\n var global = Function(\"return this\")();\n-var Ap = Array.prototype;\n-var slice = Ap.slice;\n-var Fp = Function.prototype;\n-\n-if (!Fp.bind) {\n-  // PhantomJS doesn't support Function.prototype.bind natively, so\n-  // polyfill it whenever this module is required.\n-  Fp.bind = function(context) {\n-    var func = this;\n-    var args = slice.call(arguments, 1);\n-    return args.length > 0 ? function() {\n-      return func.apply(\n-        context || this,\n-        args.concat(slice.call(arguments))\n-      );\n-    } : function() {\n-      return func.apply(context || this, arguments);\n-    };\n-  };\n-}\n \n if (global.callPhantom) {\n     // Phantom's onConsoleMessage support is lacking (only one argument"
+                    ]
+                }
+            },
+            "3": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T17:04:45Z",
+                "message": "Fix some silly uses of Function.prototype.bind in jasmine-support.js.",
+                "sha": "c740373b311a2aa43a512f1bf53e1de72635c02a",
+                "files": {
+                    "additions": 2,
+                    "deletions": 2,
+                    "changes": 4,
+                    "file_list": [
+                        "vendor/jasmine/jasmine-support.js"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -37,7 +37,7 @@ var _xit = jasmine.Env.prototype.xit;\n jasmine.Env.prototype.it = function(desc, func) {\n   // If spec is provided, only run matching specs\n   if (!spec || desc.match(new RegExp(spec, 'i'))) {\n-    return _it.bind(this, desc, func)();\n+    return _it.call(this, desc, func);\n   } else {\n     return this.xit(desc, func);\n   }\n@@ -50,7 +50,7 @@ jasmine.Env.prototype.xit = function(desc, func) {\n       this.reporter.subReporters_[0].totalCount += matches.length;\n     }\n   }\n-  return _xit.bind(this, desc, func)();\n+  return _xit.call(this, desc, func);\n }\n \n // Mainline Jasmine sets __Jasmine_been_here_before__ on each object to detect"
+                    ]
+                }
+            },
+            "4": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T18:45:12Z",
+                "message": "Expose test modules for requirement.",
+                "sha": "009c0b92002fa1aeae985c1a5c8707119a945647",
+                "files": {
+                    "additions": 17,
+                    "deletions": 5,
+                    "changes": 22,
+                    "file_list": [
+                        "grunt/config/browserify.js",
+                        "grunt/tasks/browserify.js"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -90,7 +90,9 @@ var jasmine = {\n var test = {\n   entries: [\n     \"./build/modules/test/all.js\",\n-    \"./build/modules/**/__tests__/*-test.js\"\n+  ],\n+  requires: [\n+    \"**/__tests__/*-test.js\"\n   ],\n   outfile: './build/react-test.js',\n   debug: false,",
+                        "@@ -12,7 +12,6 @@ module.exports = function() {\n   // More/better assertions\n   // grunt.config.requires('outfile');\n   // grunt.config.requires('entries');\n-  config.requires = config.requires || {};\n   config.transforms = config.transforms || [];\n   config.after = config.after || [];\n   if (typeof config.after === 'function') {\n@@ -24,9 +23,20 @@ module.exports = function() {\n   var bundle = browserify(entries);\n \n   // Make sure the things that need to be exposed are.\n-  // TODO: support a blob pattern maybe?\n-  for (var name in config.requires) {\n-    bundle.require(config.requires[name], { expose: name });\n+  var requires = config.requires || {};\n+  if (requires instanceof Array) {\n+    grunt.file.expand({\n+      nonull: true, // Keep IDs that don't expand to anything.\n+      cwd: \"src\"\n+    }, requires).forEach(function(name) {\n+      bundle.require(\"./build/modules/\" + name, {\n+        expose: name.replace(/\\.js$/i, \"\")\n+      });\n+    });\n+  } else if (typeof requires === \"object\") {\n+    Object.keys(requires).forEach(function(name) {\n+      bundle.require(requires[name], { expose: name });\n+    });\n   }\n \n   // Extract other options"
+                    ]
+                }
+            },
+            "5": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T22:26:19Z",
+                "message": "Silence tests unsupported in PhantomJS.\n\nThese tests can still be run in the browser using `grunt test --debug`.",
+                "sha": "42f8d155f8f240c457c969ac683d8b25876708ee",
+                "files": {
+                    "additions": 4,
+                    "deletions": 0,
+                    "changes": 4,
+                    "file_list": [
+                        "src/utils/__tests__/ImmutableObject-test.js"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -100,20 +100,23 @@ describe('ImmutableObject', function() {\n   });\n \n   testDev('should prevent shallow field addition when strict', function() {\n+    if (window.callPhantom) return;\n     expect(function() {\n       var io = new ImmutableObject({oldField: 'asdf'});\n       io.newField = 'this will not work';\n     }).toThrow();\n   });\n \n   testDev('should prevent shallow field mutation when strict', function() {\n+    if (window.callPhantom) return;\n     expect(function() {\n       var io = new ImmutableObject({oldField: 'asdf'});\n       io.oldField = 'this will not work!';\n     }).toThrow();\n   });\n \n   testDev('should prevent deep field addition when strict', function() {\n+    if (window.callPhantom) return;\n     expect(function() {\n       var io =\n         new ImmutableObject({shallowField: {deepField: {oldField: null}}});\n@@ -122,6 +125,7 @@ describe('ImmutableObject', function() {\n   });\n \n   testDev('should prevent deep field mutation when strict', function() {\n+    if (window.callPhantom) return;\n     expect(function() {\n       var io =\n         new ImmutableObject({shallowField: {deepField: {oldField: null}}});"
+                    ]
+                }
+            },
+            "6": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-28T21:15:27Z",
+                "message": "Run each test in an <iframe>.",
+                "sha": "6cfa71a3c2b431fd2dfbb78379c795b8aeb2ee53",
+                "files": {
+                    "additions": 72,
+                    "deletions": 6,
+                    "changes": 78,
+                    "file_list": [
+                        "test/frame.html",
+                        "test/index.html",
+                        "test/phantom-harness.js"
+                    ],
+                    "status": [
+                        "added",
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -0,0 +1,18 @@\n+<!DOCTYPE html>\n+<html>\n+  <head>\n+    <script>\n+      jasmine = parent.jasmine;\n+      jasmine.exposeFrom(window);\n+\n+      console = parent.console;\n+      callPhantom = parent.callPhantom;\n+    </script>\n+    <script src=\"react-test.js\"></script>\n+  </head>\n+  <body>\n+    <script>\n+      require(window.frameElement.getAttribute(\"test\"));\n+    </script>\n+  </body>\n+</html>",
+                        "@@ -2,14 +2,59 @@\n <html>\n   <head>\n     <link rel=\"stylesheet\" type=\"text/css\" href=\"jasmine.css\" />\n+    <style type=\"text/css\">\n+      iframe {\n+        visibility: hidden;\n+        position: absolute;\n+        left: -1000px;\n+        top: -1000px;\n+      }\n+    </style>\n     <script src=\"jasmine.js\"></script>\n-    <script src=\"react-test.js\"></script>\n     <script>\n       window.onload = function() {\n         require(\"jasmine\").getEnv().execute();\n       };\n     </script>\n   </head>\n   <body>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactBind-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactComponent-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactComponentLifeCycle-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponent-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentDOMMinimalism-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentMixin-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentSpec-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentState-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentTransferProps-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactDOM-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactDOMIDOperations-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactEvent-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactIdentity-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactInstanceHandles-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMountDestruction-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMultiChildReconcile-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMultiChildText-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactNativeComponent-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactProps-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/ReactStateSetters-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/refs-destruction-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"core/__tests__/refs-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"domUtils/__tests__/CSSPropertyOperations-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"domUtils/__tests__/DOMPropertyOperations-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"eventPlugins/__tests__/AnalyticsEventPlugin-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"eventPlugins/__tests__/ResponderEventPlugin-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/ImmutableObject-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/OrderedMap-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/Transaction-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/joinClasses-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/keyMirror-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/mapChildren-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/memoizeStringOnly-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/mergeFuncs-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/objFilter-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"utils/__tests__/objMap-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"vendor/error/__tests__/erx-test\"></iframe>\n+    <iframe src=\"frame.html\" test=\"vendor/error/__tests__/ex-test\"></iframe>\n   </body>\n </html>",
+                        "@@ -35,11 +35,6 @@ server.listen(port, function(req, res) {\n   var file = req.url.replace(/^\\/+/, \"\");\n \n   switch (file) {\n-  case \"\":\n-  default:\n-    file = \"index.html\";\n-    break;\n-\n   case \"react-test.js\":\n     file = \"../build/\" + file;\n     break;\n@@ -51,6 +46,14 @@ server.listen(port, function(req, res) {\n   case \"jasmine.js\":\n     file = \"../build/\" + file;\n     break;\n+\n+  case \"frame.html\":\n+    break;\n+\n+  case \"\":\n+  default:\n+    file = \"index.html\";\n+    break;\n   }\n \n   if (/\\.css$/i.test(file)) {"
+                    ]
+                }
+            },
+            "7": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-05-29T15:37:24Z",
+                "message": "Create testing <iframe>s dynamically, according to grunt config.",
+                "sha": "906b8f3f95c77482e432fec84f21c50381a68cf1",
+                "files": {
+                    "additions": 33,
+                    "deletions": 43,
+                    "changes": 76,
+                    "file_list": [
+                        "grunt/config/phantom.js",
+                        "grunt/tasks/phantom.js",
+                        "test/index.html",
+                        "test/phantom-harness.js"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified",
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -4,5 +4,8 @@ exports.run = {\n   port: 8080,\n   harness: \"test/phantom-harness.js\",\n   // Run `grunt test --debug` to enable in-browser testing.\n-  debug: !!grunt.option(\"debug\")\n+  debug: !!grunt.option(\"debug\"),\n+  tests: [\n+    \"**/__tests__/*-test.js\"\n+  ]\n };",
+                        "@@ -37,6 +37,14 @@ function run(config, done) {\n     args.push(\"--debug\");\n   }\n \n+  args.push(\"--tests\");\n+  var tests = grunt.file.expand({\n+    nonull: true,\n+    cwd: \"src\"\n+  }, config.tests || []).forEach(function(file) {\n+    args.push(file.replace(/\\.js$/i, \"\"));\n+  });\n+\n   var child = spawn({\n     cmd: phantomjs,\n     args: args",
+                        "@@ -18,43 +18,5 @@\n     </script>\n   </head>\n   <body>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactBind-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactComponent-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactComponentLifeCycle-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponent-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentDOMMinimalism-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentMixin-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentSpec-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentState-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactCompositeComponentTransferProps-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactDOM-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactDOMIDOperations-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactEvent-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactIdentity-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactInstanceHandles-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMountDestruction-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMultiChildReconcile-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactMultiChildText-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactNativeComponent-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactProps-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/ReactStateSetters-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/refs-destruction-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"core/__tests__/refs-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"domUtils/__tests__/CSSPropertyOperations-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"domUtils/__tests__/DOMPropertyOperations-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"eventPlugins/__tests__/AnalyticsEventPlugin-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"eventPlugins/__tests__/ResponderEventPlugin-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/ImmutableObject-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/OrderedMap-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/Transaction-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/joinClasses-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/keyMirror-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/mapChildren-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/memoizeStringOnly-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/mergeFuncs-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/objFilter-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"utils/__tests__/objMap-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"vendor/error/__tests__/erx-test\"></iframe>\n-    <iframe src=\"frame.html\" test=\"vendor/error/__tests__/ex-test\"></iframe>\n   </body>\n </html>",
+                        "@@ -19,20 +19,36 @@ fs.changeWorkingDirectory(cwd);\n // Hard to believe PhantomJS has no option parsing module.\n var port = 8080;\n var debug = false;\n-var lastArg;\n+var tests = [];\n+var rest = [];\n while (argv.length > 0) {\n   var arg = argv.pop();\n   if (arg === \"--port\") {\n-    port = +lastArg;\n+    port = +rest.pop();\n   } else if (arg === \"--debug\") {\n     debug = true;\n+  } else if (arg === \"--tests\") {\n+    while (rest.length > 0)\n+      tests.push(rest.pop());\n   }\n-  lastArg = arg;\n+  rest.push(arg);\n }\n \n+// Dynamically interpolate the individual test <iframe>s.\n+var indexHtml = fs.read(\"index.html\").replace(\n+  /<body>([\\s\\S]*?)<\\/body>/im,\n+  function(outer, inner) {\n+    return \"<body>\" + tests.map(function(test) {\n+      return '\\n    <iframe src=\"frame.html\" test=' +\n+        JSON.stringify(test) + '></iframe>';\n+    }).join(\"\") + inner + \"</body>\";\n+  }\n+);\n+\n var server = require(\"webserver\").create();\n server.listen(port, function(req, res) {\n   var file = req.url.replace(/^\\/+/, \"\");\n+  var content;\n \n   switch (file) {\n   case \"react-test.js\":\n@@ -53,6 +69,7 @@ server.listen(port, function(req, res) {\n   case \"\":\n   default:\n     file = \"index.html\";\n+    content = indexHtml; // Prevents calling fs.read again.\n     break;\n   }\n \n@@ -65,7 +82,7 @@ server.listen(port, function(req, res) {\n   }\n \n   res.statusCode = 200;\n-  res.write(fs.read(file));\n+  res.write(content || fs.read(file));\n   res.close();\n });\n "
+                    ]
+                }
+            },
+            "8": {
+                "author_name": "Ben Newman",
+                "committer": "Ben Newman",
+                "date": "2013-06-03T17:18:39Z",
+                "message": "Implement constructor-aware binding per @zpao's request.\n\nWhen the function to be bound does not have a prototype, ignore the constructor case.",
+                "sha": "603c9ef6a8d70d3cf29ee9d0a9d7969abce48ac4",
+                "files": {
+                    "additions": 35,
+                    "deletions": 8,
+                    "changes": 43,
+                    "file_list": [
+                        "src/test/all.js"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -12,14 +12,41 @@ if (!Fp.bind) {\n   Fp.bind = function(context) {\n     var func = this;\n     var args = slice.call(arguments, 1);\n-    return args.length > 0 ? function() {\n-      return func.apply(\n-        context || this,\n-        args.concat(slice.call(arguments))\n-      );\n-    } : function() {\n-      return func.apply(context || this, arguments);\n-    };\n+    var bound;\n+\n+    if (func.prototype) {\n+      if (args.length > 0) {\n+        bound = function() {\n+          return func.apply(\n+            !(this instanceof func) && context || this,\n+            args.concat(slice.call(arguments))\n+          );\n+        };\n+      } else {\n+        bound = function() {\n+          return func.apply(\n+            !(this instanceof func) && context || this,\n+            arguments\n+          );\n+        };\n+      }\n+\n+      bound.prototype = Object.create(func.prototype);\n+\n+    } else if (args.length > 0) {\n+      bound = function() {\n+        return func.apply(\n+          context || this,\n+          args.concat(slice.call(arguments))\n+        );\n+      };\n+    } else {\n+      bound = function() {\n+        return func.apply(context || this, arguments);\n+      };\n+    }\n+\n+    return bound;\n   };\n }\n "
+                    ]
+                }
+            }
+        },
+        "comments": {
+            "0": {
+                "userlogin": "zpao",
+                "userid": "8445",
+                "body": "A++, merge away when you're ready\n"
+            },
+            "1": {
+                "userlogin": "petehunt",
+                "userid": "239742",
+                "body": "I like this much better than our current test system.\n\nBut isn't it masking the fact that dumpCache() doesn't work consistently between our phantom and jstest test runners? I think that's why we had the original issue where the reactRoot count was not reset when running in phantom. Doesn't that mean that some tests will pass in phantom (because they're better isolated) and fail in jstest?\n"
+            },
+            "2": {
+                "userlogin": "benjamn",
+                "userid": "5750",
+                "body": "@petehunt good question. I believe jstest actually creates a new window environment for each test, which would mean that the `<iframe>` strategy is as close as we can get in a real browser: https://phabricator.fb.com/diffusion/E/browse/tfb/trunk/www/scripts/third_party/jstest/runner/run-single-jstest.js\n\nSo I think/hope that we will have fewer disagreements between phantom and jstest.\n\nIt's still masking the fact that `dumpCache` doesn't work the same way, yes. But making `dumpCache` work would require rewriting the module system that Browserify uses. That's not out of the question by any means, but right now it's nice to be testing the same imperfect module system that we ship in production Browserify bundles.\n\ncc @jeffmo who might know better\n"
+            },
+            "3": {
+                "userlogin": "petehunt",
+                "userid": "239742",
+                "body": ":+1: \n"
+            }
+        }
+    },
+    "2": {
+        "userlogin": "paulshen",
+        "userid": "2266187",
+        "title": "[docs] Fix button links on bottom of home",
+        "body": "The buttons on the index were pointing at wrong paths.\n",
+        "created_at": "2013-05-29T20:31:39Z",
+        "closed_at": "2013-05-29T20:32:25Z",
+        "num_comments": 1,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 1,
+        "commits": {
+            "0": {
+                "author_name": "Paul Shen",
+                "committer": "Paul Shen",
+                "date": "2013-05-29T20:30:50Z",
+                "message": "[docs] Fix button links on bottom of home",
+                "sha": "c5b4fe9e88a9a3b43cfd9b7e5383096bd9e213ef",
+                "files": {
+                    "additions": 2,
+                    "deletions": 2,
+                    "changes": 4,
+                    "file_list": [
+                        "docs/index.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -78,7 +78,7 @@ id: home\n <hr class=\"home-divider\" />\n <section class=\"home-bottom-section\">\n   <div class=\"buttons-unit\">\n-    <a href=\"/getting-started.html\" class=\"button\">Get Started</a>\n-    <a href=\"/download.html\" class=\"button\">Download React v{{site.react_version}}</a>\n+    <a href=\"docs/getting-started.html\" class=\"button\">Get Started</a>\n+    <a href=\"downloads.html\" class=\"button\">Download React v{{site.react_version}}</a>\n   </div>\n </section>"
+                    ]
+                }
+            }
+        },
+        "comments": {
+            "0": {
+                "userlogin": "yungsters",
+                "userid": "55161",
+                "body": "Looks good, thanks for fixing!\n"
+            }
+        }
+    },
+    "3": {
+        "userlogin": "paulshen",
+        "userid": "2266187",
+        "title": "[docs] Fix couple minor typos/spelling",
+        "body": "",
+        "created_at": "2013-05-29T20:37:35Z",
+        "closed_at": "2013-05-29T20:39:35Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "Paul Shen",
+                "committer": "Paul Shen",
+                "date": "2013-05-29T20:37:07Z",
+                "message": "[docs] Fix couple minor typos/spelling",
+                "sha": "ef6754bce52fd12759f9a8c3c09a9003a4e5f49a",
+                "files": {
+                    "additions": 2,
+                    "deletions": 2,
+                    "changes": 4,
+                    "file_list": [
+                        "docs/_js/examples/timer.js",
+                        "docs/docs/syntax.md"
+                    ],
+                    "status": [
+                        "modified",
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -17,7 +17,7 @@ var Timer = React.createClass({\\n\\\n   render: function() {\\n\\\n     return (\\n\\\n       <div>\\n\\\n-        {'Seconds Ellapsed: ' + this.state.secondsElapsed}\\n\\\n+        {'Seconds Elapsed: ' + this.state.secondsElapsed}\\n\\\n       </div>\\n\\\n     );\\n\\\n   }\\n\\",
+                        "@@ -10,7 +10,7 @@ next: component-basics.html\n JSX is a JavaScript XML syntax extension recommended (but not required) for use\n with React.\n \n-JSX makes code that deeply nested React components more readable, and writing it\n+JSX makes code that deeply nests React components more readable, and writing it\n feels like writing HTML. React documentation examples make use of JSX.\n \n ## The Transform"
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "4": {
+        "userlogin": "yungsters",
+        "userid": "55161",
+        "title": "[docs] Improve \"Event Handling\" documentation.",
+        "body": "Added some additional examples to explain common usage patterns for custom events.\n",
+        "created_at": "2013-05-29T20:49:58Z",
+        "closed_at": "2013-05-29T20:50:15Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "yungsters",
+                "committer": "yungsters",
+                "date": "2013-05-29T20:48:12Z",
+                "message": "[docs] Improve \"Event Handling\" documentation.\n\nAdded some additional examples to explain common usage patterns for custom events.",
+                "sha": "99088b38d3554105d6ea8694c38c2e172227e804",
+                "files": {
+                    "additions": 100,
+                    "deletions": 0,
+                    "changes": 100,
+                    "file_list": [
+                        "docs/docs/event-handling.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -122,3 +122,103 @@ var handleToggle = function(enabled) {\n };\n var myToggleLink = <ToggleLink onToggle={handleToggle} />;\n ```\n+\n+### Common Patterns\n+\n+With React your event handlers should be quite small. Large event handlers may\n+be symptomatic of code that should be moved into helpers or into `render()`.\n+Here are some common usage patterns for event handlers.\n+\n+#### Updating State\n+\n+The most common thing to do in response to a user action is to call\n+`this.setState()` to update the component's state, which will in turn trigger\n+an update to the rendered component.\n+\n+#### Server Requests\n+\n+Many event handlers will issue a server request to read or write some data in\n+response to an event. The response handler for the request will often call\n+`this.setState()`.\n+\n+#### Invoke a Callback\n+\n+Your component will often be a small, reusable building block that does not know\n+how to respond to a user action. In these situations, we delegate the\n+responsibility to the owner by exposing a handler on `this.props`. This is what\n+the `ToggleLink` example above is doing.\n+\n+#### Inter-component Communication\n+\n+A common scenario involves communicating to **Component A** that a user action\n+has occurred on **Component B**. To solve this problem, a common parent to\n+both components should listen for the event on **Component B**, update its\n+internal state, and pass that data into **Component A**.\n+\n+For example, say we have two components: **Clicker**, a component that fires an\n+`onCountChange` custom event, and **ClickCountLabel**, a component that displays\n+the number of clicks that have happened:\n+\n+```javascript\n+var Clicker = React.createClass({\n+  getInitialState: function() {\n+    return {count: 0};\n+  },\n+  render: function() {\n+    return <span onClick={this.handleClick}>Click me!</span>;\n+  },\n+  handleClick: React.autoBind(function() {\n+    this.setState({count: this.state.count + 1});\n+    if (this.props.onCountChange) {\n+      this.props.onCountChange(this.state.count);\n+    }\n+  })\n+});\n+\n+var ClickCountLabel = React.createClass({\n+  render: function() {\n+    return <p>You have clicked <strong>{this.props.count}</strong> times.</p>;\n+  }\n+});\n+\n+var ClickApp = React.createClass({\n+  render: function() {\n+    var count = 0;\n+    return (\n+      <div>\n+        <Clicker onCountChange={this.handleCountChange} />\n+        <ClickCountLabel count={count} />\n+      </div>\n+    );\n+  },\n+  handleCountChange: React.autoBind(function(count) {\n+    // Somehow update `count`.\n+  })\n+});\n+```\n+\n+In order to communicate the click count from `Clicker` to `ClickCountLabel`, we\n+modify `ClickApp` to maintain state that will be passed into `ClickCountLabel`:\n+\n+```javascript{2-4,6,15}\n+var ClickApp = React.createClass({\n+  getInitialState: function() {\n+    return {count: 0};\n+  },\n+  render: function() {\n+    var count = this.state.count;\n+    return (\n+      <div>\n+        <Clicker onCountChange={this.handleCountChange} />\n+        <ClickCountLabel count={count} />\n+      </div>\n+    );\n+  },\n+  handleCountChange: React.autoBind(function(count) {\n+    this.setState({count: count});\n+  })\n+});\n+```\n+\n+Now when `Clicker` fires the `onCountChange` event, the `ClickCountLabel` will\n+get updated!"
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "5": {
+        "userlogin": "jeffreylin",
+        "userid": "706406",
+        "title": "Fix links in root README.md",
+        "body": "",
+        "created_at": "2013-05-29T20:52:18Z",
+        "closed_at": "2013-05-29T20:53:10Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "Jeffrey Lin",
+                "committer": "Jeffrey Lin",
+                "date": "2013-05-29T20:51:49Z",
+                "message": "Fix links in root README.md",
+                "sha": "a341f778ae277bf4636c75ceaadf83f203388b26",
+                "files": {
+                    "additions": 2,
+                    "deletions": 2,
+                    "changes": 4,
+                    "file_list": [
+                        "README.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -6,7 +6,7 @@ React is a JavaScript library for building user interfaces.\n * **Efficient:** React minimizes interactions with the DOM by using a mock representation of the DOM.\n * **Flexible:** React works with the libraries and frameworks that you already know.\n \n-[Learn how to use React in your own project.](http://facebook.github.io/docs/getting-started.html)\n+[Learn how to use React in your own project.](http://facebook.github.io/react/docs/getting-started.html)\n \n ## Examples\n \n@@ -41,7 +41,7 @@ The fastest way to get started is to serve JavaScript from the CDN:\n <script src=\"http://fb.me/JSXTransformer-0.3.0.js\"></script>\n ```\n \n-We've also built a [starter kit](#) which might be useful if this is your first time using React. It includes a webpage with an example of using React with live code.\n+We've also built a [starter kit](http://facebook.github.io/react/downloads/react-0.3.0.zip) which might be useful if this is your first time using React. It includes a webpage with an example of using React with live code.\n \n If you'd like to use [bower](http://bower.io), it's as easy as:\n "
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "6": {
+        "userlogin": "paulshen",
+        "userid": "2266187",
+        "title": "[docs] Clean up formatting on /api.html",
+        "body": "",
+        "created_at": "2013-05-29T20:53:41Z",
+        "closed_at": "2013-05-29T20:54:16Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "Paul Shen",
+                "committer": "Paul Shen",
+                "date": "2013-05-29T20:53:08Z",
+                "message": "[docs] Clean up formatting on /api.html",
+                "sha": "b416760df05dcbf10f0283268e23e5279232de88",
+                "files": {
+                    "additions": 69,
+                    "deletions": 23,
+                    "changes": 92,
+                    "file_list": [
+                        "docs/docs/api.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -9,15 +9,23 @@ prev: advanced-components.html\n \n `React` is the entry point to the React framework. If you're using one of the prebuilt packages it's available as a global; if you're using CommonJS modules you can `require()` it.\n \n-### DOM\n+#### React.DOM\n \n `React.DOM` provides all of the standard HTML tags needed to build a React app. You generally don't use it directly; instead, just include it as part of the `/** @jsx React.DOM */` docblock.\n \n-### initializeTouchEvents(boolean shouldUseTouch)\n+#### React.initializeTouchEvents\n+\n+```javascript\n+initializeTouchEvents(boolean shouldUseTouch)\n+```\n \n Configure React's event system to handle touch events on mobile devices.\n \n-### function autoBind(function method)\n+#### React.autoBind\n+\n+```javascript\n+function autoBind(function method)\n+```\n \n Marks the provided function to be automatically bound to each React component instance created. This allows React components to define automatically bound methods and ensure that when called they will always reference their current instance.\n \n@@ -35,11 +43,19 @@ React.createClass({\n });\n ```\n \n-### function createClass(object specification)\n+#### React.createClass\n+\n+```javascript\n+function createClass(object specification)\n+```\n \n Creates a component given a specification. A component implements a `render` method which returns a single child. That child may have an arbitrarily deep child structure. One thing that makes components different than a standard prototypal classes is that you don't need to call new on them. They are convenience wrappers that construct backing instances (via new) for you.\n \n-### ReactComponent renderComponent(ReactComponent container, DOMElement mountPoint)\n+#### React.renderComponent\n+\n+```javascript\n+ReactComponent renderComponent(ReactComponent container, DOMElement mountPoint)\n+```\n \n Renders a React component into the DOM in the supplied `container`.\n \n@@ -55,50 +71,80 @@ If you find that you need the underlying browser event for some reason, simply u\n \n Component classses created by `createClass()` return instances of `ReactComponent` when called. Most of the time when you're using React you're either creating or consuming `ReactComponent`s.\n \n-### DOMElement getDOMNode()\n+#### getDOMNode\n+\n+```javascript\n+DOMElement getDOMNode()\n+```\n \n If this component has been mounted into the DOM, this returns the corresponding native browser DOM element. This method is useful for reading values out of the DOM, such as form field values and performing DOM measurements.\n \n-### setProps(object nextProps)\n+#### setProps\n+\n+```javascript\n+setProps(object nextProps)\n+```\n \n When you're integrating with an external JavaScript application you may want to signal a change to a React component rendered with `renderComponent()`. Simply call `setProps()` to change its properties and trigger a re-render.\n \n **Note:** This method can only be called on a root-level component. That is, it's only available on the component passed directly to `renderComponent()` and none of its children. If you're inclined to use `setProps()` on a child component, instead take advantage of reactive updates and pass the new prop to the child component when it's created in `render()`.\n \n-### replaceProps(object nextProps)\n+#### replaceProps\n+\n+```javascript\n+replaceProps(object nextProps)\n+```\n \n Like `setProps()` but deletes any pre-existing props that are not in nextProps.\n \n-### ReactComponent transferPropsTo(ReactComponent targetComponent)\n+#### transferPropsTo\n+\n+```javascript\n+ReactComponent transferPropsTo(ReactComponent targetComponent)\n+```\n \n Transfer properties from this component to a target component that have not already been set on the target component. This is usually used to pass down properties to the returned root component. `targetComponent`, now updated with some new props is returned as a convenience.\n \n-### setState(object nextState)\n+#### setState\n+\n+```javascript\n+setState(object nextState)\n+```\n \n Merges nextState with the current state. This is the primary method you use to trigger UI updates from event handlers and server request callbacks.\n \n **Note:** *NEVER* mutate `this.state` directly. As calling `setState()` afterwards may replace the mutation you made. Treat `this.state` as if it were immutable.\n \n **Note:** `setState()` does not immediately mutate `this.state` but creates a pending state transition. Accessing `this.state` after calling this method can potentially return the existing value.\n \n-### replaceState(object nextState)\n+#### replaceState\n+\n+```javascript\n+replaceState(object nextState)\n+```\n \n Like `setState()` but deletes any pre-existing state keys that are not in nextState.\n \n-### forceUpdate()\n+#### forceUpdate()\n+\n+```javascript\n+forceUpdate()\n+```\n \n If your `render()` method reads from something other than `this.props` or `this.state` you'll need to tell React when it needs to re-run `render()`. Use `forceUpdate()` to cause React to automatically re-render. This will cause `render()` to be called on the component and all of its children but React will only update the DOM if the markup changes.\n \n Normally you should try to avoid all uses of `forceUpdate()` and only read from `this.props` and `this.state` in `render()`. This makes your application much simpler and more efficient.\n \n-### object getInitialState()\n-### componentWillMount()\n-### componentDidMount(DOMElement domNode)\n-### componentWillReceiveProps(object nextProps)\n-### boolean shouldComponentUpdate(object nextProps, object nextState)\n-### componentWillUpdate(object nextProps, object nextState)\n-### ReactComponent render()\n-### componentDidUpdate(object prevProps, object prevState, DOMElement domNode)\n-### componentWillUnmount()\n-\n-These are overridable lifecycle methods; see the [lifecycle methods](lifecycle.html) documentation for more information.\n+```javascript\n+object getInitialState()\n+componentWillMount()\n+componentDidMount(DOMElement domNode)\n+componentWillReceiveProps(object nextProps)\n+boolean shouldComponentUpdate(object nextProps, object nextState)\n+componentWillUpdate(object nextProps, object nextState)\n+ReactComponent render()\n+componentDidUpdate(object prevProps, object prevState, DOMElement domNode)\n+componentWillUnmount()\n+```\n+\n+See the [advanced components](advanced-components.html) documentation for more details on these lifecycle methods."
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "7": {
+        "userlogin": "jeffreylin",
+        "userid": "706406",
+        "title": "Missed a link in README.md",
+        "body": "Whenever you have a spare moment =]\n",
+        "created_at": "2013-05-29T20:55:01Z",
+        "closed_at": "2013-05-29T21:01:26Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "Jeffrey Lin",
+                "committer": "Jeffrey Lin",
+                "date": "2013-05-29T20:54:16Z",
+                "message": "Missed a link in README.md",
+                "sha": "8b345655990f1e889a13614e7acc20cf533adeb1",
+                "files": {
+                    "additions": 1,
+                    "deletions": 1,
+                    "changes": 2,
+                    "file_list": [
+                        "README.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -28,7 +28,7 @@ React.renderComponent(\n \n This example will render \"Hello John\" into a container on the page.\n \n-You'll notice that we used an XML-like syntax; [we call it JSX](http://facebook.github.io/docs/syntax.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. A simple transform is included with React that allows converting JSX into native JavaScript for browsers to digest.\n+You'll notice that we used an XML-like syntax; [we call it JSX](http://facebook.github.io/react/docs/syntax.html). JSX is not required to use React, but it makes code more readable, and writing it feels like writing HTML. A simple transform is included with React that allows converting JSX into native JavaScript for browsers to digest.\n \n ## Installation\n "
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "8": {
+        "userlogin": "yungsters",
+        "userid": "55161",
+        "title": "[website] Add Google Analytics.",
+        "body": "",
+        "created_at": "2013-05-29T21:05:57Z",
+        "closed_at": "2013-05-29T21:06:45Z",
+        "num_comments": 0,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 0,
+        "commits": {
+            "0": {
+                "author_name": "yungsters",
+                "committer": "yungsters",
+                "date": "2013-05-29T21:01:23Z",
+                "message": "[website] Add Google Analytics.",
+                "sha": "eaae75991bafc172ce10627fbbb5661274d7ee29",
+                "files": {
+                    "additions": 8,
+                    "deletions": 0,
+                    "changes": 8,
+                    "file_list": [
+                        "docs/_layouts/default.html"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -70,6 +70,14 @@\n       <div class=\"right\">&copy; 2013 Facebook Inc.</div>\n     </footer>\n   </div>\n+  <script>\n+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n+    ga('create', 'UA-41298772-1', 'facebook.github.io');\n+    ga('send', 'pageview');\n+  </script>\n </body>\n </html>\n "
+                    ]
+                }
+            }
+        },
+        "comments": {}
+    },
+    "9": {
+        "userlogin": "christianroman",
+        "userid": "461021",
+        "title": "Fix minor typo error",
+        "body": "",
+        "created_at": "2013-05-29T23:23:53Z",
+        "closed_at": "2013-05-29T23:40:09Z",
+        "num_comments": 3,
+        "is_pr": true,
+        "state": "closed",
+        "is_merged": true,
+        "num_review_comments": 3,
+        "commits": {
+            "0": {
+                "author_name": "Christian Roman",
+                "committer": "Christian Roman",
+                "date": "2013-05-29T23:16:52Z",
+                "message": "Fix minor typo error",
+                "sha": "a8866ab824ae9697a5c67c6173d6cb889c50a1a3",
+                "files": {
+                    "additions": 1,
+                    "deletions": 1,
+                    "changes": 2,
+                    "file_list": [
+                        "docs/docs/component-data.md"
+                    ],
+                    "status": [
+                        "modified"
+                    ],
+                    "patch_text": [
+                        "@@ -130,7 +130,7 @@ Now we are done. `LikeApp` renders an unliked link which, when clicked, will:\n 4. Trigger an update to the DOM.\n \n It's worth noting that React will handle new return values of `render()` by\n-making the mininal set of mutations necessary to bring the DOM up-to-date. In\n+making the minimal set of mutations necessary to bring the DOM up-to-date. In\n this case, only the `textContent` of the rendered link will be mutated.\n \n In summary:"
+                    ]
+                }
+            }
+        },
+        "comments": {
+            "0": {
+                "userlogin": "zpao",
+                "userid": "8445",
+                "body": "Nice catch! This is what happens when we're all on little sleep. For now we need all contributors to have a CLA on file. I didn't find one for you so I just need to make sure that you've done that at https://developers.facebook.com/opensource/cla. Let me know when it's done and I'll merge this in. Thanks a lot!\n"
+            },
+            "1": {
+                "userlogin": "christianroman",
+                "userid": "461021",
+                "body": "It's done, I signed the CLA\n"
+            },
+            "2": {
+                "userlogin": "zpao",
+                "userid": "8445",
+                "body": "Awesome. Thanks again!\n"
+            }
+        }
+    },
+    "10": {
+        "userlogin": "jriecken",
+        "userid": "408825",
+        "title": "Can't require() react-tools module",
+        "body": "I'm trying to programatically invoke the JSX transformer (using the version of `react-tools` in the npm registry) by running something like\n\n```\nrequire('react-tools').transform(someCode);\n```\n\nWhich then throws this error:\n\n```\nError: Cannot find module './build/React'\n```\n\nIf I comment out the lines in `main.js` that require/use `./build/React` the `react-tools` module loads fine and the transformer runs correctly.\n",
+        "created_at": "2013-05-30T03:46:02Z",
+        "closed_at": "2013-05-30T12:14:18Z",
+        "num_comments": 3,
+        "is_pr": false,
+        "comments": {
+            "0": {
+                "userlogin": "zpao",
+                "userid": "8445",
+                "body": "Bah, I changed build filenames last minute and didn't properly test the module after :( Thanks for finding this! I guess we should write some tests for the node module too, not just our phantomjs tests.\n\n(Very) Short term, you should be able to change `./build/React` to `./build/react` and that will fix the problem.\n\n@benjamn - I guess it's time to figure out what we want to do with npm versions vs library versions. Should we just bump them both for the time being?\n"
+            },
+            "1": {
+                "userlogin": "zpao",
+                "userid": "8445",
+                "body": "Nope, that alone won't do it, we're not even packaging. I totally screwed up the node module :( Fix soon!\n"
+            },
+            "2": {
+                "userlogin": "jriecken",
+                "userid": "408825",
+                "body": "Yeah, doesn't look like there's even a `build` directory there. :)\n"
+            }
+        }
+    }
+}

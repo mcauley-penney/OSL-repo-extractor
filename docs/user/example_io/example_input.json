@@ -1,0 +1,32 @@
+{
+    "repo": "facebook/react",
+    "auth_path": "/path/to/personal_access_token.txt",
+    "output_path": "./docs/user/example_io/example_output.json",
+    "range": [
+        0,
+        10
+    ],
+    "state": "closed",
+    "comments": [
+        "userlogin",
+        "userid",
+        "body"
+    ],
+    "commits": [
+        "author_name",
+        "committer",
+        "date",
+        "message",
+        "sha",
+        "files"
+    ],
+    "issues": [
+        "userlogin",
+        "userid",
+        "title",
+        "body",
+        "created_at",
+        "closed_at",
+        "num_comments"
+    ]
+}
