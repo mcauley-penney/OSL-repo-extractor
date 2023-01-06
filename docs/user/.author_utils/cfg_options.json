@@ -1,0 +1,58 @@
+[
+	{
+		"Name": "repo",
+		"Required": true,
+		"Description": "The repo option is required and must be given in the form of 'repo_owner/repo_name', as you might see at the end of the GitHub url for a repo or as the title of the repo on a repo's web page.",
+		"Type": "string",
+		"Possible Values": "Any GitHub repo that the Personal Access Token has access to.",
+		"Notes:": ""
+	},
+	{
+		"Name": "auth_path",
+		"Required": true,
+		"Description": "The auth_file key requires a path to a file containing a GitHub Personal Access Token. The PAT should be on the first line and must have no extra newlines or trailing spaces.",
+		"Type": "string",
+		"Possible Values": "Any path in your file system.",
+		"Notes:": "A GitHub token will only work for this purpose if it has the required permissions. At the time of writing, GitHub's classic token type should have access to `repo:status` and `public_repo`"
+	},
+	{
+		"Name": "state",
+		"Required": true,
+		"Description": "The state option is used to determine what PR state the extractor will mine for. The project is interested in closed *and* merged PRs to train the machine learning tools in the project pipeline and open PRs for the actual usage of the project for its intended purpose. ",
+		"Type": "string",
+		"Possible Values": "The options are `open` or `closed`. The `closed` option will mine for PRs which are both closed and merged.",
+		"Notes:": "The extractor will not look at PRs that are closed and not merged because the project has no use for them."
+	},
+	{
+		"Name": "range",
+		"Required": true,
+		"Description": "The range value discusses the actual item numbers in a repository's history that you want to gather data from and is inclusive of both start and end values.                                                                                                             ",
+		"Type": "list of integers",
+		"Possible Values": "Both the start value must be greater than or equal to 1 and the both values are inclusive. For example, if you want data from PR #1 up to (and including) PR #10 in a given repository, give `[1, 10]` to the range key. If you want to stop before #10, you would give `[1, 9]`.",
+		"Notes:": ""
+	},
+	{
+		"Name": "comments",
+		"Required": false,
+		"Description": "The comments option asks for a list of data points that you would like to mine about issue comments.",
+		"Type": "list of strings",
+		"Possible Values": "The current list of possible values are 'body', 'userid', and 'userlogin'.",
+		"Notes:": "Like the 'issues' and 'commits' options, this value may be given as an empty list if the user does not wish to gather any of these items. See `repo_extractor/schema.py > cmd_tbl` for the list source code."
+	},
+	{
+		"Name": "commits",
+		"Required": false,
+		"Description": "The commits option asks for a list of data points that you would like to mine about issue commits.",
+		"Type": "list of strings",
+		"Possible Values": "The current list of possible values are 'author_name', 'committer', 'date', 'files', 'message', 'sha'.",
+		"Notes:": "These values are only gathered for issues that are also PRs, given that commits are an irrelevant concept to issues that are not.Like the 'issues' and 'comments' options, this value may be given as an empty list if the user does not wish to gather any of these items.See `repo_extractor/schema.py > cmd_tbl` for the list source code."
+	},
+	{
+		"Name": "issues",
+		"Required": false,
+		"Description": "The issues option asks for a list of data points that you would like to mine about issue issues.",
+		"Type": "list of strings",
+		"Possible Values": "The current list of possible values are 'body', 'closed_at', 'created_at', 'num_comments', 'title', 'userid', 'userlogin'.",
+		"Notes:": "These values are only gathered for issues that are also PRs, given that commits are an irrelevant concept to issues that are not.Like the 'comments' and 'commits' options, this value may be given as an empty list if the user does not wish to gather any of these items.See `repo_extractor/schema.py > cmd_tbl` for the list source code. "
+	}
+]
