@@ -1,5 +1,9 @@
 """
-Utilites for reading from and writing to files.
+Common utilites for the repository extractor.
+
+Includes:
+    - dictionary handling
+    - file io
 
 json docs:
     https://docs.python.org/3/library/json.html
@@ -10,7 +14,61 @@ from json.decoder import JSONDecodeError
 import os
 import sys
 
-from repo_extractor.utils import dict_utils
+
+def merge_dicts(base: dict, to_merge) -> dict:
+    """
+    Merge two dictionaries.
+
+    Notes:
+        syntax in 3.9 or greater is `base |= to_merge`. Pipe is the 'merge'
+            operator, can be used in augmented assignment.
+
+    Args:
+        base (dict): dict to merge into.
+        to_merge (dict | None): dict to dissolve into base dict.
+
+    Returns:
+        dict: if dict param to be merge is None, base dict
+        param. Else, dict composed of merged dict params.
+
+    """
+    # sometimes getters return empty dictionaries. we want to merge if they
+    # arent empty
+    if to_merge:
+        return {**base, **to_merge}
+
+    return base
+
+
+def merge_dicts_recursive(base_dict: dict, add_dict: dict) -> None:
+    """
+    Recursively merge two dictionaries.
+
+    Notes:
+        Credit to Paul Durivage
+            https://gist.github.com/angstwad/bf22d1822c38a92ec0a9
+
+    Args:
+        base_dict (dict): dict to be merged into
+        add_dict (dict): dict of data to be merged
+    """
+    # for each key in the dict that we created with the round of API calls
+    for key in add_dict:
+
+        # if that key is in the dict in the existing JSON file and the val at
+        # the key is a dict in both dictionaries
+        if (
+            key in base_dict
+            and isinstance(base_dict[key], dict)
+            and isinstance(add_dict[key], dict)
+        ):
+            # recurse
+            merge_dicts_recursive(base_dict[key], add_dict[key])
+
+        else:
+            # assign the new value from the last round of calls to the existing
+            # key
+            base_dict[key] = add_dict[key]
 
 
 def mk_json_outpath(out_path: str):
@@ -40,7 +98,7 @@ def mk_json_outpath(out_path: str):
     # Using open() instead of mknode() allows this program to be portable;
     # mknode appears to be *nix specific. We can use "x" mode to ensure that
     # the open call is used exclusively for creating the file. If the file
-    # exists, though, "x" mode raises a FileExistsError, which we can/must
+    # exists, though, "x" mode raises a FileExistsError, which we can
     # ignore.
     try:
         with open(out_path, "x", encoding="UTF-8") as fptr:
@@ -148,7 +206,7 @@ def read_jsontext_into_dict(json_text: str) -> dict:
 
 def write_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     """
-    Write given Python dictionary to output file as JSON.
+    Ensure output file exists and write Python dictionary to it as JSON.
 
     Args:
         out_dict (dict): dictionary to write as JSON.
@@ -182,7 +240,7 @@ def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
         out_path (str): path to output file.
     """
     # attempt to read JSON out of output file. Will return
-    # empty dict if no valid Json is found
+    # empty dict if no valid json is found
     json_dict = read_jsonfile_into_dict(out_path)
 
     # recursively merge all dicts and nested dicts in both dictionaries

@@ -5,14 +5,105 @@ import sys
 import time
 import traceback
 import github
-from repo_extractor import conf, schema
-from repo_extractor.utils import dict_utils, file_io_utils as io
-from repo_extractor.extractor import _sessions
+from repo_extractor import conf, schema, utils
 
 # ANSI escape sequence for clearing a row in the console:
 # credit: https://stackoverflow.com/a/64245513
 CLR = "\x1b[K"
 TAB = " " * 4
+
+
+class GithubSession:
+    """Functionality for verified connections to the GitHub API."""
+
+    __page_len: int
+    session: github.Github
+
+    def __init__(self, auth_path: str) -> None:
+        """
+        Initialize GitHub session object.
+
+        Notes:
+            paginated lists are set to return 30 items per page
+                by default. See
+                https://docs.github.com/en/rest/overview/resources-in-the-rest-api#pagination
+                for more information.
+
+        Args:
+            auth_path (str): path to file containing personal
+                access token.
+
+        Attributes:
+            __page_len (int): amount of items per page in paginated
+                lists.
+            session (github.Github): object containing connection to
+                GitHub.
+        """
+        self.__page_len: int = 30
+        self.session = self.__get_gh_session(auth_path)
+
+    def __get_gh_session(self, auth_path: str) -> github.Github:
+        """
+        Retrieve PAT from auth file and check whether it is valid.
+
+        Args:
+            auth_path (str): path to file containing personal access token.
+
+        Raises:
+            github.BadCredentialsException: string read from file is not
+                a valid Personal Access Token.
+
+            github.RateLimitExceededException: if rate limited
+                by the GitHub REST API, return the authorized session.
+                If rate limited, it means that the given PAT is valid
+                and a usable connection has been made.
+
+        Returns:
+            github.Github: session object or exit.
+        """
+        # retrieve token from auth file
+        token = utils.read_file_line(auth_path)
+
+        # establish a session with token
+        session = github.Github(
+            token, per_page=self.__page_len, retry=100, timeout=100
+        )
+
+        try:
+            # if name can be gathered from token, properly authenticated
+            session.get_user().id
+
+        except github.BadCredentialsException:
+            print("Invalid personal access token found! Exiting...\n")
+            sys.exit(1)
+
+        # if rate limited at this stage, session must be valid
+        except github.RateLimitExceededException:
+            return session
+
+        return session
+
+    def get_pg_len(self):
+        """Get the page length of paginated lists for this connection."""
+        return self.__page_len
+
+    def get_remaining_calls(self) -> str:
+        """Get remaining calls to REST API for this hour."""
+        calls_left = self.session.rate_limiting[0]
+
+        return f"{calls_left:<4d}"
+
+    def get_remaining_ratelimit_time(self) -> int:
+        """
+        Get the remaining time before rate limit resets.
+
+        Note: If this value is not between 1 hour and 00:00 check
+              your system clock for correctness.
+
+        Returns:
+            int: amount of time until ratelimit expires.
+        """
+        return self.session.rate_limiting_resettime - int(time.time())
 
 
 class Extractor:
@@ -46,21 +137,14 @@ class Extractor:
         # attempting to circumvent TOCTOU errors that will crash execution.
         # Because this program can be very long-running, multiple checks
         # and inits are smart because the filesystem can change.
-        io.mk_json_outpath(self.cfg.get_cfg_val("output_path"))
+        utils.mk_json_outpath(self.cfg.get_cfg_val("output_path"))
 
-        # initialize authenticated GitHub session
-        self.gh_sesh = _sessions.GithubSession(
-            self.cfg.get_cfg_val("auth_path")
-        )
+        # initialize authenticated GitHub session and hold onto it
+        self.gh_sesh = GithubSession(self.cfg.get_cfg_val("auth_path"))
 
         self.paged_list = self.__get_issues_paged_list(
             self.__get_repo_obj(), self.cfg.get_cfg_val("state")
         )
-
-        # get index of last page in paginated list
-        self.last_page_index: int = (
-            self.paged_list.totalCount - 1
-        ) // self.gh_sesh.get_pg_len()
 
         self.cfg.set_cfg_val("range", self.__get_sanitized_cfg_range())
 
@@ -120,29 +204,40 @@ class Extractor:
                 return issues_paged_list
 
     def __get_sanitized_cfg_range(self) -> tuple:
+        """
+        Ensure that issue numbers to be mined exist.
 
+        This will correct any vals given in the range configuration
+        so that they are within the values that are in the paginated
+        list of items. For example, if you give [10,100] in the cfg
+        and the repo has 9 issues, this will round the offending values
+        down. We are protected from too low of values by the config json
+        schema, so this process only looks at values that are too high.
+
+        Returns:
+            tuple[int, ...]
+        """
         print(f"{TAB}Sanitizing range...")
 
-        range_list: list[int] = self.cfg.get_cfg_val("range")
+        last_page_index: int = (
+            self.paged_list.totalCount - 1
+        ) // self.gh_sesh.get_pg_len()
 
-        # get the highest item num in the paginated list of items,
-        # e.g. very last PR num
-        last_page = self.paged_list.get_page(self.last_page_index)
+        last_page = self.paged_list.get_page(last_page_index)
+
         last_num: int = last_page[-1].number
         print(f"{TAB * 2}Last item number: {last_num}")
 
-        # get sanitized range. This will correct any vals given in
-        # the range cfg so that they are within the values that are
-        # in the paged list. We are protected from too low of values
-        # by the Cerberus config schema, so this process only looks
-        # at values that are too high.
-        sani_range: tuple[int, ...] = tuple(
-            min(last_num, val) for val in range_list
+        range_list: list[int] = self.cfg.get_cfg_val("range")
+
+        # get sanitized range:
+        clean_range: tuple[int, ...] = tuple(
+            min(val, last_num) for val in range_list
         )
 
-        print(f"{TAB * 2}Range cleaned: {sani_range[0]} to {sani_range[-1]}")
+        print(f"{TAB * 2}Range cleaned: {clean_range[0]} to {clean_range[-1]}")
 
-        return sani_range
+        return clean_range
 
     # ----------------------------------------------------------------------
     # Helper methods
@@ -196,7 +291,7 @@ class Extractor:
         print(f"{CLR}{TAB * 2}Starting data collection...", end="\r")
 
     # ----------------------------------------------------------------------
-    # IMPORTANT: Public API
+    # Public methods
     #
     # Top-level actors are listed above their helper functions.
     # If a helper is capable of being used by more than one,
@@ -225,12 +320,8 @@ class Extractor:
         output_file: str = self.cfg.get_cfg_val("output_path")
         issue_range: list = self.cfg.get_cfg_val("range")
 
-        start_index: int = self.__get_issue_index_by_num(
-            self.paged_list, issue_range[0]
-        )
-        end_index: int = self.__get_issue_index_by_num(
-            self.paged_list, issue_range[-1]
-        )
+        start_index: int = self.__get_issue_index_by_num(issue_range[0])
+        end_index: int = self.__get_issue_index_by_num(issue_range[-1])
 
         print(
             f"{TAB}Starting issue mining at #{issue_range[0]}. Please wait..."
@@ -251,14 +342,14 @@ class Extractor:
                             cur_issue,
                         )
 
-                        cur_issue_data = dict_utils.merge_dicts(
+                        cur_issue_data = utils.merge_dicts(
                             cur_issue_data, cur_item_data
                         )
 
                 cur_total_entry = {str(cur_issue.number): cur_issue_data}
 
             except github.RateLimitExceededException:
-                io.write_merged_dict_to_jsonfile(out_data, output_file)
+                utils.write_merged_dict_to_jsonfile(out_data, output_file)
 
                 # clear dictionary so that it isn't massive and
                 # holding onto data that we have already written
@@ -266,19 +357,21 @@ class Extractor:
                 out_data.clear()
                 self.__sleep_extractor()
 
-            except (KeyboardInterrupt,
-                    github.GithubException,
-                    socket.error,
-                    socket.gaierror):
+            except (
+                KeyboardInterrupt,
+                github.GithubException,
+                socket.error,
+                socket.gaierror,
+            ):
 
                 traceback.print_exc()
                 print("\n\n Writing gathered data...")
-                io.write_merged_dict_to_jsonfile(out_data, output_file)
+                utils.write_merged_dict_to_jsonfile(out_data, output_file)
                 print(f"{TAB}Terminating at item #{cur_issue.number}\n")
                 sys.exit(1)
 
             else:
-                out_data = dict_utils.merge_dicts(out_data, cur_total_entry)
+                out_data = utils.merge_dicts(out_data, cur_total_entry)
 
                 print(f"{CLR}{TAB * 2}", end="")
                 print(f"Issue: {cur_issue.number}, ", end="")
@@ -289,7 +382,7 @@ class Extractor:
 
                 start_index += 1
 
-        io.write_merged_dict_to_jsonfile(out_data, output_file)
+        utils.write_merged_dict_to_jsonfile(out_data, output_file)
 
         print()
 
@@ -321,9 +414,7 @@ class Extractor:
 
             cur_entry = {str(comment_index): cur_entry}
 
-            cur_comment_data = dict_utils.merge_dicts(
-                cur_comment_data, cur_entry
-            )
+            cur_comment_data = utils.merge_dicts(cur_comment_data, cur_entry)
 
             comment_index += 1
 
@@ -368,7 +459,7 @@ class Extractor:
                 else:
                     commit_datum = {}
 
-                pr_commit_data = dict_utils.merge_dicts(
+                pr_commit_data = utils.merge_dicts(
                     pr_commit_data, {str(commit_index): commit_datum}
                 )
 
@@ -388,7 +479,7 @@ class Extractor:
             }
 
             commit_data: dict = __get_commit_data(pr_obj)
-            pr_data = dict_utils.merge_dicts(pr_data, commit_data)
+            pr_data = utils.merge_dicts(pr_data, commit_data)
 
         else:
             pr_data = {"is_pr": False}

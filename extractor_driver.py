@@ -1,9 +1,7 @@
 """Provides driver functionality for running the GitHub extractor."""
 
 import argparse
-from repo_extractor import conf, schema
-from repo_extractor.extractor import github_extractor
-from repo_extractor.utils import file_io_utils as file_io
+from repo_extractor import conf, extractor, schema, utils
 
 
 def main():
@@ -13,9 +11,8 @@ def main():
     cfg_dict: dict = get_user_cfg()
     cfg_obj = conf.Cfg(cfg_dict, schema.cfg_schema)
 
-    # init extractor object
     print("\nInitializing extractor...")
-    gh_ext = github_extractor.Extractor(cfg_obj)
+    gh_ext = extractor.Extractor(cfg_obj)
     print(f"{tab}Extractor initialization complete!\n")
 
     print("Mining repo data...")
@@ -34,7 +31,7 @@ def get_user_cfg() -> dict:
     """
     cfg_path = get_cli_args()
 
-    return file_io.read_jsonfile_into_dict(cfg_path)
+    return utils.read_jsonfile_into_dict(cfg_path)
 
 
 def get_cli_args() -> str:
