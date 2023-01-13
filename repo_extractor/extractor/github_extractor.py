@@ -395,130 +395,39 @@ class Extractor:
 
         return pr_data
 
-    def __get_issue_index_by_num(self, paged_list, issue_num: int) -> int:
+    def __get_issue_index_by_num(self, val_to_find: int):
         """
-        Find start and end indices of API items in paginated list of items.
+        Find indices of API items in paginated list of items.
 
-        Sanitize our range values so that they are guaranteed to be safe,
-        find the indices of those values inside of the paginated list,
-        and return
+        For example, you want to find issue #150 in the paginated
+        list of issues for a repo. The index of that issue is NOT
+        the same as its issue number. We must look through the
+        paginated list of issues and find it.
 
         Args:
-            paged_list (Github.PaginatedList of Github.Issue): paginated
-                list of issues
+            val_to_find (int): the number of the API item to find
 
         Returns:
-            list[int]: list of starting and ending indices for desired
-                API items.
+            int: index of the desired API item
         """
+        mid: int
+        low: int = 0
+        high: int = self.paged_list.totalCount - 1
+        page_len: int = self.gh_sesh.get_pg_len()
 
-        def bin_search_in_list(val: int, paged_list, last_page_index: int):
-            """
-            Find the index of a page in paginated list of API items.
+        while low < high:
+            mid = (low + high) // 2
 
-            Iterative binary search which finds the page of an API item,
-            such as a PR or issue, inside of a list of pages of related
-            objects from the GitHub API.
+            page, index = divmod(mid, page_len)
+            cur_val = self.paged_list.get_page(page)[index].number
 
-            Args:
-                paged_list(Github.PaginatedList of Github.Issue): paginated
-                    list of issues
-                last_page_index (int): index of last page in paginated list
-                val (int): number of item in list that we desire; e.g. PR# 800
+            if val_to_find == cur_val:
+                return mid
 
-            Returns:
-                int: index of page in given paginated listwhere val
-                param is located
-            """
-            low: int = 0
-            high: int = last_page_index
-            mid_first_val: int
-            mid_last_val: int
+            if val_to_find < cur_val:
+                high = mid - 1
 
-            while low < high:
-                mid = (low + high) // 2
+            elif val_to_find > cur_val:
+                low = mid + 1
 
-                mid_page = paged_list.get_page(mid)
-                mid_first_val = mid_page[0].number
-                mid_last_val = mid_page[-1].number
-
-                # if the value we want is greater than the first item
-                # (cur_val - page_len) on the middle page but less
-                # than the last item, it is in the middle page
-                if mid_first_val <= val <= mid_last_val:
-                    return mid_page, mid
-
-                if val < mid_first_val:
-                    high = mid - 1
-
-                elif val > mid_last_val:
-                    low = mid + 1
-
-            return paged_list.get_page(low), low
-
-        def bin_search_in_page(val: int, page, page_len: int) -> int:
-            """
-            Find the index of an API item in a page of API items.
-
-            Iterative binary search modified to return either the exact
-            index of the item with the number the user desires or the
-            index of the item beneath that value in the case that the
-            value does not exist in the list. An example might be that
-            a paginated list of issues does not have #'s 9, 10, or 11,
-            but the user wants to begin looking for data at #10. This
-            binary search should return the index of the API object
-            with the number 8.
-
-            Args:
-                val (int): value to look for in page parameter
-                paged_list_page (page of Github.Issue): a single page
-                    from paginated list of issues
-                page_len (int): length of pages in paginated lists for
-                    this validated GitHub session
-
-            Returns:
-                int: index of the object we are looking for
-            """
-            low: int = 0
-            mid: int
-
-            # because this binary search is looking through lists that
-            # may have items missing, we want to be able to return the
-            # index of the nearest item before the item we are looking
-            # for. Therefore, we stop when low is one less than high.
-            # This allows us to take the lower value when a value does
-            # not exist in the list.
-            while low < page_len - 1:
-                mid = (low + page_len) // 2
-
-                cur_val = page[mid].number
-
-                if val == cur_val:
-                    return mid
-
-                if val < cur_val:
-                    page_len = mid - 1
-
-                elif val > cur_val:
-                    low = mid + 1
-
-            return low
-
-        print(f"{TAB}Finding index of item #{issue_num}...")
-
-        # use binary search to find the page inside of the
-        # list of pages that contains the item number of interest
-        item_page, item_page_index = bin_search_in_list(
-            issue_num, paged_list, self.last_page_index
-        )
-
-        # use iterative binary search to find item of interest in found page
-        item_index: int = bin_search_in_page(
-            issue_num, item_page, len(item_page)
-        )
-
-        item_index = (item_page_index * self.gh_sesh.get_pg_len()) + item_index
-
-        print(f"{TAB * 2}Found at index {item_index}!")
-
-        return item_index
+        return low
