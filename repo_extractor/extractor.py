@@ -131,15 +131,8 @@ class Extractor:
         """
         self.cfg = cfg_obj
 
-        # create output path in fs so that it is already ready for work.
-        # The JSON writing functionality will check if it exists later
-        # and create it again if something happened to it during execution,
-        # attempting to circumvent TOCTOU errors that will crash execution.
-        # Because this program can be very long-running, multiple checks
-        # and inits are smart because the filesystem can change.
-        utils.mk_json_outpath(self.cfg.get_cfg_val("output_path"))
-
-        # initialize authenticated GitHub session and hold onto it
+        # initialize authenticated GitHub session so that we can
+        # interact with the API
         self.gh_sesh = GithubSession(self.cfg.get_cfg_val("auth_path"))
 
         self.paged_list = self.__get_issues_paged_list(

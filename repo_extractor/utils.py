@@ -40,7 +40,57 @@ def merge_dicts(base: dict, to_merge) -> dict:
     return base
 
 
-def merge_dicts_recursive(base_dict: dict, add_dict: dict) -> None:
+def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
+    """
+    Recursively merge dictionaries and write them to an output JSON file.
+
+    Get the desired output path, open and read any JSON data that may
+    already be there, and recursively merge in param data from the
+    most recent round of API calls.
+
+    Args:
+        out_dict (dict): dict of data from round of API calls
+            to merge and write.
+        out_path (str): path to output file.
+    """
+    # attempt to read JSON out of output file. Will return
+    # empty dict if no valid json is found
+    json_dict = read_jsonfile_into_dict(out_path)
+
+    # recursively merge all dicts and nested dicts in both dictionaries
+    _merge_dicts_recursive(json_dict, out_dict)
+
+    # write JSON content back to file
+    _write_dict_to_jsonfile(json_dict, out_path)
+
+
+def read_jsonfile_into_dict(in_path: str) -> dict:
+    """
+    Read the contents of the provided JSON file into a dictionary.
+
+    Args:
+        in_path (str): path to JSON file to read from.
+
+    Returns:
+        dict: dictionary constructed from JSON contents.
+    """
+    try:
+        with open(in_path, "r", encoding="UTF-8") as file_obj:
+            json_text = file_obj.read()
+
+    except FileNotFoundError:
+        json_text = ""
+
+    try:
+        json_dict = json.loads(json_text)
+
+    except JSONDecodeError:
+        json_dict = {}
+
+    return json_dict
+
+
+def _merge_dicts_recursive(base_dict: dict, add_dict: dict) -> None:
     """
     Recursively merge two dictionaries.
 
