@@ -335,9 +335,7 @@ class Extractor:
                             cur_issue,
                         )
 
-                        cur_issue_data = utils.merge_dicts(
-                            cur_issue_data, cur_item_data
-                        )
+                        cur_issue_data |= cur_item_data
 
                 cur_total_entry = {str(cur_issue.number): cur_issue_data}
 
@@ -364,7 +362,7 @@ class Extractor:
                 sys.exit(1)
 
             else:
-                out_data = utils.merge_dicts(out_data, cur_total_entry)
+                out_data |= cur_total_entry
 
                 print(f"{CLR}{TAB * 2}", end="")
                 print(f"Issue: {cur_issue.number}, ", end="")
@@ -407,7 +405,7 @@ class Extractor:
 
             cur_entry = {str(comment_index): cur_entry}
 
-            cur_comment_data = utils.merge_dicts(cur_comment_data, cur_entry)
+            cur_comment_data |= cur_entry
 
             comment_index += 1
 
@@ -452,9 +450,7 @@ class Extractor:
                 else:
                     commit_datum = {}
 
-                pr_commit_data = utils.merge_dicts(
-                    pr_commit_data, {str(commit_index): commit_datum}
-                )
+                pr_commit_data |= {str(commit_index): commit_datum}
 
                 commit_index += 1
 
@@ -472,7 +468,7 @@ class Extractor:
             }
 
             commit_data: dict = __get_commit_data(pr_obj)
-            pr_data = utils.merge_dicts(pr_data, commit_data)
+            pr_data |= commit_data
 
         else:
             pr_data = {"is_pr": False}

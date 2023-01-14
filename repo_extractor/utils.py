@@ -15,31 +15,6 @@ import os
 import sys
 
 
-def merge_dicts(base: dict, to_merge) -> dict:
-    """
-    Merge two dictionaries.
-
-    Notes:
-        syntax in 3.9 or greater is `base |= to_merge`. Pipe is the 'merge'
-            operator, can be used in augmented assignment.
-
-    Args:
-        base (dict): dict to merge into.
-        to_merge (dict | None): dict to dissolve into base dict.
-
-    Returns:
-        dict: if dict param to be merge is None, base dict
-        param. Else, dict composed of merged dict params.
-
-    """
-    # sometimes getters return empty dictionaries. we want to merge if they
-    # arent empty
-    if to_merge:
-        return {**base, **to_merge}
-
-    return base
-
-
 def write_merged_dict_to_jsonfile(out_dict: dict, out_path: str) -> None:
     """
     Recursively merge dictionaries and write them to an output JSON file.
