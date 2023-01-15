@@ -219,8 +219,9 @@ cfg_schema: dict = {
     **issues_fields_schema,
     "state": {**_str_type, "allowed": ["closed", "open"]},
     "range": {
-        "nullable": True,
-        "min": [0, 0],
+        "nullable": False,
+        "min": [0, -1],
+        "maxlength": 2,
         "schema": {"type": "integer"},
         "type": "list",
     },

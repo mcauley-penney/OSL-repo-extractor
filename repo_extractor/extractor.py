@@ -212,25 +212,25 @@ class Extractor:
         """
         print(f"{TAB}Sanitizing range...")
 
-        last_page_index: int = (
-            self.paged_list.totalCount - 1
-        ) // self.gh_sesh.get_pg_len()
-
+        num_items: int = self.paged_list.totalCount - 1
+        last_page_index: int = num_items // self.gh_sesh.get_pg_len()
         last_page = self.paged_list.get_page(last_page_index)
+        last_item_num: int = last_page[-1].number
 
-        last_num: int = last_page[-1].number
-        print(f"{TAB * 2}Last item number: {last_num}")
+        print(f"{TAB * 2}Last item number: {last_item_num}")
 
         range_list: list[int] = self.cfg.get_cfg_val("range")
+        clean_start: int = min(range_list[0], last_item_num)
 
-        # get sanitized range:
-        clean_range: tuple[int, ...] = tuple(
-            min(val, last_num) for val in range_list
-        )
+        clean_end: int
+        if range_list[-1] == -1:
+            clean_end = last_item_num
+        else:
+            clean_end = min(range_list[1], last_item_num)
 
-        print(f"{TAB * 2}Range cleaned: {clean_range[0]} to {clean_range[-1]}")
+        print(f"{TAB * 2}Range cleaned: {clean_start} to {clean_end}")
 
-        return clean_range
+        return (clean_start, clean_end)
 
     # ----------------------------------------------------------------------
     # Helper methods
