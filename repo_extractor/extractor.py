@@ -1,5 +1,6 @@
 """Exposes functionality to mine GitHub repositories."""
 
+from concurrent import futures
 import socket
 import sys
 import time
