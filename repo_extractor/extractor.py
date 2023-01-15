@@ -313,8 +313,9 @@ class Extractor:
         output_file: str = self.cfg.get_cfg_val("output_path")
         issue_range: list = self.cfg.get_cfg_val("range")
 
-        start_index: int = self.__get_issue_index_by_num(issue_range[0])
-        end_index: int = self.__get_issue_index_by_num(issue_range[-1])
+        start_index: int
+        end_index: int
+        (start_index, end_index) = self.__get_range_indices(issue_range)
 
         print(
             f"{TAB}Starting issue mining at #{issue_range[0]}. Please wait..."
@@ -475,39 +476,69 @@ class Extractor:
 
         return pr_data
 
-    def __get_issue_index_by_num(self, val_to_find: int):
+    def __get_range_indices(self, val_range: list[int]) -> tuple:
         """
-        Find indices of API items in paginated list of items.
-
-        For example, you want to find issue #150 in the paginated
-        list of issues for a repo. The index of that issue is NOT
-        the same as its issue number. We must look through the
-        paginated list of issues and find it.
+        Parallelize and report binary search for API item indices.
 
         Args:
-            val_to_find (int): the number of the API item to find
+            val_range (list[int]): list of API item numbers to
+            find. Length must be 2.
 
         Returns:
-            int: index of the desired API item
+            tuple(int): indices of desired items in paginated
+            list of API items.
         """
-        mid: int
-        low: int = 0
-        high: int = self.paged_list.totalCount - 1
-        page_len: int = self.gh_sesh.get_pg_len()
 
-        while low < high:
-            mid = (low + high) // 2
+        def get_issue_index_by_num(val_to_find: int):
+            """
+            Find indices of API items in paginated list of items.
 
-            page, index = divmod(mid, page_len)
-            cur_val = self.paged_list.get_page(page)[index].number
+            For example, you want to find issue #150 in the paginated
+            list of issues for a repo. The index of that issue is NOT
+            the same as its issue number. We must look through the
+            paginated list of issues and find it.
 
-            if val_to_find == cur_val:
-                return mid
+            Args:
+                val_to_find (int): the number of the API item to find
 
-            if val_to_find < cur_val:
-                high = mid - 1
+            Returns:
+                int: index of the desired API item
+            """
+            mid: int
+            low: int = 0
+            high: int = self.paged_list.totalCount - 1
+            page_len: int = self.gh_sesh.get_pg_len()
 
-            elif val_to_find > cur_val:
-                low = mid + 1
+            while low < high:
+                mid = (low + high) // 2
 
-        return low
+                page, index = divmod(mid, page_len)
+                cur_val = self.paged_list.get_page(page)[index].number
+
+                if val_to_find == cur_val:
+                    return mid
+
+                if val_to_find < cur_val:
+                    high = mid - 1
+
+                elif val_to_find > cur_val:
+                    low = mid + 1
+
+            return low
+
+        print(f"{TAB}Finding range indices...")
+
+        while True:
+            try:
+                # We use two cores because we are only looking for two values
+                with futures.ThreadPoolExecutor(max_workers=2) as executor:
+                    results = executor.map(get_issue_index_by_num, val_range)
+
+            except github.RateLimitExceededException:
+                self.__sleep_extractor()
+
+            else:
+                start_i, end_i = [*results]
+                print(f"{TAB * 2}Indices found: {start_i} to {end_i}\n")
+
+                return (start_i, end_i)
