@@ -263,26 +263,41 @@ class Extractor:
 
     def __sleep_extractor(self) -> None:
         """Sleep the program until we can make calls again."""
-        cntdwn_time = self.gh_sesh.get_remaining_ratelimit_time()
+        print()
 
-        while cntdwn_time > 0:
+        rate_limit = self.gh_sesh.get_remaining_ratelimit_time()
+        while rate_limit > 0:
 
             # modulo function returns time tuple
-            minutes, seconds = divmod(cntdwn_time, 60)
+            minutes, seconds = divmod(rate_limit, 60)
 
             # format the time string before printing
             cntdown_str = f"{minutes:02d}:{seconds:02d}"
 
-            print(
-                f"{CLR}{TAB * 2}Time until limit reset: {cntdown_str}",
-                end="\r",
-            )
+            print(f"{CLR}{TAB}Time until limit reset: {cntdown_str}", end="\r")
 
             # sleep for a while
             time.sleep(1)
-            cntdwn_time -= 1
+            rate_limit -= 1
 
-        print(f"{CLR}{TAB * 2}Starting data collection...", end="\r")
+        while True:
+            try:
+                self.gh_sesh.session.get_user().id
+
+            except github.RateLimitExceededException:
+                print(
+                    f"{CLR}{TAB}Waiting for rate limit to lift...",
+                    end="\r",
+                )
+                time.sleep(10)
+
+            else:
+                cur_time = time.strftime("%I:%M:%S %p", time.localtime())
+                print(
+                    f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}..."
+                )
+
+                return None
 
     # ----------------------------------------------------------------------
     # Public methods
