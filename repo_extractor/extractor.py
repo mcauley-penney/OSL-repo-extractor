@@ -197,7 +197,7 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_sanitized_cfg_range(self) -> tuple:
+    def __get_sanitized_cfg_range(self) -> tuple[int, int]:
         """
         Ensure that issue numbers to be mined exist.
 
@@ -209,7 +209,7 @@ class Extractor:
         schema, so this process only looks at values that are too high.
 
         Returns:
-            tuple[int, ...]
+            tuple[int, int]: cleaned start and end range values
         """
         print(f"{TAB}Sanitizing range...")
 
@@ -218,7 +218,7 @@ class Extractor:
         last_page = self.paged_list.get_page(last_page_index)
         last_item_num: int = last_page[-1].number
 
-        print(f"{TAB * 2}Last item number: {last_item_num}")
+        print(f"{TAB * 2}Last item: #{last_item_num}")
 
         range_list: list[int] = self.cfg.get_cfg_val("range")
         clean_start: int = min(range_list[0], last_item_num)
@@ -229,7 +229,7 @@ class Extractor:
         else:
             clean_end = min(range_list[1], last_item_num)
 
-        print(f"{TAB * 2}Range cleaned: {clean_start} to {clean_end}")
+        print(f"{TAB * 2}Cleaned range: #{clean_start} to #{clean_end}")
 
         return (clean_start, clean_end)
 
