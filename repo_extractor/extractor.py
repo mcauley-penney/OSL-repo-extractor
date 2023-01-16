@@ -319,11 +319,11 @@ class Extractor:
                 output file and sleep the program until calls
                 can be made again.
         """
-        func_schema: dict = {
+        func_schema = {
             "issues": self.__get_item_data,
             "commits": self.__get_issue_commits,
             "comments": self.__get_issue_comments,
-        }
+        }.items()
 
         out_data: dict = {}
         output_file: str = self.cfg.get_cfg_val("output_path")
@@ -331,38 +331,35 @@ class Extractor:
 
         start_index: int
         end_index: int
-        (start_index, end_index) = self.__get_range_indices(issue_range)
+        start_index, end_index = self.__get_range_indices(issue_range)
 
-        print(
-            f"{TAB}Starting issue mining at #{issue_range[0]}. Please wait..."
-        )
+        # PyGithub's _Slice class mimics the builtin slice feature that
+        # ends are exclusive. To make it end-inclusive, we add 1
+        repo_slice = self.paged_list[start_index: end_index + 1]
 
-        while start_index < end_index + 1:
-            cur_item_data: dict = {}
+        print(f"{TAB}Starting mining at #{issue_range[0]}...")
+
+        for cur_issue in repo_slice:
             cur_issue_data: dict = {}
 
-            cur_issue = self.paged_list[start_index]
-
             try:
-                for key, func in func_schema.items():
+                for key, func in func_schema:
                     if self.cfg.get_cfg_val(key):
-                        cur_item_data = func(
+                        cur_issue_data |= func(
                             self.cfg.get_cfg_val(key),
                             schema.cmd_tbl[key],
                             cur_issue,
                         )
 
-                        cur_issue_data |= cur_item_data
-
-                cur_total_entry = {str(cur_issue.number): cur_issue_data}
+                cur_issue_entry: dict = {str(cur_issue.number): cur_issue_data}
 
             except github.RateLimitExceededException:
                 utils.write_merged_dict_to_jsonfile(out_data, output_file)
 
-                # clear dictionary so that it isn't massive and
-                # holding onto data that we have already written
-                # to output
+                # clear dictionary so that it isn't massive and holding
+                # onto data that we have already written to output
                 out_data.clear()
+                print()
                 self.__sleep_extractor()
 
             except (
@@ -372,23 +369,20 @@ class Extractor:
                 socket.gaierror,
             ):
 
-                traceback.print_exc()
-                print("\n\n Writing gathered data...")
+                print("\nWriting gathered data...")
                 utils.write_merged_dict_to_jsonfile(out_data, output_file)
+
                 print(f"{TAB}Terminating at item #{cur_issue.number}\n")
+                print("---------------------------------------------\n\n")
+                traceback.print_exc()
                 sys.exit(1)
 
             else:
-                out_data |= cur_total_entry
+                out_data |= cur_issue_entry
 
                 print(f"{CLR}{TAB * 2}", end="")
                 print(f"Issue: {cur_issue.number}, ", end="")
-                print(
-                    f"calls: {self.gh_sesh.get_remaining_calls()}",
-                    end="\r",
-                )
-
-                start_index += 1
+                print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
 
         utils.write_merged_dict_to_jsonfile(out_data, output_file)
 
