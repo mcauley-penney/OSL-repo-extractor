@@ -281,9 +281,11 @@ class Extractor:
             # format the time string before printing
             cntdown_str = f"{minutes:02d}:{seconds:02d}"
 
-            print(f"{CLR}{TAB}Time until limit reset: {cntdown_str}", end="\r")
+            print(
+                f"{CLR}{TAB}Time until limit reset: {cntdown_str}",
+                end="\r",
+            )
 
-            # sleep for a while
             time.sleep(1)
             rate_limit -= 1
 
@@ -387,8 +389,7 @@ class Extractor:
             else:
                 out_data |= cur_issue_entry
 
-                print(f"{CLR}{TAB * 2}", end="")
-                print(f"Issue: {cur_issue.number}, ", end="")
+                print(f"{CLR}{TAB * 2}Issue: {cur_issue.number}, ", end="")
                 print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
 
         utils.write_merged_dict_to_jsonfile(out_data, output_file)
@@ -408,7 +409,7 @@ class Extractor:
             dict: dictionary of {comment index: comment data}
 
         """
-        item_type = "comments"
+        field_type = "comments"
 
         # dict will hold data related to all comments for an
         # issue. Issue to comments is a one to many relationship
@@ -424,7 +425,7 @@ class Extractor:
 
             comment_index += 1
 
-        return {item_type: cur_comment_data}
+        return {field_type: cur_comment_data}
 
     def __get_issue_commits(self, fields: list, cmd_tbl: dict, issue) -> dict:
         """
@@ -439,15 +440,7 @@ class Extractor:
             dict: dictionary of {commit index: commit data}
 
         """
-
-
-
-
-
-
-
-
-        def get_as_pr(cur_issue):
+        def as_pr(cur_issue):
             try:
                 cur_pr = cur_issue.as_pull_request()
 
@@ -490,7 +483,7 @@ class Extractor:
             return {field_type: pr_commit_data}
 
         pr_data: dict
-        pr_obj = get_as_pr(issue)
+        pr_obj = as_pr(issue)
 
         if pr_obj is not None:
             pr_data = {
@@ -521,7 +514,7 @@ class Extractor:
             list of API items.
         """
 
-        def get_issue_index_by_num(val_to_find: int):
+        def get_issue_index_by_num(val_to_find: int) -> int:
             """
             Binary search over paginated lists of github issues.
 
