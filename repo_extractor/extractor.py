@@ -144,7 +144,7 @@ class Extractor:
 
     def __get_repo_obj(self):
         """
-        TODO.
+        Gather the repo asked for in the configuration from the GitHub API.
 
         Returns:
             github.Repository.Repository: repo obj for current extraction op
@@ -262,7 +262,14 @@ class Extractor:
         return {field: cmd_tbl[field](cur_item) for field in fields}
 
     def __sleep_extractor(self) -> None:
-        """Sleep the program until we can make calls again."""
+        """
+        Sleep until the rate limint on our Github account expires.
+
+        Notes:
+            - If your system clock is inaccurate, this method cannot
+              give an accurate amount of time until limit reset. Please
+              check your system clock.
+        """
         print()
 
         rate_limit = self.gh_sesh.get_remaining_ratelimit_time()
@@ -390,19 +397,16 @@ class Extractor:
 
     def __get_issue_comments(self, fields: list, cmd_tbl: dict, issue) -> dict:
         """
-        Create a dict of issue comment data for the given issue param.
-
-        If the user chose to ask the API for data about issue comments,
-        get a paginated list of comments from an issue, get the desired
-        data from them, and return a dict of that data.
+        Get issue comment data for the given issue.
 
         Args:
-            datatype_dict(dict): dict of fields to get for issues from cfg.
-            issue_obj (Github.Issue): issue to get comment data from.
+            issue (github.issue): issue to gather data about.
+            fields (list): a list of commit fields to gather from the issue.
+            cmd_tbl (dict): dict of {field: function to get field}
 
         Returns:
-            dict|None: If the user does not ask for comment data,
-            return None. Else, attempt to gather comment data points.
+            dict: dictionary of {comment index: comment data}
+
         """
         item_type = "comments"
 
@@ -423,7 +427,25 @@ class Extractor:
         return {item_type: cur_comment_data}
 
     def __get_issue_commits(self, fields: list, cmd_tbl: dict, issue) -> dict:
-        """TODO."""
+        """
+        Get issue commit data for the given issue.
+
+        Args:
+            issue (github.issue): issue to gather data about.
+            fields (list): a list of commit fields to gather from the issue.
+            cmd_tbl (dict): dict of {field: function to get field}
+
+        Returns:
+            dict: dictionary of {commit index: commit data}
+
+        """
+
+
+
+
+
+
+
 
         def get_as_pr(cur_issue):
             try:
@@ -488,7 +510,7 @@ class Extractor:
 
     def __get_range_indices(self, val_range: list[int]) -> tuple:
         """
-        Parallelize and report binary search for API item indices.
+        Find indices of API items in paginated list of items.
 
         Args:
             val_range (list[int]): list of API item numbers to
@@ -501,7 +523,7 @@ class Extractor:
 
         def get_issue_index_by_num(val_to_find: int):
             """
-            Find indices of API items in paginated list of items.
+            Binary search over paginated lists of github issues.
 
             For example, you want to find issue #150 in the paginated
             list of issues for a repo. The index of that issue is NOT
