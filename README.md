@@ -1,10 +1,9 @@
 # OSL Repo Extractor
-The extraction stage of the NAU-OSL project pipeline.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7571311.svg)](https://doi.org/10.5281/zenodo.7571311)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7740450.svg)](https://doi.org/10.5281/zenodo.7740450)
 
-## Purpose
-The GitHub Repo Extractor provides an expedient way to gather data from GitHub repositories using the [GitHub REST API](https://docs.github.com/en/rest). See the documentation for more information.
-
+The GitHub Repo Extractor provides an expedient way to gather issue and PR data from GitHub repositories using the [GitHub REST API](https://docs.github.com/en/rest). See this repo's documentation for more information.
 
 ## Requirements
 
@@ -16,12 +15,6 @@ This project uses [Poetry](https://python-poetry.org) to manage its dependencies
 1. run `poetry run python main.py <input_file>` to run the program (see docs for input information)
 
 ## Contributing
-#### commit formatting
-- Please abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification for all commits
 
-#### source code standards
-Using default settings for each, please:
-- format all contributions with [black](https://pypi.org/project/black/)
-    - `pip install black`
-- lint all contributions with [pylint](https://pypi.org/project/pylint/)
-    - `pip install pylint`
+- Abide by the ["Conventional Commits"](https://www.conventionalcommits.org) specification for all commits.
+- Using default settings for each, format and lint all Python contributions with [black](https://pypi.org/project/black/) and [pylint](https://pypi.org/project/pylint/) respectively.
