@@ -13,13 +13,13 @@ def main():
 
     print("\nInitializing extractor...")
     gh_ext = extractor.Extractor(cfg_obj)
-    print(f"{tab}Extractor initialization complete!\n")
+    print(f"{tab}Extractor initialization complete!")
 
-    print("Mining repo data...")
+    print("\nRunning extractor...")
     gh_ext.get_repo_issues_data()
-    print(f"\n{tab}Issue data complete!\n")
+    print(f"{tab}Issue data complete!")
 
-    print("Extraction complete!\n")
+    print("\nExtraction complete!\n")
 
 
 def get_user_cfg() -> dict:
