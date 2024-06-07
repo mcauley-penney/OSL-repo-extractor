@@ -7,15 +7,13 @@ The GitHub Repo Extractor provides an expedient way to gather data from GitHub r
 
 
 ## Requirements
-- Written in `Python 3.8.3`
-- Install library dependencies via `requirments.txt` or manually
-    - `pip install -r requirements.txt`
-    - Packages:
-        - [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html)
-            - `pip install pygithub`
-        - [Cerberus](https://docs.python-cerberus.org/en/stable/)
-            - `pip install cerberus`
 
+This project uses [Poetry](https://python-poetry.org) to manage its dependencies. To get started,
+
+1. install the correct version of Python, listed in `pyproject.toml`. Try [pyenv](https://github.com/pyenv/pyenv)!
+1. install [Poetry](https://github.com/python-poetry/poetry)
+1. run `poetry install` to install dependencies
+1. run `poetry run python main.py <input_file>` to run the program (see docs for input information)
 
 ## Contributing
 #### commit formatting

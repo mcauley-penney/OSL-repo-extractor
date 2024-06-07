@@ -1,18 +1,16 @@
-[project]
-name = "OSL-repo-extractor"
-description = "GitHub repo mining utility"
-version = "0.1"
-authors = [
-    { name = "Jacob M. Penney", email = "jacobmpenney@gmail.com" }
-]
+[tool.poetry]
+name = "osl-repo-extractor"
+version = "0.3.0"
+description = "Mine the GitHub Rest API v3 for issue and PR data"
+authors = ["Jacob McAuley Penney <jacobmpenney@gmail.com>",]
+readme = "README.md"
 
-dependencies = [
-    "Cerberus==1.3.4",
-    "PyGithub==1.55"
-]
+[tool.poetry.dependencies]
+python = "3.11.9"
+cerberus = "1.3.4"
+pygithub = "1.57"
+
 
 [build-system]
-# These are the assumed default build requirements from pip:
-# https://pip.pypa.io/en/stable/reference/pip/#pep-517-and-518-support
-requires = ["setuptools>=43.0.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
