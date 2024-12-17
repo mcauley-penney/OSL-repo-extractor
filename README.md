@@ -2,6 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7571311.svg)](https://doi.org/10.5281/zenodo.7571311)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7740450.svg)](https://doi.org/10.5281/zenodo.7740450)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14184012.svg)](https://doi.org/10.5281/zenodo.14184012)
 
 The GitHub Repo Extractor provides an expedient way to gather issue and PR data from GitHub repositories using the [GitHub REST API](https://docs.github.com/en/rest). See this repo's documentation for more information.
 
