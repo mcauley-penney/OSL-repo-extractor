@@ -4,6 +4,7 @@ version = "0.3.0"
 description = "Mine the GitHub Rest API v3 for issue and PR data"
 authors = ["Jacob McAuley Penney <jacobmpenney@gmail.com>",]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "3.11.9"
