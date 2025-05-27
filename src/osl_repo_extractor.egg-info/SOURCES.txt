@@ -1,0 +1,13 @@
+README.md
+pyproject.toml
+src/osl_repo_extractor.egg-info/PKG-INFO
+src/osl_repo_extractor.egg-info/SOURCES.txt
+src/osl_repo_extractor.egg-info/dependency_links.txt
+src/osl_repo_extractor.egg-info/requires.txt
+src/osl_repo_extractor.egg-info/top_level.txt
+src/repo_extractor/__init__.py
+src/repo_extractor/conf.py
+src/repo_extractor/extractor.py
+src/repo_extractor/main.py
+src/repo_extractor/schema.py
+src/repo_extractor/utils.py

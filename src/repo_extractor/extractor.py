@@ -66,9 +66,7 @@ class GithubSession:
         token = utils.read_file_line(auth_path)
 
         # establish a session with token
-        session = github.Github(
-            token, per_page=self.__page_len, retry=100, timeout=100
-        )
+        session = github.Github(token, per_page=self.__page_len, retry=100, timeout=100)
 
         try:
             # if name can be gathered from token, properly authenticated
@@ -302,9 +300,7 @@ class Extractor:
 
             else:
                 cur_time = time.strftime("%I:%M:%S %p", time.localtime())
-                print(
-                    f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}..."
-                )
+                print(f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}...")
 
                 return None
 
@@ -344,7 +340,7 @@ class Extractor:
 
         # PyGithub's _Slice class mimics the builtin slice feature that
         # ends are exclusive. To make it end-inclusive, we add 1
-        repo_slice = self.paged_list[start_index: end_index + 1]
+        repo_slice = self.paged_list[start_index : end_index + 1]
 
         print(f"{TAB}Starting mining at #{issue_range[0]}...")
 
@@ -440,6 +436,7 @@ class Extractor:
             dict: dictionary of {commit index: commit data}
 
         """
+
         def as_pr(cur_issue):
             try:
                 cur_pr = cur_issue.as_pull_request()
@@ -469,9 +466,7 @@ class Extractor:
 
             for commit in pr_obj.get_commits():
                 if commit.files:
-                    commit_datum = self.__get_item_data(
-                        fields, cmd_tbl, commit
-                    )
+                    commit_datum = self.__get_item_data(fields, cmd_tbl, commit)
 
                 else:
                     commit_datum = {}
@@ -558,6 +553,7 @@ class Extractor:
                 # We use two cores because we are only looking for two values
                 with futures.ThreadPoolExecutor(max_workers=2) as executor:
                     results = executor.map(get_issue_index_by_num, val_range)
+                    print(results)
 
             except github.RateLimitExceededException:
                 self.__sleep_extractor()

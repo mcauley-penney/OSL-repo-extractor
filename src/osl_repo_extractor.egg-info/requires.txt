@@ -1,0 +1,3 @@
+cerberus<2.0,>=1.3.4
+PyGithub<2.0,>=1.57
+PySide6>=6.5.0
