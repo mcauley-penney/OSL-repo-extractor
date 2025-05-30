@@ -40,7 +40,7 @@ class GithubSession:
             session (github.Github): object containing connection to
                 GitHub.
         """
-        self.__page_len: int = 30
+        self.__page_len: int = 100
         self.session = self.__get_gh_session(auth_path)
 
     def __get_gh_session(self, auth_path: str) -> github.Github:
@@ -140,6 +140,7 @@ class Extractor:
             self.__get_repo_obj(), self.cfg.get_cfg_val("state")
         )
 
+        self.num_issues = self.__get_total_issues()
         self.cfg.set_cfg_val("range", self.__get_sanitized_cfg_range())
 
     def __get_repo_obj(self):
@@ -197,6 +198,22 @@ class Extractor:
             else:
                 return issues_paged_list
 
+    def __get_total_issues(self):
+        query = """
+        query($owner: String!, $name: String!) {
+          repository(owner: $owner, name: $name) {
+            issues(states:[OPEN, CLOSED])   { totalCount }
+          }
+        }
+        """
+
+        repo = self.__get_repo_obj()
+        vars = {"owner": repo.owner.login, "name": repo.name}
+        data = repo.requester.graphql_query(query=query, variables=vars)[1]
+        num_items: int = data["data"]["repository"]["issues"]["totalCount"]
+
+        return num_items
+
     def __get_sanitized_cfg_range(self) -> tuple[int, int]:
         """
         Ensure that issue numbers to be mined exist.
@@ -213,8 +230,7 @@ class Extractor:
         """
         print(f"{TAB}Sanitizing range...")
 
-        num_items: int = self.paged_list.totalCount - 1
-        last_page_index: int = num_items // self.gh_sesh.get_pg_len()
+        last_page_index: int = self.num_issues // self.gh_sesh.get_pg_len()
         last_page = self.paged_list.get_page(last_page_index)
         last_item_num: int = last_page[-1].number
 
@@ -531,7 +547,7 @@ class Extractor:
             """
             mid: int
             low: int = 0
-            high: int = self.paged_list.totalCount - 1
+            high: int = self.num_issues
             page_len: int = self.gh_sesh.get_pg_len()
 
             while low < high:
