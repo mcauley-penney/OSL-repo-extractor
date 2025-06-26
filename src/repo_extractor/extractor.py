@@ -1,6 +1,5 @@
 """Exposes functionality to mine GitHub repositories."""
 
-from concurrent import futures
 import socket
 import sys
 import time
@@ -12,6 +11,23 @@ from repo_extractor import conf, schema, utils
 # credit: https://stackoverflow.com/a/64245513
 CLR = "\x1b[K"
 TAB = " " * 4
+
+
+def issues_in_range(issue_list, low: int, high: int):
+    """Return issues whose number is between low and high (inclusive)."""
+    selected = []
+
+    for issue in issue_list:
+        n = issue.number
+
+        if n < low:
+            continue
+        if n > high:
+            break
+
+        selected.append(issue)
+
+    return selected
 
 
 class GithubSession:
@@ -82,10 +98,6 @@ class GithubSession:
 
         return session
 
-    def get_pg_len(self):
-        """Get the page length of paginated lists for this connection."""
-        return self.__page_len
-
     def get_remaining_calls(self) -> str:
         """Get remaining calls to REST API for this hour."""
         calls_left = self.session.rate_limiting[0]
@@ -134,14 +146,18 @@ class Extractor:
         # interact with the API
         self.gh_sesh = GithubSession(self.cfg.get_cfg_val("auth_path"))
 
-        self.paged_list = self.__get_issues_paged_list(
-            self.__get_repo_obj(),
+        repo = self.__get_repo_obj()
+
+        paged_list = self.__get_issues_paged_list(
+            repo,
             self.cfg.get_cfg_val("state"),
             self.cfg.get_cfg_val("labels"),
         )
 
-        self.num_issues = self.__get_total_issues()
-        self.cfg.set_cfg_val("range", self.__get_sanitized_cfg_range())
+        range = self.__get_sanitized_cfg_range(repo)
+        self.cfg.set_cfg_val("range", range)
+
+        self.paged_list = issues_in_range(paged_list, range[0], range[-1])
 
     def __get_repo_obj(self):
         """
@@ -198,23 +214,7 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_total_issues(self):
-        query = """
-        query($owner: String!, $name: String!) {
-          repository(owner: $owner, name: $name) {
-            issues(states:[OPEN, CLOSED])   { totalCount }
-          }
-        }
-        """
-
-        repo = self.__get_repo_obj()
-        vars = {"owner": repo.owner.login, "name": repo.name}
-        data = repo.requester.graphql_query(query=query, variables=vars)[1]
-        num_items: int = data["data"]["repository"]["issues"]["totalCount"]
-
-        return num_items
-
-    def __get_sanitized_cfg_range(self) -> tuple[int, int]:
+    def __get_sanitized_cfg_range(self, repo) -> tuple[int, int]:
         """
         Ensure that issue numbers to be mined exist.
 
@@ -230,9 +230,9 @@ class Extractor:
         """
         print(f"{TAB}Sanitizing range...")
 
-        last_page_index: int = self.num_issues // self.gh_sesh.get_pg_len()
-        last_page = self.paged_list.get_page(last_page_index)
-        last_item_num: int = last_page[-1].number
+        issues_desc = repo.get_issues(direction="desc", sort="created", state="all")
+        newest_issue = issues_desc[0] if issues_desc else None
+        last_item_num = newest_issue.number if newest_issue else 0
 
         print(f"{TAB * 2}Last item: #{last_item_num}")
 
@@ -352,17 +352,10 @@ class Extractor:
         output_file: str = self.cfg.get_cfg_val("output_path")
         issue_range: list = self.cfg.get_cfg_val("range")
 
-        start_index: int
-        end_index: int
-        start_index, end_index = self.__get_range_indices(issue_range)
-
-        # PyGithub's _Slice class mimics the builtin slice feature that
-        # ends are exclusive. To make it end-inclusive, we add 1
-        repo_slice = self.paged_list[start_index : end_index + 1]
-
         print(f"{TAB}Starting mining at #{issue_range[0]}...")
 
-        for cur_issue in repo_slice:
+        for cur_issue in self.paged_list:
+            print(cur_issue.number)
             cur_issue_data: dict = {}
 
             try:
@@ -513,70 +506,3 @@ class Extractor:
             pr_data = {"is_pr": False}
 
         return pr_data
-
-    def __get_range_indices(self, val_range: list[int]) -> tuple:
-        """
-        Find indices of API items in paginated list of items.
-
-        Args:
-            val_range (list[int]): list of API item numbers to
-            find. Length must be 2.
-
-        Returns:
-            tuple(int): indices of desired items in paginated
-            list of API items.
-        """
-
-        def get_issue_index_by_num(val_to_find: int) -> int:
-            """
-            Binary search over paginated lists of github issues.
-
-            For example, you want to find issue #150 in the paginated
-            list of issues for a repo. The index of that issue is NOT
-            the same as its issue number. We must look through the
-            paginated list of issues and find it.
-
-            Args:
-                val_to_find (int): the number of the API item to find
-
-            Returns:
-                int: index of the desired API item
-            """
-            mid: int
-            low: int = 0
-            high: int = self.num_issues
-            page_len: int = self.gh_sesh.get_pg_len()
-
-            while low < high:
-                mid = (low + high) // 2
-
-                page, index = divmod(mid, page_len)
-                cur_val = self.paged_list.get_page(page)[index].number
-
-                if val_to_find == cur_val:
-                    return mid
-
-                if val_to_find < cur_val:
-                    high = mid - 1
-
-                elif val_to_find > cur_val:
-                    low = mid + 1
-
-            return low
-
-        print(f"{TAB}Finding range indices...")
-
-        while True:
-            try:
-                # We use two cores because we are only looking for two values
-                with futures.ThreadPoolExecutor(max_workers=2) as executor:
-                    results = executor.map(get_issue_index_by_num, val_range)
-
-            except github.RateLimitExceededException:
-                self.__sleep_extractor()
-
-            else:
-                start_i, end_i = [*results]
-                print(f"{TAB * 2}Indices found: {start_i} to {end_i}\n")
-
-                return (start_i, end_i)
