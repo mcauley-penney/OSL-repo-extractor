@@ -217,7 +217,7 @@ cfg_schema: dict = {
     "repo": _str_type,
     "output_path": _str_type,
     **issues_fields_schema,
-    "state": {**_str_type, "allowed": ["closed", "open"]},
+    "state": {**_str_type, "allowed": ["open", "closed", "all"]},
     "labels": {
         "schema": _str_type,
         "type": "list",
