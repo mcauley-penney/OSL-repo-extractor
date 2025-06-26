@@ -66,9 +66,7 @@ class GithubSession:
         token = utils.read_file_line(auth_path)
 
         # establish a session with token
-        session = github.Github(
-            token, per_page=self.__page_len, retry=100, timeout=100
-        )
+        session = github.Github(token, per_page=self.__page_len, retry=100, timeout=100)
 
         try:
             # if name can be gathered from token, properly authenticated
@@ -137,7 +135,9 @@ class Extractor:
         self.gh_sesh = GithubSession(self.cfg.get_cfg_val("auth_path"))
 
         self.paged_list = self.__get_issues_paged_list(
-            self.__get_repo_obj(), self.cfg.get_cfg_val("state")
+            self.__get_repo_obj(),
+            self.cfg.get_cfg_val("state"),
+            self.cfg.get_cfg_val("labels"),
         )
 
         self.num_issues = self.__get_total_issues()
@@ -167,7 +167,7 @@ class Extractor:
             else:
                 return repo_obj
 
-    def __get_issues_paged_list(self, repo_obj, state: str):
+    def __get_issues_paged_list(self, repo_obj, state: str, labels: list[str]):
         """
         Retrieve and store a paginated list from GitHub.
 
@@ -189,7 +189,7 @@ class Extractor:
         while True:
             try:
                 issues_paged_list = repo_obj.get_issues(
-                    direction="asc", sort="created", state=state
+                    direction="asc", sort="created", state=state, labels=labels
                 )
 
             except github.RateLimitExceededException:
@@ -318,9 +318,7 @@ class Extractor:
 
             else:
                 cur_time = time.strftime("%I:%M:%S %p", time.localtime())
-                print(
-                    f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}..."
-                )
+                print(f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}...")
 
                 return None
 
@@ -360,7 +358,7 @@ class Extractor:
 
         # PyGithub's _Slice class mimics the builtin slice feature that
         # ends are exclusive. To make it end-inclusive, we add 1
-        repo_slice = self.paged_list[start_index: end_index + 1]
+        repo_slice = self.paged_list[start_index : end_index + 1]
 
         print(f"{TAB}Starting mining at #{issue_range[0]}...")
 
@@ -456,6 +454,7 @@ class Extractor:
             dict: dictionary of {commit index: commit data}
 
         """
+
         def as_pr(cur_issue):
             try:
                 cur_pr = cur_issue.as_pull_request()
@@ -485,9 +484,7 @@ class Extractor:
 
             for commit in pr_obj.get_commits():
                 if commit.files:
-                    commit_datum = self.__get_item_data(
-                        fields, cmd_tbl, commit
-                    )
+                    commit_datum = self.__get_item_data(fields, cmd_tbl, commit)
 
                 else:
                     commit_datum = {}

@@ -218,6 +218,10 @@ cfg_schema: dict = {
     "output_path": _str_type,
     **issues_fields_schema,
     "state": {**_str_type, "allowed": ["closed", "open"]},
+    "labels": {
+        "schema": _str_type,
+        "type": "list",
+    },
     "range": {
         "nullable": False,
         "min": [0, -1],
