@@ -1,25 +1,26 @@
-[tool.poetry]
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
 name = "osl-repo-extractor"
 version = "0.3.0"
-description = "Mine the GitHub Rest API v3 for issue and PR data"
-authors = ["Jacob McAuley Penney <jacobmpenney@gmail.com>",]
+description = "Mine the GitHub REST API v3 for issue and PR data"
 readme = "README.md"
+requires-python = ">=3.11.9,<4.0"
+
 authors = [
   { name = "Jacob McAuley Penney", email = "jacobmpenney@gmail.com" }
 ]
-requires-python = ">=3.11.9,<4.0"
+
 dependencies = [
   "cerberus>=1.3.4,<2.0",
   "PyGithub>=2.6",
   "PySide6>=6.5.0"
 ]
 
-[tool.poetry.dependencies]
-python = "3.11.9"
-cerberus = "1.3.4"
-pygithub = "1.57"
+[tool.setuptools]
+package-dir = {"" = "src"}
 
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.setuptools.packages.find]
+where = ["src"]
