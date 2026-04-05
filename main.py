@@ -1,7 +1,16 @@
 """Provides driver functionality for running the GitHub extractor."""
 
 import argparse
-from repo_extractor import conf, extractor, schema, utils
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parent
+SRC_PATH = PROJECT_ROOT / "src"
+
+if str(SRC_PATH) not in sys.path:
+    sys.path.insert(0, str(SRC_PATH))
+
+from repo_extractor import conf, extractor, runner, schema, utils
 
 
 def main():
@@ -10,16 +19,16 @@ def main():
 
     cfg_dict: dict = get_user_cfg()
     cfg_obj = conf.Cfg(cfg_dict, schema.cfg_schema)
+    target_count = len(cfg_obj.get_targets())
 
-    print("\nInitializing extractor...")
-    gh_ext = extractor.Extractor(cfg_obj)
-    print(f"{tab}Extractor initialization complete!")
+    print("\nInitializing batch runner...")
+    print(f"{tab}Targets configured: {target_count}")
 
     print("\nRunning extractor...")
-    gh_ext.get_repo_issues_data()
-    print(f"{tab}Issue data complete!")
-
+    runner.run_batch(cfg_obj)
     print("\nExtraction complete!\n")
+
+    return 0
 
 
 def get_user_cfg() -> dict:
@@ -56,4 +65,14 @@ def get_cli_args() -> str:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        raise SystemExit(main())
+    except extractor.GithubSessionError as exc:
+        print(f"\n{exc}\n")
+        sys.exit(1)
+    except runner.RunnerError as exc:
+        print(f"\n{exc}\n")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nExtraction interrupted.\n")
+        sys.exit(130)
