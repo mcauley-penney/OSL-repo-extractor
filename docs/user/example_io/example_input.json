@@ -14,8 +14,10 @@
         "num_comments"
       ],
       "comments": [
+        "body",
+        "userid",
         "userlogin",
-        "body"
+        "created_at"
       ],
       "commits": [
         "author_name",

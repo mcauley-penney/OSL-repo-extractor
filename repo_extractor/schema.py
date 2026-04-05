@@ -121,7 +121,7 @@ def _get_closed_time(issue) -> str:
     return "NaN"
 
 
-def _get_created_time(issue) -> str:
+def _get_created_time(api_obj) -> str:
     """
     Get the datetime an issue was created at.
 
@@ -131,7 +131,7 @@ def _get_created_time(issue) -> str:
     Returns:
         str: datetime string of issue creation
     """
-    return issue.created_at.strftime(TIME_FMT)
+    return api_obj.created_at.strftime(TIME_FMT)
 
 
 def _get_issue_comments_quant(issue_obj):
@@ -169,6 +169,7 @@ cmd_tbl: dict = {
         "body": _get_body,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
+        "created_at": _get_created_time,
     },
     "commits": {
         "author_name": _get_commit_author_name,
