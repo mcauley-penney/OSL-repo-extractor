@@ -22,35 +22,60 @@ These points are required because the project needs them. They will be gathered 
 ## Options
 
 - Name: repo
-  - Required: true
+  - Required: true within each target
   - Type: string
-  - Description: The repo option must be in the form `repo_owner/repo_name`, exactly as shown in a GitHub repository’s URL or page title.
+  - Description: Repository to mine, in the form `repo_owner/repo_name`, exactly as shown in its GitHub URL.
   - Possible Values: Any GitHub repository that the provided Personal Access Token (PAT) can access.
-  - Notes: —
+  - Notes: Repository names belong in `targets`, not in `defaults`.
 - Name: auth_path
   - Required: true
   - Type: string
   - Description: Path to a file containing a GitHub PAT. The token must be on the first line with no extra newlines or trailing spaces.
   - Possible Values: Any valid file-system path.
   - Notes: The PAT needs the proper scopes (e.g., `repo:status`, `public_repo` for classic tokens).
-- Name: state
+- Name: output_path
   - Required: true
   - Type: string
+  - Description: Path to the extracted data JSON document.
+  - Possible Values: Any writable file-system path.
+- Name: report_path
+  - Required: false
+  - Type: string
+  - Description: Path to the extraction report JSON document.
+  - Possible Values: Any writable file-system path.
+  - Notes: If omitted, the report is written to `output_path` with `.report.json` appended.
+- Name: state
+  - Required: true in `defaults`, optional within each target
+  - Type: string
   - Description: Determines which pull-request state to mine. Closed + merged PRs are used for ML training; open PRs are used for the tool’s runtime tasks.
-  - Possible Values: `open` or `closed` (`closed` mines only PRs that are both closed and merged).
-  - Notes: PRs that are closed but not merged are ignored.
+  - Possible Values: `open`, `closed`, or `all`.
+  - Notes: A target-level value replaces the default state for that target.
 - Name: labels
-  - Required: true
+  - Required: true in `defaults`, optional within each target
   - Type: list of strings
   - Description: Labels act as filters to the functionality that gathers issues to be mined. It is essentially a list of strings to filter issues on. If you want to mine comment data for all issues that are labeled as "bug", for example, you would have `["bug"]` as your `labels` input and then list the comment data you want in the `comments` configuration value.
   - Possible Values: any
-  - Notes: -
-- Name: range
+  - Notes: A target-level value replaces the default labels for that target.
+- Name: defaults
   - Required: true
-  - Type: list of integers
-  - Description: Inclusive start–end numbers in a repo’s PR history to gather.
-  - Possible Values: Both numbers ≥ 1. Example `[1, 10]` collects PR #1 through #10; `[1, 9]` stops before #10.
-  - Notes: —
+  - Type: object
+  - Description: Shared state, labels, and field selections applied to every target unless overridden.
+  - Notes: Defaults do not include repository names or ranges because those are target-specific.
+- Name: targets
+  - Required: true
+  - Type: list of objects
+  - Description: Repositories to mine. Each target supplies a `repo` and a `range`, and may override `state`, `labels`, or individual field lists.
+  - Notes: A range is a list containing issue numbers and one-level nested inclusive ranges. For example, `[1, [5, 8], 19]` selects issues 1, 5, 6, 7, 8, and 19. `[[1, -1]]` selects every issue through the latest issue in the repository. Overlapping selectors are ignored naturally and do not cause duplicate extraction.
+- Name: range
+  - Required: true within each target
+  - Type: list of issue selectors
+  - Description: Selects individual issues and inclusive issue-number ranges.
+  - Possible Values: An integer ≥ 1, or a two-integer list whose first value is ≥ 1 and whose second value is ≥ -1. `-1` means the latest issue.
+  - Notes: Reversed ranges and ranges beyond the repository's newest issue are skipped during sanitization. Nested lists deeper than one level are invalid. Overlapping selectors, such as `[1, [1, 3], 2]`, do not produce duplicate API extraction because each issue is filtered once.
+- Name: fields
+  - Required: true in `defaults`, optional within each target
+  - Type: object
+  - Description: Selects the issue, comment, and commit fields to extract. Target-level field lists replace only the corresponding default list.
 - Name: comments
   - Required: false
   - Type: list of strings

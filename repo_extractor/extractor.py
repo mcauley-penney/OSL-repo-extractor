@@ -17,6 +17,7 @@ CLR = "\x1b[K"
 TAB = " " * 4
 
 FlushCallback = Callable[[str, dict], None]
+ItemResultCallback = Callable[[str, int, bool, bool, dict | None], None]
 
 
 class GithubSessionError(RuntimeError):
@@ -27,19 +28,24 @@ class ExtractorError(RuntimeError):
     """Raised when repository extraction cannot complete successfully."""
 
 
-def issues_in_range(issue_list, low: int, high: int):
-    """Return issues whose number is between low and high (inclusive)."""
+class ItemExtractionError(RuntimeError):
+    """Wrap an expected item failure with the extraction operation involved."""
+
+    def __init__(self, operation: str, cause: Exception) -> None:
+        super().__init__(str(cause))
+        self.operation = operation
+        self.cause = cause
+
+
+def issues_in_ranges(issue_list, ranges: list[tuple[int, int]]):
+    """Return issues matching one or more inclusive ranges, once each."""
     selected = []
 
     for issue in issue_list:
         n = issue.number
 
-        if n < low:
-            continue
-        if n > high:
-            break
-
-        selected.append(issue)
+        if any(low <= n <= high for low, high in ranges):
+            selected.append(issue)
 
     return selected
 
@@ -118,6 +124,7 @@ class Extractor:
         target_cfg: dict,
         gh_sesh: GithubSession | None = None,
         flush_callback: FlushCallback | None = None,
+        item_result_callback: ItemResultCallback | None = None,
     ) -> None:
         """
         Initialize an extractor for one repository target.
@@ -127,9 +134,12 @@ class Extractor:
             gh_sesh (GithubSession | None): shared GitHub session to reuse.
             flush_callback (FlushCallback | None): callback used to persist
                 repo-local output chunks when partial progress should be flushed.
+            item_result_callback (ItemResultCallback | None): callback used to
+                record successful and skipped item results.
         """
         self.cfg = deepcopy(target_cfg)
         self.flush_callback = flush_callback
+        self.item_result_callback = item_result_callback
         self.repo_slug = self.cfg["repo"]
 
         # Reuse a shared authenticated session when supplied by the caller.
@@ -142,13 +152,18 @@ class Extractor:
             self.cfg["labels"],
         )
 
-        clean_range = self.__get_sanitized_cfg_range(repo)
-        self.cfg["range"] = clean_range
-        self.paged_list = issues_in_range(
-            paged_list,
-            clean_range["start"],
-            clean_range["end"],
-        )
+        clean_ranges = self.__get_sanitized_cfg_ranges(repo)
+        self.cfg["range"] = clean_ranges
+        try:
+            self.paged_list = issues_in_ranges(paged_list, clean_ranges)
+        except github.GithubException as exc:
+            raise ExtractorError(
+                f'Cannot retrieve issues for repository "{self.repo_slug}".'
+            ) from exc
+        except (socket.error, socket.gaierror) as exc:
+            raise ExtractorError(
+                f'Cannot retrieve issues for repository "{self.repo_slug}".'
+            ) from exc
 
     def get_repo_slug(self) -> str:
         """Return the canonical repo slug for this extraction target."""
@@ -173,10 +188,15 @@ class Extractor:
                 repo_obj = self.gh_sesh.session.get_repo(self.repo_slug)
             except github.RateLimitExceededException:
                 self.__sleep_extractor()
-            except github.UnknownObjectException as exc:
+            except github.GithubException as exc:
                 raise ExtractorError(
                     f'Cannot access "{self.repo_slug}". It either does not exist '
-                    "or is private."
+                    f'or is private (GitHub status {exc.status}).'
+                ) from exc
+            except (socket.error, socket.gaierror) as exc:
+                raise ExtractorError(
+                    f'Cannot access "{self.repo_slug}" because the GitHub '
+                    "connection failed."
                 ) from exc
             else:
                 return repo_obj
@@ -198,15 +218,29 @@ class Extractor:
                 )
             except github.RateLimitExceededException:
                 self.__sleep_extractor()
+            except github.GithubException as exc:
+                raise ExtractorError(
+                    f'Cannot retrieve issues for repository "{self.repo_slug}" '
+                    f'(GitHub status {exc.status}).'
+                ) from exc
+            except (socket.error, socket.gaierror) as exc:
+                raise ExtractorError(
+                    f'Cannot retrieve issues for repository "{self.repo_slug}" '
+                    "because the GitHub connection failed."
+                ) from exc
             else:
                 return issues_paged_list
 
-    def __get_sanitized_cfg_range(self, repo) -> dict:
+    def __get_sanitized_cfg_ranges(self, repo) -> list[tuple[int, int]]:
         """
-        Ensure that target range bounds exist in the repository.
+        Ensure that target issue selectors are available in the repository.
+
+        Reversed ranges and selectors beyond the newest repository item are
+        skipped. Overlapping selectors are harmless because each API item is
+        considered once while filtering the paginated list.
 
         Returns:
-            dict: cleaned start and end range values.
+            list[tuple[int, int]]: cleaned inclusive ranges.
         """
         print(f"{TAB}Sanitizing range for {self.repo_slug}...")
 
@@ -214,24 +248,24 @@ class Extractor:
 
         print(f"{TAB * 2}Last item: #{last_item_num}")
 
-        range_cfg = self.cfg["range"]
-        requested_start = range_cfg["start"]
-        requested_end = range_cfg["end"]
+        clean_ranges: list[tuple[int, int]] = []
 
-        if last_item_num == 0:
-            clean_range = {"start": requested_start, "end": 0}
-        else:
-            clean_start = min(requested_start, last_item_num)
-            effective_end = last_item_num if requested_end is None else requested_end
-            clean_end = min(effective_end, last_item_num)
-            clean_range = {"start": clean_start, "end": clean_end}
+        for selector in self.cfg["range"]:
+            if isinstance(selector, int):
+                start = end = selector
+            else:
+                start, end = selector
+                end = last_item_num if end == -1 else end
 
-        print(
-            f'{TAB * 2}Cleaned range: #{clean_range["start"]} '
-            f'to #{clean_range["end"]}'
-        )
+            end = min(end, last_item_num)
+            if start > last_item_num or start > end:
+                print(f"{TAB * 2}Skipping invalid selector: {selector}")
+                continue
 
-        return clean_range
+            clean_ranges.append((start, end))
+
+        print(f"{TAB * 2}Cleaned ranges: {clean_ranges}")
+        return clean_ranges
 
     def __get_last_item_num(self, repo) -> int:
         """Return the newest issue or PR number in the repository."""
@@ -245,6 +279,16 @@ class Extractor:
                 newest_issue = next(iter(issues_desc), None)
             except github.RateLimitExceededException:
                 self.__sleep_extractor()
+            except github.GithubException as exc:
+                raise ExtractorError(
+                    f'Cannot determine the latest issue for repository '
+                    f'"{self.repo_slug}" (GitHub status {exc.status}).'
+                ) from exc
+            except (socket.error, socket.gaierror) as exc:
+                raise ExtractorError(
+                    f'Cannot determine the latest issue for repository '
+                    f'"{self.repo_slug}" because the GitHub connection failed.'
+                ) from exc
             else:
                 return newest_issue.number if newest_issue is not None else 0
 
@@ -277,11 +321,20 @@ class Extractor:
             fields = self.cfg[key]
 
             if fields:
-                cur_issue_data |= func(
-                    fields,
-                    schema.cmd_tbl[key],
-                    issue,
-                )
+                try:
+                    cur_issue_data |= func(
+                        fields,
+                        schema.cmd_tbl[key],
+                        issue,
+                    )
+                except github.RateLimitExceededException:
+                    raise
+                except (
+                    github.GithubException,
+                    socket.error,
+                    socket.gaierror,
+                ) as exc:
+                    raise ItemExtractionError(key, exc) from exc
 
         return cur_issue_data
 
@@ -341,18 +394,19 @@ class Extractor:
         Returns:
             dict: repo-local extraction data keyed by issue or PR number.
 
+        Item-level GitHub and socket errors are logged and skipped after
+        pending output is flushed. They do not stop extraction of later items.
+
         Raises:
-            ExtractorError: a GitHub or socket error interrupted extraction
-                after pending output was flushed.
             KeyboardInterrupt: re-raised after pending output is flushed.
         """
         repo_data: dict = {}
         pending_output: dict = {}
-        issue_range = self.cfg["range"]
+        issue_ranges = self.cfg["range"]
 
         print(
             f'{TAB}Starting mining for {self.repo_slug} '
-            f'at #{issue_range["start"]}...'
+            f"for ranges {issue_ranges}..."
         )
 
         for cur_issue in self.paged_list:
@@ -368,20 +422,28 @@ class Extractor:
                 except KeyboardInterrupt:
                     self.__flush_pending_output(pending_output)
                     raise
+                except ItemExtractionError as exc:
+                    operation = exc.operation
+                    cause = exc.cause
                 except (
                     github.GithubException,
                     socket.error,
                     socket.gaierror,
                 ) as exc:
-                    self.__flush_pending_output(pending_output)
-                    raise ExtractorError(
-                        f'Extraction failed for "{self.repo_slug}" '
-                        f"at item #{cur_issue.number}."
-                    ) from exc
+                    operation = "unknown"
+                    cause = exc
                 else:
                     issue_number = str(cur_issue.number)
                     repo_data[issue_number] = cur_issue_data
                     pending_output[issue_number] = cur_issue_data
+                    if self.item_result_callback is not None:
+                        self.item_result_callback(
+                            self.repo_slug,
+                            cur_issue.number,
+                            True,
+                            getattr(cur_issue, "pull_request", None) is not None,
+                            None,
+                        )
 
                     print(
                         f"{CLR}{TAB * 2}Repo: {self.repo_slug}, "
@@ -391,10 +453,45 @@ class Extractor:
                     print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
                     break
 
+                self.__flush_pending_output(pending_output)
+                pending_output.clear()
+                error = self.__build_item_error(operation, cause)
+                is_pr = getattr(cur_issue, "pull_request", None) is not None
+                status = (
+                    f" (GitHub status {error['status']})"
+                    if "status" in error
+                    else ""
+                )
+                print(
+                    f"\n{TAB}Skipping unavailable item "
+                    f"#{cur_issue.number} in {self.repo_slug}{status}: "
+                    f"{error['message']}"
+                )
+                if self.item_result_callback is not None:
+                    self.item_result_callback(
+                        self.repo_slug,
+                        cur_issue.number,
+                        False,
+                        is_pr,
+                        error,
+                    )
+                break
+
         self.__flush_pending_output(pending_output)
         print()
 
         return repo_data
+
+    @staticmethod
+    def __build_item_error(operation: str, cause: Exception) -> dict:
+        """Build JSON-safe error metadata for a failed item operation."""
+        error = {
+            "operation": operation,
+            "message": str(cause),
+        }
+        if isinstance(cause, github.GithubException):
+            error["status"] = cause.status
+        return error
 
     def get_repo_issues_data(self) -> dict:
         """Backward-compatible wrapper for repo-local extraction."""
@@ -439,6 +536,12 @@ class Extractor:
             try:
                 cur_pr = cur_issue.as_pull_request()
             except github.UnknownObjectException:
+                # A normal issue returns 404 when probed as a PR. If the
+                # issues endpoint identified it as a PR, however, the PR has
+                # disappeared or is inaccessible and the item should be
+                # skipped by the caller.
+                if getattr(cur_issue, "pull_request", None) is not None:
+                    raise
                 return None
             else:
                 return cur_pr

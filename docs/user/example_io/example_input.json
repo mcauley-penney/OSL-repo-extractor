@@ -1,6 +1,7 @@
 {
   "auth_path": "/path/to/personal_access_token.txt",
   "output_path": "./docs/user/example_io/example_output.json",
+  "report_path": "./docs/user/example_io/example_report.json",
   "defaults": {
     "state": "closed",
     "labels": [],
@@ -30,17 +31,11 @@
   "targets": [
     {
       "repo": "facebook/react",
-      "range": {
-        "start": 1,
-        "end": 2
-      }
+      "range": [1, [5, 8], 19]
     },
     {
       "repo": "JabRef/jabref",
-      "range": {
-        "start": 150,
-        "end": 151
-      }
+      "range": [[1, -1]]
     }
   ]
 }

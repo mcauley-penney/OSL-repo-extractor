@@ -115,6 +115,10 @@ class OutputWriter:
         """
         return self.merge_and_write(build_repo_output_chunk(repo_slug, repo_data))
 
+    def write_document(self, document: dict) -> None:
+        """Atomically write a complete JSON document without merging."""
+        self._write_atomic(document)
+
     def _write_atomic(self, out_dict: dict) -> None:
         """
         Atomically write output JSON using a temporary file and os.replace.

@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from copy import deepcopy
+import json
+
 from repo_extractor import conf, extractor, output
 
 TAB = " " * 4
@@ -35,6 +38,10 @@ class BatchRunner:
         self.output_writer = output_writer or output.OutputWriter(
             self.cfg.get_cfg_val("output_path")
         )
+        self.report_writer = output.OutputWriter(
+            self.cfg.get_cfg_val("report_path")
+        )
+        self.report = {"repositories": {}}
 
     def run(self) -> dict:
         """
@@ -52,20 +59,32 @@ class BatchRunner:
 
         for index, target_cfg in enumerate(targets, start=1):
             repo_slug = target_cfg["repo"]
+            self.__ensure_repo_report(repo_slug)
 
             print(f"\nRunning target {index}/{total_targets}: {repo_slug}")
-            print(
-                f"{TAB}Requested range: "
-                f'{self.__format_range(target_cfg["range"])}'
-            )
+            print(f"{TAB}Requested ranges: {self.__format_ranges(target_cfg['range'])}")
 
             repo_data = self.__run_target(target_cfg)
+            if repo_data is None:
+                continue
+
             repo_chunk = output.build_repo_output_chunk(repo_slug, repo_data)
             combined_output = output.merge_output_chunks(combined_output, repo_chunk)
 
+        self.report_writer.write_document(self.report)
+        self.print_report()
         return combined_output
 
-    def __run_target(self, target_cfg: dict) -> dict:
+    def get_report(self) -> dict:
+        """Return a copy of the report compiled during the batch run."""
+        return deepcopy(self.report)
+
+    def print_report(self) -> None:
+        """Print the persisted report as formatted JSON."""
+        print("\nExtraction report")
+        print(json.dumps(self.report, indent=2))
+
+    def __run_target(self, target_cfg: dict) -> dict | None:
         """
         Run extraction for one normalized target configuration.
 
@@ -73,7 +92,8 @@ class BatchRunner:
             target_cfg (dict): normalized target configuration.
 
         Returns:
-            dict: repo-local output keyed by issue or PR number.
+            dict | None: repo-local output keyed by issue or PR number. None
+                means the repository was unavailable and was skipped.
 
         Raises:
             RunnerError: extraction or output persistence failed.
@@ -85,14 +105,18 @@ class BatchRunner:
                 target_cfg,
                 gh_sesh=self.gh_sesh,
                 flush_callback=self.__flush_repo_chunk,
+                item_result_callback=self.__record_item_result,
             )
             repo_data = repo_extractor.extract_repo_data()
+            self.__ensure_repo_report(repo_slug)["status"] = "completed"
         except KeyboardInterrupt as exc:
             raise RunnerError(
                 f'Extraction interrupted while processing "{repo_slug}".'
             ) from exc
+        except extractor.ExtractorError as exc:
+            print(f"{TAB}Skipping repository {repo_slug}: {exc}")
+            return None
         except (
-            extractor.ExtractorError,
             extractor.GithubSessionError,
             output.OutputDataError,
         ) as exc:
@@ -101,6 +125,41 @@ class BatchRunner:
             ) from exc
 
         return repo_data
+
+    def __ensure_repo_report(self, repo_slug: str) -> dict:
+        """Create or return the report entry for a repository."""
+        return self.report["repositories"].setdefault(
+            repo_slug,
+            {
+                "status": "running",
+                "extracted_items": [],
+                "skipped_items": [],
+            },
+        )
+
+    def __record_item_result(
+        self,
+        repo_slug: str,
+        item_number: int,
+        extracted: bool,
+        is_pr: bool,
+        error: dict | None,
+    ) -> None:
+        """Record one successfully extracted or skipped issue/PR."""
+        repo_report = self.__ensure_repo_report(repo_slug)
+
+        if extracted:
+            repo_report["extracted_items"].append(item_number)
+        else:
+            repo_report["skipped_items"].append(
+                {
+                    "number": item_number,
+                    "is_pr": is_pr,
+                    "error": deepcopy(error)
+                    if error is not None
+                    else {"message": "unknown error"},
+                }
+            )
 
     def __flush_repo_chunk(self, repo_slug: str, repo_data_chunk: dict) -> None:
         """
@@ -113,19 +172,27 @@ class BatchRunner:
         self.output_writer.merge_repo_data(repo_slug, repo_data_chunk)
 
     @staticmethod
-    def __format_range(range_cfg: dict) -> str:
+    def __format_ranges(range_cfg: list) -> str:
         """
-        Format a target range for user-facing progress output.
+        Format target issue selectors for user-facing progress output.
 
         Args:
-            range_cfg (dict): normalized target range.
+            range_cfg (list): normalized target issue selectors.
 
         Returns:
             str: printable range string.
         """
-        end_text = "latest" if range_cfg["end"] is None else f'#{range_cfg["end"]}'
+        formatted = []
+        for selector in range_cfg:
+            if isinstance(selector, int):
+                formatted.append(f"#{selector}")
+                continue
 
-        return f'#{range_cfg["start"]} to {end_text}'
+            start, end = selector
+            end_text = "latest" if end == -1 else f"#{end}"
+            formatted.append(f"#{start} to {end_text}")
+
+        return ", ".join(formatted)
 
 
 def run_batch(cfg_obj: conf.Cfg) -> dict:

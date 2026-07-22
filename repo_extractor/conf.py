@@ -92,6 +92,7 @@ class Cfg:
         defaults = cfg_dict["defaults"]
         auth_path = cfg_dict["auth_path"]
         output_path = cfg_dict["output_path"]
+        report_path = cfg_dict.get("report_path") or f"{output_path}.report.json"
 
         normalized_targets = [
             self.__normalize_target_cfg(
@@ -106,6 +107,7 @@ class Cfg:
         return {
             "auth_path": auth_path,
             "output_path": output_path,
+            "report_path": report_path,
             "targets": normalized_targets,
         }
 
@@ -157,17 +159,9 @@ class Cfg:
         }
 
     @staticmethod
-    def __normalize_range(range_cfg: dict) -> dict:
-        """
-        Normalize a target range object.
-
-        The schema ensures that start is present and valid. Normalization makes
-        the optional end key explicit so downstream code can rely on it.
-        """
-        return {
-            "start": range_cfg["start"],
-            "end": range_cfg.get("end"),
-        }
+    def __normalize_range(range_cfg: list) -> list:
+        """Copy issue selectors while preserving their user-provided order."""
+        return deepcopy(range_cfg)
 
     @staticmethod
     def __normalize_string_list(items: list[str]) -> list[str]:

@@ -263,31 +263,27 @@ def _build_fields_rule(*, required: bool, allow_partial: bool) -> dict:
     )
 
 
-def _validate_target_range(field: str, value: dict, error) -> None:
-    """
-    Validate logical constraints on a target range object.
-
-    The range schema ensures that integer values are positive. This callback
-    additionally ensures that the optional end bound is not lower than start.
-    """
-    start = value.get("start")
-    end = value.get("end")
-
-    if isinstance(start, int) and isinstance(end, int) and end < start:
-        error(field, '"end" must be greater than or equal to "start"')
-
-
 def _build_range_rule(*, required: bool) -> dict:
-    """Build a target range rule with object-based start/end bounds."""
+    """Build a rule for individual issue numbers and inclusive ranges."""
     required_rule = _required if required else _optional
 
     return required_rule(
         {
-            "type": "dict",
-            "check_with": _validate_target_range,
+            "type": "list",
+            "minlength": 1,
             "schema": {
-                "start": _required({"type": "integer", "min": 1}),
-                "end": _optional({"type": "integer", "min": 1, "nullable": True}),
+                "anyof": [
+                    {"type": "integer", "min": 1},
+                    {
+                        "type": "list",
+                        "minlength": 2,
+                        "maxlength": 2,
+                        "items": [
+                            {"type": "integer", "min": 1},
+                            {"type": "integer", "min": -1},
+                        ],
+                    },
+                ]
             },
         }
     )
@@ -327,6 +323,7 @@ target_schema = {
 cfg_schema: dict = {
     "auth_path": _required({"type": "string"}),
     "output_path": _required({"type": "string"}),
+    "report_path": _optional({"type": "string"}),
     "defaults": _required(
         {
             "type": "dict",
