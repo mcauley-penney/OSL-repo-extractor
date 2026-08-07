@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from copy import deepcopy
+from dataclasses import dataclass
 import socket
 import time
 
@@ -35,19 +36,6 @@ class ItemExtractionError(RuntimeError):
         super().__init__(str(cause))
         self.operation = operation
         self.cause = cause
-
-
-def issues_in_ranges(issue_list, ranges: list[tuple[int, int]]):
-    """Return issues matching one or more inclusive ranges, once each."""
-    selected = []
-
-    for issue in issue_list:
-        n = issue.number
-
-        if any(low <= n <= high for low, high in ranges):
-            selected.append(issue)
-
-    return selected
 
 
 class GithubSession:
@@ -96,6 +84,10 @@ class GithubSession:
             return session
 
         return session
+
+    def get_pg_len(self) -> int:
+        """Get the configured page length."""
+        return self.__page_len
 
     def get_remaining_calls(self) -> str:
         """Get remaining calls to REST API for this hour."""
@@ -146,16 +138,24 @@ class Extractor:
         self.gh_sesh = gh_sesh or GithubSession(self.cfg["auth_path"])
 
         repo = self.__get_repo_obj()
-        paged_list = self.__get_issues_paged_list(
+        self.paged_list = self.__get_issues_paged_list(
             repo,
             self.cfg["state"],
             self.cfg["labels"],
         )
 
+        num_issues = self.paged_list.totalCount - 1
+        page_length = self.gh_sesh.get_pg_len()
+
+        self.last_page_index = num_issues // page_length if num_issues > 0 else -1
+
         clean_ranges = self.__get_sanitized_cfg_ranges(repo)
         self.cfg["range"] = clean_ranges
+
         try:
-            self.paged_list = issues_in_ranges(paged_list, clean_ranges)
+            self.issue_manifest = self.__generate_issue_manifest(
+                self.paged_list, clean_ranges
+            )
         except github.GithubException as exc:
             raise ExtractorError(
                 f'Cannot retrieve issues for repository "{self.repo_slug}".'
@@ -164,6 +164,99 @@ class Extractor:
             raise ExtractorError(
                 f'Cannot retrieve issues for repository "{self.repo_slug}".'
             ) from exc
+
+    def extract_repo_data(self) -> dict:
+        """
+        Gather all configured data points for the current repository target.
+
+        Returns:
+            dict: repo-local extraction data keyed by issue or PR number.
+
+        Item-level GitHub and socket errors are logged and skipped after
+        pending output is flushed. They do not stop extraction of later items.
+
+        Raises:
+            KeyboardInterrupt: re-raised after pending output is flushed.
+        """
+        repo_data: dict = {}
+        pending_output: dict = {}
+        issue_ranges = self.cfg["range"]
+
+        print(
+            f"{TAB}Starting mining for {self.repo_slug} "
+            f"for ranges {issue_ranges}..."
+        )
+
+        for cur_issue in self.issue_manifest:
+            while True:
+                try:
+                    cur_issue_data = self.__collect_issue_data(cur_issue)
+                except github.RateLimitExceededException:
+                    self.__flush_pending_output(pending_output)
+                    pending_output.clear()
+                    print()
+                    self.__sleep_extractor()
+                    continue
+                except KeyboardInterrupt:
+                    self.__flush_pending_output(pending_output)
+                    raise
+                except ItemExtractionError as exc:
+                    operation = exc.operation
+                    cause = exc.cause
+                except (
+                    github.GithubException,
+                    socket.error,
+                    socket.gaierror,
+                ) as exc:
+                    operation = "unknown"
+                    cause = exc
+                else:
+                    issue_number = str(cur_issue.number)
+                    repo_data[issue_number] = cur_issue_data
+                    pending_output[issue_number] = cur_issue_data
+                    if self.item_result_callback is not None:
+                        self.item_result_callback(
+                            self.repo_slug,
+                            cur_issue.number,
+                            True,
+                            getattr(cur_issue, "pull_request", None) is not None,
+                            None,
+                        )
+
+                    print(
+                        f"{CLR}{TAB * 2}Repo: {self.repo_slug}, "
+                        f"Issue: {cur_issue.number}, ",
+                        end="",
+                    )
+                    print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
+                    break
+
+                self.__flush_pending_output(pending_output)
+                pending_output.clear()
+                error = self.__build_item_error(operation, cause)
+                is_pr = getattr(cur_issue, "pull_request", None) is not None
+                status = (
+                    f" (GitHub status {error['status']})" if "status" in error else ""
+                )
+                print(
+                    f"\n{TAB}Skipping unavailable item "
+                    f"#{cur_issue.number} in {self.repo_slug}{status}: "
+                    f"{error['message']}"
+                )
+                if self.item_result_callback is not None:
+                    self.item_result_callback(
+                        self.repo_slug,
+                        cur_issue.number,
+                        False,
+                        is_pr,
+                        error,
+                    )
+                break
+
+        self.__flush_pending_output(pending_output)
+        print()
+
+        return repo_data
 
     def get_repo_slug(self) -> str:
         """Return the canonical repo slug for this extraction target."""
@@ -191,7 +284,7 @@ class Extractor:
             except github.GithubException as exc:
                 raise ExtractorError(
                     f'Cannot access "{self.repo_slug}". It either does not exist '
-                    f'or is private (GitHub status {exc.status}).'
+                    f"or is private (GitHub status {exc.status})."
                 ) from exc
             except (socket.error, socket.gaierror) as exc:
                 raise ExtractorError(
@@ -221,7 +314,7 @@ class Extractor:
             except github.GithubException as exc:
                 raise ExtractorError(
                     f'Cannot retrieve issues for repository "{self.repo_slug}" '
-                    f'(GitHub status {exc.status}).'
+                    f"(GitHub status {exc.status})."
                 ) from exc
             except (socket.error, socket.gaierror) as exc:
                 raise ExtractorError(
@@ -231,7 +324,7 @@ class Extractor:
             else:
                 return issues_paged_list
 
-    def __get_sanitized_cfg_ranges(self, repo) -> list[tuple[int, int]]:
+    def __get_sanitized_cfg_ranges(self, repo) -> list[int]:
         """
         Ensure that target issue selectors are available in the repository.
 
@@ -248,7 +341,7 @@ class Extractor:
 
         print(f"{TAB * 2}Last item: #{last_item_num}")
 
-        clean_ranges: list[tuple[int, int]] = []
+        clean_ranges: list[int] = []
 
         for selector in self.cfg["range"]:
             if isinstance(selector, int):
@@ -262,7 +355,7 @@ class Extractor:
                 print(f"{TAB * 2}Skipping invalid selector: {selector}")
                 continue
 
-            clean_ranges.append((start, end))
+            clean_ranges.extend(range(start, end + 1))
 
         print(f"{TAB * 2}Cleaned ranges: {clean_ranges}")
         return clean_ranges
@@ -281,12 +374,12 @@ class Extractor:
                 self.__sleep_extractor()
             except github.GithubException as exc:
                 raise ExtractorError(
-                    f'Cannot determine the latest issue for repository '
+                    f"Cannot determine the latest issue for repository "
                     f'"{self.repo_slug}" (GitHub status {exc.status}).'
                 ) from exc
             except (socket.error, socket.gaierror) as exc:
                 raise ExtractorError(
-                    f'Cannot determine the latest issue for repository '
+                    f"Cannot determine the latest issue for repository "
                     f'"{self.repo_slug}" because the GitHub connection failed.'
                 ) from exc
             else:
@@ -387,101 +480,6 @@ class Extractor:
                 print(f"{CLR}{TAB}Rate limit lifted! The time is {cur_time}...")
                 return None
 
-    def extract_repo_data(self) -> dict:
-        """
-        Gather all configured data points for the current repository target.
-
-        Returns:
-            dict: repo-local extraction data keyed by issue or PR number.
-
-        Item-level GitHub and socket errors are logged and skipped after
-        pending output is flushed. They do not stop extraction of later items.
-
-        Raises:
-            KeyboardInterrupt: re-raised after pending output is flushed.
-        """
-        repo_data: dict = {}
-        pending_output: dict = {}
-        issue_ranges = self.cfg["range"]
-
-        print(
-            f'{TAB}Starting mining for {self.repo_slug} '
-            f"for ranges {issue_ranges}..."
-        )
-
-        for cur_issue in self.paged_list:
-            while True:
-                try:
-                    cur_issue_data = self.__collect_issue_data(cur_issue)
-                except github.RateLimitExceededException:
-                    self.__flush_pending_output(pending_output)
-                    pending_output.clear()
-                    print()
-                    self.__sleep_extractor()
-                    continue
-                except KeyboardInterrupt:
-                    self.__flush_pending_output(pending_output)
-                    raise
-                except ItemExtractionError as exc:
-                    operation = exc.operation
-                    cause = exc.cause
-                except (
-                    github.GithubException,
-                    socket.error,
-                    socket.gaierror,
-                ) as exc:
-                    operation = "unknown"
-                    cause = exc
-                else:
-                    issue_number = str(cur_issue.number)
-                    repo_data[issue_number] = cur_issue_data
-                    pending_output[issue_number] = cur_issue_data
-                    if self.item_result_callback is not None:
-                        self.item_result_callback(
-                            self.repo_slug,
-                            cur_issue.number,
-                            True,
-                            getattr(cur_issue, "pull_request", None) is not None,
-                            None,
-                        )
-
-                    print(
-                        f"{CLR}{TAB * 2}Repo: {self.repo_slug}, "
-                        f"Issue: {cur_issue.number}, ",
-                        end="",
-                    )
-                    print(f"calls: {self.gh_sesh.get_remaining_calls()}", end="\r")
-                    break
-
-                self.__flush_pending_output(pending_output)
-                pending_output.clear()
-                error = self.__build_item_error(operation, cause)
-                is_pr = getattr(cur_issue, "pull_request", None) is not None
-                status = (
-                    f" (GitHub status {error['status']})"
-                    if "status" in error
-                    else ""
-                )
-                print(
-                    f"\n{TAB}Skipping unavailable item "
-                    f"#{cur_issue.number} in {self.repo_slug}{status}: "
-                    f"{error['message']}"
-                )
-                if self.item_result_callback is not None:
-                    self.item_result_callback(
-                        self.repo_slug,
-                        cur_issue.number,
-                        False,
-                        is_pr,
-                        error,
-                    )
-                break
-
-        self.__flush_pending_output(pending_output)
-        print()
-
-        return repo_data
-
     @staticmethod
     def __build_item_error(operation: str, cause: Exception) -> dict:
         """Build JSON-safe error metadata for a failed item operation."""
@@ -493,9 +491,15 @@ class Extractor:
             error["status"] = cause.status
         return error
 
-    def get_repo_issues_data(self) -> dict:
-        """Backward-compatible wrapper for repo-local extraction."""
-        return self.extract_repo_data()
+    def __generate_issue_manifest(self, paged_list, issue_extraction_range) -> list:
+
+        issue_manifest = []
+
+        for issue_num in issue_extraction_range:
+            issue = self.__find_issue_in_paged_list(paged_list, issue_num)
+            issue_manifest.append(issue)
+
+        return issue_manifest
 
     def __get_issue_comments(self, fields: list, cmd_tbl: dict, issue) -> dict:
         """
@@ -535,6 +539,7 @@ class Extractor:
         def as_pr(cur_issue):
             try:
                 cur_pr = cur_issue.as_pull_request()
+
             except github.UnknownObjectException:
                 # A normal issue returns 404 when probed as a PR. If the
                 # issues endpoint identified it as a PR, however, the PR has
@@ -576,3 +581,131 @@ class Extractor:
             return pr_data
 
         return {"is_pr": False}
+
+    def __find_issue_in_paged_list(self, paged_list, issue_num: int):
+        """
+        Find an issue object in a paginated list of issue objects.
+
+        Args:
+            paged_list (Github.PaginatedList of Github.Issue): paginated
+                list of issues
+
+            issue_num (int): the number of the desired issue
+
+        Returns:
+            list[int]: list of starting and ending indices for desired
+                API items.
+        """
+
+        def bin_search_page_in_paged_list(val: int, paged_list, last_page_index: int):
+            """
+            Find the index of a page in paginated list of API items.
+
+            Iterative binary search which finds the page of an API item,
+            such as a PR or issue, inside of a list of pages.
+
+            Args:
+                paged_list(Github.PaginatedList of Github.Issue): paginated
+                    list of issues
+                last_page_index (int): index of last page in paginated list
+                val (int): number of item in list that we desire; e.g. PR# 800
+
+            Returns:
+                int: index of page in given paginated listwhere val
+                param is located
+            """
+            low: int = 0
+            high: int = last_page_index
+            mid_first_val: int
+            mid_last_val: int
+
+            while low < high:
+                mid = (low + high) // 2
+
+                mid_page = paged_list.get_page(mid)
+
+                # TODO cache middle page contents
+
+                mid_first_val = mid_page[0].number
+                mid_last_val = mid_page[-1].number
+
+                # if the value we want is greater than the first item
+                # (cur_val - page_len) on the middle page but less
+                # than the last item, it is in the middle page
+                if mid_first_val <= val <= mid_last_val:
+                    return mid_page, mid
+
+                if val < mid_first_val:
+                    high = mid - 1
+
+                elif val > mid_last_val:
+                    low = mid + 1
+
+            return paged_list.get_page(low), low
+
+        def bin_search_issue_in_page(val: int, page, page_len: int) -> int:
+            """
+            Find the index of an API item in a page of API items.
+
+            Iterative binary search modified to return either the exact
+            index of the item with the number the user desires or the
+            index of the item beneath that value in the case that the
+            value does not exist in the list. An example might be that
+            a paginated list of issues does not have #'s 9, 10, or 11,
+            but the user wants to begin looking for data at #10. This
+            binary search should return the index of the API object
+            with the number 8.
+
+            Args:
+                val (int): value to look for in page parameter
+                paged_list_page (page of Github.Issue): a single page
+                    from paginated list of issues
+                page_len (int): length of pages in paginated lists for
+                    this validated GitHub session
+
+            Returns:
+                int: index of the object we are looking for
+            """
+            low: int = 0
+            mid: int
+
+            # because this binary search is looking through lists that
+            # may have items missing, we want to be able to return the
+            # index of the nearest item before the item we are looking
+            # for. Therefore, we stop when low is one less than high.
+            # This allows us to take the lower value when a value does
+            # not exist in the list.
+            while low < page_len - 1:
+                mid = (low + page_len) // 2
+
+                cur_val = page[mid].number
+
+                if val == cur_val:
+                    return mid
+
+                if val < cur_val:
+                    page_len = mid - 1
+
+                elif val > cur_val:
+                    low = mid + 1
+
+            return low
+
+        print(f"{TAB}Finding index of item #{issue_num}...")
+
+        # use binary search to find the page inside of the
+        # list of pages that contains the item number of interest
+        item_page, item_page_index = bin_search_page_in_paged_list(
+            issue_num, paged_list, self.last_page_index
+        )
+
+        # use iterative binary search to find item of interest in found page
+        item_index: int = bin_search_issue_in_page(issue_num, item_page, len(item_page))
+
+        item_index = (item_page_index * self.gh_sesh.get_pg_len()) + item_index
+
+        item = self.paged_list[item_index]
+
+        print(f"{TAB * 2}Found at index {item_index}!")
+
+        return item

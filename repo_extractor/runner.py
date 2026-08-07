@@ -38,9 +38,7 @@ class BatchRunner:
         self.output_writer = output_writer or output.OutputWriter(
             self.cfg.get_cfg_val("output_path")
         )
-        self.report_writer = output.OutputWriter(
-            self.cfg.get_cfg_val("report_path")
-        )
+        self.report_writer = output.OutputWriter(self.cfg.get_cfg_val("report_path"))
         self.report = {"repositories": {}}
 
     def run(self) -> dict:
@@ -155,9 +153,11 @@ class BatchRunner:
                 {
                     "number": item_number,
                     "is_pr": is_pr,
-                    "error": deepcopy(error)
-                    if error is not None
-                    else {"message": "unknown error"},
+                    "error": (
+                        deepcopy(error)
+                        if error is not None
+                        else {"message": "unknown error"}
+                    ),
                 }
             )
 

@@ -15,7 +15,7 @@ def main():
     target_count = len(cfg_obj.get_targets())
 
     print("\nInitializing batch runner...")
-    print(f"{tab}Targets configured: {target_count}")
+    print(f"Targets configured: {target_count}")
 
     print("\nRunning extractor...")
     runner.run_batch(cfg_obj)
