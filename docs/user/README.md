@@ -58,4 +58,10 @@ This means that data will be collected even when the program experiences an erro
 The output produced by the extractor is pretty-printed JSON. Because it is returned in a human-readable format, it is
 easy to see what the extractor has collected and where the program left off in the case that you must resume execution. See the [example output](./example_io/example_output.json) for more.
 
+After all configured targets have been attempted, the extractor prints an extraction report. The report lists each
+repository's status, the issue or PR numbers that were extracted, and any issue or PR numbers that were skipped with the
+associated error. Failed items are excluded from the extraction JSON so that the ML pipeline receives only successful
+records. A repository-level failure is reported separately and does not prevent later repositories from being processed.
+The same report is saved as JSON to `report_path`, or to `output_path.report.json` when `report_path` is omitted.
+
 The human-readable output paired with the range functionality provided by the configuration conveniently allows the user to start and stop at will. For example, you may be collecting data from a very large range but must stop for some reason. You can look at the output, see what issue number the extractor last collected data for, and use that as the starting value in your range during your next execution.

@@ -121,7 +121,7 @@ def _get_closed_time(issue) -> str:
     return "NaN"
 
 
-def _get_created_time(issue) -> str:
+def _get_created_time(api_obj) -> str:
     """
     Get the datetime an issue was created at.
 
@@ -131,7 +131,7 @@ def _get_created_time(issue) -> str:
     Returns:
         str: datetime string of issue creation
     """
-    return issue.created_at.strftime(TIME_FMT)
+    return api_obj.created_at.strftime(TIME_FMT)
 
 
 def _get_issue_comments_quant(issue_obj):
@@ -169,6 +169,7 @@ cmd_tbl: dict = {
         "body": _get_body,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
+        "created_at": _get_created_time,
     },
     "commits": {
         "author_name": _get_commit_author_name,
@@ -190,43 +191,153 @@ cmd_tbl: dict = {
 }
 
 
-_str_type = {"type": "string"}
+REPO_SLUG_REGEX = r"^[^/\s]+/[^/\s]+$"
+STATE_ALLOWED = ["open", "closed", "all"]
 
 
-# TODO: expand comment explaining this.
-# Create dictionary out of each dict in the command
-# table which discusses what types of fields are
-# allowed in the configuration schema.
-#
-# [*_] = create a list from the keys of the unpacked
-#        dict comprehension operand dict, e.g. _cmd_tbl_dict
-issues_fields_schema = {
-    key: {
-        "allowed": [*_],
-        "schema": _str_type,
-        "type": "list",
-    }
-    for key, _ in cmd_tbl.items()
+def _required(rule: dict) -> dict:
+    """Return a Cerberus rule with an explicit required flag."""
+    return {**rule, "required": True}
+
+
+def _optional(rule: dict) -> dict:
+    """Return a Cerberus rule with an explicit optional flag."""
+    return {**rule, "required": False}
+
+
+def _build_string_list_rule(*, required: bool) -> dict:
+    """Build a list-of-strings validation rule."""
+    required_rule = _required if required else _optional
+
+    return required_rule(
+        {
+            "type": "list",
+            "schema": {"type": "string"},
+        }
+    )
+
+
+def _build_field_list_rule(field_type: str, *, required: bool) -> dict:
+    """Build a field-selector list rule for the given extractor item type."""
+    required_rule = _required if required else _optional
+
+    return required_rule(
+        {
+            "type": "list",
+            "schema": {
+                "type": "string",
+                "allowed": [*cmd_tbl[field_type]],
+            },
+        }
+    )
+
+
+def _build_fields_rule(*, required: bool, allow_partial: bool) -> dict:
+    """
+    Build a nested fields dictionary rule.
+
+    Args:
+        required (bool): whether the fields dict itself must be present.
+        allow_partial (bool): whether nested issue/comment/commit selectors
+            may be omitted. Defaults must define all selectors; target-level
+            overrides may define only the selectors they wish to override.
+    """
+    required_rule = _required if required else _optional
+    nested_required = not allow_partial
+
+    return required_rule(
+        {
+            "type": "dict",
+            "schema": {
+                "issues": _build_field_list_rule("issues", required=nested_required),
+                "comments": _build_field_list_rule(
+                    "comments",
+                    required=nested_required,
+                ),
+                "commits": _build_field_list_rule(
+                    "commits",
+                    required=nested_required,
+                ),
+            },
+        }
+    )
+
+
+def _build_range_rule(*, required: bool) -> dict:
+    """Build a rule for individual issue numbers and inclusive ranges."""
+    required_rule = _required if required else _optional
+
+    return required_rule(
+        {
+            "type": "list",
+            "minlength": 1,
+            "schema": {
+                "anyof": [
+                    {"type": "integer", "min": 1},
+                    {
+                        "type": "list",
+                        "minlength": 2,
+                        "maxlength": 2,
+                        "items": [
+                            {"type": "integer", "min": 1},
+                            {"type": "integer", "min": -1},
+                        ],
+                    },
+                ]
+            },
+        }
+    )
+
+
+def _build_state_rule(*, required: bool) -> dict:
+    """Build a rule for issue/PR state selection."""
+    required_rule = _required if required else _optional
+
+    return required_rule({"type": "string", "allowed": STATE_ALLOWED})
+
+
+def _build_repo_slug_rule(*, required: bool) -> dict:
+    """Build a rule for GitHub repo slugs in owner/name format."""
+    required_rule = _required if required else _optional
+
+    return required_rule({"type": "string", "regex": REPO_SLUG_REGEX})
+
+
+defaults_schema = {
+    "state": _build_state_rule(required=True),
+    "labels": _build_string_list_rule(required=True),
+    "fields": _build_fields_rule(required=True, allow_partial=False),
+}
+
+target_schema = {
+    "repo": _build_repo_slug_rule(required=True),
+    "range": _build_range_rule(required=True),
+    "state": _build_state_rule(required=False),
+    "labels": _build_string_list_rule(required=False),
+    "fields": _build_fields_rule(required=False, allow_partial=True),
 }
 
 # Schema used to validate user-provided configuration.
 # This acts as a template to judge whether the user cfg
 # is acceptable to the program.
 cfg_schema: dict = {
-    "auth_path": _str_type,
-    "repo": _str_type,
-    "output_path": _str_type,
-    **issues_fields_schema,
-    "state": {**_str_type, "allowed": ["open", "closed", "all"]},
-    "labels": {
-        "schema": _str_type,
-        "type": "list",
-    },
-    "range": {
-        "nullable": False,
-        "min": [0, -1],
-        "maxlength": 2,
-        "schema": {"type": "integer"},
-        "type": "list",
-    },
+    "auth_path": _required({"type": "string"}),
+    "output_path": _required({"type": "string"}),
+    "report_path": _optional({"type": "string"}),
+    "defaults": _required(
+        {
+            "type": "dict",
+            "schema": defaults_schema,
+        }
+    ),
+    "targets": _required(
+        {
+            "type": "list",
+            "minlength": 1,
+            "schema": {
+                "type": "dict",
+                "schema": target_schema,
+            },
+        }
+    ),
 }

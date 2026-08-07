@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "osl-repo-extractor"
-version = "0.3.0"
+version = "0.4.0"
 description = "Mine the GitHub REST API v3 for issue and PR data"
 readme = "README.md"
 requires-python = ">=3.11.9,<4.0"
@@ -19,8 +19,6 @@ dependencies = [
   "PySide6>=6.5.0"
 ]
 
-[tool.setuptools]
-package-dir = {"" = "src"}
-
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
+include = ["repo_extractor*"]
