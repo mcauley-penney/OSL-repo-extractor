@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from bisect import bisect_left
 from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import dataclass
@@ -143,16 +144,13 @@ class Extractor:
             self.cfg["state"],
             self.cfg["labels"],
         )
-
-        num_issues = self.paged_list.totalCount - 1
-        page_length = self.gh_sesh.get_pg_len()
-
-        self.last_page_index = num_issues // page_length if num_issues > 0 else -1
+        self.page_cache: dict[int, list] = {}
 
         clean_ranges = self.__get_sanitized_cfg_ranges(repo)
         self.cfg["range"] = clean_ranges
 
         try:
+            self.last_page_index = self.__get_last_page_index(self.paged_list)
             self.issue_manifest = self.__generate_issue_manifest(
                 self.paged_list, clean_ranges
             )
@@ -303,12 +301,15 @@ class Extractor:
         """
         while True:
             try:
-                issues_paged_list = repo_obj.get_issues(
-                    direction="asc",
-                    sort="created",
-                    state=state,
-                    labels=labels,
-                )
+                query = {
+                    "direction": "asc",
+                    "sort": "created",
+                    "state": state,
+                }
+                if labels:
+                    query["labels"] = labels
+
+                issues_paged_list = repo_obj.get_issues(**query)
             except github.RateLimitExceededException:
                 self.__sleep_extractor()
             except github.GithubException as exc:
@@ -491,12 +492,59 @@ class Extractor:
             error["status"] = cause.status
         return error
 
-    def __generate_issue_manifest(self, paged_list, issue_extraction_range) -> list:
+    def __get_page(self, paged_list, page_index: int) -> list:
+        """Return a page, reusing it when a search already fetched it."""
+        if page_index not in self.page_cache:
+            self.page_cache[page_index] = paged_list.get_page(page_index)
+        return self.page_cache[page_index]
 
+    def __get_last_page_index(self, paged_list) -> int:
+        """Find the final non-empty page in the paged list.
+
+        GitHub's issues endpoint now returns cursor-based ``next`` links without
+        a ``last`` link. PyGithub consequently reports the size of its one-item
+        count probe as ``totalCount``. Indexed page requests still work, so an
+        exponential search followed by a binary search establishes the usable
+        page boundary in logarithmic requests.
+        """
+
+        print(f"{TAB}Surveying available issues for {self.repo_slug}...")
+
+        if not self.__get_page(paged_list, 0):
+            return -1
+
+        last_nonempty = 0
+        first_empty = 1
+
+        while self.__get_page(paged_list, first_empty):
+            last_nonempty = first_empty
+            first_empty *= 2
+
+        low = last_nonempty + 1
+        high = first_empty - 1
+
+        while low <= high:
+            mid = (low + high) // 2
+            if self.__get_page(paged_list, mid):
+                last_nonempty = mid
+                low = mid + 1
+            else:
+                high = mid - 1
+
+        return last_nonempty
+
+    def __generate_issue_manifest(self, paged_list, issue_extraction_range) -> list:
+        """Return exactly matching issues from the configured selection."""
         issue_manifest = []
 
         for issue_num in issue_extraction_range:
             issue = self.__find_issue_in_paged_list(paged_list, issue_num)
+            if issue is None:
+                print(
+                    f"{TAB * 2}Item #{issue_num} does not match the configured "
+                    "state and labels; skipping."
+                )
+                continue
             issue_manifest.append(issue)
 
         return issue_manifest
@@ -583,129 +631,38 @@ class Extractor:
         return {"is_pr": False}
 
     def __find_issue_in_paged_list(self, paged_list, issue_num: int):
-        """
-        Find an issue object in a paginated list of issue objects.
+        """Find an exact issue-number match in a paginated issue list.
 
         Args:
             paged_list (Github.PaginatedList of Github.Issue): paginated
                 list of issues
-
             issue_num (int): the number of the desired issue
 
         Returns:
-            list[int]: list of starting and ending indices for desired
-                API items.
+            github.Issue | None: matching API item, or ``None`` when the item
+                is excluded by the configured state or labels.
         """
-
-        def bin_search_page_in_paged_list(val: int, paged_list, last_page_index: int):
-            """
-            Find the index of a page in paginated list of API items.
-
-            Iterative binary search which finds the page of an API item,
-            such as a PR or issue, inside of a list of pages.
-
-            Args:
-                paged_list(Github.PaginatedList of Github.Issue): paginated
-                    list of issues
-                last_page_index (int): index of last page in paginated list
-                val (int): number of item in list that we desire; e.g. PR# 800
-
-            Returns:
-                int: index of page in given paginated listwhere val
-                param is located
-            """
-            low: int = 0
-            high: int = last_page_index
-            mid_first_val: int
-            mid_last_val: int
-
-            while low < high:
-                mid = (low + high) // 2
-
-                mid_page = paged_list.get_page(mid)
-
-                # TODO cache middle page contents
-
-                mid_first_val = mid_page[0].number
-                mid_last_val = mid_page[-1].number
-
-                # if the value we want is greater than the first item
-                # (cur_val - page_len) on the middle page but less
-                # than the last item, it is in the middle page
-                if mid_first_val <= val <= mid_last_val:
-                    return mid_page, mid
-
-                if val < mid_first_val:
-                    high = mid - 1
-
-                elif val > mid_last_val:
-                    low = mid + 1
-
-            return paged_list.get_page(low), low
-
-        def bin_search_issue_in_page(val: int, page, page_len: int) -> int:
-            """
-            Find the index of an API item in a page of API items.
-
-            Iterative binary search modified to return either the exact
-            index of the item with the number the user desires or the
-            index of the item beneath that value in the case that the
-            value does not exist in the list. An example might be that
-            a paginated list of issues does not have #'s 9, 10, or 11,
-            but the user wants to begin looking for data at #10. This
-            binary search should return the index of the API object
-            with the number 8.
-
-            Args:
-                val (int): value to look for in page parameter
-                paged_list_page (page of Github.Issue): a single page
-                    from paginated list of issues
-                page_len (int): length of pages in paginated lists for
-                    this validated GitHub session
-
-            Returns:
-                int: index of the object we are looking for
-            """
-            low: int = 0
-            mid: int
-
-            # because this binary search is looking through lists that
-            # may have items missing, we want to be able to return the
-            # index of the nearest item before the item we are looking
-            # for. Therefore, we stop when low is one less than high.
-            # This allows us to take the lower value when a value does
-            # not exist in the list.
-            while low < page_len - 1:
-                mid = (low + page_len) // 2
-
-                cur_val = page[mid].number
-
-                if val == cur_val:
-                    return mid
-
-                if val < cur_val:
-                    page_len = mid - 1
-
-                elif val > cur_val:
-                    low = mid + 1
-
-            return low
-
         print(f"{TAB}Finding index of item #{issue_num}...")
 
-        # use binary search to find the page inside of the
-        # list of pages that contains the item number of interest
-        item_page, item_page_index = bin_search_page_in_paged_list(
-            issue_num, paged_list, self.last_page_index
-        )
+        low = 0
+        high = self.last_page_index
 
-        # use iterative binary search to find item of interest in found page
-        item_index: int = bin_search_issue_in_page(issue_num, item_page, len(item_page))
+        while low <= high:
+            page_index = (low + high) // 2
+            page = self.__get_page(paged_list, page_index)
 
-        item_index = (item_page_index * self.gh_sesh.get_pg_len()) + item_index
+            if issue_num < page[0].number:
+                high = page_index - 1
+                continue
+            if issue_num > page[-1].number:
+                low = page_index + 1
+                continue
 
-        item = self.paged_list[item_index]
+            numbers = [item.number for item in page]
+            item_index = bisect_left(numbers, issue_num)
+            if item_index < len(page) and numbers[item_index] == issue_num:
+                print(f"{TAB * 2}Found on page {page_index} at index " f"{item_index}!")
+                return page[item_index]
+            return None
 
-        print(f"{TAB * 2}Found at index {item_index}!")
-
-        return item
+        return None
