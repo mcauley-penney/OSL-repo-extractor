@@ -19,7 +19,7 @@ CLR = "\x1b[K"
 TAB = " " * 4
 
 FlushCallback = Callable[[str, dict], None]
-ItemResultCallback = Callable[[str, int, bool, bool, dict | None], None]
+ItemResultCallback = Callable[[str, int, bool, bool | None, dict | None], None]
 
 
 class GithubSessionError(RuntimeError):
@@ -536,14 +536,34 @@ class Extractor:
     def __generate_issue_manifest(self, paged_list, issue_extraction_range) -> list:
         """Return exactly matching issues from the configured selection."""
         issue_manifest = []
+        seen_issue_numbers = set()
 
         for issue_num in issue_extraction_range:
+            if issue_num in seen_issue_numbers:
+                continue
+            seen_issue_numbers.add(issue_num)
+
             issue = self.__find_issue_in_paged_list(paged_list, issue_num)
             if issue is None:
+                error = {
+                    "operation": "issue_lookup",
+                    "message": (
+                        "Item is unavailable or does not match the configured "
+                        "state and labels."
+                    ),
+                }
                 print(
-                    f"{TAB * 2}Item #{issue_num} does not match the configured "
-                    "state and labels; skipping."
+                    f"{TAB * 2}Item #{issue_num} is unavailable or does not "
+                    "match the configured state and labels; skipping."
                 )
+                if self.item_result_callback is not None:
+                    self.item_result_callback(
+                        self.repo_slug,
+                        issue_num,
+                        False,
+                        None,
+                        error,
+                    )
                 continue
             issue_manifest.append(issue)
 

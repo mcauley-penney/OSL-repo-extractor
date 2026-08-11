@@ -62,6 +62,9 @@ After all configured targets have been attempted, the extractor prints an extrac
 repository's status, the issue or PR numbers that were extracted, and any issue or PR numbers that were skipped with the
 associated error. Failed items are excluded from the extraction JSON so that the ML pipeline receives only successful
 records. A repository-level failure is reported separately and does not prevent later repositories from being processed.
+Repositories that cannot be accessed have a `failed` status and an error message. Requested item numbers that are
+unavailable or excluded by the configured filters are included in `skipped_items`; their `is_pr` value is `null` when
+GitHub does not expose enough information to determine the item type.
 The same report is saved as JSON to `report_path`, or to `output_path.report.json` when `report_path` is omitted.
 
 The human-readable output paired with the range functionality provided by the configuration conveniently allows the user to start and stop at will. For example, you may be collecting data from a very large range but must stop for some reason. You can look at the output, see what issue number the extractor last collected data for, and use that as the starting value in your range during your next execution.

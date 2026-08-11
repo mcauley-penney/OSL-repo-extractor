@@ -112,6 +112,9 @@ class BatchRunner:
                 f'Extraction interrupted while processing "{repo_slug}".'
             ) from exc
         except extractor.ExtractorError as exc:
+            repo_report = self.__ensure_repo_report(repo_slug)
+            repo_report["status"] = "failed"
+            repo_report["error"] = {"message": str(exc)}
             print(f"{TAB}Skipping repository {repo_slug}: {exc}")
             return None
         except (
@@ -140,7 +143,7 @@ class BatchRunner:
         repo_slug: str,
         item_number: int,
         extracted: bool,
-        is_pr: bool,
+        is_pr: bool | None,
         error: dict | None,
     ) -> None:
         """Record one successfully extracted or skipped issue/PR."""
