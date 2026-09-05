@@ -86,10 +86,10 @@ class Cfg:
         Normalize a validated batch configuration into runtime form.
 
         The runtime form keeps the batch-level auth and output settings at the
-        top level and expands defaults into each target so downstream code can
+        top level and expands fields into each target so downstream code can
         consume a concrete list of extractor jobs.
         """
-        defaults = cfg_dict["defaults"]
+        default_fields = cfg_dict["fields"]
         auth_path = cfg_dict["auth_path"]
         output_path = cfg_dict["output_path"]
         report_path = cfg_dict.get("report_path") or f"{output_path}.report.json"
@@ -97,7 +97,7 @@ class Cfg:
         normalized_targets = [
             self.__normalize_target_cfg(
                 target_cfg,
-                defaults,
+                default_fields,
                 auth_path,
                 output_path,
             )
@@ -114,13 +114,13 @@ class Cfg:
     def __normalize_target_cfg(
         self,
         target_cfg: dict,
-        defaults: dict,
+        default_fields: dict,
         auth_path: str,
         output_path: str,
     ) -> dict:
-        """Normalize one target by merging target-level overrides over defaults."""
+        """Normalize one target by merging target-level overrides over fields."""
         fields_cfg = self.__merge_fields(
-            defaults["fields"],
+            default_fields,
             target_cfg.get("fields"),
         )
 
@@ -129,10 +129,8 @@ class Cfg:
             "output_path": output_path,
             "repo": target_cfg["repo"],
             "range": self.__normalize_range(target_cfg["range"]),
-            "state": target_cfg.get("state", defaults["state"]),
-            "labels": self.__normalize_string_list(
-                target_cfg.get("labels", defaults["labels"])
-            ),
+            "state": target_cfg["state"],
+            "labels": self.__normalize_string_list(target_cfg["labels"]),
             **fields_cfg,
         }
 
@@ -142,7 +140,7 @@ class Cfg:
         Merge default field selectors with an optional target-level override.
 
         Each extractor item type is merged independently so a target may
-        override only the issue, comment, or commit fields it needs to change.
+        override only the field groups it needs to change.
         """
         override_fields = override_fields or {}
 
@@ -155,6 +153,15 @@ class Cfg:
             ),
             "commits": Cfg.__normalize_string_list(
                 override_fields.get("commits", default_fields["commits"])
+            ),
+            "review_comments": Cfg.__normalize_string_list(
+                override_fields.get(
+                    "review_comments",
+                    default_fields.get("review_comments", []),
+                )
+            ),
+            "reviews": Cfg.__normalize_string_list(
+                override_fields.get("reviews", default_fields.get("reviews", []))
             ),
         }
 

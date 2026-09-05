@@ -134,6 +134,19 @@ def _get_created_time(api_obj) -> str:
     return api_obj.created_at.strftime(TIME_FMT)
 
 
+def _get_submitted_time(review_obj) -> str:
+    """Get the datetime a pull-request review was submitted."""
+    if review_obj.submitted_at is not None:
+        return review_obj.submitted_at.strftime(TIME_FMT)
+
+    return "NaN"
+
+
+def _get_updated_time(api_obj) -> str:
+    """Get the datetime an API object was last updated."""
+    return api_obj.updated_at.strftime(TIME_FMT)
+
+
 def _get_issue_comments_quant(issue_obj):
     return issue_obj.comments
 
@@ -146,12 +159,44 @@ def _get_title(api_obj) -> str:
     return api_obj.title
 
 
+def _get_id(api_obj) -> str:
+    return str(api_obj.id)
+
+
+def _get_commit_id(api_obj) -> str:
+    return api_obj.commit_id
+
+
+def _get_diff_hunk(review_comment_obj) -> str:
+    return review_comment_obj.diff_hunk
+
+
+def _get_line(review_comment_obj):
+    return review_comment_obj.line
+
+
+def _get_path(review_comment_obj) -> str:
+    return review_comment_obj.path
+
+
+def _get_pull_request_review_id(review_comment_obj) -> str:
+    return str(review_comment_obj.pull_request_review_id)
+
+
+def _get_state(api_obj) -> str:
+    return api_obj.state
+
+
 def _get_userid(api_obj) -> str:
     return str(api_obj.user.id)
 
 
 def _get_userlogin(api_obj) -> str:
     return api_obj.user.login
+
+
+def _get_usertype(api_obj) -> str:
+    return api_obj.user.type
 
 
 # Initialize map of strings to function references; a
@@ -169,7 +214,32 @@ cmd_tbl: dict = {
         "body": _get_body,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
+        "usertype": _get_usertype,
         "created_at": _get_created_time,
+    },
+    "review_comments": {
+        "body": _get_body,
+        "commit_id": _get_commit_id,
+        "created_at": _get_created_time,
+        "diff_hunk": _get_diff_hunk,
+        "id": _get_id,
+        "line": _get_line,
+        "path": _get_path,
+        "pull_request_review_id": _get_pull_request_review_id,
+        "updated_at": _get_updated_time,
+        "userid": _get_userid,
+        "userlogin": _get_userlogin,
+        "usertype": _get_usertype,
+    },
+    "reviews": {
+        "body": _get_body,
+        "commit_id": _get_commit_id,
+        "id": _get_id,
+        "state": _get_state,
+        "submitted_at": _get_submitted_time,
+        "userid": _get_userid,
+        "userlogin": _get_userlogin,
+        "usertype": _get_usertype,
     },
     "commits": {
         "author_name": _get_commit_author_name,
@@ -187,6 +257,7 @@ cmd_tbl: dict = {
         "title": _get_title,
         "userid": _get_userid,
         "userlogin": _get_userlogin,
+        "usertype": _get_usertype,
     },
 }
 
@@ -234,13 +305,15 @@ def _build_field_list_rule(field_type: str, *, required: bool) -> dict:
 
 def _build_fields_rule(*, required: bool, allow_partial: bool) -> dict:
     """
-    Build a nested fields dictionary rule.
+    Build a fields dictionary rule.
 
     Args:
         required (bool): whether the fields dict itself must be present.
-        allow_partial (bool): whether nested issue/comment/commit selectors
-            may be omitted. Defaults must define all selectors; target-level
-            overrides may define only the selectors they wish to override.
+        allow_partial (bool): whether field selectors may be omitted. The
+            top-level fields object must define the original issue, comment,
+            and commit selectors; target-level overrides may define only the
+            selectors they wish to override. Review selectors are optional
+            for backwards compatibility.
     """
     required_rule = _required if required else _optional
     nested_required = not allow_partial
@@ -257,6 +330,16 @@ def _build_fields_rule(*, required: bool, allow_partial: bool) -> dict:
                 "commits": _build_field_list_rule(
                     "commits",
                     required=nested_required,
+                ),
+                # Optional so configurations written before review extraction
+                # was added remain valid.
+                "review_comments": _build_field_list_rule(
+                    "review_comments",
+                    required=False,
+                ),
+                "reviews": _build_field_list_rule(
+                    "reviews",
+                    required=False,
                 ),
             },
         }
@@ -303,17 +386,11 @@ def _build_repo_slug_rule(*, required: bool) -> dict:
     return required_rule({"type": "string", "regex": REPO_SLUG_REGEX})
 
 
-defaults_schema = {
-    "state": _build_state_rule(required=True),
-    "labels": _build_string_list_rule(required=True),
-    "fields": _build_fields_rule(required=True, allow_partial=False),
-}
-
 target_schema = {
     "repo": _build_repo_slug_rule(required=True),
     "range": _build_range_rule(required=True),
-    "state": _build_state_rule(required=False),
-    "labels": _build_string_list_rule(required=False),
+    "state": _build_state_rule(required=True),
+    "labels": _build_string_list_rule(required=True),
     "fields": _build_fields_rule(required=False, allow_partial=True),
 }
 
@@ -324,12 +401,7 @@ cfg_schema: dict = {
     "auth_path": _required({"type": "string"}),
     "output_path": _required({"type": "string"}),
     "report_path": _optional({"type": "string"}),
-    "defaults": _required(
-        {
-            "type": "dict",
-            "schema": defaults_schema,
-        }
-    ),
+    "fields": _build_fields_rule(required=True, allow_partial=False),
     "targets": _required(
         {
             "type": "list",

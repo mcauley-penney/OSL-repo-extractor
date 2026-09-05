@@ -407,6 +407,8 @@ class Extractor:
             ("issues", self.__get_item_data),
             ("commits", self.__get_issue_commits),
             ("comments", self.__get_issue_comments),
+            ("review_comments", self.__get_issue_review_comments),
+            ("reviews", self.__get_issue_reviews),
         )
 
         cur_issue_data: dict = {}
@@ -591,6 +593,54 @@ class Extractor:
 
         return {"comments": cur_comment_data}
 
+    @staticmethod
+    def __as_pull_request(issue):
+        """Return the pull request represented by an issue, if applicable."""
+        try:
+            return issue.as_pull_request()
+        except github.UnknownObjectException:
+            # A normal issue returns 404 when probed as a PR. If the issues
+            # endpoint identified it as a PR, the PR disappeared or is
+            # inaccessible, so preserve the error for the caller.
+            if getattr(issue, "pull_request", None) is not None:
+                raise
+            return None
+
+    def __get_issue_review_comments(
+        self,
+        fields: list,
+        cmd_tbl: dict,
+        issue,
+    ) -> dict:
+        """Get inline pull-request review comments for the given issue."""
+        pr_obj = self.__as_pull_request(issue)
+        review_comment_data: dict = {}
+
+        if pr_obj is not None:
+            for index, comment in enumerate(pr_obj.get_review_comments()):
+                review_comment_data[str(index)] = self.__get_item_data(
+                    fields,
+                    cmd_tbl,
+                    comment,
+                )
+
+        return {"review_comments": review_comment_data}
+
+    def __get_issue_reviews(self, fields: list, cmd_tbl: dict, issue) -> dict:
+        """Get pull-request review records for the given issue."""
+        pr_obj = self.__as_pull_request(issue)
+        review_data: dict = {}
+
+        if pr_obj is not None:
+            for index, review in enumerate(pr_obj.get_reviews()):
+                review_data[str(index)] = self.__get_item_data(
+                    fields,
+                    cmd_tbl,
+                    review,
+                )
+
+        return {"reviews": review_data}
+
     def __get_issue_commits(self, fields: list, cmd_tbl: dict, issue) -> dict:
         """
         Get issue commit data for the given issue.
@@ -603,21 +653,6 @@ class Extractor:
         Returns:
             dict: PR metadata and, if applicable, {commit index: commit data}.
         """
-
-        def as_pr(cur_issue):
-            try:
-                cur_pr = cur_issue.as_pull_request()
-
-            except github.UnknownObjectException:
-                # A normal issue returns 404 when probed as a PR. If the
-                # issues endpoint identified it as a PR, however, the PR has
-                # disappeared or is inaccessible and the item should be
-                # skipped by the caller.
-                if getattr(cur_issue, "pull_request", None) is not None:
-                    raise
-                return None
-            else:
-                return cur_pr
 
         def get_commit_data(pr_obj):
             """Return commit data from a paginated list of commits from a PR."""
@@ -635,7 +670,7 @@ class Extractor:
 
             return {"commits": pr_commit_data}
 
-        pr_obj = as_pr(issue)
+        pr_obj = self.__as_pull_request(issue)
 
         if pr_obj is not None:
             pr_data = {
